@@ -45,7 +45,7 @@ export default function CTA() {
             className="group/btn relative inline-flex items-center justify-center bg-black text-white px-10 py-5 text-2xl font-black uppercase tracking-widest border-4 border-black hover:bg-white hover:text-black transition-colors duration-200 mt-6"
           >
             <span>Get in touch</span>
-            <ArrowUpRight className="ml-3 w-8 h-8 group-hover/btn:rotate-45 transition-transform duration-200" />
+            <ArrowUpRight className="ml-3 w-8 h-8 group-hover/btn:rotate-90 transition-transform duration-200" />
           </Link>
 
         </div>
