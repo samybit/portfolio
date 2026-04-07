@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function Hero() {
   return (
     // Padding and min-height specs are left exactly the same as the previous fix
-    <section className="min-h-[90vh] flex flex-col justify-center items-start px-6 md:px-12 lg:px-24 border-b-8 border-black pt-30 md:pt-34 pb-16 overflow-hidden">
+    <section id="hero" className="min-h-[90vh] flex flex-col justify-center items-start px-6 md:px-12 lg:px-24 border-b-8 border-black pt-30 md:pt-34 pb-16 overflow-hidden">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -40,16 +40,16 @@ export default function Hero() {
 
         {/* Right Column: Creative Action Block */}
         <div className="flex flex-col sm:flex-row lg:flex-col w-full lg:w-[400px] xl:w-[450px] gap-6 lg:border-l-8 lg:border-black lg:pl-12 lg:py-8 shrink-0">
-          <Link 
-            href="#projects" 
+          <Link
+            href="#projects"
             className="brutalist-container !p-8 !bg-black text-white hover:!bg-white hover:text-black flex justify-between items-center w-full text-3xl font-black uppercase transition-all group"
           >
-            <span>Work</span> 
+            <span>Work</span>
             <ArrowDownRight size={40} className="group-hover:translate-x-2 group-hover:translate-y-2 transition-transform" />
           </Link>
-          
-          <Link 
-            href="#contact" 
+
+          <Link
+            href="#contact"
             className="brutalist-container !p-8 flex justify-between items-center w-full text-3xl font-black uppercase hover:bg-black hover:text-white transition-all group"
           >
             <span>Hire Me</span>
