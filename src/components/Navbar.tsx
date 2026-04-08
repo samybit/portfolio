@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { TerminalSquare, ArrowUpRight, Menu, X } from "lucide-react";
 import { useState } from "react";
-import Link from "next/link"; // <-- Added Next.js Link
+import Link from "next/link";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +27,10 @@ export default function Navbar() {
 
         {/* Desktop Nav Links Block */}
         <div className="pointer-events-auto hidden md:flex items-center gap-4 bg-white border-4 border-black p-3 brutalist-shadow">
+          <Link href="/about" className="text-lg font-bold uppercase hover:bg-black hover:text-white px-3 py-1 transition-colors">
+            About
+          </Link>
+
           <Link href="/#projects" className="text-lg font-bold uppercase hover:bg-black hover:text-white px-3 py-1 transition-colors">
             Work
           </Link>
@@ -66,6 +70,14 @@ export default function Navbar() {
             transition={{ duration: 0.2, ease: "easeInOut" }}
             className="pointer-events-auto md:hidden w-full mt-4 bg-white border-4 border-black p-6 flex flex-col gap-2 brutalist-shadow origin-top"
           >
+            <Link
+              href="/about"
+              onClick={() => setIsOpen(false)}
+              className="text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white transition-colors"
+            >
+              About
+            </Link>
+            
             <Link
               href="/#projects"
               onClick={() => setIsOpen(false)}
