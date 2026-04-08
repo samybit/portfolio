@@ -16,7 +16,7 @@ export default function Navbar() {
       className="fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col"
     >
       <div className="flex justify-between items-start w-full">
-        {/* Logo Block - Fixed to use Next.js Link pointing to "/" */}
+        {/* Logo Block */}
         <Link
           href="/"
           className="pointer-events-auto bg-white border-4 border-black p-3 flex items-center gap-3 brutalist-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group"
@@ -64,15 +64,19 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            // Removed scale, kept to a clean vertical slide
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            // WebkitTransform to force iOS hardware acceleration and stop the flash
-            style={{ WebkitTransform: "translateZ(0)" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
             className="pointer-events-auto md:hidden w-full mt-4 bg-white border-4 border-black p-6 flex flex-col gap-2 brutalist-shadow"
           >
+            <Link
+              href="/about"
+              onClick={() => setIsOpen(false)}
+              className="text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white transition-colors"
+            >
+              About
+            </Link>
             <Link
               href="/#projects"
               onClick={() => setIsOpen(false)}
@@ -98,7 +102,6 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-
     </motion.nav>
   );
 }

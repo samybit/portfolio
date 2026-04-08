@@ -73,10 +73,10 @@ export default function Projects() {
         {projects.map((project, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
+            transition={{ duration: 0.3, delay: index * 0.1 }}
             className="brutalist-container flex flex-col justify-between min-h-[350px]"
           >
             <div>
