@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Send, Check } from "lucide-react";
+import { Send, Check, ArrowUpRight } from "lucide-react";
 import { useState } from "react";
 import { sendEmail } from "@/actions/send-email";
 
@@ -75,13 +75,53 @@ export default function Contact() {
     <section id="contact" className="py-24 px-6 md:px-12 lg:px-24 bg-black text-white">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-start">
 
-        <div className="flex-1">
+        {/* --- LEFT COLUMN: TEXT & SOCIALS --- */}
+        <div className="flex-1 w-full">
           <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-8">
             Let's <br /> Talk
           </h2>
-          <p className="text-2xl font-bold max-w-md text-zinc-400 uppercase">
+          <p className="text-2xl font-bold max-w-md text-zinc-400 uppercase mb-16">
             Drop a message to discuss a project, a full-time role, or just to say hi.
           </p>
+
+          {/* Social Links Block */}
+          <div className="flex flex-col gap-4">
+            <h3 className="text-xl font-black uppercase tracking-widest text-zinc-600 mb-2 border-b-4 border-zinc-800 pb-2 inline-block self-start">
+              Verified Networks
+            </h3>
+
+            <div className="flex flex-col sm:flex-row flex-wrap gap-4">
+              <a
+                href="https://linkedin.com/in/samybit/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors"
+              >
+                <span>LinkedIn</span>
+                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </a>
+
+              <a
+                href="https://contra.com/samybit"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors"
+              >
+                <span>Contra</span>
+                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </a>
+
+              <a
+                href="https://www.upwork.com/freelancers/samybit"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors"
+              >
+                <span>Upwork</span>
+                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </a>
+            </div>
+          </div>
         </div>
 
         <motion.div
