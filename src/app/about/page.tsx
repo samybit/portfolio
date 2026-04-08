@@ -126,17 +126,21 @@ export default function AboutPage() {
                 transition={{ delay: index * 0.1 }}
                 className="brutalist-container group hover:!bg-black hover:!text-white transition-colors duration-300"
               >
-                <div className="flex flex-col items-start gap-4 border-b-4 border-black group-hover:border-white pb-4 mb-6 transition-colors">
-                  <div className="p-3 border-4 border-black group-hover:border-white group-hover:bg-white group-hover:text-black transition-all">
+                {/* Synced duration-300 here */}
+                <div className="flex flex-col items-start gap-4 border-b-4 border-black group-hover:border-white pb-4 mb-6 transition-colors duration-300">
+
+                  {/* Added text-black and group-hover:!text-black, and synced duration-300 */}
+                  <div className="p-3 border-4 border-black text-black group-hover:border-white group-hover:bg-white group-hover:!text-black transition-colors duration-300">
                     {category.icon}
                   </div>
+
                   <h3 className="text-2xl font-black uppercase leading-none">{category.category}</h3>
                 </div>
 
                 <ul className="flex flex-col gap-3">
                   {category.tech.map((item, i) => (
                     <li key={i} className="text-lg font-bold uppercase flex items-center gap-2">
-                      <span className="w-2 h-2 bg-black group-hover:bg-white inline-block"></span>
+                      <span className="w-2 h-2 bg-black group-hover:bg-white inline-block transition-colors duration-300"></span>
                       {item}
                     </li>
                   ))}
@@ -144,6 +148,7 @@ export default function AboutPage() {
               </motion.div>
             ))}
           </div>
+
         </motion.section>
 
       </div>

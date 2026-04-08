@@ -64,20 +64,15 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="pointer-events-auto md:hidden w-full mt-4 bg-white border-4 border-black p-6 flex flex-col gap-2 brutalist-shadow origin-top"
+            // Removed scale, kept to a clean vertical slide
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            // WebkitTransform to force iOS hardware acceleration and stop the flash
+            style={{ WebkitTransform: "translateZ(0)" }}
+            className="pointer-events-auto md:hidden w-full mt-4 bg-white border-4 border-black p-6 flex flex-col gap-2 brutalist-shadow"
           >
-            <Link
-              href="/about"
-              onClick={() => setIsOpen(false)}
-              className="text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white transition-colors"
-            >
-              About
-            </Link>
-            
             <Link
               href="/#projects"
               onClick={() => setIsOpen(false)}
@@ -103,6 +98,7 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
     </motion.nav>
   );
 }
