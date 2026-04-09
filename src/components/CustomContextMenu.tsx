@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Terminal, User, Mail, Link as LinkIcon } from "lucide-react";
+import { Terminal, User, Mail, Link as LinkIcon, Copy, ClipboardPaste } from "lucide-react";
 
 // --- CUSTOM GITHUB ICON ---
 const GithubIcon = ({ size = 16 }: { size?: number }) => (
@@ -26,14 +26,18 @@ export default function CustomContextMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
+  // Track exactly what element was right-clicked to enable precise pasting
+  const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
+
   useEffect(() => {
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
 
       const safeX = Math.min(e.clientX, window.innerWidth - 220);
-      const safeY = Math.min(e.clientY, window.innerHeight - 250);
+      const safeY = Math.min(e.clientY, window.innerHeight - 300); // Increased buffer for taller menu
 
       setPosition({ x: safeX, y: safeY });
+      setTargetElement(e.target as HTMLElement);
       setIsOpen(true);
     };
 
@@ -56,8 +60,40 @@ export default function CustomContextMenu() {
     };
   }, [isOpen]);
 
+  const handleCopy = () => {
+    const selectedText = window.getSelection()?.toString();
+    if (selectedText) navigator.clipboard.writeText(selectedText);
+    setIsOpen(false);
+  };
+
+  const handlePaste = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      const target = targetElement as HTMLInputElement | HTMLTextAreaElement;
+
+      // If you right-clicked directly inside an input or textarea
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+        target.focus();
+
+        // Temporarily convert email inputs to text inputs so the browser allows pasting
+        const isEmail = target.getAttribute('type') === 'email';
+        if (isEmail) target.setAttribute('type', 'text');
+
+        // Natively inject the text exactly where the cursor is resting
+        target.setRangeText(text, target.selectionStart || 0, target.selectionEnd || 0, 'end');
+
+        // Revert it back to an email input instantly
+        if (isEmail) target.setAttribute('type', 'email');
+      }
+    } catch (e) {
+      console.warn("Paste permission denied or not supported.");
+    }
+    setIsOpen(false);
+  };
+
   const copyUrl = () => {
     navigator.clipboard.writeText(window.location.href);
+    setIsOpen(false);
   };
 
   if (!isOpen) return null;
@@ -70,6 +106,25 @@ export default function CustomContextMenu() {
       {/* Menu Header */}
       <div className="bg-black text-white px-3 py-2 text-xs font-black uppercase tracking-widest flex items-center gap-2 cursor-default">
         <Terminal size={14} /> System_Menu
+      </div>
+
+      {/* Windows 11 Style Action Bar */}
+      <div className="flex border-b-4 border-black bg-zinc-100">
+        <button
+          onClick={handleCopy}
+          className="flex-1 flex flex-col items-center justify-center py-3 border-r-4 border-black hover:bg-black hover:text-white transition-colors group"
+        >
+          <Copy size={20} className="mb-1 group-hover:-translate-y-1 transition-transform" />
+          <span className="text-[10px] font-black uppercase tracking-widest">Copy</span>
+        </button>
+
+        <button
+          onClick={handlePaste}
+          className="flex-1 flex flex-col items-center justify-center py-3 hover:bg-black hover:text-white transition-colors group"
+        >
+          <ClipboardPaste size={20} className="mb-1 group-hover:-translate-y-1 transition-transform" />
+          <span className="text-[10px] font-black uppercase tracking-widest">Paste</span>
+        </button>
       </div>
 
       {/* Menu Actions */}
@@ -93,7 +148,7 @@ export default function CustomContextMenu() {
         rel="noopener noreferrer"
         className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
       >
-        {/* Replaced Lucide Github with our custom inline SVG */}
+        {/* Replaced Lucide Github with custom inline SVG */}
         <GithubIcon size={16} /> Source
       </a>
 
