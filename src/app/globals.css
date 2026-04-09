@@ -123,3 +123,10 @@ html.system-override canvas {
   filter: invert(1) hue-rotate(180deg) !important;
 }
 */
+
+/* Force the cursor into a brutalist target circle during override */
+/* Applies to everything (*) so hovering over links doesn't break the circle */
+/* html.system-override,
+html.system-override * {
+  cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNCIgZmlsbD0iYmxhY2siIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjE2IiBjeT0iMTYiIHI9IjQiIGZpbGw9IndoaXRlIi8+PC9zdmc+') 16 16, crosshair !important;
+} */
