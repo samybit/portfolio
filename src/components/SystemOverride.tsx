@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { playMechanicalClick } from "@/utils/audio";
 
 export default function SystemOverride() {
   const [isActive, setIsActive] = useState(false);
@@ -24,6 +25,8 @@ export default function SystemOverride() {
       if (e.button === 1) { // Middle click
         document.documentElement.classList.add("system-override");
         setIsActive(true);
+        // PLAY SNAP (true = press down)
+        playMechanicalClick(true);
       }
     };
 
@@ -31,6 +34,8 @@ export default function SystemOverride() {
       if (e.button === 1) {
         document.documentElement.classList.remove("system-override");
         setIsActive(false);
+        // PLAY SNAP (false = release)
+        playMechanicalClick(false);
       }
     };
 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Terminal, User, Mail, Link as LinkIcon, Copy, ClipboardPaste } from "lucide-react";
+import { playThud } from "@/utils/audio";
 
 // --- CUSTOM GITHUB ICON ---
 const GithubIcon = ({ size = 16 }: { size?: number }) => (
@@ -39,6 +40,9 @@ export default function CustomContextMenu() {
       setPosition({ x: safeX, y: safeY });
       setTargetElement(e.target as HTMLElement);
       setIsOpen(true);
+
+      // TRIGGER HEAVY BASS DROP
+      playThud();
     };
 
     const handleClick = () => {
