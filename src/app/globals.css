@@ -85,13 +85,41 @@ body {
 }
 
 /* Apply inverted, larger cursor to all clickable elements */
-a, button, [role="button"], label, select, input[type="submit"], input[type="button"] {
+a,
+button,
+[role="button"],
+label,
+select,
+input[type="submit"],
+input[type="button"] {
   /* Hover: Size 34x34, White fill, Black stroke. Hotspot calibrated to tip (2 2). */
   cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNCIgaGVpZ2h0PSIzNCIgdmlld0JveD0iMCAwIDI4IDI4IiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNIDIgMiBMIDIgMTggTCA2IDE0IEwgMTAgMjMgTCAxMyAyMSBMIDkgMTMgTCAxNSAxMyBaIi8+PC9zdmc+') 2 2, pointer !important;
 }
 
 /* Ensure text inputs get a heavy, blocky brutalist I-beam */
-input[type="text"], input[type="email"], textarea {
+input[type="text"],
+input[type="email"],
+textarea {
   /* Size 24x24, White fill, Black stroke, Blocky 'I' shape. Hotspot dead center (12 12). */
   cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj48cGF0aCBkPSJNIDYgMiBMIDE4IDIgTCAxOCA2IEwgMTQgNiBMIDE0IDE4IEwgMTggMTggTCAxOCAyMiBMIDYgMjIgTCA2IDE4IEwgMTAgMTggTCAxMCA2IEwgNiA2IFoiLz48L3N2Zz4=') 12 12, text !important;
 }
+
+
+/* --- SYSTEM OVERRIDE (MIDDLE CLICK EASTER EGG) --- */
+html.system-override {
+  /* Inverts all colors, hue-rotate keeps colors like red/green mostly intact */
+  filter: invert(1) hue-rotate(180deg) !important;
+  /* Add a harsh, instant background color shift */
+  background-color: white !important;
+}
+
+/* Optional: If you want your romantic painting and 3D canvas to ALSO invert, 
+   leave them alone. If you want them to stay normal while the UI inverts, 
+   uncomment the lines below: */
+
+/*
+html.system-override img, 
+html.system-override canvas {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+*/

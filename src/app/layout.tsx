@@ -3,6 +3,7 @@ import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SystemOverride from "@/components/SystemOverride";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${spaceGrotesk.className} bg-white text-black antialiased selection:bg-black selection:text-white`}>
+        <SystemOverride />
         <Navbar />
         {children}
         <Footer />
