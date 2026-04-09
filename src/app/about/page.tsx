@@ -63,7 +63,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="will-change-opacity brutalist-container !bg-black !text-white flex flex-col justify-between"
+            className="will-change-[opacity] brutalist-container !bg-black !text-white flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center gap-4 border-b-4 border-white pb-4 mb-6">
@@ -82,7 +82,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="will-change-opacity brutalist-container flex flex-col"
+            className="will-change-[opacity] brutalist-container flex flex-col"
           >
             <div className="flex items-center gap-4 border-b-4 border-black pb-4 mb-6">
               <Award size={40} />
@@ -125,7 +125,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="will-change-opacity brutalist-container group hover:!bg-black hover:!text-white transition-colors duration-300"
+                className="will-change-[opacity] brutalist-container group hover:!bg-black hover:!text-white transition-colors duration-300"
               >
                 {/* Synced duration-300 here */}
                 <div className="flex flex-col items-start gap-4 border-b-4 border-black group-hover:border-white pb-4 mb-6 transition-colors duration-300">

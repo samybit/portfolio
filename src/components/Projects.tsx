@@ -77,7 +77,7 @@ export default function Projects() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
-            className="will-change-opacity brutalist-container flex flex-col justify-between min-h-[350px]"
+            className="will-change-[opacity] brutalist-container flex flex-col justify-between min-h-[350px]"
           >
             <div>
               <h3 className="text-4xl font-black uppercase mb-4 tracking-tight">{project.title}</h3>

@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SystemOverride from "@/components/SystemOverride";
+import CustomContextMenu from "@/components/CustomContextMenu";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`${spaceGrotesk.className} bg-white text-black antialiased selection:bg-black selection:text-white`}>
         <SystemOverride />
+        <CustomContextMenu />
         <Navbar />
         {children}
         <Footer />
