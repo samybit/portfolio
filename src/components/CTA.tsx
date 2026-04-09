@@ -37,29 +37,32 @@ function SystemLeak() {
   }, []);
 
   useFrame(() => {
-    if (!coreRef.current || !dropsGroupRef.current) return;
+    // 1. Assign to local variables so TypeScript locks in their type
+    const core = coreRef.current;
+    const dropsGroup = dropsGroupRef.current;
+
+    // 2. If either is null (like on the very first frame), skip the math
+    if (!core || !dropsGroup) return;
 
     const targetX = mouse.current.x * 4;
     const targetY = mouse.current.y * 4;
 
-    // 1. Move the central Core
-    coreRef.current.position.x += (targetX - coreRef.current.position.x) * 0.05;
-    coreRef.current.position.y += (targetY - coreRef.current.position.y) * 0.05;
-    coreRef.current.rotation.x += 0.01;
-    coreRef.current.rotation.y += 0.02;
+    // 3. Use the local, TypeScript-approved variables
+    core.position.x += (targetX - core.position.x) * 0.05;
+    core.position.y += (targetY - core.position.y) * 0.05;
+    core.rotation.x += 0.01;
+    core.rotation.y += 0.02;
 
-    // 2. Animate the Drops falling from the Core
-    dropsGroupRef.current.children.forEach((drop, index) => {
+    dropsGroup.children.forEach((drop, index) => {
       const data = dropsData[index];
-
+      
       drop.position.y -= data.speed;
       drop.rotation.x += data.rotSpeedX;
       drop.rotation.y += data.rotSpeedY;
 
-      // Respawn the drop back inside the liquid core when it falls off screen
       if (drop.position.y < -5) {
-        drop.position.x = coreRef.current.position.x + data.offsetX;
-        drop.position.y = coreRef.current.position.y + data.offsetY;
+        drop.position.x = core.position.x + data.offsetX;
+        drop.position.y = core.position.y + data.offsetY;
       }
     });
   });
@@ -68,7 +71,7 @@ function SystemLeak() {
     <>
       {/* The Liquid Core */}
       <mesh ref={coreRef}>
-        <sphereGeometry args={[1.8, 64, 64]} />
+        <sphereGeometry args={[1.7, 64, 64]} />
         <MeshDistortMaterial
           color="#ffffff"
           distort={0.3}
@@ -109,7 +112,7 @@ export default function CTA() {
       {/* --- LAYER 1: BACKGROUND (z-0) --- */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/painting2.jpg"
+          src="/painting4.jpg"
           alt="Classical Art Background"
           fill
           priority
