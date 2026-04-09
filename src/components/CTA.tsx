@@ -20,7 +20,7 @@ function SystemLeak() {
     return Array.from({ length: 25 }, () => ({
       offsetX: (Math.random() - 0.5) * 1.5,
       offsetY: (Math.random() - 0.5) * 1.5,
-      speed: Math.random() * 0.04 + 0.02,
+      speed: Math.random() * 0.04 + 0.01,
       scale: Math.random() * 0.15 + 0.05, // Slightly scaled down for liquid drops
       rotSpeedX: Math.random() * 0.05,
       rotSpeedY: Math.random() * 0.05,

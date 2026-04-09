@@ -27,14 +27,15 @@ const projects = [
     description: "Interactive planetary simulator combining the MERN stack with Three.js rendering.",
     tech: ["React", "Three.js", "Node.js", "MongoDB"],
     github: "https://github.com/samybit",
-    demo: "#"
+    // Changed from "#" to an actual link so the button appears!
+    demo: "https://github.com/samybit"
   },
   {
     title: "Corporate Dashboard",
     description: "High-performance admin dashboard featuring rich data visualization and strict typing.",
     tech: ["React", "Material-UI", "TypeScript"],
     github: "https://github.com/samybit",
-    demo: "#"
+    demo: "#" // Stays hidden until you have a real link
   },
   {
     title: "Lead Scraper",
@@ -105,9 +106,14 @@ export default function Projects() {
                   href={project.demo}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-lg font-bold uppercase hover:underline"
+                  className="group flex items-center gap-2 text-lg font-bold uppercase hover:bg-white hover:text-black px-2 transition-colors border-2 border-transparent hover:border-black"
                 >
-                  <ExternalLink size={24} /> Live Demo
+                  {/* Blinking Live Indicator */}
+                  <span className="relative flex h-3 w-3 mr-1">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-black"></span>
+                  </span>
+                  Live Demo <ExternalLink size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </a>
               )}
             </div>
