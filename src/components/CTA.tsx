@@ -5,24 +5,38 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
 // --- 3D INTERACTIVE OBJECT ---
 function BrutalistGeometry() {
   const meshRef = useRef<THREE.Mesh>(null);
 
-  useFrame((state) => {
+  // We track the mouse directly from the window so it works even when the canvas 
+  // is set to pointer-events-none to let you click the button underneath it.
+  const mouse = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Normalize mouse coordinates to Three.js standards (-1 to +1)
+      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  useFrame(() => {
     if (!meshRef.current) return;
 
     // Constant slow, aggressive rotation
     meshRef.current.rotation.x += 0.002;
     meshRef.current.rotation.y += 0.003;
 
-    // Mouse tracking physics (lerping for smooth follow)
-    // We multiply by 3 to exaggerate the movement
-    const targetX = (state.pointer.x * 3);
-    const targetY = (state.pointer.y * 3);
+    // Multiply by 3 to give it that exaggerated, heavy swing
+    const targetX = mouse.current.x * 3;
+    const targetY = mouse.current.y * 3;
 
     meshRef.current.position.x += (targetX - meshRef.current.position.x) * 0.05;
     meshRef.current.position.y += (targetY - meshRef.current.position.y) * 0.05;
@@ -30,9 +44,8 @@ function BrutalistGeometry() {
 
   return (
     <mesh ref={meshRef}>
-      {/* A TorusKnot is a complex, mathematical shape. Pure chaos. */}
       <torusKnotGeometry args={[2.5, 0.6, 128, 16]} />
-      {/* Pure white wireframe. No lighting needed. */}
+      {/* Must be pure white (#ffffff) for the difference blend mode to invert colors perfectly */}
       <meshBasicMaterial color="#ffffff" wireframe={true} />
     </mesh>
   );
@@ -53,41 +66,29 @@ export default function CTA() {
   };
 
   return (
-    <section className="relative w-full min-h-[80vh] flex flex-col items-center justify-center overflow-hidden border-t-8 border-b-8 border-black group my-24">
+    <section className="relative w-full min-h-[80vh] flex flex-col items-center justify-center overflow-hidden border-t-8 border-b-8 border-black group my-24 bg-black">
 
-      {/* --- FULL BLEED BACKGROUND LAYER --- */}
-      <div className="absolute inset-0 z-0 bg-black">
-        {/* The Painting */}
+      {/* --- LAYER 1: THE CANVAS AND TEXTURE (z-0) --- */}
+      <div className="absolute inset-0 z-0">
         <Image
           src="/painting4.jpg"
           alt="Classical Art Background"
           fill
           className="object-cover grayscale contrast-[1.2] brightness-[0.35] group-hover:grayscale-0 group-hover:brightness-[0.6] transition-all duration-700 ease-in-out"
         />
-
-        {/* The 3D Canvas sits ON TOP of the painting, taking up the full screen */}
-        <div className="absolute inset-0 z-10 opacity-70">
-          <Canvas camera={{ position: [0, 0, 8], fov: 50 }}>
-            <BrutalistGeometry />
-          </Canvas>
-        </div>
-
-        {/* Aggressive dot grid overlay sits ON TOP of the 3D object */}
-        <div className="absolute inset-0 z-20 bg-[radial-gradient(#000_3px,transparent_0)] bg-[size:16px_16px] opacity-50 mix-blend-overlay pointer-events-none"></div>
+        {/* Aggressive dot grid overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(#000_3px,transparent_0)] bg-[size:16px_16px] opacity-50 mix-blend-overlay pointer-events-none"></div>
       </div>
 
-      {/* --- THE CONTENT BOX --- */}
+      {/* --- LAYER 2: THE CONTENT BOX (z-10) --- */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        // CHANGED: Shrunk from max-w-5xl down to max-w-2xl
-        className="relative z-30 w-full max-w-2xl px-6 pointer-events-none"
+        className="relative z-10 w-full max-w-2xl px-6 pointer-events-none"
       >
-        {/* CHANGED: Tightened padding to p-8 md:p-12, slightly reduced the shadow size */}
         <div className="brutalist-container !bg-white !text-black p-8 md:p-12 text-center flex flex-col items-center gap-6 shadow-[16px_16px_0px_0px_#000000] pointer-events-auto">
 
-          {/* CHANGED: Scaled down text slightly to fit the tighter box perfectly */}
           <h2 className="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-none">
             Ready to build?
           </h2>
@@ -108,6 +109,16 @@ export default function CTA() {
 
         </div>
       </motion.div>
+
+      {/* --- LAYER 3: THE 3D INVERSION SCANNER (z-20) --- */}
+      {/* 1. mix-blend-difference forces the white wireframe to invert everything behind it.
+        2. pointer-events-none ensures it doesn't block the button clicks.
+      */}
+      <div className="absolute inset-0 z-20 mix-blend-difference pointer-events-none">
+        <Canvas camera={{ position: [0, 0, 8], fov: 50 }}>
+          <BrutalistGeometry />
+        </Canvas>
+      </div>
 
     </section>
   );

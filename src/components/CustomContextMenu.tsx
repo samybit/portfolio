@@ -147,7 +147,7 @@ export default function CustomContextMenu() {
       </Link>
 
       <a
-        href="https://github.com/samybit"
+        href="https://github.com/samybit/samybit.github.io"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
