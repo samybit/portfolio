@@ -74,3 +74,23 @@
     transform: translate(4px, 4px);
   }
 }
+
+
+/* --- CUSTOM BRUTALIST HARDWARE CURSOR --- */
+/* Native OS shape, perfectly straight vertical left edge. Zero JS lag. */
+
+body {
+  /* Default: Size 28x28, Black fill, White stroke. Hotspot calibrated to tip (2 2). */
+  cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI4IDI4IiBmaWxsPSJibGFjayIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNIDIgMiBMIDIgMTggTCA2IDE0IEwgMTAgMjMgTCAxMyAyMSBMIDkgMTMgTCAxNSAxMyBaIi8+PC9zdmc+') 2 2, auto;
+}
+
+/* Apply inverted, larger cursor to all clickable elements */
+a, button, [role="button"], label, select, input[type="submit"], input[type="button"] {
+  /* Hover: Size 34x34, White fill, Black stroke. Hotspot calibrated to tip (2 2). */
+  cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNCIgaGVpZ2h0PSIzNCIgdmlld0JveD0iMCAwIDI4IDI4IiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNIDIgMiBMIDIgMTggTCA2IDE0IEwgMTAgMjMgTCAxMyAyMSBMIDkgMTMgTCAxNSAxMyBaIi8+PC9zdmc+') 2 2, pointer !important;
+}
+
+/* Ensure text inputs keep the standard text-selection bar */
+input[type="text"], input[type="email"], textarea {
+  cursor: text !important;
+}
