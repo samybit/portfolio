@@ -16,7 +16,7 @@ export default function Navbar() {
           className="pointer-events-auto bg-white border-4 border-black p-3 flex items-center gap-3 brutalist-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group"
         >
           <TerminalSquare size={32} className="text-black" />
-          <span className="text-2xl font-black uppercase tracking-tighter">Samy.</span>
+          <span className="text-2xl font-black uppercase tracking-tighter">SB.</span>
         </Link>
 
         <div className="pointer-events-auto hidden md:flex items-center gap-4 bg-white border-4 border-black p-3 brutalist-shadow">

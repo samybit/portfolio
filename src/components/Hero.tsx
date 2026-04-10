@@ -24,9 +24,11 @@ export default function Hero() {
           </h1>
 
           <p className="text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800">
-            Full-Stack Web Developer. <br />
+            Full-Stack Developer. <br />
             MERN Stack Specialist. <br />
-            Building fast, brutal, and effective digital experiences.
+            Based in Egypt. <br />
+
+            Building fast, and effective apps.
           </p>
         </div>
 
