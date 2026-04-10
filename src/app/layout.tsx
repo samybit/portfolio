@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SystemOverride from "@/components/SystemOverride";
 import CustomContextMenu from "@/components/CustomContextMenu";
+import GhostInTheMachine from "@/components/GhostInTheMachine";
+
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
@@ -29,6 +31,7 @@ export default function RootLayout({
       <body className={`${spaceGrotesk.className} bg-white text-black antialiased selection:bg-black selection:text-white`}>
         <SystemOverride />
         <CustomContextMenu />
+        <GhostInTheMachine />
         <Navbar />
         {children}
         <Footer />
