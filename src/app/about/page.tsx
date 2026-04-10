@@ -37,7 +37,7 @@ export default function AboutPage() {
     <main className="min-h-screen px-6 md:px-12 lg:px-24 pt-30 md:pt-34 pb-24">
 
       {/* --- HEADER --- */}
-      <div className="max-w-7xl mx-auto mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div className="animate-slide-up max-w-7xl mx-auto mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <Link href="/" className="inline-flex items-center gap-2 text-xl font-bold uppercase mb-8 hover:bg-black hover:text-white px-3 py-1 border-4 border-transparent hover:border-black transition-all">
             <ArrowLeft size={24} /> Return to Grid
@@ -51,7 +51,7 @@ export default function AboutPage() {
       <div className="max-w-7xl mx-auto flex flex-col gap-16">
 
         {/* --- EDUCATION & CERTS ROW --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="animate-slide-up-delay-1 grid grid-cols-1 lg:grid-cols-2 gap-12">
 
           <section className="brutalist-container !bg-black !text-white flex flex-col justify-between">
             <div>
@@ -92,7 +92,7 @@ export default function AboutPage() {
         </div>
 
         {/* --- TECHNICAL ARSENAL --- */}
-        <section>
+        <section className="animate-slide-up-delay-2">
           <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
             <h2 className="text-4xl font-black uppercase tracking-widest">Technical Arsenal</h2>
           </div>

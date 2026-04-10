@@ -75,6 +75,52 @@
   }
 }
 
+/* --- LIGHTWEIGHT NATIVE ANIMATIONS --- */
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Base slide up */
+.animate-slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  /* Starts hidden to prevent flashing */
+}
+
+/* Staggered delays so elements snap in one after another */
+.animate-slide-up-delay-1 {
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  opacity: 0;
+}
+
+.animate-slide-up-delay-2 {
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  opacity: 0;
+}
+
+/* Navbar drop-in */
+.animate-slide-down {
+  animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 
 /* --- CUSTOM BRUTALIST HARDWARE CURSOR --- */
 /* Native OS shape, perfectly straight vertical left edge. Zero JS lag. */

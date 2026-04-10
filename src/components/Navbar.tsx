@@ -8,9 +8,9 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col">
+    // ADDED: animate-slide-down
+    <nav className="animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col">
       <div className="flex justify-between items-start w-full">
-        {/* Logo Block */}
         <Link
           href="/"
           className="pointer-events-auto bg-white border-4 border-black p-3 flex items-center gap-3 brutalist-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group"
@@ -19,7 +19,6 @@ export default function Navbar() {
           <span className="text-2xl font-black uppercase tracking-tighter">Samy.</span>
         </Link>
 
-        {/* Desktop Nav Links Block */}
         <div className="pointer-events-auto hidden md:flex items-center gap-4 bg-white border-4 border-black p-3 brutalist-shadow">
           <Link href="/about" className="text-lg font-bold uppercase hover:bg-black hover:text-white px-3 py-1 transition-colors">
             About
@@ -44,7 +43,6 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile Menu Toggle Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="pointer-events-auto md:hidden bg-white border-4 border-black p-3 brutalist-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all"
@@ -54,36 +52,18 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu Dropdown - Ripped out Framer Motion for instant, lag-free rendering */}
       {isOpen && (
         <div className="pointer-events-auto md:hidden w-full mt-4 bg-white border-4 border-black p-6 flex flex-col gap-2 brutalist-shadow">
-          <Link
-            href="/about"
-            onClick={() => setIsOpen(false)}
-            className="text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white transition-colors"
-          >
+          <Link href="/about" onClick={() => setIsOpen(false)} className="text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white transition-colors">
             About
           </Link>
-          <Link
-            href="/#projects"
-            onClick={() => setIsOpen(false)}
-            className="text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white transition-colors"
-          >
+          <Link href="/#projects" onClick={() => setIsOpen(false)} className="text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white transition-colors">
             Work
           </Link>
-          <a
-            href="https://github.com/samybit"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex justify-between items-center text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white transition-colors"
-          >
+          <a href="https://github.com/samybit" target="_blank" rel="noopener noreferrer" className="flex justify-between items-center text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white transition-colors">
             GitHub <ArrowUpRight size={32} />
           </a>
-          <Link
-            href="/#contact"
-            onClick={() => setIsOpen(false)}
-            className="mt-4 bg-black text-white text-center p-5 text-3xl font-black uppercase border-4 border-black hover:bg-white hover:text-black transition-colors"
-          >
+          <Link href="/#contact" onClick={() => setIsOpen(false)} className="mt-4 bg-black text-white text-center p-5 text-3xl font-black uppercase border-4 border-black hover:bg-white hover:text-black transition-colors">
             Hire Me
           </Link>
         </div>
