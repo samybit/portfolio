@@ -79,53 +79,55 @@ export default function AboutPage() {
               <h2 className="text-4xl font-black uppercase">Clearances</h2>
             </div>
 
-            <div className="flex flex-col gap-4">
-
+            {/* Returned to gap-6 for the original tight spacing */}
+            <div className="flex flex-col gap-6">
+              
               {/* ITI CERTIFICATE */}
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block border-l-8 border-black pl-4 py-3 hover:bg-black hover:text-white transition-colors cursor-pointer"
+              <a 
+                href="#" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group block border-l-8 border-black pl-4 hover:bg-black hover:text-white transition-colors cursor-pointer"
               >
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-2xl font-black uppercase">MERN Stack & AI</h3>
-                    <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase mt-1">ITI</p>
+                    <h3 className="text-2xl font-black uppercase leading-tight">MERN Stack & AI</h3>
+                    <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase">ITI</p>
                   </div>
-                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300 mr-4" />
+                  {/* Adjusted icon animation to strictly horizontal so it doesn't warp the box height */}
+                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-300 mr-4 shrink-0" />
                 </div>
               </a>
 
               {/* CS50x CERTIFICATE */}
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block border-l-8 border-black pl-4 py-3 hover:bg-black hover:text-white transition-colors cursor-pointer"
+              <a 
+                href="#" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group block border-l-8 border-black pl-4 hover:bg-black hover:text-white transition-colors cursor-pointer"
               >
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-2xl font-black uppercase">CS50x</h3>
-                    <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase mt-1">Harvard University / edX</p>
+                    <h3 className="text-2xl font-black uppercase leading-tight">CS50x</h3>
+                    <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase">Harvard University / edX</p>
                   </div>
-                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300 mr-4" />
+                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-300 mr-4 shrink-0" />
                 </div>
               </a>
 
               {/* egFWD CERTIFICATE */}
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block border-l-8 border-black pl-4 py-3 hover:bg-black hover:text-white transition-colors cursor-pointer"
+              <a 
+                href="#" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group block border-l-8 border-black pl-4 hover:bg-black hover:text-white transition-colors cursor-pointer"
               >
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-2xl font-black uppercase">Database Fundamentals</h3>
-                    <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase mt-1">egFWD</p>
+                    <h3 className="text-2xl font-black uppercase leading-tight">Database Fundamentals</h3>
+                    <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase">egFWD</p>
                   </div>
-                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300 mr-4" />
+                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-300 mr-4 shrink-0" />
                 </div>
               </a>
 
