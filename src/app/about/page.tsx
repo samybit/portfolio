@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench } from "lucide-react";
+import { ArrowLeft, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 
@@ -79,19 +79,56 @@ export default function AboutPage() {
               <h2 className="text-4xl font-black uppercase">Clearances</h2>
             </div>
 
-            <div className="flex flex-col gap-6">
-              <div className="border-l-8 border-black pl-4">
-                <h3 className="text-2xl font-black uppercase">MERN Stack & AI</h3>
-                <p className="text-lg font-bold text-zinc-500 uppercase">ITI</p>
-              </div>
-              <div className="border-l-8 border-black pl-4">
-                <h3 className="text-2xl font-black uppercase">CS50x</h3>
-                <p className="text-lg font-bold text-zinc-500 uppercase">Harvard University / edX</p>
-              </div>
-              <div className="border-l-8 border-black pl-4">
-                <h3 className="text-2xl font-black uppercase">Database Fundamentals</h3>
-                <p className="text-lg font-bold text-zinc-500 uppercase">egFWD</p>
-              </div>
+            <div className="flex flex-col gap-4">
+
+              {/* ITI CERTIFICATE */}
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block border-l-8 border-black pl-4 py-3 hover:bg-black hover:text-white transition-colors cursor-pointer"
+              >
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-2xl font-black uppercase">MERN Stack & AI</h3>
+                    <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase mt-1">ITI</p>
+                  </div>
+                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300 mr-4" />
+                </div>
+              </a>
+
+              {/* CS50x CERTIFICATE */}
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block border-l-8 border-black pl-4 py-3 hover:bg-black hover:text-white transition-colors cursor-pointer"
+              >
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-2xl font-black uppercase">CS50x</h3>
+                    <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase mt-1">Harvard University / edX</p>
+                  </div>
+                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300 mr-4" />
+                </div>
+              </a>
+
+              {/* egFWD CERTIFICATE */}
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block border-l-8 border-black pl-4 py-3 hover:bg-black hover:text-white transition-colors cursor-pointer"
+              >
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-2xl font-black uppercase">Database Fundamentals</h3>
+                    <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase mt-1">egFWD</p>
+                  </div>
+                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300 mr-4" />
+                </div>
+              </a>
+
             </div>
           </section>
 
