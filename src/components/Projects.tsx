@@ -1,6 +1,7 @@
 "use client";
 
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 // Custom inline SVG to perfectly match Lucide's 24x24 style
 const GithubIcon = ({ size = 24 }: { size?: number }) => (
@@ -36,6 +37,20 @@ const projects = [
     demo: "https://iti-movie-app.pages.dev/"
   },
   {
+    title: "BearBuzz",
+    description: "Dual-interface (CLI & GUI) Python engine tracking stock volatility, dispatching automated Twilio SMS alerts with live financial headlines.",
+    tech: ["Python", "Twilio API", "CI/CD", "Tkinter"],
+    github: "https://github.com/samybit/bearbuzz",
+    demo: "#"
+  },
+  {
+    title: "Questlog",
+    description: "Full-stack progression engine tracking video game milestones and visual completion percentages via a dynamic dashboard.",
+    tech: ["Full-Stack", "Data Vis", "Tracking"],
+    github: "https://github.com/samybit/game-completion-board",
+    demo: "#"
+  },
+  {
     title: "Lead Scraper",
     description: "Automated freelance lead generation and scraping pipeline built for efficiency.",
     tech: ["n8n", "Python", "Automation", "gemini-ai"],
@@ -52,12 +67,30 @@ const projects = [
 ];
 
 export default function Projects() {
+  const [page, setPage] = useState(0);
+  const itemsPerPage = 4;
+  const totalPages = Math.ceil(projects.length / itemsPerPage);
+
+  // Loops back to the start/end seamlessly
+  const nextSlide = () => setPage((p) => (p + 1) % totalPages);
+  const prevSlide = () => setPage((p) => (p - 1 + totalPages) % totalPages);
+
+  // Get the 4 projects for the current page
+  const currentProjects = projects.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
+
   return (
     <section id="projects" className="py-24 px-6 md:px-12 lg:px-24 border-b-8 border-black">
+
+      {/* --- HEADER --- */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-        <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">
-          Selected <br /> Works
-        </h2>
+        <div>
+          <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">
+            Selected <br /> Works
+          </h2>
+          <p className="text-xl font-bold uppercase text-zinc-500 mt-4 tracking-widest">
+            [ PAGE 0{page + 1} / 0{totalPages} ]
+          </p>
+        </div>
         <a
           href="https://github.com/samybit"
           target="_blank"
@@ -68,51 +101,97 @@ export default function Projects() {
         </a>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14">
-        {projects.map((project, index) => (
-          <div
-            key={index}
-            className="brutalist-container flex flex-col justify-between min-h-[350px]"
-          >
-            <div>
-              <h3 className="text-4xl font-black uppercase mb-4 tracking-tight">{project.title}</h3>
-              <p className="text-xl font-medium mb-8 text-zinc-800">{project.description}</p>
-              <div className="flex flex-wrap gap-3 mb-8">
-                {project.tech.map((tech, i) => (
-                  <span key={i} className="px-3 py-1 bg-black text-white text-sm font-bold uppercase tracking-wider">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
+      {/* --- MAIN CONTENT & CONTROLS --- */}
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
 
-            <div className="flex gap-6 border-t-4 border-black pt-6 mt-auto">
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-lg font-bold uppercase hover:underline"
-              >
-                <GithubIcon size={24} /> Repo
-              </a>
-              {project.demo !== "#" && (
+        {/* The Project Grid (Locked Height) */}
+        {/* min-h-[820px] on desktop guarantees the container height never shrinks on Page 2 */}
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-12 lg:min-h-[820px] content-start">
+          {currentProjects.map((project, index) => (
+            <div
+              key={`${page}-${index}`} // Forces React to re-trigger the slide-up animation on page change
+              className="animate-slide-up brutalist-container flex flex-col justify-between min-h-[380px]"
+            >
+              <div>
+                <h3 className="text-4xl font-black uppercase mb-4 tracking-tight">{project.title}</h3>
+                <p className="text-xl font-medium mb-8 text-zinc-800">{project.description}</p>
+                <div className="flex flex-wrap gap-3 mb-8">
+                  {project.tech.map((tech, i) => (
+                    <span key={i} className="px-3 py-1 bg-black text-white text-sm font-bold uppercase tracking-wider">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-6 border-t-4 border-black pt-6 mt-auto">
                 <a
-                  href={project.demo}
+                  href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center gap-2 text-lg font-bold uppercase hover:bg-white hover:text-black px-2 transition-colors border-2 border-transparent hover:border-black"
+                  className="flex items-center gap-2 text-lg font-bold uppercase hover:underline"
                 >
-                  {/* Blinking Live Indicator */}
-                  <span className="relative flex h-3 w-3 mr-1">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-black"></span>
-                  </span>
-                  Live Demo <ExternalLink size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  <GithubIcon size={24} /> Repo
                 </a>
-              )}
+                {project.demo !== "#" && (
+                  <a
+                    href={project.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center gap-2 text-lg font-bold uppercase hover:bg-white hover:text-black px-2 transition-colors border-2 border-transparent hover:border-black"
+                  >
+                    <span className="relative flex h-3 w-3 mr-1">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-black"></span>
+                    </span>
+                    Live Demo <ExternalLink size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </a>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        {/* --- DESKTOP NAVIGATION (Vertical Right Side) --- */}
+        <div className="hidden lg:flex flex-col w-24 shrink-0 border-4 border-black brutalist-shadow bg-white">
+          <button
+            onClick={prevSlide}
+            aria-label="Previous Projects"
+            className="flex-1 flex flex-col items-center justify-center gap-2 border-b-4 border-black hover:bg-black hover:text-white transition-colors group"
+          >
+            <ArrowUp size={40} className="group-hover:-translate-y-2 transition-transform" />
+            <span className="font-black uppercase tracking-widest text-xs rotate-180" style={{ writingMode: 'vertical-rl' }}>Prev</span>
+          </button>
+
+          <button
+            onClick={nextSlide}
+            aria-label="Next Projects"
+            className="flex-1 flex flex-col items-center justify-center gap-2 hover:bg-black hover:text-white transition-colors group"
+          >
+            <span className="font-black uppercase tracking-widest text-xs" style={{ writingMode: 'vertical-rl' }}>Next</span>
+            <ArrowDown size={40} className="group-hover:translate-y-2 transition-transform" />
+          </button>
+        </div>
+
+        {/* --- MOBILE NAVIGATION (Horizontal Bottom) --- */}
+        <div className="flex lg:hidden w-full h-24 border-4 border-black brutalist-shadow bg-white mt-4">
+          <button
+            onClick={prevSlide}
+            className="flex-1 flex items-center justify-center gap-2 border-r-4 border-black hover:bg-black hover:text-white transition-colors group"
+          >
+            <ArrowLeft size={32} className="group-hover:-translate-x-2 transition-transform" />
+            <span className="font-black uppercase tracking-widest">Prev</span>
+          </button>
+
+          <button
+            onClick={nextSlide}
+            className="flex-1 flex items-center justify-center gap-2 hover:bg-black hover:text-white transition-colors group"
+          >
+            <span className="font-black uppercase tracking-widest">Next</span>
+            <ArrowRight size={32} className="group-hover:translate-x-2 transition-transform" />
+          </button>
+        </div>
+
       </div>
     </section>
   );
