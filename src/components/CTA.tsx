@@ -116,7 +116,7 @@ export default function CTA() {
           alt="Classical Art Background"
           fill
           priority
-          className="object-cover grayscale contrast-[1.2] brightness-[0.35] group-hover:grayscale-0 group-hover:brightness-[0.6] transition-all duration-700 ease-in-out"
+          className="object-cover grayscale contrast-[1.2] brightness-[0.5] group-hover:grayscale-0 group-hover:brightness-[0.65] transition-all duration-700 ease-in-out"
         />
         <div className="absolute inset-0 bg-[radial-gradient(#000_3px,transparent_0)] bg-[size:16px_16px] opacity-50 mix-blend-overlay pointer-events-none"></div>
       </div>

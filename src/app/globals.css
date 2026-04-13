@@ -176,3 +176,15 @@ html.system-override canvas {
 html.system-override * {
   cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNCIgZmlsbD0iYmxhY2siIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjE2IiBjeT0iMTYiIHI9IjQiIGZpbGw9IndoaXRlIi8+PC9zdmc+') 16 16, crosshair !important;
 } */
+
+/* --- BRUTALIST DARK MODE (SYSTEM INVERT) --- */
+html.invert-theme {
+  /* Inverts light/dark, and hue-rotate keeps colored accents (like your green terminal text) looking correct */
+  filter: invert(1) hue-rotate(180deg);
+  background-color: black;
+}
+
+/* Double-invert images so they stay exactly how they originally looked */
+html.invert-theme img {
+  filter: invert(1) hue-rotate(180deg);
+}
