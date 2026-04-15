@@ -101,12 +101,18 @@ export default function AboutPage() {
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block border-l-8 border-black pl-4 hover:bg-black hover:text-white transition-colors cursor-pointer"
+                className="group block border-l-8 border-black pl-4 py-2 hover:bg-black hover:text-white transition-colors cursor-pointer"
               >
                 <div className="flex justify-between items-center">
                   <div>
                     <h3 className="text-2xl font-black uppercase leading-tight">MERN Stack & AI</h3>
-                    <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase">ITI (MCIT)</p>
+                    <div className="flex items-center gap-3 mt-1">
+                      <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">ITI (MCIT)</p>
+                      {/* Brutalist Year Tag */}
+                      <span className="bg-black text-white group-hover:bg-white group-hover:text-black text-xs font-black px-2 py-0.5 uppercase tracking-widest transition-colors leading-none">
+                        2026
+                      </span>
+                    </div>
                   </div>
                   <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-300 mr-4 shrink-0" />
                 </div>
@@ -117,12 +123,17 @@ export default function AboutPage() {
                 href="https://cs50.harvard.edu/certificates/09d4b4ad-f9dd-4cf3-a1dc-7385742119f9"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block border-l-8 border-black pl-4 hover:bg-black hover:text-white transition-colors cursor-pointer"
+                className="group block border-l-8 border-black pl-4 py-2 hover:bg-black hover:text-white transition-colors cursor-pointer"
               >
                 <div className="flex justify-between items-center">
                   <div>
                     <h3 className="text-2xl font-black uppercase leading-tight">CS50x</h3>
-                    <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase"> edX (Harvard)</p>
+                    <div className="flex items-center gap-3 mt-1">
+                      <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">edX (Harvard)</p>
+                      <span className="bg-black text-white group-hover:bg-white group-hover:text-black text-xs font-black px-2 py-0.5 uppercase tracking-widest transition-colors leading-none">
+                        2025
+                      </span>
+                    </div>
                   </div>
                   <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-300 mr-4 shrink-0" />
                 </div>
@@ -133,12 +144,17 @@ export default function AboutPage() {
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block border-l-8 border-black pl-4 hover:bg-black hover:text-white transition-colors cursor-pointer"
+                className="group block border-l-8 border-black pl-4 py-2 hover:bg-black hover:text-white transition-colors cursor-pointer"
               >
                 <div className="flex justify-between items-center">
                   <div>
                     <h3 className="text-2xl font-black uppercase leading-tight">Data Analysis</h3>
-                    <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase">Egypt FWD (MCIT)</p>
+                    <div className="flex items-center gap-3 mt-1">
+                      <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">Egypt FWD (MCIT)</p>
+                      <span className="bg-black text-white group-hover:bg-white group-hover:text-black text-xs font-black px-2 py-0.5 uppercase tracking-widest transition-colors leading-none">
+                        2021
+                      </span>
+                    </div>
                   </div>
                   <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-300 mr-4 shrink-0" />
                 </div>
