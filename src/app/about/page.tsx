@@ -60,7 +60,7 @@ export default function AboutPage() {
             <ArrowLeft size={24} /> Return to Grid
           </Link>
           <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">
-            System <br /> <span className="bg-black text-white px-4 inline-block mt-2 transform -skew-x-2">Specs</span>
+            About <br /> <span className="bg-black text-white px-4 inline-block mt-2 transform -skew-x-2">me</span>
           </h1>
         </div>
 
