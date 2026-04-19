@@ -34,12 +34,13 @@ export default function Hero() {
         {/* --- RIGHT COLUMN: ACTIONS --- */}
         <div className="flex flex-col w-full lg:w-[400px] xl:w-[450px] gap-6 lg:border-l-8 lg:border-black lg:pl-12 lg:py-8 shrink-0 animate-slide-up-delay-1">
 
-          <Link href="#projects" className="brutalist-container !p-8 bg-black text-white border-4 border-black hover:bg-white hover:text-black flex justify-between items-center w-full text-3xl font-black uppercase transition-all group">
+          {/* Replaced brutalist-container with pure Tailwind + brutalist-shadow */}
+          <Link href="#projects" className="brutalist-shadow bg-black text-white border-4 border-black p-8 hover:bg-white hover:text-black flex justify-between items-center w-full text-3xl font-black uppercase transition-all group">
             <span>Work</span>
             <ArrowDownRight size={40} className="group-hover:translate-x-2 group-hover:translate-y-2 transition-transform" />
           </Link>
 
-          <Link href="#contact" className="brutalist-container !p-8 bg-white text-black border-4 border-black hover:bg-black hover:text-white flex justify-between items-center w-full text-3xl font-black uppercase transition-all group">
+          <Link href="#contact" className="brutalist-shadow bg-white text-black border-4 border-black p-8 hover:bg-black hover:text-white flex justify-between items-center w-full text-3xl font-black uppercase transition-all group">
             <span>Contact</span>
             <ArrowDownRight size={40} className="group-hover:translate-x-2 group-hover:translate-y-2 transition-transform" />
           </Link>
@@ -48,7 +49,7 @@ export default function Hero() {
           <a
             href="/cv.pdf"
             download="Samy_Barsoum_CV.pdf"
-            className="brutalist-container !p-8 bg-white text-black border-4 border-black hover:bg-black hover:text-white flex justify-between items-center w-full text-3xl font-black uppercase transition-all group lg:border-t-0 lg:border-t-transparent"
+            className="brutalist-shadow bg-white text-black border-4 border-black p-8 hover:bg-black hover:text-white flex justify-between items-center w-full text-3xl font-black uppercase transition-all group lg:border-t-0 lg:border-t-transparent lg:hover:border-t-black"
           >
             <span>Get CV</span>
             <Download size={40} className="group-hover:translate-y-2 transition-transform" />
