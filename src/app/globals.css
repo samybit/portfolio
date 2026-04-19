@@ -190,56 +190,48 @@ html.invert-theme img {
 }
 
 
-/* --- THEME 3: BRUTALIST YELLOW & ULTRAMARINE --- */
+/* --- THEME 3: THE MONOLITH (CONCRETE & CRIMSON) --- */
 
 html.theme-color,
 html.theme-color body {
-  background-color: #FFEA00 !important;
-  color: #1100FF !important;
+  background-color: #D3D3D3 !important; /* Raw Concrete Grey */
+  color: #8B0000 !important; /* Deep Crimson */
 }
 
-/* Intercept and overwrite all hardcoded 'white' backgrounds (including hover states) */
 html.theme-color .bg-white,
 html.theme-color [class*="hover:bg-white"]:hover {
-  background-color: #FFEA00 !important;
+  background-color: #D3D3D3 !important;
 }
 
-/* Intercept and overwrite all hardcoded 'black' backgrounds */
 html.theme-color .bg-black,
 html.theme-color [class*="hover:bg-black"]:hover {
-  background-color: #1100FF !important;
+  background-color: #8B0000 !important;
 }
 
-/* Intercept all white text */
 html.theme-color .text-white,
 html.theme-color [class*="hover:text-white"]:hover {
-  color: #FFEA00 !important;
+  color: #D3D3D3 !important;
 }
 
-/* Intercept all black text */
 html.theme-color .text-black,
 html.theme-color [class*="hover:text-black"]:hover {
-  color: #1100FF !important;
+  color: #8B0000 !important;
 }
 
-/* Intercept all black borders */
 html.theme-color .border-black,
 html.theme-color [class*="hover:border-black"]:hover {
-  border-color: #1100FF !important;
+  border-color: #8B0000 !important;
 }
 
-/* Intercept all white borders */
 html.theme-color .border-white,
 html.theme-color [class*="hover:border-white"]:hover {
-  border-color: #FFEA00 !important;
+  border-color: #D3D3D3 !important;
 }
 
-/* Shift the muted zinc colors into a dark, desaturated blue so they don't look muddy against the bright yellow */
 html.theme-color [class*="text-zinc"] {
-  color: #0A0099 !important;
+  color: #4A0000 !important; /* Near-black crimson for muted text */
 }
 
-/* Double-invert the images back to normal (just like the dark mode does) */
 html.theme-color img {
-  filter: none !important;
+  filter: none !important; 
 }
