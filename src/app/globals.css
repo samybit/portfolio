@@ -190,48 +190,56 @@ html.invert-theme img {
 }
 
 
-/* --- THEME 3: THE MONOLITH (CONCRETE & CRIMSON) --- */
+/* --- THEME 3: THE EMBER (WARM CHARCOAL & FIERY ORANGE) --- */
 
 html.theme-color,
 html.theme-color body {
-  background-color: #D3D3D3 !important; /* Raw Concrete Grey */
-  color: #8B0000 !important; /* Deep Crimson */
+  background-color: #1A1716 !important; /* Deep, soft warm charcoal */
+  color: #FF4F00 !important; /* Pure Fiery Orange */
 }
 
+/* Intercept and overwrite all hardcoded 'white' backgrounds */
 html.theme-color .bg-white,
 html.theme-color [class*="hover:bg-white"]:hover {
-  background-color: #D3D3D3 !important;
+  background-color: #1A1716 !important;
 }
 
+/* Intercept and overwrite all hardcoded 'black' backgrounds */
 html.theme-color .bg-black,
 html.theme-color [class*="hover:bg-black"]:hover {
-  background-color: #8B0000 !important;
+  background-color: #FF4F00 !important;
 }
 
+/* Intercept all white text */
 html.theme-color .text-white,
 html.theme-color [class*="hover:text-white"]:hover {
-  color: #D3D3D3 !important;
+  color: #1A1716 !important;
 }
 
+/* Intercept all black text */
 html.theme-color .text-black,
 html.theme-color [class*="hover:text-black"]:hover {
-  color: #8B0000 !important;
+  color: #FF4F00 !important;
 }
 
+/* Intercept all black borders */
 html.theme-color .border-black,
 html.theme-color [class*="hover:border-black"]:hover {
-  border-color: #8B0000 !important;
+  border-color: #FF4F00 !important;
 }
 
+/* Intercept all white borders */
 html.theme-color .border-white,
 html.theme-color [class*="hover:border-white"]:hover {
-  border-color: #D3D3D3 !important;
+  border-color: #1A1716 !important;
 }
 
+/* Shift the muted zinc colors into a darker rust/burnt orange to stay readable */
 html.theme-color [class*="text-zinc"] {
-  color: #4A0000 !important; /* Near-black crimson for muted text */
+  color: #B33D00 !important; 
 }
 
+/* Double-invert the images back to normal */
 html.theme-color img {
   filter: none !important; 
 }
