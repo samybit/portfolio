@@ -188,3 +188,58 @@ html.invert-theme {
 html.invert-theme img {
   filter: invert(1) hue-rotate(180deg);
 }
+
+
+/* --- THEME 3: BRUTALIST YELLOW & ULTRAMARINE --- */
+
+html.theme-color,
+html.theme-color body {
+  background-color: #FFEA00 !important;
+  color: #1100FF !important;
+}
+
+/* Intercept and overwrite all hardcoded 'white' backgrounds (including hover states) */
+html.theme-color .bg-white,
+html.theme-color [class*="hover:bg-white"]:hover {
+  background-color: #FFEA00 !important;
+}
+
+/* Intercept and overwrite all hardcoded 'black' backgrounds */
+html.theme-color .bg-black,
+html.theme-color [class*="hover:bg-black"]:hover {
+  background-color: #1100FF !important;
+}
+
+/* Intercept all white text */
+html.theme-color .text-white,
+html.theme-color [class*="hover:text-white"]:hover {
+  color: #FFEA00 !important;
+}
+
+/* Intercept all black text */
+html.theme-color .text-black,
+html.theme-color [class*="hover:text-black"]:hover {
+  color: #1100FF !important;
+}
+
+/* Intercept all black borders */
+html.theme-color .border-black,
+html.theme-color [class*="hover:border-black"]:hover {
+  border-color: #1100FF !important;
+}
+
+/* Intercept all white borders */
+html.theme-color .border-white,
+html.theme-color [class*="hover:border-white"]:hover {
+  border-color: #FFEA00 !important;
+}
+
+/* Shift the muted zinc colors into a dark, desaturated blue so they don't look muddy against the bright yellow */
+html.theme-color [class*="text-zinc"] {
+  color: #0A0099 !important;
+}
+
+/* Double-invert the images back to normal (just like the dark mode does) */
+html.theme-color img {
+  filter: none !important;
+}

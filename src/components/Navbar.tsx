@@ -1,15 +1,27 @@
 "use client";
 
-import { TerminalSquare, ArrowUpRight, Menu, X, Contrast } from "lucide-react";
+import { TerminalSquare, ArrowUpRight, Menu, X, Palette } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Instantly toggles the class on the absolute root of the HTML document
-  const toggleTheme = () => {
-    document.documentElement.classList.toggle("invert-theme");
+  // 3-Way Theme Cycle Engine
+  const cycleTheme = () => {
+    const html = document.documentElement;
+
+    if (html.classList.contains("invert-theme")) {
+      // Move from Dark to Yellow
+      html.classList.remove("invert-theme");
+      html.classList.add("theme-color");
+    } else if (html.classList.contains("theme-color")) {
+      // Move from Yellow back to Standard Light
+      html.classList.remove("theme-color");
+    } else {
+      // Move from Standard Light to Dark
+      html.classList.add("invert-theme");
+    }
   };
 
   return (
@@ -17,7 +29,6 @@ export default function Navbar() {
       <div className="flex justify-between items-start w-full">
 
         {/* --- LEFT CLUSTER: Fused Logo & Theme Button --- */}
-        {/* The parent container handles the shadow and the "press" animation for both items */}
         <div className="pointer-events-auto flex brutalist-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all">
           <Link
             href="/"
@@ -27,14 +38,14 @@ export default function Navbar() {
             <span className="text-2xl font-black uppercase tracking-tighter">SB.</span>
           </Link>
 
+          {/* Upgraded 3-Way Theme Button */}
           <button
-            onClick={toggleTheme}
-            aria-label="Invert System Colors"
-            title="Invert System"
-            // border-l-0 ensures the border between them is exactly 4px thick instead of a double 8px line
+            onClick={cycleTheme}
+            aria-label="Cycle System Theme"
+            title="Cycle Theme"
             className="bg-black text-white border-4 border-l-0 border-black px-3 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
           >
-            <Contrast size={18} />
+            <Palette size={18} />
           </button>
         </div>
 
