@@ -32,7 +32,7 @@ export default function Hero() {
         </div>
 
         {/* --- RIGHT COLUMN: ACTIONS --- */}
-        <div className="flex flex-col w-full lg:w-[400px] xl:w-[450px] gap-6 lg:border-l-8 lg:border-black lg:pl-12 lg:py-8 shrink-0 animate-slide-up-delay-1">
+        <div className="flex flex-col w-full lg:w-[400px] xl:w-[450px] gap-6 border-black border-l-0 lg:border-l-8 lg:pl-12 lg:py-8 shrink-0 animate-slide-up-delay-1">
 
           <Link href="#projects" className="brutalist-shadow bg-black text-white border-4 border-black p-8 hover:bg-white hover:text-black flex justify-between items-center w-full text-3xl font-black uppercase transition-all group">
             <span>Work</span>
@@ -44,6 +44,7 @@ export default function Hero() {
             <ArrowDownRight size={40} className="group-hover:translate-x-2 group-hover:translate-y-2 transition-transform" />
           </Link>
 
+          {/* CV Button */}
           <a
             href="/cv.pdf"
             download="Samy_Barsoum_CV.pdf"
