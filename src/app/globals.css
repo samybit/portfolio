@@ -302,3 +302,31 @@ html.theme-color ::-webkit-scrollbar-thumb:hover {
 html.theme-color {
   scrollbar-color: #FF4F00 #1A1716 !important;
 }
+
+/* =========================================
+   --- EMBER THEME: CUSTOM CURSORS ---
+========================================= */
+
+/* 1. Base Cursor (Orange fill, Charcoal stroke) */
+html.theme-color body {
+  cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI4IDI4IiBmaWxsPSIjRkY0RjAwIiBzdHJva2U9IiMxQTE3MTYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTSAyIDIgTCAyIDE4IEwgNiAxNCBMIDEwIDIzIEwgMTMgMjEgTCA5IDEzIEwgMTUgMTMgWiIvPjwvc3ZnPg==') 2 2, auto !important;
+}
+
+/* 2. Hover/Clickable Cursor (Charcoal fill, Orange stroke) */
+html.theme-color a,
+html.theme-color button,
+html.theme-color [role="button"],
+html.theme-color label,
+html.theme-color select,
+html.theme-color input[type="submit"],
+html.theme-color input[type="button"],
+html.theme-color [class*="cursor-pointer"] {
+  cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNCIgaGVpZ2h0PSIzNCIgdmlld0JveD0iMCAwIDI4IDI4IiBmaWxsPSIjMUExNzE2IiBzdHJva2U9IiNGRjRGMDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTSAyIDIgTCAyIDE4IEwgNiAxNCBMIDEwIDIzIEwgMTMgMjEgTCA5IDEzIEwgMTUgMTMgWiIvPjwvc3ZnPg==') 2 2, pointer !important;
+}
+
+/* 3. I-Beam Text Cursor (Charcoal fill, Orange stroke) */
+html.theme-color input[type="text"],
+html.theme-color input[type="email"],
+html.theme-color textarea {
+  cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMUExNzE2IiBzdHJva2U9IiNGRjRGMDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciI+PHBhdGggZD0iTSA2IDIgTCAxOCAyIEwgMTggNiBMIDE0IDYgTCAxNCAxOCBMIDE4IDE4IEwgMTggMjIgTCA2IDIyIEwgNiAxOCBMIDEwIDE4IEwgMTAgNiBMIDYgNiBaIi8+PC9zdmc+') 12 12, text !important;
+}
