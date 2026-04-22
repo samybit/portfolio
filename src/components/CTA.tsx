@@ -71,11 +71,11 @@ function SystemLeak() {
     <>
       {/* The Liquid Core */}
       <mesh ref={coreRef}>
-        <sphereGeometry args={[1.9, 64, 64]} />
+        <sphereGeometry args={[2.8, 64, 64]} />
         <MeshDistortMaterial
           color="#E0F0F4"
-          distort={0.4}
-          speed={2}
+          distort={0.3}
+          speed={1}
           roughness={1}
         />
       </mesh>
@@ -91,6 +91,29 @@ function SystemLeak() {
         ))}
       </group>
     </>
+  );
+}
+
+// --- 3D INTERACTIVE OBJECT: MASSIVE BACKGROUND KNOT ---
+function BackgroundKnot() {
+  const meshRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    if (!meshRef.current) return;
+    const t = state.clock.getElapsedTime();
+    // Slow, elegant continuous rotation on all axes
+    meshRef.current.rotation.x = t * 0.05;
+    meshRef.current.rotation.y = t * 0.075;
+    meshRef.current.rotation.z = t * 0.05;
+  });
+
+  return (
+    <mesh ref={meshRef} position={[0, 0, -8]}>
+      {/* A single, large, highly segmented torus knot for a fine wireframe mesh look */}
+      {/* args: [radius, tube, tubularSegments, radialSegments, p, q] */}
+      <torusKnotGeometry args={[5, 1.2, 256, 32, 3, 4]} />
+      <MeshDistortMaterial color="#ffffff" wireframe={true} transparent={true} opacity={0.25} distort={0.25} speed={1.5} />
+    </mesh>
   );
 }
 
@@ -154,6 +177,9 @@ export default function CTA() {
           <directionalLight position={[10, 10, 5]} intensity={3} />
 
           <SystemLeak />
+          
+          {/* Massive background wireframe knot */}
+          <BackgroundKnot />
         </Canvas>
       </div>
 
