@@ -157,7 +157,7 @@ export default function Contact() {
                     value={values.name}
                     onChange={handleChange}
                     className={getInputStyle(isNameValid, !!errors.name)}
-                    placeholder="John Doe"
+                    placeholder="Ada Lovelace"
                   />
                   {errors.name && (
                     <span className="text-red-600 font-black uppercase tracking-wide border-l-4 border-red-600 pl-2 mt-1">
@@ -177,7 +177,7 @@ export default function Contact() {
                     value={values.email}
                     onChange={handleChange}
                     className={getInputStyle(isEmailValid, !!errors.email)}
-                    placeholder="john@example.com"
+                    placeholder="ada@example.com"
                   />
                   {errors.email && (
                     <span className="text-red-600 font-black uppercase tracking-wide border-l-4 border-red-600 pl-2 mt-1">

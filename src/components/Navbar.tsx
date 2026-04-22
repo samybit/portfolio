@@ -67,11 +67,11 @@ export default function Navbar() {
         {/* --- Desktop Nav Links Block --- */}
         <div className="pointer-events-auto hidden md:flex items-center gap-2 bg-white border-4 border-black p-2 brutalist-shadow">
           {/* Enhanced UX: Added border-transparent, hover:border-black, and hover:-translate-y-1 */}
-          <Link href="/about" className="text-lg font-bold uppercase px-4 py-1 border-2 border-transparent hover:border-black hover:bg-black hover:text-white hover:-translate-y-1 transition-all">
+          <Link href="/about" className="text-lg font-bold uppercase px-4 py-1 border-2 border-transparent hover:border-black hover:bg-black hover:text-white  transition-all">
             About
           </Link>
 
-          <Link href="/#projects" className="text-lg font-bold uppercase px-4 py-1 border-2 border-transparent hover:border-black hover:bg-black hover:text-white hover:-translate-y-1 transition-all">
+          <Link href="/#projects" className="text-lg font-bold uppercase px-4 py-1 border-2 border-transparent hover:border-black hover:bg-black hover:text-white  transition-all">
             Work
           </Link>
 
@@ -79,14 +79,14 @@ export default function Navbar() {
             href="https://github.com/samybit"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-lg font-bold uppercase px-4 py-1 border-2 border-transparent hover:border-black hover:bg-black hover:text-white hover:-translate-y-1 transition-all"
+            className="flex items-center gap-1 text-lg font-bold uppercase px-4 py-1 border-2 border-transparent hover:border-black hover:bg-black hover:text-white  transition-all"
           >
             GitHub <ArrowUpRight size={20} />
           </a>
 
           <Link
             href="/#contact"
-            className="bg-black text-white px-5 py-2 text-lg font-bold uppercase border-4 border-black hover:bg-white hover:text-black hover:-translate-y-1 hover:translate-x-1 transition-all ml-2"
+            className="bg-black text-white px-5 py-2 text-lg font-bold uppercase border-4 border-black hover:bg-white hover:text-black  transition-all ml-2"
           >
             Contact
           </Link>
