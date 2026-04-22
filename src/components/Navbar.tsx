@@ -119,8 +119,8 @@ export default function Navbar() {
           <Link
             href="/about"
             className={`text-lg font-bold uppercase px-4 py-1 border-2 transition-all ${pathname === '/about'
-                ? 'bg-black text-white border-black'
-                : 'border-transparent hover:border-black hover:bg-black hover:text-white'
+              ? 'bg-black text-white border-black'
+              : 'border-transparent hover:border-black hover:bg-black hover:text-white'
               }`}
           >
             About
@@ -131,8 +131,8 @@ export default function Navbar() {
             href="/#projects"
             onClick={() => setActiveHash('#projects')}
             className={`text-lg font-bold uppercase px-4 py-1 border-2 transition-all ${pathname === '/' && activeHash === '#projects'
-                ? 'bg-black text-white border-black'
-                : 'border-transparent hover:border-black hover:bg-black hover:text-white'
+              ? 'bg-black text-white border-black'
+              : 'border-transparent hover:border-black hover:bg-black hover:text-white'
               }`}
           >
             Work
@@ -147,10 +147,14 @@ export default function Navbar() {
             GitHub <ArrowUpRight size={20} />
           </a>
 
+          {/* Contact link inverts colors to indicate active state */}
           <Link
             href="/#contact"
             onClick={() => setActiveHash('#contact')}
-            className="bg-black text-white px-5 py-2 text-lg font-bold uppercase border-4 border-black hover:bg-white hover:text-black transition-all ml-2"
+            className={`px-5 py-2 text-lg font-bold uppercase border-4 border-black transition-all ml-2 ${pathname === '/' && activeHash === '#contact'
+              ? 'bg-white text-black'
+              : 'bg-black text-white hover:bg-white hover:text-black'
+              }`}
           >
             Contact
           </Link>
@@ -173,8 +177,8 @@ export default function Navbar() {
             href="/about"
             onClick={() => setIsOpen(false)}
             className={`text-3xl font-black uppercase p-4 border-b-4 border-black transition-colors ${pathname === '/about'
-                ? 'bg-black text-white'
-                : 'hover:bg-black hover:text-white'
+              ? 'bg-black text-white'
+              : 'hover:bg-black hover:text-white'
               }`}
           >
             About
@@ -188,8 +192,8 @@ export default function Navbar() {
               setActiveHash('#projects');
             }}
             className={`text-3xl font-black uppercase p-4 border-b-4 border-black transition-colors ${pathname === '/' && activeHash === '#projects'
-                ? 'bg-black text-white'
-                : 'hover:bg-black hover:text-white'
+              ? 'bg-black text-white'
+              : 'hover:bg-black hover:text-white'
               }`}
           >
             Work
@@ -202,13 +206,17 @@ export default function Navbar() {
           >
             GitHub <ArrowUpRight size={32} />
           </a>
+          {/* Mobile Contact link inverts colors to indicate active state */}
           <Link
             href="/#contact"
             onClick={() => {
               setIsOpen(false);
               setActiveHash('#contact');
             }}
-            className="mt-4 bg-black text-white text-center p-5 text-3xl font-black uppercase border-4 border-black hover:bg-white hover:text-black transition-colors"
+            className={`mt-4 text-center p-5 text-3xl font-black uppercase border-4 border-black transition-colors ${pathname === '/' && activeHash === '#contact'
+                ? 'bg-white text-black'
+                : 'bg-black text-white hover:bg-white hover:text-black'
+              }`}
           >
             Contact
           </Link>
