@@ -71,12 +71,12 @@ function SystemLeak() {
     <>
       {/* The Liquid Core */}
       <mesh ref={coreRef}>
-        <sphereGeometry args={[1.7, 64, 64]} />
+        <sphereGeometry args={[1.9, 64, 64]} />
         <MeshDistortMaterial
-          color="#ffffff"
-          distort={0.3}
+          color="#E0F0F4"
+          distort={0.4}
           speed={2}
-          roughness={0}
+          roughness={1}
         />
       </mesh>
 
@@ -111,7 +111,7 @@ export default function CTA() {
       {/* --- LAYER 1: BACKGROUND (z-0) --- */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/painting4.jpg"
+          src="/11.jpg"
           alt="Classical Art Background"
           fill
           priority
