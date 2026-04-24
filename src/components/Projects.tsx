@@ -3,6 +3,7 @@
 import { ExternalLink, ArrowUp, ArrowDown } from "lucide-react";
 import { useState } from "react";
 import { playTick } from "@/utils/audio";
+import DecryptText from "@/components/DecryptText";
 
 // Custom inline SVG for Github
 const GithubIcon = ({ size = 24 }: { size?: number }) => (
@@ -136,7 +137,10 @@ export default function Projects() {
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
         <div className="w-full md:w-auto">
           <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">
-            Selected <br /> Works
+            {/* Selected <br /> Works */}
+            <DecryptText text="Selected" />
+            <br />
+            <DecryptText text="Works" />
           </h2>
 
           {/* Desktop Subtitle */}

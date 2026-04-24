@@ -4,6 +4,7 @@ import { Send, Check, ArrowUpRight } from "lucide-react";
 import { useState } from "react";
 import { sendEmail } from "@/actions/send-email";
 import { playPowerUp } from "@/utils/audio";
+import DecryptText from "@/components/DecryptText";
 
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -78,7 +79,9 @@ export default function Contact() {
         {/* --- LEFT COLUMN: TEXT & SOCIALS --- */}
         <div className="flex-1 w-full">
           <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-8">
-            Let's <br /> Talk
+            <DecryptText text="Let's" /> 
+            <br />
+            <DecryptText text="Talk" />
           </h2>
           <p className="text-2xl font-bold max-w-md text-zinc-400 uppercase mb-16">
             Drop a message to discuss a project, a full-time role, or just to say hi.

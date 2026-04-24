@@ -4,6 +4,7 @@ import { ArrowLeft, GraduationCap, Award, LayoutTemplate, Database, Server, Wren
 import Link from "next/link";
 import { useEffect } from "react";
 import AudioPlayer from "@/components/AudioPlayer";
+import DecryptText from "@/components/DecryptText";
 
 export default function AboutPage() {
   // Enforce the tab title on mount and fix the refresh scroll-creep
@@ -60,7 +61,7 @@ export default function AboutPage() {
             <ArrowLeft size={24} /> Return to Grid
           </Link>
           <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">
-            About <br /> <span className="bg-black text-white px-4 inline-block mt-2 transform -skew-x-2">me</span>
+            <DecryptText text="About" /> <br /> <span className="bg-black text-white px-4 inline-block mt-2 transform -skew-x-2"><DecryptText text="me" /></span>
           </h1>
         </div>
 
