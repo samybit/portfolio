@@ -29,7 +29,7 @@ export default function AudioPlayer() {
   }, []);
 
   return (
-    <div className="border-4 border-black p-3 flex items-center justify-between gap-6 bg-white text-black w-full max-w-xs shadow-[8px_8px_0px_0px_#000000] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all">
+    <div className="border-4 border-black p-3 flex items-center justify-between gap-6 bg-white text-black w-full min-w-[280px] max-w-xs shadow-[8px_8px_0px_0px_#000000] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all">
       <div className="flex items-center gap-3">
         <Disc3
           size={28}
@@ -44,7 +44,7 @@ export default function AudioPlayer() {
 
       <button
         onClick={togglePlay}
-        className="bg-black text-white p-2 hover:bg-white hover:text-black border-2 border-black transition-colors"
+        className="bg-black text-white w-10 h-10 flex items-center justify-center shrink-0 hover:bg-white hover:text-black border-2 border-black transition-colors"
         aria-label={isPlaying ? "Pause" : "Play"}
       >
         {isPlaying ? <Pause size={20} /> : <Play size={20} className="ml-0.5" />}
