@@ -2,7 +2,7 @@
 
 import { playClack, playTick } from "@/utils/audio";
 import { TerminalSquare, ArrowUpRight, Menu, X, Palette } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Smoke from "@/components/Smoke"; // Import the new engine
@@ -11,6 +11,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const [activeHash, setActiveHash] = useState("");
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (pathname !== '/') {
@@ -49,6 +50,25 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, [pathname]);
 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [isOpen]);
+
   const cycleTheme = () => {
     playClack();
     const html = document.documentElement;
@@ -69,6 +89,8 @@ export default function Navbar() {
   };
 
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    setIsOpen(false);
+
     if (pathname === '/') {
       e.preventDefault();
       window.history.pushState(null, '', '/');
@@ -78,7 +100,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col">
+    <nav ref={navRef} className="animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col">
       <div className="flex justify-between items-start w-full">
 
         <div className="pointer-events-auto flex brutalist-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all">
