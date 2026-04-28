@@ -29,8 +29,8 @@ export default function Hero() {
               onMouseLeave={() => setIsHovered(false)}
               onClick={() => setIsHovered(!isHovered)} // Tap-to-bloom for mobile users
             >
-              <span className={`relative z-20 inline-block transition-all duration-150 ${
-                isHovered ? "text-white [-webkit-text-stroke:3px_black] md:[-webkit-text-stroke:5px_black] skew-x-[-6deg]" : ""
+              <span className={`relative z-20 inline-block transition-colors duration-300 ${
+                isHovered ? "text-white" : "text-black"
               }`}>
                 Samy
               </span>
