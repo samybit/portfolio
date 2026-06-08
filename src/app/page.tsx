@@ -1,6 +1,6 @@
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
-import Quote from "@/components/Quote";
+import CTA from "@/components/CTA";
 import Contact from "@/components/Contact";
 import TabTitleUpdater from "@/components/TabTitleUpdater";
 
@@ -10,7 +10,7 @@ export default function Home() {
       <TabTitleUpdater />
       <Hero />
       <Projects />
-      <Quote />
+      <CTA />
       <Contact />
     </main>
   );
