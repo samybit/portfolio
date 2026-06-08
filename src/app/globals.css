@@ -422,15 +422,16 @@ html.theme-neumorphic body {
 }
 
 /* Remove hard borders */
-html.theme-neumorphic * {
+html.theme-neumorphic .border-black,
+html.theme-neumorphic .border-white,
+html.theme-neumorphic [class*='hover:border-black']:hover,
+html.theme-neumorphic [class*='hover:border-white']:hover {
   border-color: transparent !important;
 }
 
 /* Base backgrounds */
 html.theme-neumorphic .bg-white,
 html.theme-neumorphic .bg-black,
-html.theme-neumorphic [class*='bg-white'],
-html.theme-neumorphic [class*='bg-black'],
 html.theme-neumorphic [class*='hover:bg-white']:hover,
 html.theme-neumorphic [class*='hover:bg-black']:hover {
   background-color: #e0e5ec !important;
@@ -480,16 +481,18 @@ html.theme-neumorphic button.border-4:hover {
 }
 
 /* Active / Pressed Shadows */
-html.theme-neumorphic a:active,
-html.theme-neumorphic button:active,
-html.theme-neumorphic [role='button']:active {
+html.theme-neumorphic a.border-2:active,
+html.theme-neumorphic a.border-4:active,
+html.theme-neumorphic a.border-l-8:active,
+html.theme-neumorphic button.border-2:active,
+html.theme-neumorphic button.border-4:active,
+html.theme-neumorphic .project-card:active {
   box-shadow: inset 6px 6px 10px 0 rgba(163,177,198,0.7), inset -6px -6px 10px 0 rgba(255,255,255,0.5) !important;
   transform: translateY(2px) !important;
 }
 
-/* Keep images normal but rounded */
+/* Keep images normal */
 html.theme-neumorphic img {
-  border-radius: 1rem !important;
   border-color: transparent !important;
   filter: none !important;
 }
@@ -587,7 +590,17 @@ html.theme-neumorphic .text-red-600 {
 }
 
 html.theme-neumorphic span.border-red-600 {
-  border-left: 4px solid #dc2626 !important;
+  border: none !important;
+  padding-left: 0 !important;
+  text-shadow: 1px 1px 2px rgba(255,255,255,0.7), -1px -1px 2px rgba(163,177,198,0.3) !important;
+}
+
+html.theme-neumorphic p.border-red-600 {
+  border: 1px solid rgba(220, 38, 38, 0.2) !important;
+  background-color: #fef2f2 !important;
+  box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.4), -9px -9px 16px rgba(255, 255, 255, 0.5) !important;
+  border-radius: 1.5rem !important;
+  color: #dc2626 !important;
 }
 
 /* Success Card */
@@ -607,4 +620,62 @@ html.theme-neumorphic .bg-green-400 .text-black {
 html.theme-neumorphic .animate-ping,
 html.theme-neumorphic a .bg-black.rounded-full {
   background-color: #10b981 !important;
+}
+
+/* --- Fix Input Hover & Focus Specificity --- */
+html.theme-neumorphic input[type='text']:hover:not(:focus),
+html.theme-neumorphic input[type='email']:hover:not(:focus),
+html.theme-neumorphic textarea:hover:not(:focus) {
+  box-shadow: inset 5px 5px 10px rgba(163, 177, 198, 0.7), inset -5px -5px 10px rgba(255, 255, 255, 0.55) !important;
+}
+
+html.theme-neumorphic input[type='text'].bg-black:focus,
+html.theme-neumorphic input[type='email'].bg-black:focus,
+html.theme-neumorphic textarea.bg-black:focus {
+  box-shadow: inset 6px 6px 12px rgba(22, 163, 74, 0.2), inset -6px -6px 12px rgba(255, 255, 255, 0.6) !important;
+}
+
+html.theme-neumorphic input[type='text'].border-red-600:focus,
+html.theme-neumorphic input[type='email'].border-red-600:focus,
+html.theme-neumorphic textarea.border-red-600:focus {
+  box-shadow: inset 5px 5px 10px rgba(220, 38, 38, 0.25), inset -5px -5px 10px rgba(255, 255, 255, 0.6) !important;
+}
+
+/* --- Navbar Neumorphic Fixes --- */
+html.theme-neumorphic nav .brutalist-shadow-static:has(a.border-2),
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static {
+  box-shadow: none !important;
+  background-color: transparent !important;
+  overflow: visible !important;
+}
+
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > a {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > button {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+html.theme-neumorphic nav a.bg-black {
+  box-shadow: inset 6px 6px 10px 0 rgba(163,177,198,0.7), inset -6px -6px 10px 0 rgba(255,255,255,0.5) !important;
+  background-color: #e0e5ec !important;
+  color: #4b5563 !important;
+  transform: translateY(2px) !important;
+}
+
+/* --- Next/Prev Sidebar Controls Fix --- */
+html.theme-neumorphic #projects .brutalist-shadow button {
+  transition: all 0.3s ease !important;
+}
+
+html.theme-neumorphic #projects .brutalist-shadow button:hover {
+  box-shadow: inset 6px 6px 10px 0 rgba(163,177,198,0.7), inset -6px -6px 10px 0 rgba(255,255,255,0.5) !important;
+  background-color: #e0e5ec !important;
+}
+
+html.theme-neumorphic #projects .brutalist-shadow button:active {
+  box-shadow: inset 8px 8px 14px 0 rgba(163,177,198,0.8), inset -8px -8px 14px 0 rgba(255,255,255,0.6) !important;
 }

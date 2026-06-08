@@ -110,8 +110,8 @@ export default function AboutPage() {
                     <div className="flex items-center gap-3 mt-1">
                       <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">ITI (MCIT)</p>
                       {/* Brutalist Year Tag */}
-                      <span className="bg-black text-white group-hover:bg-white group-hover:text-black text-xs font-black px-2 py-0.5 uppercase tracking-widest transition-colors leading-none">
-                        2026
+                      <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none">
+                        // 2026
                       </span>
                     </div>
                   </div>
@@ -131,8 +131,8 @@ export default function AboutPage() {
                     <h3 className="text-2xl font-black uppercase leading-tight">CS50x</h3>
                     <div className="flex items-center gap-3 mt-1">
                       <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">edX (Harvard)</p>
-                      <span className="bg-black text-white group-hover:bg-white group-hover:text-black text-xs font-black px-2 py-0.5 uppercase tracking-widest transition-colors leading-none">
-                        2025
+                      <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none">
+                        // 2025
                       </span>
                     </div>
                   </div>
@@ -152,8 +152,8 @@ export default function AboutPage() {
                     <h3 className="text-2xl font-black uppercase leading-tight">Data Analysis</h3>
                     <div className="flex items-center gap-3 mt-1">
                       <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">Egypt FWD (MCIT)</p>
-                      <span className="bg-black text-white group-hover:bg-white group-hover:text-black text-xs font-black px-2 py-0.5 uppercase tracking-widest transition-colors leading-none">
-                        2021
+                      <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none">
+                        // 2021
                       </span>
                     </div>
                   </div>
