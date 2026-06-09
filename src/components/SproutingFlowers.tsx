@@ -8,13 +8,15 @@ import { loadSlim } from "@tsparticles/slim";
 export default function SproutingFlowers({ isHovered }: { isHovered: boolean }) {
   const [init, setInit] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
+  const [isEmber, setIsEmber] = useState(false);
   const id = useId().replace(/:/g, "");
   const particlesContainer = useRef<any>(null);
 
   useEffect(() => {
-    // Track if the Neumorphic theme is active
+    // Track if the Neumorphic or Ember theme is active
     const checkTheme = () => {
       setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
+      setIsEmber(document.documentElement.classList.contains("theme-color"));
     };
     checkTheme();
 
@@ -54,13 +56,32 @@ export default function SproutingFlowers({ isHovered }: { isHovered: boolean }) 
     }
   };
 
-  // Neumorphic configuration overrides
-  const particleColors = isNeumorphic ? ["#4b5563", "#3b82f6", "#6366f1"] : ["#9333ea", "#e11d48", "#4c1d95", "#f43f5e"];
-  const linkColor = isNeumorphic ? "#64748b" : "#e11d48";
-  const bgClass = isNeumorphic ? "bg-[#e0e5ec] shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),inset_-4px_-4px_8px_rgba(255,255,255,0.5)] rounded-2xl" : "bg-black";
-  const borderClass = isNeumorphic ? "border-[3px] md:border-[6px] border-white/60 shadow-[4px_4px_12px_rgba(163,177,198,0.4)] rounded-2xl" : "border-[3px] md:border-[6px] border-black";
-  const structuralLineClass = isNeumorphic ? "bg-[#a3b1c6]" : "bg-black";
-  const nodeClass = isNeumorphic ? "bg-white shadow-sm rounded-full" : "bg-black";
+  // Theme configuration overrides
+  let particleColors = ["#9333ea", "#e11d48", "#4c1d95", "#f43f5e"];
+  let linkColor = "#e11d48";
+  let bgClass = "bg-black";
+  let borderClass = "border-[3px] md:border-[6px] border-black";
+  let structuralLineClass = "bg-black";
+  let nodeClass = "bg-black";
+  let blendMode = "mix-blend-screen";
+
+  if (isNeumorphic) {
+    particleColors = ["#4b5563", "#3b82f6", "#6366f1"];
+    linkColor = "#64748b";
+    bgClass = "bg-[#e0e5ec] shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),inset_-4px_-4px_8px_rgba(255,255,255,0.5)] rounded-2xl";
+    borderClass = "border-[3px] md:border-[6px] border-white/60 shadow-[4px_4px_12px_rgba(163,177,198,0.4)] rounded-2xl";
+    structuralLineClass = "bg-[#a3b1c6]";
+    nodeClass = "bg-white shadow-sm rounded-full";
+    blendMode = "mix-blend-normal opacity-100";
+  } else if (isEmber) {
+    particleColors = ["#FF4F00", "#FF7A00", "#FF2A00", "#E63E00"];
+    linkColor = "#FF4F00";
+    bgClass = "bg-[#1A1716]";
+    borderClass = "border-[3px] md:border-[6px] border-[#FF4F00]";
+    structuralLineClass = "bg-[#FF4F00]";
+    nodeClass = "bg-[#FF4F00]";
+    blendMode = "mix-blend-screen";
+  }
 
   return (
     <div className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center">
@@ -121,7 +142,7 @@ export default function SproutingFlowers({ isHovered }: { isHovered: boolean }) 
                   },
                 },
               }}
-              className={`w-full h-full ${isNeumorphic ? "mix-blend-normal opacity-100" : "mix-blend-screen"}`}
+              className={`w-full h-full ${blendMode}`}
             />
           </motion.div>
         )}

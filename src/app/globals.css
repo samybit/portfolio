@@ -253,6 +253,11 @@ html.theme-color .hero-subtitle-backdrop {
   box-shadow: none !important;
 }
 
+/* Ensure 'Samy' text becomes highly readable pure white on hover */
+html.theme-color .hero-samy-text.text-white {
+  color: #FFFFFF !important;
+}
+
 /* Ensure placeholders inherit the correct Fiery Orange in Ember Theme */
 html.theme-color ::placeholder {
   color: rgba(255, 79, 0, 0.6) !important;
