@@ -110,38 +110,36 @@ export default function CTA() {
     let hasSnapped = false;
 
     const handleScroll = () => {
-      if (!ctaRef.current) return;
-
-      const rect = ctaRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      
-      // Calculate how much of the element is visible
-      // visibleHeight is the amount of pixels of the element currently on screen
-      const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
-      const ratio = visibleHeight / windowHeight;
-
-      // Reset the lock if they completely scroll away
-      if (ratio < 0.2) {
-        hasSnapped = false;
-      }
-
-      // We only want to trigger the snap when the user STOPS scrolling.
+      // We only want to evaluate the layout and trigger the snap when the user STOPS scrolling.
+      // This completely eliminates layout thrashing and scroll lag.
       clearTimeout(timeoutId);
 
-      // If they are in the magnetic zone (mostly visible but not perfectly centered)
-      if (ratio >= 0.55 && ratio < 0.98) {
-        if (!hasSnapped) {
-          timeoutId = setTimeout(() => {
-            if (ctaRef.current) {
-              ctaRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-              hasSnapped = true;
-            }
-          }, 150); // Fire 150ms after they stop scrolling
+      timeoutId = setTimeout(() => {
+        if (!ctaRef.current) return;
+
+        const rect = ctaRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Calculate how much of the element is visible
+        const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+        const ratio = visibleHeight / windowHeight;
+
+        // Reset the lock if they completely scroll away
+        if (ratio < 0.2) {
+          hasSnapped = false;
         }
-      } else if (ratio >= 0.98) {
-        // If they perfectly center it manually, lock it so they don't get trapped leaving
-        hasSnapped = true;
-      }
+
+        // If they are in the magnetic zone (mostly visible but not perfectly centered)
+        if (ratio >= 0.55 && ratio < 0.98) {
+          if (!hasSnapped) {
+            ctaRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+            hasSnapped = true;
+          }
+        } else if (ratio >= 0.98) {
+          // If they perfectly center it manually, lock it so they don't get trapped leaving
+          hasSnapped = true;
+        }
+      }, 150); // Evaluate 150ms after they stop scrolling
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
