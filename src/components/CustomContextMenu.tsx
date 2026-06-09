@@ -55,7 +55,7 @@ export default function CustomContextMenu() {
 
     window.addEventListener("contextmenu", handleContextMenu);
     window.addEventListener("click", handleClick);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("contextmenu", handleContextMenu);

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -104,6 +104,9 @@ export default function CTA() {
   };
 
   const ctaRef = useRef<HTMLElement>(null);
+  
+  // 1. Hardware Observer: GPU Killswitch to prevent massive lag when offscreen
+  const isCanvasInView = useInView(ctaRef, { margin: "400px 0px 400px 0px" });
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -226,7 +229,8 @@ export default function CTA() {
 
       {/* --- LAYER 3: 3D SCANNER (z-20) --- */}
       <div className="absolute inset-0 z-20 mix-blend-difference pointer-events-none">
-        <Canvas style={{ pointerEvents: "none" }} camera={{ position: [0, 0, 8], fov: 50 }}>
+        {/* 2. The Engine Killswitch: pauses the heavy GPU calculations when scrolled away */}
+        <Canvas frameloop={isCanvasInView ? "always" : "never"} style={{ pointerEvents: "none" }} camera={{ position: [0, 0, 8], fov: 50 }}>
           <ambientLight intensity={2} />
           <directionalLight position={[10, 10, 5]} intensity={3} />
           <SystemLeak />
