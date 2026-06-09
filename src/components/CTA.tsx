@@ -9,7 +9,7 @@ import { useRef, useEffect, useMemo } from "react";
 import * as THREE from "three";
 
 // --- 3D INTERACTIVE OBJECT: THE LIQUID ANOMALY LEAK ---
-function SystemLeak() {
+function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
   const coreRef = useRef<THREE.Mesh>(null);
   const dropsGroupRef = useRef<THREE.Group>(null);
   const mouse = useRef({ x: 0, y: 0 });
@@ -26,13 +26,16 @@ function SystemLeak() {
   }, []);
 
   useEffect(() => {
+    if (!isCanvasInView) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
       mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
+    
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [isCanvasInView]);
 
   useFrame(() => {
     const core = coreRef.current;
@@ -106,7 +109,7 @@ export default function CTA() {
   const ctaRef = useRef<HTMLElement>(null);
   
   // 1. Hardware Observer: GPU Killswitch to prevent massive lag when offscreen
-  const isCanvasInView = useInView(ctaRef, { margin: "400px 0px 400px 0px" });
+  const isCanvasInView = useInView(ctaRef, { margin: "0px 0px 0px 0px" });
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -233,7 +236,7 @@ export default function CTA() {
         <Canvas frameloop={isCanvasInView ? "always" : "never"} style={{ pointerEvents: "none" }} camera={{ position: [0, 0, 8], fov: 50 }}>
           <ambientLight intensity={2} />
           <directionalLight position={[10, 10, 5]} intensity={3} />
-          <SystemLeak />
+          <SystemLeak isCanvasInView={isCanvasInView} />
         </Canvas>
       </div>
 
