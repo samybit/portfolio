@@ -15,7 +15,12 @@ export default function Contact() {
 
   const isNameFilled = values.name.trim().length > 0;
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email);
+  const isEmailFilled = values.email.trim().length > 0;
   const isMessageValid = values.message.trim().length > 0;
+
+  // Show live red error if the user has typed something in email but it's not valid yet, OR if the form was submitted with errors
+  const showEmailError = !!errors.email || (isEmailFilled && !isEmailValid);
+  const showMessageError = !!errors.message;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -153,7 +158,7 @@ export default function Contact() {
                     name="email"
                     value={values.email}
                     onChange={handleChange}
-                    className={getInputStyle(isEmailValid, !!errors.email)}
+                    className={getInputStyle(isEmailValid, showEmailError)}
                     placeholder="...@example.com"
                   />
                   <span
@@ -174,7 +179,7 @@ export default function Contact() {
                     rows={3}
                     value={values.message}
                     onChange={handleChange}
-                    className={getInputStyle(isMessageValid, !!errors.message)}
+                    className={getInputStyle(isMessageValid, showMessageError)}
                     placeholder="Describe your project, an open role, or how we can collaborate..."
                   />
                   <span

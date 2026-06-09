@@ -576,8 +576,10 @@ html.theme-neumorphic textarea.bg-black {
 }
 
 /* Invalid / Error Inputs (soft warning red tint/inset shadow) */
-html.theme-neumorphic .border-red-600,
-html.theme-neumorphic .bg-red-50 {
+html.theme-neumorphic input.border-red-600,
+html.theme-neumorphic input[type='email'].border-red-600,
+html.theme-neumorphic input[type='text'].border-red-600,
+html.theme-neumorphic textarea.border-red-600 {
   background-color: #fef2f2 !important;
   color: #dc2626 !important;
   border: 1px solid rgba(220, 38, 38, 0.2) !important;
