@@ -245,11 +245,21 @@ html.theme-color [class*="hover:border-white"]:hover {
   border-color: #1A1716 !important;
 }
 
-/* CTA Quote Backdrop Glass Effect in Ember Theme */
+/* Fix CTA Quote Backdrop Glass Effect in Ember Theme */
 html.theme-color .quote-backdrop {
   background-color: rgba(255, 79, 0, 0.1) !important;
   border-color: rgba(255, 79, 0, 0.4) !important;
   box-shadow: none !important;
+}
+
+/* Ensure placeholders inherit the correct Fiery Orange in Ember Theme */
+html.theme-color ::placeholder {
+  color: rgba(255, 79, 0, 0.6) !important;
+}
+
+/* Refactor ugly white shadow on Contact Form card */
+html.theme-color #contact form {
+  box-shadow: 8px 8px 0 0 #FF4F00 !important;
 }
 
 /* Shift the muted zinc colors into a darker rust/burnt orange to stay readable */
