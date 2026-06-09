@@ -526,9 +526,11 @@ html.theme-neumorphic ::-webkit-scrollbar-thumb:hover {
   background-color: #8c9bb0 !important;
 }
 
-/* Hide 3D Parametric Background */
+/* Show 3D Parametric Background with Neumorphic Styling */
 html.theme-neumorphic .bg-parametric-shape {
-  border-color: rgba(163,177,198,0.3) !important;
+  border: 2px solid rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.4) !important;
+  opacity: 0.4 !important;
 }
 
 /* Custom Cursors */
