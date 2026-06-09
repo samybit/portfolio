@@ -245,8 +245,9 @@ html.theme-color [class*="hover:border-white"]:hover {
   border-color: #1A1716 !important;
 }
 
-/* Fix CTA Quote Backdrop Glass Effect in Ember Theme */
-html.theme-color .quote-backdrop {
+/* Fix CTA Quote and Hero Subtitle Backdrop Glass Effect in Ember Theme */
+html.theme-color .quote-backdrop,
+html.theme-color .hero-subtitle-backdrop {
   background-color: rgba(255, 79, 0, 0.1) !important;
   border-color: rgba(255, 79, 0, 0.4) !important;
   box-shadow: none !important;

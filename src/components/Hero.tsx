@@ -57,7 +57,7 @@ export default function Hero() {
             </span>
           </h1>
 
-          <p className="text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ml-2">
+          <p className="text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ml-2 hero-subtitle-backdrop">
             Full-Stack Developer. <br />
             MERN Stack Specialist. <br />
             Based in Egypt. <br />
