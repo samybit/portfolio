@@ -250,6 +250,11 @@ html.theme-color [class*="text-zinc"] {
   color: #B33D00 !important;
 }
 
+/* Ensure zinc text inside hovered cards flips to charcoal for contrast */
+html.theme-color [class*="hover:bg-black"]:hover [class*="text-zinc"] {
+  color: #1A1716 !important;
+}
+
 /* Double-invert the images back to normal */
 html.theme-color img {
   filter: none !important;
