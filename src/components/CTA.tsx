@@ -40,20 +40,20 @@ function SystemLeak() {
 
     if (!core || !dropsGroup) return;
 
-    // Wide movement range to follow the mouse aggressively across the screen
-    const targetX = mouse.current.x * 6;
-    const targetY = mouse.current.y * 6;
+    // Massive movement range so it can travel edge-to-edge freely
+    const targetX = mouse.current.x * 8;
+    const targetY = mouse.current.y * 5;
 
-    // Fast and snappy interpolation to stick closer to the cursor
-    core.position.x += (targetX - core.position.x) * 0.1;
-    core.position.y += (targetY - core.position.y) * 0.1;
+    // Graceful interpolation to glide towards the cursor rather than snapping instantly
+    core.position.x += (targetX - core.position.x) * 0.06;
+    core.position.y += (targetY - core.position.y) * 0.06;
 
-    // Aggressive rolling effect to match the fast movement
+    // Smooth rolling effect to match the graceful movement
     const targetRotX = -mouse.current.y * 3;
     const targetRotY = mouse.current.x * 3;
 
-    core.rotation.x += (targetRotX - core.rotation.x) * 0.1 + 0.005;
-    core.rotation.y += (targetRotY - core.rotation.y) * 0.1 + 0.01;
+    core.rotation.x += (targetRotX - core.rotation.x) * 0.06 + 0.005;
+    core.rotation.y += (targetRotY - core.rotation.y) * 0.06 + 0.01;
 
     dropsGroup.children.forEach((drop, index) => {
       const data = dropsData[index];
