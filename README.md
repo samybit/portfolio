@@ -1,6 +1,6 @@
-# Brutalist Portfolio // Samy Barsoum
+# Portfolio // Samy Barsoum
 
-The source code for my personal web development portfolio. Designed with a strict black-and-white brutalist aesthetic, focusing on stark contrasts, sharp edges, aggressive typography, and high performance.
+The source code for my personal web development portfolio. Designed with a modular architecture that supports multiple aesthetic paradigms, focusing on striking visual contrasts, interactive elements, and high performance.
 
 **Live Site:** [samybit-github-io.vercel.app]
 
@@ -9,17 +9,17 @@ The source code for my personal web development portfolio. Designed with a stric
 - **Framework:** Next.js (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS v4
-- **3D & WebGL:** React Three Fiber, Drei, & Spline
-- **Animations:** Framer Motion
+- **3D & WebGL:** React Three Fiber & Drei
+- **Animations:** Framer Motion & tsParticles
 - **Icons:** Lucide React
 - **Email Service:** Resend (via Next.js Server Actions)
 
 ## Key Features
 
-- **Strict Brutalism & Theming:** Pure CSS variables, zero border-radius, heavy drop-shadows, and a custom 3-way theme engine (Light, Hardware Invert, Ember).
-- **Optimized 3D Integration:** Interactive WebGL elements and Spline scenes with viewport-triggered rendering (0% GPU usage when scrolled out of view).
-- **Magnetic Scroll Physics:** Zero-JS, native CSS Scroll Snapping (`100dvh`) for perfectly aligned, full-screen section transitions.
-- **Serverless Contact Form:** Uses Next.js Server Actions and the Resend API to handle form submissions directly.
+- **Multi-Theme Architecture:** A dynamic 4-way theme engine featuring strict Brutalism, frosted-glass Neumorphism, clean Bauhaus, and Hardware Invert styles.
+- **Optimized 3D Integration:** Interactive WebGL components with custom hardware killswitches (0% GPU usage when scrolled out of view).
+- **Magnetic Scroll Physics:** Custom, debounced scroll listeners for fluid, perfectly aligned full-screen section transitions without layout thrashing.
+- **Serverless Contact Form:** Uses Next.js Server Actions and the Resend API to securely handle form submissions directly from the edge.
 
 ## Local Setup
 
