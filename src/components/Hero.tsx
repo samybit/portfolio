@@ -29,7 +29,7 @@ export default function Hero() {
         <div className="flex-1 animate-slide-up">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-xl font-bold uppercase tracking-widest border-b-4 border-black pb-1 bg-white">
-              Available for Freelance & Roles
+              Available for Full-Time Roles
             </span>
           </div>
 
