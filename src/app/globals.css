@@ -607,6 +607,57 @@ html.theme-neumorphic .quote-backdrop {
   border-radius: 1rem !important;
 }
 
+/* Custom Context Menu Neumorphic Styling */
+html.theme-neumorphic .context-menu-wrapper {
+  border-radius: 1rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 12px 12px 24px rgba(163, 177, 198, 0.7), -12px -12px 24px rgba(255, 255, 255, 0.8) !important;
+  padding: 0.5rem !important;
+}
+
+/* Header specific styling */
+html.theme-neumorphic .context-menu-wrapper > div:first-child {
+  background-color: transparent !important;
+  color: #9ca3af !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(163, 177, 198, 0.3) !important;
+  margin-bottom: 0.5rem !important;
+  padding: 0.5rem 0.25rem !important;
+}
+
+/* Windows 11 Action Bar container */
+html.theme-neumorphic .context-menu-wrapper > div.flex {
+  background-color: transparent !important;
+  border: none !important;
+  gap: 0.5rem !important;
+  margin-bottom: 0.25rem !important;
+}
+
+/* All interactive menu items */
+html.theme-neumorphic .context-menu-wrapper button,
+html.theme-neumorphic .context-menu-wrapper a {
+  border: none !important;
+  border-radius: 0.5rem !important;
+  color: #4b5563 !important;
+  background-color: transparent !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  margin-bottom: 0.25rem !important;
+}
+
+/* Action bar specific buttons need no bottom margin */
+html.theme-neumorphic .context-menu-wrapper > div.flex button {
+  margin-bottom: 0 !important;
+}
+
+/* Menu Items Hover Effects - Recessed press effect */
+html.theme-neumorphic .context-menu-wrapper button:hover,
+html.theme-neumorphic .context-menu-wrapper a:hover {
+  background-color: #e0e5ec !important;
+  color: #111827 !important;
+  box-shadow: inset 4px 4px 8px rgba(163, 177, 198, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.6) !important;
+  transform: scale(0.96) !important;
+}
+
 html.theme-neumorphic p.border-red-600 {
   border: 1px solid rgba(220, 38, 38, 0.2) !important;
   background-color: #fef2f2 !important;

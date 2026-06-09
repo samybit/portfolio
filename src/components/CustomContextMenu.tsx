@@ -104,7 +104,7 @@ export default function CustomContextMenu() {
 
   return (
     <div
-      className="fixed z-[9999] bg-white border-4 border-black brutalist-shadow flex flex-col w-[200px]"
+      className="fixed z-[9999] bg-white border-4 border-black brutalist-shadow flex flex-col w-[200px] context-menu-wrapper"
       style={{ top: `${position.y}px`, left: `${position.x}px` }}
     >
       {/* Menu Header */}
