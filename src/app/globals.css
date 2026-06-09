@@ -602,6 +602,11 @@ html.theme-neumorphic span.border-red-600 {
   text-shadow: 1px 1px 2px rgba(255,255,255,0.7), -1px -1px 2px rgba(163,177,198,0.3) !important;
 }
 
+/* Add soft rounded corners to the frosted glass quote backdrops in CTA */
+html.theme-neumorphic .quote-backdrop {
+  border-radius: 1rem !important;
+}
+
 html.theme-neumorphic p.border-red-600 {
   border: 1px solid rgba(220, 38, 38, 0.2) !important;
   background-color: #fef2f2 !important;
