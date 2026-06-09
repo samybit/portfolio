@@ -103,9 +103,58 @@ export default function CTA() {
     }
   };
 
+  const ctaRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    let hasSnapped = false;
+
+    const handleScroll = () => {
+      if (!ctaRef.current) return;
+
+      const rect = ctaRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate how much of the element is visible
+      // visibleHeight is the amount of pixels of the element currently on screen
+      const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+      const ratio = visibleHeight / windowHeight;
+
+      // Reset the lock if they completely scroll away
+      if (ratio < 0.2) {
+        hasSnapped = false;
+      }
+
+      // We only want to trigger the snap when the user STOPS scrolling.
+      clearTimeout(timeoutId);
+
+      // If they are in the magnetic zone (mostly visible but not perfectly centered)
+      if (ratio >= 0.55 && ratio < 0.98) {
+        if (!hasSnapped) {
+          timeoutId = setTimeout(() => {
+            if (ctaRef.current) {
+              ctaRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+              hasSnapped = true;
+            }
+          }, 150); // Fire 150ms after they stop scrolling
+        }
+      } else if (ratio >= 0.98) {
+        // If they perfectly center it manually, lock it so they don't get trapped leaving
+        hasSnapped = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
   return (
     // Swapped min-h-screen for min-h-[100dvh] and added py-16 so it never touches the screen edges
-    <section className="snap-start relative w-full min-h-[100dvh] flex flex-col items-center justify-center py-16 overflow-hidden border-t-8 border-b-8 border-black bg-white text-black">
+    <section ref={ctaRef} className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center py-16 overflow-hidden border-t-8 border-b-8 border-black bg-white text-black">
 
       {/* --- LAYER 1: MECHANICAL ARROW BACKGROUND (z-0) --- */}
       <div
