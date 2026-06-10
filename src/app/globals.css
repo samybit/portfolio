@@ -268,6 +268,20 @@ html.theme-color #contact form {
   box-shadow: 8px 8px 0 0 #FF4F00 !important;
 }
 
+/* Style error validation classes inside Ember Theme */
+html.theme-color .bg-red-50,
+html.theme-color .bg-red-100 {
+  background-color: #2D1A18 !important;   /* Dark reddish-charcoal */
+}
+
+html.theme-color .border-red-600 {
+  border-color: #FF3F1A !important;       /* Fiery red-orange border */
+}
+
+html.theme-color .text-red-600 {
+  color: #FF3F1A !important;              /* Readable fiery red-orange labels */
+}
+
 /* Shift the muted zinc colors into a darker rust/burnt orange to stay readable */
 html.theme-color [class*="text-zinc"] {
   color: #B33D00 !important;
