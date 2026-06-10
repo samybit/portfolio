@@ -605,9 +605,20 @@ html.theme-neumorphic .brutalist-container.group {
   color: #4b5563 !important;
 }
 
-html.theme-neumorphic .brutalist-container.group:hover {
-  background-color: #e0e5ec !important;
-  color: #4b5563 !important;
+html.theme-neumorphic .brutalist-container.group:hover,
+html.theme-neumorphic .brutalist-container.group.hover\:\!bg-black:hover,
+html.theme-neumorphic .brutalist-container.group[class*="hover:!bg-black"]:hover,
+html.theme-neumorphic .hover\:\!bg-black:hover,
+html.theme-neumorphic [class*="hover:!bg-black"]:hover {
+  background-color: #d1d9e6 !important; /* Elegant Neumorphic hover background */
+}
+
+html.theme-neumorphic .brutalist-container.group:hover,
+html.theme-neumorphic .brutalist-container.group.hover\:\!text-white:hover,
+html.theme-neumorphic .brutalist-container.group[class*="hover:!text-white"]:hover,
+html.theme-neumorphic .hover\:\!text-white:hover,
+html.theme-neumorphic [class*="hover:!text-white"]:hover {
+  color: #1e293b !important; /* Elegant Neumorphic hover text */
 }
 
 /* Ensure the card header separator line doesn't turn white on hover */
@@ -629,12 +640,14 @@ html.theme-neumorphic .brutalist-container.group ul li span {
   background-color: #4b5563 !important;
 }
 
-/* Style the clearances links as beautiful pressable inset plates on hover */
+html.theme-neumorphic .brutalist-container.group:hover ul li span {
+  background-color: #1e293b !important;
+}
+
+/* Style the clearances links as flat hover color shift without custom shadows or border-radius */
 html.theme-neumorphic a.border-l-8:hover {
-  background-color: #e0e5ec !important;
-  color: #4b5563 !important;
-  box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.5), inset -3px -3px 6px rgba(255, 255, 255, 0.7) !important;
-  border-radius: 0.5rem !important;
+  background-color: #d1d9e6 !important;
+  color: #1e293b !important;
 }
 
 /* Show 3D Parametric Background with Neumorphic Styling */
