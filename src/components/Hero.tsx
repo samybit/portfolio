@@ -16,7 +16,7 @@ export default function Hero() {
       {/* --- PARAMETRIC 3D MATH BACKGROUND --- */}
       <div className="bg-parametric-wrapper text-black" aria-hidden="true">
         <div className="bg-parametric-core">
-          {Array.from({ length: 36 }).map((_, i) => (
+          {Array.from({ length: 24 }).map((_, i) => (
             <div key={i} className="bg-parametric-shape" style={{ '--i': i } as React.CSSProperties} />
           ))}
         </div>

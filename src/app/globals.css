@@ -401,6 +401,9 @@ html.theme-color textarea {
   /* Clean brutalist masking so the edges fade out perfectly */
   -webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 80%);
   mask-image: radial-gradient(circle at center, black 20%, transparent 80%);
+  /* Fade in slowly to allow entry slide animations to run lag-free */
+  opacity: 0;
+  animation: fade-in-bg 1.8s ease-out 0.2s forwards;
 }
 
 .bg-parametric-core {
@@ -409,6 +412,7 @@ html.theme-color textarea {
   height: 0;
   transform-style: preserve-3d;
   animation: core-spin 45s infinite linear;
+  will-change: transform;
 }
 
 .bg-parametric-shape {
@@ -420,9 +424,10 @@ html.theme-color textarea {
   border: 2px solid currentColor;
   opacity: 0.12;
   transform-style: preserve-3d;
+  will-change: transform;
 
-  /* The mathematical foundation using React's injected --i */
-  --angle: calc(var(--i) * 10deg);
+  /* The mathematical foundation using React's injected --i (24 shapes = 15deg step) */
+  --angle: calc(var(--i) * 15deg);
 
   /* Uses sin() to morph shapes from square to rounded continuously around the sphere */
   border-radius: calc(25% + 25% * sin(var(--angle)));
@@ -430,6 +435,15 @@ html.theme-color textarea {
   animation: shape-morph 8s infinite ease-in-out alternate;
   /* Stagger the wave effect */
   animation-delay: calc(var(--i) * -0.2s);
+}
+
+@keyframes fade-in-bg {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes shape-morph {
