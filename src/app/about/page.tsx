@@ -2,11 +2,17 @@
 
 import { ArrowLeft, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal } from "lucide-react";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AudioPlayer from "@/components/AudioPlayer";
 import DecryptText from "@/components/DecryptText";
 
 export default function AboutPage() {
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = (message: string) => {
+    setToastMessage(message);
+  };
+
   // Enforce the tab title on mount and fix the refresh scroll-creep
   useEffect(() => {
     document.title = "About | Samy Barsoum";
@@ -16,6 +22,15 @@ export default function AboutPage() {
       history.scrollRestoration = 'manual';
     }
   }, []);
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => {
+        setToastMessage(null);
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   const stack = [
     {
@@ -99,9 +114,10 @@ export default function AboutPage() {
             <div className="flex flex-col gap-6">
               {/* ITI CERTIFICATE */}
               <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  showToast("MERN Stack certificate is not online yet.");
+                }}
                 className="group block border-l-8 border-black pl-4 py-2 hover:bg-black hover:text-white transition-colors cursor-pointer"
               >
                 <div className="flex justify-between items-center">
@@ -115,7 +131,6 @@ export default function AboutPage() {
                       </span>
                     </div>
                   </div>
-                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-300 mr-4 shrink-0" />
                 </div>
               </a>
 
@@ -215,6 +230,23 @@ export default function AboutPage() {
         </section>
 
       </div>
+
+      {/* Floating Snackbar/Toast Overlay */}
+      {toastMessage && (
+        <div
+          id="toast-notification"
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 p-4 border-4 border-black bg-white text-black font-black uppercase text-sm flex items-center justify-between shadow-[8px_8px_0px_0px_#000000] animate-slide-up min-w-[280px] sm:min-w-[350px]"
+        >
+          <span>{toastMessage}</span>
+          <button
+            onClick={() => setToastMessage(null)}
+            className="font-black text-xl hover:text-zinc-600 transition-colors ml-6 cursor-pointer"
+          >
+            ×
+          </button>
+        </div>
+      )}
+
     </main>
   );
 }

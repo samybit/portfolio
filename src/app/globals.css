@@ -359,6 +359,22 @@ html.theme-color {
   scrollbar-color: #FF4F00 #1A1716 !important;
 }
 
+/* Ember Theme Toast styling */
+html.theme-color #toast-notification {
+  background-color: #1A1716 !important;
+  border-color: #FF4F00 !important;
+  color: #FF4F00 !important;
+  box-shadow: 4px 4px 0px #FF4F00 !important;
+}
+
+html.theme-color #toast-notification button {
+  color: #FF4F00 !important;
+}
+
+html.theme-color #toast-notification button:hover {
+  color: #ff854d !important;
+}
+
 /* =========================================
    --- EMBER THEME: CUSTOM CURSORS ---
 ========================================= */
@@ -648,6 +664,23 @@ html.theme-neumorphic .brutalist-container.group:hover ul li span {
 html.theme-neumorphic a.border-l-8:hover {
   background-color: #d1d9e6 !important;
   color: #1e293b !important;
+}
+
+/* Neumorphic Theme Toast styling */
+html.theme-neumorphic #toast-notification {
+  border-radius: 1rem !important;
+  box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5) !important;
+  background-color: #e0e5ec !important;
+  border-color: transparent !important;
+  color: #4b5563 !important;
+}
+
+html.theme-neumorphic #toast-notification button {
+  color: #4b5563 !important;
+}
+
+html.theme-neumorphic #toast-notification button:hover {
+  color: #a3b1c6 !important;
 }
 
 /* Show 3D Parametric Background with Neumorphic Styling */
