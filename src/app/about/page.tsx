@@ -144,7 +144,7 @@ export default function AboutPage() {
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-2xl font-black uppercase leading-tight">MERN Stack & AI</h3>
+                    <h3 className="text-2xl font-black uppercase leading-tight">MERN Stack &  Gen AI</h3>
                     <div className="flex items-center gap-3 mt-1">
                       <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">ITI (MCIT)</p>
                       {/* Brutalist Year Tag */}
@@ -257,16 +257,38 @@ export default function AboutPage() {
         </section>
 
         {/* --- ARCHIVES / OLD PORTFOLIOS --- */}
-        <section className="animate-slide-up-delay-2 bg-white border-4 border-black p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8">
+        <section className={`animate-slide-up-delay-2 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8 transition-all duration-300 ${
+          isNeumorphic
+            ? "brutalist-container"
+            : "bg-white border-4 border-black"
+        }`}>
           <div className="flex flex-col text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight">Legacy Systems</h2>
             <p className="text-lg md:text-xl font-bold text-zinc-500 uppercase mt-1">Explore previous portfolio iterations</p>
           </div>
           <div className="flex flex-col sm:flex-row w-full md:w-auto gap-6 shrink-0">
-            <a href="https://my-portfolio-seven-beta-98.vercel.app/" target="_blank" rel="noopener noreferrer" className="brutalist-shadow bg-white text-black border-4 border-black px-6 py-4 hover:bg-black hover:text-white flex items-center justify-center gap-3 text-xl font-black uppercase transition-all group">
+            <a
+              href="https://my-portfolio-seven-beta-98.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`px-6 py-4 flex items-center justify-center gap-3 text-xl font-black uppercase transition-all duration-300 group ${
+                isNeumorphic
+                  ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                  : "brutalist-shadow bg-white text-black border-4 border-black hover:bg-black hover:text-white"
+              }`}
+            >
               Version 1.0 <ExternalLink size={24} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </a>
-            <a href="https://samybit.github.io/brutalist-portfolio/" target="_blank" rel="noopener noreferrer" className="brutalist-shadow bg-black text-white border-4 border-black px-6 py-4 hover:bg-white hover:text-black flex items-center justify-center gap-3 text-xl font-black uppercase transition-all group">
+            <a
+              href="https://samybit.github.io/brutalist-portfolio/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`px-6 py-4 flex items-center justify-center gap-3 text-xl font-black uppercase transition-all duration-300 group ${
+                isNeumorphic
+                  ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                  : "brutalist-shadow bg-black text-white border-4 border-black hover:bg-white hover:text-black"
+              }`}
+            >
               Version 2.0 <ExternalLink size={24} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </a>
           </div>
