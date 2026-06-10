@@ -357,7 +357,7 @@ export default function Projects() {
         </div>
       ) : (
         <div
-          className="flex lg:hidden overflow-x-auto gap-4 pb-6 snap-x snap-mandatory -mx-6 px-6 flex-1 min-h-[320px]"
+          className="flex lg:hidden overflow-x-auto gap-4 pt-5 pb-6 snap-x snap-mandatory -mx-6 px-6 flex-1 min-h-[320px]"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
         >
           <style dangerouslySetInnerHTML={{ __html: `div::-webkit-scrollbar { display: none; }` }} />
