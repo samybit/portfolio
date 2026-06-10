@@ -216,6 +216,17 @@ const ProjectCard = ({ project, animate = false, disableObserver = false }: Proj
 export default function Projects() {
   const [page, setPage] = useState(0);
   const [showAllMobile, setShowAllMobile] = useState(false);
+  const [isNeumorphic, setIsNeumorphic] = useState(false);
+
+  useEffect(() => {
+    setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
+    const observer = new MutationObserver(() => {
+      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, []);
 
   const itemsPerPage = 4;
   const totalPages = Math.ceil(projects.length / itemsPerPage);
@@ -281,13 +292,21 @@ export default function Projects() {
             [ PAGE 0{page + 1} / 0{totalPages} ]
           </p>
 
-          <div className="flex lg:hidden items-center justify-between mt-6 border-2 border-black bg-white p-2">
+          <div className={`flex lg:hidden items-center justify-between mt-6 p-2 transition-all duration-300 ${
+            isNeumorphic
+              ? "bg-[#e0e5ec] rounded-2xl shadow-[inset_3px_3px_6px_rgba(163,177,198,0.5),_inset_-3px_-3px_6px_rgba(255,255,255,0.7)]"
+              : "border-2 border-black bg-white"
+          }`}>
             <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-zinc-500 pl-2">
               {showAllMobile ? "[ Scroll ↓ ]" : "[ Swipe & Tap ]"}
             </span>
             <button
               onClick={() => setShowAllMobile(!showAllMobile)}
-              className="bg-black text-white px-3 py-2 text-xs sm:text-sm font-black uppercase border-2 border-transparent hover:border-black transition-colors"
+              className={`px-3 py-2 text-xs sm:text-sm font-black uppercase transition-all duration-300 ${
+                isNeumorphic
+                  ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.7),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)] active:translate-y-[2px]"
+                  : "bg-black text-white border-2 border-transparent hover:border-black"
+              }`}
             >
               {showAllMobile ? "Swipe View" : "View All"}
             </button>
