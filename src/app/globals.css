@@ -807,6 +807,13 @@ html.theme-neumorphic nav button.brutalist-shadow-static.md\:hidden:active {
   transform: none !important;
 }
 
+/* --- Hero Vertical Divider in Neumorphic --- */
+@media (min-width: 1024px) {
+  html.theme-neumorphic #hero div.border-black {
+    border-left: 8px solid #a3b1c6 !important;
+  }
+}
+
 html.theme-neumorphic nav a.bg-black {
   box-shadow: inset 6px 6px 10px 0 rgba(163,177,198,0.7), inset -6px -6px 10px 0 rgba(255,255,255,0.5) !important;
   background-color: #e0e5ec !important;
