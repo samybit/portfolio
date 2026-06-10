@@ -11,10 +11,12 @@ import * as THREE from "three";
 // --- 3D INTERACTIVE OBJECT: THE LIQUID ANOMALY LEAK ---
 function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
   const [isEmber, setIsEmber] = useState(false);
+  const [isNeumorphic, setIsNeumorphic] = useState(false);
 
   useEffect(() => {
     const checkTheme = () => {
       setIsEmber(document.documentElement.classList.contains("theme-color"));
+      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
     };
     checkTheme();
 
@@ -28,8 +30,15 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
   const dropsGroupRef = useRef<THREE.Group>(null);
   const mouse = useRef({ x: 0, y: 0 });
 
+  let anomalyColor = "#ffffff";
+  if (isEmber) {
+    anomalyColor = "#FF3300";
+  } else if (isNeumorphic) {
+    anomalyColor = "#3d3426"; // Renders as the Neumorphic shadow color #a3b1c6, turns deep navy over text
+  }
+
   const boxGeom = useMemo(() => new THREE.BoxGeometry(1.5, 1.5, 1.5), []);
-  const boxMat = useMemo(() => new THREE.MeshBasicMaterial({ color: isEmber ? "#FF3300" : "#ffffff" }), [isEmber]);
+  const boxMat = useMemo(() => new THREE.MeshBasicMaterial({ color: anomalyColor }), [anomalyColor]);
 
   useEffect(() => {
     return () => {
@@ -56,7 +65,7 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
       mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
       mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
-    
+
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [isCanvasInView]);
@@ -101,7 +110,7 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
       <mesh ref={coreRef}>
         <sphereGeometry args={[2.1, 32, 32]} />
         <MeshDistortMaterial
-          color={isEmber ? "#FF3300" : "#ffffff"}
+          color={anomalyColor}
           distort={0.3}
           speed={1}
           roughness={1}
@@ -110,9 +119,9 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
 
       <group ref={dropsGroupRef}>
         {dropsData.map((data, i) => (
-          <mesh 
-            key={i} 
-            position={[0, -10, 0]} 
+          <mesh
+            key={i}
+            position={[0, -10, 0]}
             scale={data.scale}
             geometry={boxGeom}
             material={boxMat}
@@ -134,7 +143,7 @@ export default function CTA() {
   };
 
   const ctaRef = useRef<HTMLElement>(null);
-  
+
   // 1. Hardware Observer: GPU Killswitch to prevent massive lag when offscreen
   const isCanvasInView = useInView(ctaRef, { margin: "0px 0px 0px 0px" });
 
@@ -152,7 +161,7 @@ export default function CTA() {
 
         const rect = ctaRef.current.getBoundingClientRect();
         const windowHeight = window.innerHeight;
-        
+
         // Calculate how much of the element is visible
         const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
         const ratio = visibleHeight / windowHeight;
@@ -198,13 +207,13 @@ export default function CTA() {
 
       {/* --- LAYER 2: CONTENT BOX (z-10) --- */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col xl:flex-row items-center justify-between gap-16 pointer-events-none">
-        
+
         {/* LEFT SIDE: The Quote */}
         <div className="flex-1 flex flex-col relative w-full">
           <div className="absolute -top-8 -left-2 md:-top-16 md:-left-8 text-black font-black text-[10rem] md:text-[18rem] leading-none opacity-5 pointer-events-none select-none">
             "
           </div>
-          <motion.blockquote 
+          <motion.blockquote
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -212,8 +221,8 @@ export default function CTA() {
           >
             "It's no use going back to yesterday, because I was a different person then."
           </motion.blockquote>
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -222,7 +231,7 @@ export default function CTA() {
           >
             {/* Brutalist Divider */}
             <div className="h-2 w-8 sm:w-16 md:w-24 bg-black shrink-0"></div>
-            
+
             {/* Attribution */}
             <span className="text-sm sm:text-base md:text-lg font-bold tracking-widest uppercase text-zinc-600 whitespace-nowrap pr-1">
               [ Alice in Wonderland / Lewis Carroll ]
@@ -260,14 +269,15 @@ export default function CTA() {
       {/* --- LAYER 3: 3D SCANNER (z-20) --- */}
       <div className="absolute inset-0 z-20 mix-blend-difference pointer-events-none">
         {/* 2. The Engine Killswitch: pauses the heavy GPU calculations when scrolled away */}
-        <Canvas 
-          frameloop={isCanvasInView ? "always" : "never"} 
-          dpr={[1, 1.5]} 
-          style={{ pointerEvents: "none" }} 
+        <Canvas
+          frameloop={isCanvasInView ? "always" : "never"}
+          dpr={[1, 1.5]}
+          style={{ pointerEvents: "none" }}
           camera={{ position: [0, 0, 8], fov: 50 }}
         >
           <ambientLight intensity={2} />
           <directionalLight position={[10, 10, 5]} intensity={3} />
+          <directionalLight position={[-10, -10, 2]} intensity={1.5} />
           <SystemLeak isCanvasInView={isCanvasInView} />
         </Canvas>
       </div>
