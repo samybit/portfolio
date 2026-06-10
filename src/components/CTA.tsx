@@ -5,17 +5,31 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { MeshDistortMaterial } from "@react-three/drei";
-import { useRef, useEffect, useMemo } from "react";
+import { useRef, useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 
 // --- 3D INTERACTIVE OBJECT: THE LIQUID ANOMALY LEAK ---
 function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
+  const [isEmber, setIsEmber] = useState(false);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsEmber(document.documentElement.classList.contains("theme-color"));
+    };
+    checkTheme();
+
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, []);
+
   const coreRef = useRef<THREE.Mesh>(null);
   const dropsGroupRef = useRef<THREE.Group>(null);
   const mouse = useRef({ x: 0, y: 0 });
 
   const boxGeom = useMemo(() => new THREE.BoxGeometry(1.5, 1.5, 1.5), []);
-  const boxMat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#ffffff" }), []);
+  const boxMat = useMemo(() => new THREE.MeshBasicMaterial({ color: isEmber ? "#FF3300" : "#ffffff" }), [isEmber]);
 
   useEffect(() => {
     return () => {
@@ -87,7 +101,7 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
       <mesh ref={coreRef}>
         <sphereGeometry args={[2.1, 32, 32]} />
         <MeshDistortMaterial
-          color="#ffffff"
+          color={isEmber ? "#FF3300" : "#ffffff"}
           distort={0.3}
           speed={1}
           roughness={1}
