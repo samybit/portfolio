@@ -1,7 +1,7 @@
 // src/components/GlitchText.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // Brutalist & Industrial Palette
 const COLORS = [
@@ -24,17 +24,34 @@ export default function GlitchText({ text }: { text: string }) {
 
 function HoverChar({ char }: { char: string }) {
   const [color, setColor] = useState<string | undefined>(undefined);
+  const timeoutRef = useRef<any>(null);
 
   const handleMouseEnter = () => {
-    // Pick a random brutalist color
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
     const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
     setColor(randomColor);
   };
 
   const handleMouseLeave = () => {
-    // Clear the color state so it falls back to inherit instantly
-    setColor(undefined);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      setColor(undefined);
+    }, 2000); // 2-second delay on mouse leave before snapping back
   };
+
+  // Cleanup timeout on component unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <span
@@ -42,8 +59,8 @@ function HoverChar({ char }: { char: string }) {
       onMouseLeave={handleMouseLeave}
       style={{
         color: color || "inherit",
-        // Instant brutalist timing snap change
-        transition: "none",
+        // Instant color change on hover, smooth 0.1s transition when the JS timer clears it
+        transition: color ? "none" : "color 0.1s ease",
       }}
       className="inline-block"
     >

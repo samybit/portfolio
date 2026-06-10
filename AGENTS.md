@@ -5,5 +5,5 @@ This version has breaking changes — APIs, conventions, and file structure may 
 <!-- END:nextjs-agent-rules -->
 
 <!-- BEGIN:user-agent-rules -->
-always suggest a commit head message after done with a task, that is human-readable and spicific.
+always suggest a commit head message after done with a task if made changes only, a message that is human-readable and spicific.
 <!-- END:user-agent-rules -->
