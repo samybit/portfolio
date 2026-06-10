@@ -12,6 +12,32 @@ export default function Navbar() {
   const pathname = usePathname();
   const [activeHash, setActiveHash] = useState("");
   const navRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // If mobile menu is open, don't hide the navbar
+      if (isOpen) {
+        setLastScrollY(currentScrollY);
+        return;
+      }
+      
+      // Hide if scrolling down and past 80px, show if scrolling up
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        setIsVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY, isOpen]);
 
   useEffect(() => {
     if (pathname !== '/') {
@@ -109,7 +135,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav ref={navRef} className="animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col">
+    <nav ref={navRef} className={`animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
       <div className="flex justify-between items-start w-full">
 
         {/* --- Left Column: Logo & Theme (Total height exactly 64px / h-16) --- */}
