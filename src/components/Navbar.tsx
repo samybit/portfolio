@@ -112,12 +112,12 @@ export default function Navbar() {
     <nav ref={navRef} className="animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col">
       <div className="flex justify-between items-start w-full">
 
-        {/* --- Left Column: Logo & Theme (Total height ~ 64px) --- */}
-        <div className="pointer-events-auto flex brutalist-shadow-static">
+        {/* --- Left Column: Logo & Theme (Total height exactly 64px / h-16) --- */}
+        <div className="pointer-events-auto flex brutalist-shadow-static h-16">
           <Link
             href="/"
             onClick={handleLogoClick}
-            className="bg-white border-4 border-black p-3 flex items-center gap-3"
+            className="bg-white border-4 border-black px-4 flex items-center gap-3 h-full"
           >
             <TerminalSquare size={32} className="text-black" />
             <span className="text-2xl font-black uppercase tracking-tighter">SB.</span>
@@ -127,18 +127,18 @@ export default function Navbar() {
             onClick={cycleTheme}
             aria-label="Cycle System Theme"
             title="Cycle Theme"
-            className="bg-black text-white border-4 border-l-0 border-black px-3 flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+            className="bg-black text-white border-4 border-l-0 border-black px-3.5 flex items-center justify-center hover:bg-white hover:text-black transition-colors h-full"
           >
             <Palette size={18} />
           </button>
         </div>
 
-        {/* --- Desktop Nav Links Block (Tuned to exactly match 64px height) --- */}
-        <div className="pointer-events-auto hidden md:flex items-center gap-1.5 bg-white border-4 border-black p-1.5 brutalist-shadow-static">
+        {/* --- Desktop Nav Links Block (Locked to exactly 64px / h-16 height) --- */}
+        <div className="pointer-events-auto hidden md:flex items-stretch gap-1.5 bg-white border-4 border-black p-1.5 brutalist-shadow-static h-16">
 
           <Link
             href="/about"
-            className={`relative group overflow-hidden isolate text-lg font-bold uppercase px-4 py-1.5 border-2 transition-all ${pathname === '/about'
+            className={`relative group overflow-hidden isolate text-lg font-bold uppercase px-4 flex items-center border-2 transition-all ${pathname === '/about'
               ? 'bg-black text-white border-black'
               : 'border-transparent hover:border-black hover:bg-black hover:text-white'
               }`}
@@ -150,7 +150,7 @@ export default function Navbar() {
           <Link
             href="/#projects"
             onClick={() => setActiveHash('#projects')}
-            className={`relative group overflow-hidden isolate text-lg font-bold uppercase px-4 py-1.5 border-2 transition-all ${pathname === '/' && activeHash === '#projects'
+            className={`relative group overflow-hidden isolate text-lg font-bold uppercase px-4 flex items-center border-2 transition-all ${pathname === '/' && activeHash === '#projects'
               ? 'bg-black text-white border-black'
               : 'border-transparent hover:border-black hover:bg-black hover:text-white'
               }`}
@@ -163,7 +163,7 @@ export default function Navbar() {
             href="https://github.com/samybit"
             target="_blank"
             rel="noopener noreferrer"
-            className="relative group overflow-hidden isolate flex items-center gap-1 text-lg font-bold uppercase px-4 py-1.5 border-2 border-transparent hover:border-black hover:bg-black hover:text-white transition-all"
+            className="relative group overflow-hidden isolate flex items-center gap-1 text-lg font-bold uppercase px-4 border-2 border-transparent hover:border-black hover:bg-black hover:text-white transition-all"
           >
             <Smoke />
             <span className="relative z-10 flex items-center gap-1">GitHub <ArrowUpRight size={20} /></span>
@@ -172,7 +172,7 @@ export default function Navbar() {
           <Link
             href="/#contact"
             onClick={() => setActiveHash('#contact')}
-            className={`relative group overflow-hidden isolate px-5 py-1.5 text-lg font-bold uppercase border-2 transition-all ml-1 ${pathname === '/' && activeHash === '#contact'
+            className={`relative group overflow-hidden isolate px-5 flex items-center text-lg font-bold uppercase border-2 transition-all ml-1 ${pathname === '/' && activeHash === '#contact'
               ? 'bg-white text-black border-black'
               : 'bg-black text-white border-black hover:bg-white hover:text-black'
               }`}
