@@ -1,7 +1,7 @@
 "use client";
 
 import { Send, Check, ArrowUpRight, Loader2 } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { sendEmail } from "@/actions/send-email";
 import { playPowerUp } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";
@@ -10,6 +10,17 @@ export default function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errors, setErrors] = useState<{ email?: string; message?: string }>({});
   const [values, setValues] = useState({ name: "", email: "", message: "" });
+  const [isNeumorphic, setIsNeumorphic] = useState(false);
+
+  useEffect(() => {
+    setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
+    const observer = new MutationObserver(() => {
+      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, []);
 
   const isSubmitting = useRef(false);
 
@@ -72,6 +83,16 @@ export default function Contact() {
   const inputBaseStyle = "p-3 md:p-4 border-4 text-lg md:text-xl resize-none focus:outline-none transition-colors duration-150 relative z-20";
 
   const getInputStyle = (isValid: boolean, isError: boolean) => {
+    if (isNeumorphic) {
+      if (isError) {
+        return "w-full p-3 md:p-4 text-lg md:text-xl rounded-2xl bg-[#fee2e2] text-[#b91c1c] border border-transparent shadow-[inset_3px_3px_6px_rgba(220,38,38,0.2),_inset_-3px_-3px_6px_rgba(255,255,255,0.7)] focus:outline-none transition-all duration-300";
+      }
+      if (isValid) {
+        return "w-full p-3 md:p-4 text-lg md:text-xl rounded-2xl bg-[#dcfce7] text-[#15803d] border border-transparent shadow-[inset_3px_3px_6px_rgba(22,163,74,0.2),_inset_-3px_-3px_6px_rgba(255,255,255,0.7)] focus:outline-none transition-all duration-300";
+      }
+      return "w-full p-3 md:p-4 text-lg md:text-xl rounded-2xl bg-[#e0e5ec] text-[#4b5563] border border-transparent shadow-[inset_3px_3px_6px_rgba(163,177,198,0.5),_inset_-3px_-3px_6px_rgba(255,255,255,0.7)] focus:outline-none transition-all duration-300";
+    }
+
     if (isError) return `${inputBaseStyle} border-red-600 bg-red-50 text-black`;
     if (isValid) return `${inputBaseStyle} border-black bg-black text-white focus:ring-4 focus:ring-black/20`;
     return `${inputBaseStyle} border-black bg-white text-black focus:ring-4 focus:ring-black/20`;
@@ -197,11 +218,15 @@ export default function Contact() {
                     if (status !== "loading" && !isSubmitting.current) playPowerUp();
                   }}
                   disabled={status === "loading"}
-                  className={`mt-2 flex items-center justify-center bg-black text-white py-3 px-5 text-xl md:text-2xl font-black uppercase border-4 border-black transition-all duration-200 ease-in-out group relative z-20 
-                  ${status === "loading"
-                      ? "opacity-80 cursor-wait translate-x-1 translate-y-1 shadow-[4px_4px_0px_#000]"
-                      : "shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
-                    }`}
+                  className={`mt-2 flex items-center justify-center py-3 px-5 text-xl md:text-2xl font-black uppercase transition-all duration-300 ease-in-out group relative z-20 ${
+                    isNeumorphic
+                      ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                      : `bg-black text-white border-4 border-black ${
+                          status === "loading"
+                            ? "opacity-80 cursor-wait translate-x-1 translate-y-1 shadow-[4px_4px_0px_#000]"
+                            : "shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                        }`
+                  }`}
                 >
                   <span className="transition-transform duration-300">
                     {status === "loading" ? "Sending..." : "Send Message"}
