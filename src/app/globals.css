@@ -572,8 +572,7 @@ html.theme-neumorphic a.border-2:active,
 html.theme-neumorphic a.border-4:active,
 html.theme-neumorphic a.border-l-8:active,
 html.theme-neumorphic button.border-2:active,
-html.theme-neumorphic button.border-4:active,
-html.theme-neumorphic .project-card:active {
+html.theme-neumorphic button.border-4:active {
   box-shadow: inset 6px 6px 10px 0 rgba(163,177,198,0.7), inset -6px -6px 10px 0 rgba(255,255,255,0.5) !important;
   transform: translateY(2px) !important;
 }
