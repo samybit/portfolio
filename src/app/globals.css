@@ -730,21 +730,58 @@ html.theme-neumorphic textarea.border-red-600:focus {
 }
 
 /* --- Navbar Neumorphic Fixes --- */
-html.theme-neumorphic nav .brutalist-shadow-static:has(a.border-2),
-html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static {
+html.theme-neumorphic nav .brutalist-shadow-static:has(a.border-2) {
   box-shadow: none !important;
   background-color: transparent !important;
   overflow: visible !important;
 }
 
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static {
+  box-shadow: 9px 9px 16px rgba(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5) !important;
+  background-color: #e0e5ec !important;
+  border-radius: 1.5rem !important;
+  border-color: transparent !important;
+  overflow: hidden !important;
+  display: flex !important;
+}
+
 html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > a {
+  box-shadow: none !important;
+  background-color: #e0e5ec !important;
+  border-top-left-radius: 1.5rem !important;
+  border-bottom-left-radius: 1.5rem !important;
   border-top-right-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
+  border-color: transparent !important;
+  transform: none !important;
+  transition: all 0.3s ease !important;
 }
 
 html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > button {
+  box-shadow: none !important;
+  background-color: #e0e5ec !important;
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
+  border-top-right-radius: 1.5rem !important;
+  border-bottom-right-radius: 1.5rem !important;
+  border-color: transparent !important;
+  transform: none !important;
+  transition: all 0.3s ease !important;
+}
+
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > a:hover,
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > button:hover {
+  box-shadow: inset 6px 6px 10px 0 rgba(163,177,198,0.7), inset -6px -6px 10px 0 rgba(255,255,255,0.5) !important;
+  background-color: #e0e5ec !important;
+  border-color: transparent !important;
+  transform: none !important;
+}
+
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > a:active,
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > button:active {
+  box-shadow: inset 8px 8px 14px 0 rgba(163,177,198,0.8), inset -8px -8px 14px 0 rgba(255,255,255,0.6) !important;
+  border-color: transparent !important;
+  transform: none !important;
 }
 
 html.theme-neumorphic nav a.bg-black {
