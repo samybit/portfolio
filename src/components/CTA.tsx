@@ -14,6 +14,16 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
   const dropsGroupRef = useRef<THREE.Group>(null);
   const mouse = useRef({ x: 0, y: 0 });
 
+  const boxGeom = useMemo(() => new THREE.BoxGeometry(1.5, 1.5, 1.5), []);
+  const boxMat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#ffffff" }), []);
+
+  useEffect(() => {
+    return () => {
+      boxGeom.dispose();
+      boxMat.dispose();
+    };
+  }, [boxGeom, boxMat]);
+
   const dropsData = useMemo(() => {
     return Array.from({ length: 25 }, () => ({
       offsetX: (Math.random() - 0.5) * 1.5,
@@ -75,7 +85,7 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
   return (
     <>
       <mesh ref={coreRef}>
-        <sphereGeometry args={[2.1, 64, 64]} />
+        <sphereGeometry args={[2.1, 32, 32]} />
         <MeshDistortMaterial
           color="#ffffff"
           distort={0.3}
@@ -86,10 +96,13 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
 
       <group ref={dropsGroupRef}>
         {dropsData.map((data, i) => (
-          <mesh key={i} position={[0, -10, 0]} scale={data.scale}>
-            <boxGeometry args={[1.5, 1.5, 1.5]} />
-            <meshBasicMaterial color="#ffffff" />
-          </mesh>
+          <mesh 
+            key={i} 
+            position={[0, -10, 0]} 
+            scale={data.scale}
+            geometry={boxGeom}
+            material={boxMat}
+          />
         ))}
       </group>
     </>
@@ -233,7 +246,12 @@ export default function CTA() {
       {/* --- LAYER 3: 3D SCANNER (z-20) --- */}
       <div className="absolute inset-0 z-20 mix-blend-difference pointer-events-none">
         {/* 2. The Engine Killswitch: pauses the heavy GPU calculations when scrolled away */}
-        <Canvas frameloop={isCanvasInView ? "always" : "never"} style={{ pointerEvents: "none" }} camera={{ position: [0, 0, 8], fov: 50 }}>
+        <Canvas 
+          frameloop={isCanvasInView ? "always" : "never"} 
+          dpr={[1, 1.5]} 
+          style={{ pointerEvents: "none" }} 
+          camera={{ position: [0, 0, 8], fov: 50 }}
+        >
           <ambientLight intensity={2} />
           <directionalLight position={[10, 10, 5]} intensity={3} />
           <SystemLeak isCanvasInView={isCanvasInView} />
