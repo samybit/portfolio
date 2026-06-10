@@ -104,7 +104,7 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
       // Calculate vertical distance from the core center
       const distanceY = core.position.y - drop.position.y;
       const startBuddingDist = 1.0; // starts growing inside the core
-      const fullGrowthDist = 3.0; // fully grown when it has drifted below the core
+      const fullGrowthDist = 2.3; // fully grown and detached when it clears the core boundary
 
       let scaleFactor = 0;
       if (distanceY > startBuddingDist) {
