@@ -171,6 +171,22 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
 }
 
 export default function CTA() {
+  const [isEmber, setIsEmber] = useState(false);
+  const [isNeumorphic, setIsNeumorphic] = useState(false);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsEmber(document.documentElement.classList.contains("theme-color"));
+      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
+    };
+    checkTheme();
+
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, []);
+
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
     const contactSection = document.getElementById("contact");
@@ -238,7 +254,7 @@ export default function CTA() {
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg stroke='%23000000' stroke-width='6' fill='none' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cline x1='25' y1='75' x2='72' y2='28' /%3E%3Cpolyline points='50,25 75,25 75,50' /%3E%3Cline x1='65' y1='5' x2='95' y2='35' /%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg stroke='${isNeumorphic ? "%23a3b1c6" : "%23000000"}' stroke-width='6' fill='none' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cline x1='25' y1='75' x2='72' y2='28' /%3E%3Cpolyline points='50,25 75,25 75,50' /%3E%3Cline x1='65' y1='5' x2='95' y2='35' /%3E%3C/g%3E%3C/svg%3E")`,
           backgroundSize: "100px 100px"
         }}
       ></div>
