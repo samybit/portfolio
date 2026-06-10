@@ -112,9 +112,10 @@ interface ProjectCardProps {
   project: Project;
   animate?: boolean;
   disableObserver?: boolean;
+  isNeumorphic?: boolean;
 }
 
-const ProjectCard = ({ project, animate = false, disableObserver = false }: ProjectCardProps) => {
+const ProjectCard = ({ project, animate = false, disableObserver = false, isNeumorphic = false }: ProjectCardProps) => {
   const [isToggled, setIsToggled] = useState(false);
 
   // Cleanly check if valid links exist (ignoring empty strings and "#" placeholders)
@@ -148,7 +149,14 @@ const ProjectCard = ({ project, animate = false, disableObserver = false }: Proj
 
           <div className="flex flex-wrap gap-2 mt-auto pt-4">
             {project.tech.map((tech: string, i: number) => (
-              <span key={i} className="px-2 py-1 md:px-2.5 bg-black text-white text-[10px] md:text-xs font-bold uppercase tracking-wider">
+              <span
+                key={i}
+                className={`px-2 py-1 md:px-2.5 text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                  isNeumorphic
+                    ? "bg-[#d1d9e6]/70 text-[#4b5563] rounded-md"
+                    : "bg-black text-white"
+                }`}
+              >
                 {tech}
               </span>
             ))}
@@ -329,7 +337,7 @@ export default function Projects() {
         {/* The 2x2 Grid container */}
         <div className="grid grid-cols-2 grid-rows-2 gap-6 xl:gap-8 h-full w-full">
           {currentProjects.map((project, index) => (
-            <ProjectCard key={`desktop-${page}-${index}`} project={project} animate={true} />
+            <ProjectCard key={`desktop-${page}-${index}`} project={project} animate={true} isNeumorphic={isNeumorphic} />
           ))}
         </div>
 
@@ -351,7 +359,7 @@ export default function Projects() {
         <div className="flex lg:hidden flex-col gap-6 pb-8 flex-1">
           {projects.map((project, index) => (
             <div key={`mobile-list-${index}`} className="w-full">
-              <ProjectCard project={project} animate={true} />
+              <ProjectCard project={project} animate={true} isNeumorphic={isNeumorphic} />
             </div>
           ))}
         </div>
@@ -363,7 +371,7 @@ export default function Projects() {
           <style dangerouslySetInnerHTML={{ __html: `div::-webkit-scrollbar { display: none; }` }} />
           {projects.map((project, index) => (
             <div key={`mobile-swipe-${index}`} className="w-[85vw] sm:w-[60vw] shrink-0 snap-center h-full">
-              <ProjectCard project={project} animate={false} disableObserver={true} />
+              <ProjectCard project={project} animate={false} disableObserver={true} isNeumorphic={isNeumorphic} />
             </div>
           ))}
           <div className="w-[1px] shrink-0"></div>
