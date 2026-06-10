@@ -8,6 +8,7 @@ import DecryptText from "@/components/DecryptText";
 
 export default function AboutPage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isNeumorphic, setIsNeumorphic] = useState(false);
 
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -21,6 +22,15 @@ export default function AboutPage() {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
+
+    // Detect and observe theme class on HTML element
+    setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
+    const observer = new MutationObserver(() => {
+      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -91,14 +101,20 @@ export default function AboutPage() {
         {/* --- EDUCATION & CERTS ROW --- */}
         <div className="animate-slide-up-delay-1 grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-          <section className="brutalist-container !bg-black !text-white flex flex-col justify-between">
+          <section className={`brutalist-container flex flex-col justify-between transition-all duration-300 ${
+            isNeumorphic ? "" : "!bg-black !text-white"
+          }`}>
             <div>
-              <div className="flex items-center gap-4 border-b-4 border-white pb-4 mb-6">
+              <div className={`flex items-center gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
+                isNeumorphic ? "border-[#a3b1c6]" : "border-white"
+              }`}>
                 <GraduationCap size={40} />
                 <h2 className="text-4xl font-black uppercase">Education</h2>
               </div>
               <h3 className="text-3xl font-bold uppercase leading-tight mb-2">Ain Shams University</h3>
-              <p className="text-xl font-bold text-zinc-400 mb-6 uppercase">Bachelor of Commerce (B.B.A.) // 2019 - 2023</p>
+              <p className={`text-xl font-bold mb-6 uppercase transition-all duration-300 ${
+                isNeumorphic ? "text-zinc-500" : "text-zinc-400"
+              }`}>Bachelor of Commerce (B.B.A.) // 2019 - 2023</p>
               <p className="text-lg md:text-xl font-medium leading-relaxed">
                 Specialized in accounting and project management, which strengthened my problem-solving skills and gave me a solid understanding of real-world product needs.
               </p>
@@ -106,7 +122,9 @@ export default function AboutPage() {
           </section>
 
           <section className="brutalist-container flex flex-col">
-            <div className="flex items-center gap-4 border-b-4 border-black pb-4 mb-6">
+            <div className={`flex items-center gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
+              isNeumorphic ? "border-[#a3b1c6]" : "border-black"
+            }`}>
               <Award size={40} />
               <h2 className="text-4xl font-black uppercase">Clearances</h2>
             </div>
@@ -118,7 +136,11 @@ export default function AboutPage() {
                   e.preventDefault();
                   showToast("MERN Stack certificate is not online yet.");
                 }}
-                className="group block border-l-8 border-black pl-4 py-2 hover:bg-black hover:text-white transition-colors cursor-pointer"
+                className={`group block border-l-8 pl-4 py-2 transition-all cursor-pointer ${
+                  isNeumorphic
+                    ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
+                    : "border-black hover:bg-black hover:text-white"
+                }`}
               >
                 <div className="flex justify-between items-center">
                   <div>
@@ -139,7 +161,11 @@ export default function AboutPage() {
                 href="https://cs50.harvard.edu/certificates/09d4b4ad-f9dd-4cf3-a1dc-7385742119f9"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block border-l-8 border-black pl-4 py-2 hover:bg-black hover:text-white transition-colors cursor-pointer"
+                className={`group block border-l-8 pl-4 py-2 transition-all cursor-pointer ${
+                  isNeumorphic
+                    ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
+                    : "border-black hover:bg-black hover:text-white"
+                }`}
               >
                 <div className="flex justify-between items-center">
                   <div>
@@ -160,7 +186,11 @@ export default function AboutPage() {
                 href="https://i.ibb.co/ynPJ6szk/FWD-data-Certificate.png"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block border-l-8 border-black pl-4 py-2 hover:bg-black hover:text-white transition-colors cursor-pointer"
+                className={`group block border-l-8 pl-4 py-2 transition-all cursor-pointer ${
+                  isNeumorphic
+                    ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
+                    : "border-black hover:bg-black hover:text-white"
+                }`}
               >
                 <div className="flex justify-between items-center">
                   <div>
@@ -190,20 +220,33 @@ export default function AboutPage() {
             {stack.map((category, index) => (
               <div
                 key={index}
-                className="brutalist-container group hover:!bg-black hover:!text-white transition-colors duration-300 flex flex-col"
+                className={`brutalist-container group transition-all duration-300 flex flex-col ${
+                  isNeumorphic
+                    ? "hover:!bg-[#d1d9e6] hover:!text-[#1e293b]"
+                    : "hover:!bg-black hover:!text-white"
+                }`}
               >
-                <div className="flex flex-col items-start gap-4 border-b-4 border-black group-hover:border-white pb-4 mb-6 transition-colors duration-300">
-                  <div className="p-3 border-4 border-black text-black group-hover:border-white group-hover:bg-white group-hover:!text-black transition-colors duration-300">
+                <div className={`flex flex-col items-start gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
+                  isNeumorphic ? "border-[#a3b1c6]" : "border-black group-hover:border-white"
+                }`}>
+                  <div className={`p-3 border-4 text-black transition-all duration-300 ${
+                    isNeumorphic
+                      ? "border-transparent rounded-xl shadow-[inset_2px_2px_5px_rgba(163,177,198,0.5),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
+                      : "border-black group-hover:border-white group-hover:bg-white group-hover:!text-black"
+                  }`}>
                     {category.icon}
                   </div>
                   <h3 className="text-2xl font-black uppercase leading-none">{category.category}</h3>
                 </div>
 
-                {/* Removed mt-auto here! The list will now sit perfectly beneath the header line */}
                 <ul className="flex flex-col gap-3">
                   {category.tech.map((item, i) => (
                     <li key={i} className="text-lg font-bold uppercase flex items-center gap-2">
-                      <span className="w-2 h-2 bg-black group-hover:bg-white inline-block transition-colors duration-300 shrink-0"></span>
+                      <span className={`w-2 h-2 inline-block transition-all duration-300 shrink-0 ${
+                        isNeumorphic
+                          ? "bg-[#4b5563] group-hover:bg-[#1e293b]"
+                          : "bg-black group-hover:bg-white"
+                      }`}></span>
                       {item}
                     </li>
                   ))}
