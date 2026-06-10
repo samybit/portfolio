@@ -722,6 +722,7 @@ html.theme-neumorphic input[type='email']:focus,
 html.theme-neumorphic textarea:focus {
   box-shadow: inset 6px 6px 12px rgba(163, 177, 198, 0.8), inset -6px -6px 12px rgba(255, 255, 255, 0.6) !important;
   outline: none !important;
+  transform: none !important;
 }
 
 /* Valid Inputs (strong success tint/inset shadow) */
@@ -854,12 +855,14 @@ html.theme-neumorphic input[type='text'].bg-black:focus,
 html.theme-neumorphic input[type='email'].bg-black:focus,
 html.theme-neumorphic textarea.bg-black:focus {
   box-shadow: inset 6px 6px 12px rgba(22, 163, 74, 0.2), inset -6px -6px 12px rgba(255, 255, 255, 0.6) !important;
+  transform: none !important;
 }
 
 html.theme-neumorphic input[type='text'].border-red-600:focus,
 html.theme-neumorphic input[type='email'].border-red-600:focus,
 html.theme-neumorphic textarea.border-red-600:focus {
   box-shadow: inset 5px 5px 10px rgba(220, 38, 38, 0.25), inset -5px -5px 10px rgba(255, 255, 255, 0.6) !important;
+  transform: none !important;
 }
 
 /* --- Navbar Neumorphic Fixes --- */

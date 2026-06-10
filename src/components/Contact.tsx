@@ -83,16 +83,6 @@ export default function Contact() {
   const inputBaseStyle = "p-3 md:p-4 border-4 text-lg md:text-xl resize-none focus:outline-none transition-colors duration-150 relative z-20";
 
   const getInputStyle = (isValid: boolean, isError: boolean) => {
-    if (isNeumorphic) {
-      if (isError) {
-        return "w-full p-3 md:p-4 text-lg md:text-xl rounded-2xl bg-[#fee2e2] text-[#b91c1c] border border-transparent shadow-[inset_3px_3px_6px_rgba(220,38,38,0.2),_inset_-3px_-3px_6px_rgba(255,255,255,0.7)] focus:outline-none transition-all duration-300";
-      }
-      if (isValid) {
-        return "w-full p-3 md:p-4 text-lg md:text-xl rounded-2xl bg-[#dcfce7] text-[#15803d] border border-transparent shadow-[inset_3px_3px_6px_rgba(22,163,74,0.2),_inset_-3px_-3px_6px_rgba(255,255,255,0.7)] focus:outline-none transition-all duration-300";
-      }
-      return "w-full p-3 md:p-4 text-lg md:text-xl rounded-2xl bg-[#e0e5ec] text-[#4b5563] border border-transparent shadow-[inset_3px_3px_6px_rgba(163,177,198,0.5),_inset_-3px_-3px_6px_rgba(255,255,255,0.7)] focus:outline-none transition-all duration-300";
-    }
-
     if (isError) return `${inputBaseStyle} border-red-600 bg-red-50 text-black`;
     if (isValid) return `${inputBaseStyle} border-black bg-black text-white focus:ring-4 focus:ring-black/20`;
     return `${inputBaseStyle} border-black bg-white text-black focus:ring-4 focus:ring-black/20`;
