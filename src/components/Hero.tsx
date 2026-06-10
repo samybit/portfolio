@@ -41,7 +41,7 @@ export default function Hero() {
               onMouseLeave={() => setIsHovered(false)}
               onClick={() => setIsHovered(!isHovered)}
             >
-              <span className={`relative z-20 inline-block transition-colors duration-300 hero-samy-text ${isHovered ? "text-white" : "text-black"
+              <span className={`relative z-20 inline-block hero-samy-text ${isHovered ? "text-white" : "text-black"
                 }`}>
                 Samy
               </span>
