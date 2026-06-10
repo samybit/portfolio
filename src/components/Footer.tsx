@@ -2,12 +2,12 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { MeshDistortMaterial } from "@react-three/drei";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 import { useInView } from "framer-motion";
 
 // --- 3D INTERACTIVE OBJECT: MASSIVE BACKGROUND KNOT ---
-function BackgroundKnot() {
+function BackgroundKnot({ isEmber, isNeumorphic }: { isEmber: boolean; isNeumorphic: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
@@ -19,10 +19,28 @@ function BackgroundKnot() {
     meshRef.current.rotation.z = t * 0.05;
   });
 
+  let knotColor = "#000000";
+  let knotOpacity = 0.15;
+
+  if (isEmber) {
+    knotColor = "#FF4F00";
+    knotOpacity = 0.2;
+  } else if (isNeumorphic) {
+    knotColor = "#ffffff";
+    knotOpacity = 0.4;
+  }
+
   return (
     <mesh ref={meshRef} position={[0, 0, -8]}>
       <torusKnotGeometry args={[5, 1.2, 256, 32, 3, 4]} />
-      <MeshDistortMaterial color="#000000" wireframe={true} transparent={true} opacity={0.15} distort={0.25} speed={1.5} />
+      <MeshDistortMaterial 
+        color={knotColor} 
+        wireframe={true} 
+        transparent={true} 
+        opacity={knotOpacity} 
+        distort={0.25} 
+        speed={1.5} 
+      />
     </mesh>
   );
 }
@@ -32,6 +50,22 @@ export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
   // The margin ensures it wakes up slightly before the user actually sees it
   const isInView = useInView(footerRef, { margin: "200px 0px 200px 0px" });
+
+  const [isEmber, setIsEmber] = useState(false);
+  const [isNeumorphic, setIsNeumorphic] = useState(false);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsEmber(document.documentElement.classList.contains("theme-color"));
+      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
+    };
+    checkTheme();
+
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <footer ref={footerRef} className="relative overflow-hidden bg-white border-t-8 border-black p-6 md:p-12">
@@ -44,7 +78,7 @@ export default function Footer() {
         >
           <ambientLight intensity={2} />
           <directionalLight position={[10, 10, 5]} intensity={3} />
-          <BackgroundKnot />
+          <BackgroundKnot isEmber={isEmber} isNeumorphic={isNeumorphic} />
         </Canvas>
       </div>
 
