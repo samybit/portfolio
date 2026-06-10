@@ -94,13 +94,51 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
     dropsGroup.children.forEach((drop, index) => {
       const data = dropsData[index];
 
+      // Move down at the original graceful slow speed
       drop.position.y -= data.speed;
+      
+      // Slowly rotate
       drop.rotation.x += data.rotSpeedX;
       drop.rotation.y += data.rotSpeedY;
 
+      // Calculate vertical distance from the core center
+      const distanceY = core.position.y - drop.position.y;
+      const startBuddingDist = 1.0; // starts growing inside the core
+      const fullGrowthDist = 3.0; // fully grown when it has drifted below the core
+
+      let scaleFactor = 0;
+      if (distanceY > startBuddingDist) {
+        scaleFactor = Math.min((distanceY - startBuddingDist) / (fullGrowthDist - startBuddingDist), 1);
+      }
+      
+      // Smoothstep easing for organic scale growth
+      const easedScale = scaleFactor * scaleFactor * (3 - 2 * scaleFactor);
+      drop.scale.set(data.scale * easedScale, data.scale * easedScale, data.scale * easedScale);
+
+      // Resolve dynamic offset for Neumorphic width adjustments
+      const offsetX = drop.userData.offsetX !== undefined ? drop.userData.offsetX : data.offsetX;
+      const offsetZ = drop.userData.offsetZ !== undefined ? drop.userData.offsetZ : 0;
+
+      // Cling to the core's horizontal movement while budding
+      if (distanceY < fullGrowthDist) {
+        const attachFactor = 1 - (distanceY - startBuddingDist) / (fullGrowthDist - startBuddingDist);
+        const clampedAttach = Math.max(0, Math.min(1, attachFactor));
+        // Interpolate horizontal position towards core + offset
+        drop.position.x += (core.position.x + offsetX - drop.position.x) * clampedAttach * 0.15;
+        drop.position.z += (core.position.z + offsetZ - drop.position.z) * clampedAttach * 0.15;
+      }
+
+      // Reset when falling past the bottom boundary of the canvas
       if (drop.position.y < -5) {
-        drop.position.x = core.position.x + data.offsetX;
-        drop.position.y = core.position.y + data.offsetY;
+        const radius = 2.1;
+        // Spans a very wide bottom hemisphere (almost equator to equator) for a wide rain effect
+        const angle = -Math.PI / 2 + (Math.random() - 0.5) * 2.4; 
+        drop.userData.offsetX = Math.cos(angle) * radius * 0.95;
+        drop.userData.offsetZ = (Math.random() - 0.5) * 2.5;
+
+        drop.position.x = core.position.x + drop.userData.offsetX;
+        drop.position.y = core.position.y + Math.sin(angle) * radius * 0.95;
+        drop.position.z = core.position.z + drop.userData.offsetZ;
       }
     });
   });
