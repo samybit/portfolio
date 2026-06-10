@@ -848,3 +848,9 @@ html.theme-neumorphic #projects .brutalist-shadow button:hover {
 html.theme-neumorphic #projects .brutalist-shadow button:active {
   box-shadow: inset 8px 8px 14px 0 rgba(163,177,198,0.8), inset -8px -8px 14px 0 rgba(255,255,255,0.6) !important;
 }
+
+/* Disable all transitions during theme switching to prevent flashes and color/filter animations */
+html.theme-transitioning,
+html.theme-transitioning * {
+  transition: none !important;
+}

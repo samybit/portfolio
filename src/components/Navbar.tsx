@@ -73,6 +73,8 @@ export default function Navbar() {
     playClack();
     const html = document.documentElement;
 
+    html.classList.add("theme-transitioning");
+
     if (html.classList.contains("invert-theme")) {
       html.classList.remove("invert-theme");
       html.classList.add("theme-color");
@@ -84,6 +86,10 @@ export default function Navbar() {
     } else {
       html.classList.add("invert-theme");
     }
+
+    setTimeout(() => {
+      html.classList.remove("theme-transitioning");
+    }, 50);
   };
 
   const toggleMobileMenu = () => {
