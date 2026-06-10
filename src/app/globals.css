@@ -489,7 +489,9 @@ html.theme-neumorphic body {
 html.theme-neumorphic .border-black,
 html.theme-neumorphic .border-white,
 html.theme-neumorphic [class*='hover:border-black']:hover,
-html.theme-neumorphic [class*='hover:border-white']:hover {
+html.theme-neumorphic [class*='hover:border-white']:hover,
+html.theme-neumorphic [class*='hover:!border-black']:hover,
+html.theme-neumorphic [class*='hover:!border-white']:hover {
   border-color: transparent !important;
 }
 
@@ -497,7 +499,9 @@ html.theme-neumorphic [class*='hover:border-white']:hover {
 html.theme-neumorphic .bg-white,
 html.theme-neumorphic .bg-black,
 html.theme-neumorphic [class*='hover:bg-white']:hover,
-html.theme-neumorphic [class*='hover:bg-black']:hover {
+html.theme-neumorphic [class*='hover:bg-black']:hover,
+html.theme-neumorphic [class*='hover:!bg-white']:hover,
+html.theme-neumorphic [class*='hover:!bg-black']:hover {
   background-color: #e0e5ec !important;
 }
 
@@ -505,7 +509,9 @@ html.theme-neumorphic [class*='hover:bg-black']:hover {
 html.theme-neumorphic .text-white,
 html.theme-neumorphic .text-black,
 html.theme-neumorphic [class*='hover:text-white']:hover,
-html.theme-neumorphic [class*='hover:text-black']:hover {
+html.theme-neumorphic [class*='hover:text-black']:hover,
+html.theme-neumorphic [class*='hover:!text-white']:hover,
+html.theme-neumorphic [class*='hover:!text-black']:hover {
   color: #4b5563 !important;
 }
 
@@ -536,6 +542,7 @@ html.theme-neumorphic .bg-white.border-4 {
 /* Hover Shadows */
 html.theme-neumorphic .brutalist-container:hover,
 html.theme-neumorphic .brutalist-shadow:hover,
+html.theme-neumorphic .bg-white.border-4:hover,
 html.theme-neumorphic a.border-2:hover,
 html.theme-neumorphic a.border-4:hover,
 html.theme-neumorphic button.border-2:hover,
@@ -590,6 +597,44 @@ html.theme-neumorphic ::-webkit-scrollbar-thumb {
 html.theme-neumorphic::-webkit-scrollbar-thumb:hover,
 html.theme-neumorphic ::-webkit-scrollbar-thumb:hover {
   background-color: #8c9bb0 !important;
+}
+
+/* Neumorphic About Page Technical Arsenal & Clearances Card Hover Fixes */
+html.theme-neumorphic .brutalist-container.group {
+  background-color: #e0e5ec !important;
+  color: #4b5563 !important;
+}
+
+html.theme-neumorphic .brutalist-container.group:hover {
+  background-color: #e0e5ec !important;
+  color: #4b5563 !important;
+}
+
+/* Ensure the card header separator line doesn't turn white on hover */
+html.theme-neumorphic .brutalist-container.group div.border-b-4 {
+  border-color: #a3b1c6 !important;
+}
+
+/* Style the icon container as a soft inset Neumorphic shape, matching background and color */
+html.theme-neumorphic .brutalist-container.group div.p-3 {
+  border-color: transparent !important;
+  background-color: #e0e5ec !important;
+  color: #4b5563 !important;
+  box-shadow: inset 2px 2px 5px rgba(163, 177, 198, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.7) !important;
+  border-radius: 0.75rem !important;
+}
+
+/* Ensure bullet points are visible and don't turn white on hover */
+html.theme-neumorphic .brutalist-container.group ul li span {
+  background-color: #4b5563 !important;
+}
+
+/* Style the clearances links as beautiful pressable inset plates on hover */
+html.theme-neumorphic a.border-l-8:hover {
+  background-color: #e0e5ec !important;
+  color: #4b5563 !important;
+  box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.5), inset -3px -3px 6px rgba(255, 255, 255, 0.7) !important;
+  border-radius: 0.5rem !important;
 }
 
 /* Show 3D Parametric Background with Neumorphic Styling */
