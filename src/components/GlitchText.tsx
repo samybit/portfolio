@@ -24,41 +24,26 @@ export default function GlitchText({ text }: { text: string }) {
 
 function HoverChar({ char }: { char: string }) {
   const [color, setColor] = useState<string | undefined>(undefined);
-  const [hasHovered, setHasHovered] = useState(false);
 
   const handleMouseEnter = () => {
     // Pick a random brutalist color
     const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
     setColor(randomColor);
-    setHasHovered(true);
   };
 
   const handleMouseLeave = () => {
-    // Clear the color state so it falls back to inherit
+    // Clear the color state so it falls back to inherit instantly
     setColor(undefined);
-  };
-
-  const handleTransitionEnd = (e: React.TransitionEvent) => {
-    if (e.propertyName === "color" && !color) {
-      setHasHovered(false);
-    }
   };
 
   return (
     <span
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onTransitionEnd={handleTransitionEnd}
       style={{
         color: color || "inherit",
-        // Only apply the 2s transition delay if this specific character has been hovered
-        // AND we are currently transitioning back (color is undefined).
-        // Otherwise, no transition (instant switch) to avoid theme toggles lagging!
-        transition: color
-          ? "color 0.05s ease"
-          : hasHovered
-            ? "color 0.1s ease 2s"
-            : "none",
+        // Instant brutalist timing snap change
+        transition: "none",
       }}
       className="inline-block"
     >
