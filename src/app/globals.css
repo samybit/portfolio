@@ -779,7 +779,30 @@ html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > butt
 
 html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > a:active,
 html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > button:active {
-  box-shadow: inset 8px 8px 14px 0 rgba(163,177,198,0.8), inset -8px -8px 14px 0 rgba(255,255,255,0.6) !important;
+  box-shadow: inset 8px 8px 14px 0 rgba(163, 177, 198, 0.8), inset -8px -8px 14px 0 rgba(255, 255, 255, 0.6) !important;
+  border-color: transparent !important;
+  transform: none !important;
+}
+
+/* --- Mobile Menu Toggle Button Neumorphic Fix --- */
+html.theme-neumorphic nav button.brutalist-shadow-static.md\:hidden {
+  box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5) !important;
+  background-color: #e0e5ec !important;
+  border-radius: 1.5rem !important;
+  border-color: transparent !important;
+  transform: none !important;
+  transition: all 0.3s ease !important;
+}
+
+html.theme-neumorphic nav button.brutalist-shadow-static.md\:hidden:hover {
+  box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5), inset 6px 6px 10px 0 rgba(163, 177, 198, 0.7), inset -6px -6px 10px 0 rgba(255, 255, 255, 0.5) !important;
+  background-color: #e0e5ec !important;
+  border-color: transparent !important;
+  transform: none !important;
+}
+
+html.theme-neumorphic nav button.brutalist-shadow-static.md\:hidden:active {
+  box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5), inset 8px 8px 14px 0 rgba(163, 177, 198, 0.8), inset -8px -8px 14px 0 rgba(255, 255, 255, 0.6) !important;
   border-color: transparent !important;
   transform: none !important;
 }
