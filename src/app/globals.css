@@ -207,6 +207,8 @@ html.theme-color body {
   /* Deep, soft warm charcoal */
   color: #FF4F00 !important;
   /* Pure Fiery Orange */
+  background-image: radial-gradient(#000000 1px, transparent 0) !important;
+  background-size: 40px 40px !important;
 }
 
 /* Intercept and overwrite all hardcoded 'white' backgrounds */
@@ -460,7 +462,10 @@ html.theme-neumorphic,
 html.theme-neumorphic body {
   background-color: #e0e5ec !important;
   color: #4b5563 !important;
-  background-image: none !important;
+  background-image: radial-gradient(#ffffff 1px, transparent 0),
+                    radial-gradient(#a3b1c6 1px, transparent 0) !important;
+  background-position: 0px 0px, 1px 1px !important;
+  background-size: 40px 40px !important;
 }
 
 /* Remove hard borders */
