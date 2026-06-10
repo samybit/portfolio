@@ -157,7 +157,7 @@ export default function AboutPage() {
 
               {/* egFWD CERTIFICATE */}
               <a
-                href="#"
+                href="https://i.ibb.co/ynPJ6szk/FWD-data-Certificate.png"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group block border-l-8 border-black pl-4 py-2 hover:bg-black hover:text-white transition-colors cursor-pointer"
