@@ -247,6 +247,26 @@ html.theme-color [class*="hover:border-white"]:hover {
   border-color: #1A1716 !important;
 }
 
+/* Intercept all black shadows */
+html.theme-color .brutalist-shadow,
+html.theme-color .brutalist-container,
+html.theme-color .brutalist-shadow-static,
+html.theme-color .shadow-\[8px_8px_0px_\#000\],
+html.theme-color .shadow-\[8px_8px_0px_0px_\#000000\] {
+  box-shadow: 8px 8px 0px 0px #FF4F00 !important;
+}
+
+html.theme-color .brutalist-shadow:hover,
+html.theme-color .brutalist-container:hover,
+html.theme-color .hover\:shadow-\[4px_4px_0px_\#000\]:hover {
+  box-shadow: 4px 4px 0px 0px #FF4F00 !important;
+}
+
+html.theme-color .active\:shadow-none:active,
+html.theme-color .hover\:shadow-none:hover {
+  box-shadow: none !important;
+}
+
 /* Fix CTA Quote and Hero Subtitle Backdrop Glass Effect in Ember Theme */
 html.theme-color .quote-backdrop,
 html.theme-color .hero-subtitle-backdrop {
