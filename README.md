@@ -2,7 +2,7 @@
 
 The source code for my personal web development portfolio. Designed with a modular architecture that supports multiple aesthetic paradigms, focusing on striking visual contrasts, interactive elements, and high performance.
 
-**Live Site:** [samybit-github-io.vercel.app]
+**Live Site:** [https://samyb.vercel.app](https://samyb.vercel.app)
 
 ## Tech Stack
 
@@ -16,10 +16,11 @@ The source code for my personal web development portfolio. Designed with a modul
 
 ## Key Features
 
-- **Multi-Theme Architecture:** A dynamic 4-way theme engine featuring strict Brutalism, frosted-glass Neumorphism, clean Bauhaus, and Hardware Invert styles.
+- **Multi-Theme Architecture:** A dynamic theme engine featuring strict Default Brutalism, frosted-glass Neumorphism, and the vibrant Ember (Warm Charcoal & Fiery Orange) styles.
 - **Optimized 3D Integration:** Interactive WebGL components with custom hardware killswitches (0% GPU usage when scrolled out of view).
 - **Magnetic Scroll Physics:** Custom, debounced scroll listeners for fluid, perfectly aligned full-screen section transitions without layout thrashing.
 - **Serverless Contact Form:** Uses Next.js Server Actions and the Resend API to securely handle form submissions directly from the edge.
+- **Production Ready:** Fully optimized with comprehensive SEO metadata, dynamic OpenGraph previews, and ARIA accessibility standards.
 
 ## Local Setup
 
