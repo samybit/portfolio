@@ -38,7 +38,9 @@ export default function Hero() {
         {/* --- LEFT COLUMN: TYPOGRAPHY --- */}
         <div className="flex-1 animate-slide-up">
           <div className="flex items-center gap-4 mb-6">
-            <span className="text-xl font-bold uppercase tracking-widest border-b-4 border-black pb-1 bg-white">
+            <span className={`text-xl font-bold uppercase tracking-widest border-b-4 pb-1 bg-white ${
+              isNeumorphic ? "border-[#a3b1c6]" : "border-black"
+            }`}>
               Available for Full-Time Roles
             </span>
           </div>
