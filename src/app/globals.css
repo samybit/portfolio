@@ -999,3 +999,13 @@ html.theme-transitioning,
 html.theme-transitioning * {
   transition: none !important;
 }
+
+/* Utility Classes */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

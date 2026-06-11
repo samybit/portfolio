@@ -156,6 +156,7 @@ export default function Contact() {
                     onChange={handleChange}
                     className={getInputStyle(isNameFilled, false)}
                     placeholder=""
+                    aria-invalid="false"
                   />
                 </div>
 
@@ -171,8 +172,11 @@ export default function Contact() {
                     onChange={handleChange}
                     className={getInputStyle(isEmailValid, showEmailError)}
                     placeholder="...@example.com"
+                    aria-invalid={showEmailError ? "true" : "false"}
+                    aria-describedby={errors.email ? "email-error" : undefined}
                   />
                   <span
+                    id="email-error"
                     className={`absolute bottom-0 left-0 text-red-600 text-sm md:text-base font-black uppercase tracking-wide border-l-4 border-red-600 pl-2 transition-all duration-300 ease-out ${errors.email ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
                       }`}
                   >
@@ -192,8 +196,11 @@ export default function Contact() {
                     onChange={handleChange}
                     className={getInputStyle(isMessageValid, showMessageError)}
                     placeholder="Describe your project, an open role, or how we can collaborate..."
+                    aria-invalid={showMessageError ? "true" : "false"}
+                    aria-describedby={errors.message ? "message-error" : undefined}
                   />
                   <span
+                    id="message-error"
                     className={`absolute bottom-0 left-0 text-red-600 text-sm md:text-base font-black uppercase tracking-wide border-l-4 border-red-600 pl-2 transition-all duration-300 ease-out ${errors.message ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
                       }`}
                   >

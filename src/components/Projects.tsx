@@ -349,10 +349,10 @@ export default function Projects() {
         }`}>
           <button onClick={prevSlide} className="flex-1 flex flex-col items-center justify-center gap-2 border-b-4 border-black hover:bg-black hover:text-white transition-colors group">
             <ArrowUp size={32} className="group-hover:-translate-y-2 transition-transform" />
-            <span className="font-black uppercase tracking-widest text-xs rotate-180" style={{ writingMode: 'vertical-rl' }}>Prev</span>
+            <span className="font-black uppercase tracking-widest text-xs rotate-180 [writing-mode:vertical-rl]">Prev</span>
           </button>
           <button onClick={nextSlide} className="flex-1 flex flex-col items-center justify-center gap-2 hover:bg-black hover:text-white transition-colors group">
-            <span className="font-black uppercase tracking-widest text-xs" style={{ writingMode: 'vertical-rl' }}>Next</span>
+            <span className="font-black uppercase tracking-widest text-xs [writing-mode:vertical-rl]">Next</span>
             <ArrowDown size={32} className="group-hover:translate-y-2 transition-transform" />
           </button>
         </div>
@@ -369,10 +369,9 @@ export default function Projects() {
         </div>
       ) : (
         <div
-          className="flex lg:hidden overflow-x-auto gap-4 pt-5 pb-6 snap-x snap-mandatory -mx-6 px-6 flex-1 min-h-[320px]"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
+          className="flex lg:hidden overflow-x-auto gap-4 pt-5 pb-6 snap-x snap-mandatory -mx-6 px-6 flex-1 min-h-[320px] hide-scrollbar"
+          style={{ WebkitOverflowScrolling: 'touch' }}
         >
-          <style dangerouslySetInnerHTML={{ __html: `div::-webkit-scrollbar { display: none; }` }} />
           {projects.map((project, index) => (
             <div key={`mobile-swipe-${index}`} className="w-[85vw] sm:w-[60vw] shrink-0 snap-center h-full">
               <ProjectCard project={project} animate={false} disableObserver={true} isNeumorphic={isNeumorphic} />
