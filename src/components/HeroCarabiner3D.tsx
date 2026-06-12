@@ -257,9 +257,21 @@ function CarabinerModel() {
     context.filter = "blur(15px)";
     for (let i = 0; i < 30; i++) {
       context.fillStyle = `rgba(10, 10, 10, ${Math.random() * 0.4})`;
-      context.beginPath();
-      context.arc(Math.random() * 512, Math.random() * 512, Math.random() * 80 + 20, 0, Math.PI * 2);
-      context.fill();
+      const cx = Math.random() * 512;
+      const cy = Math.random() * 512;
+      const r = Math.random() * 80 + 20;
+      
+      const drawSmudge = (x: number, y: number) => {
+        context.beginPath();
+        context.arc(x, y, r, 0, Math.PI * 2);
+        context.fill();
+      };
+
+      // Draw the main smudge
+      drawSmudge(cx, cy);
+      // Duplicate smudge on the opposite edge to make the texture perfectly tileable and remove the vertical seam!
+      if (cx - r < 0) drawSmudge(cx + 512, cy);
+      if (cx + r > 512) drawSmudge(cx - 512, cy);
     }
     
     // Add rubbery micropores (subtle noise)
@@ -512,11 +524,11 @@ function CarabinerModel() {
         {/* --- LOCKING GATE DETAILS (Overlaid on bottom side) --- */}
         <group position={side2.position} quaternion={side2.quaternion}>
           {/* Locking Mechanism details */}
-          <mesh position={[0, 0, 0]}>
+          <mesh position={[0, 0, 0]} rotation={[0, Math.PI, 0]}>
             <cylinderGeometry args={[thickness * 1.3, thickness * 1.3, side2.length * 0.4, 32]} />
             {darkMetalMaterial}
           </mesh>
-          <mesh position={[0, side2.length * 0.25, 0]}>
+          <mesh position={[0, side2.length * 0.25, 0]} rotation={[0, Math.PI, 0]}>
             <cylinderGeometry args={[thickness * 1.1, thickness * 1.1, side2.length * 0.2, 32]} />
             {grayMaterial}
           </mesh>
@@ -525,7 +537,7 @@ function CarabinerModel() {
         {/* --- YELLOW SAFETY TAPE (Overlaid on left side) --- */}
         <group position={side3.position} quaternion={side3.quaternion}>
           {/* Yellow Safety Tape wrapped around */}
-          <mesh position={[0, -0.5, 0]}>
+          <mesh position={[0, -0.5, 0]} rotation={[0, Math.PI, 0]}>
             <cylinderGeometry args={[thickness * 1.05, thickness * 1.05, 1.5, 32]} />
             {yellowMaterial}
           </mesh>
