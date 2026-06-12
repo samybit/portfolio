@@ -81,13 +81,18 @@ function CarabinerModel() {
     const p3In = getPt(p3, p2, cr);
     const p3Out = getPt(p3, p1, cr);
 
+    // The midpoint of the bottom edge is where the locking mechanism sits.
+    // By starting and ending the path exactly here, the texture seam will be perfectly and permanently hidden inside the thick locking cylinder!
+    const bottomMidpoint = p2.clone().lerp(p3, 0.5);
+
     const path = new THREE.CurvePath<THREE.Vector3>();
-    path.add(new THREE.LineCurve3(p1Out, p2In));
-    path.add(new THREE.QuadraticBezierCurve3(p2In, p2, p2Out));
-    path.add(new THREE.LineCurve3(p2Out, p3In));
+    path.add(new THREE.LineCurve3(bottomMidpoint, p3In));
     path.add(new THREE.QuadraticBezierCurve3(p3In, p3, p3Out));
     path.add(new THREE.LineCurve3(p3Out, p1In));
     path.add(new THREE.QuadraticBezierCurve3(p1In, p1, p1Out));
+    path.add(new THREE.LineCurve3(p1Out, p2In));
+    path.add(new THREE.QuadraticBezierCurve3(p2In, p2, p2Out));
+    path.add(new THREE.LineCurve3(p2Out, bottomMidpoint));
 
     return path;
   }, []);
