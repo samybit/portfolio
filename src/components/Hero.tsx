@@ -73,44 +73,44 @@ export default function Hero() {
         </div>
 
         {/* --- RIGHT COLUMN: ACTIONS --- */}
-        <div className="flex flex-col w-full lg:w-[400px] xl:w-[450px] gap-6 border-black border-l-0 lg:border-l-8 lg:pl-12 lg:py-8 shrink-0 animate-slide-up-delay-1">
+        <div className="flex flex-col w-full lg:w-[400px] xl:w-[450px] gap-4 md:gap-6 border-black border-l-0 lg:border-l-8 lg:pl-12 lg:py-8 shrink-0 animate-slide-up-delay-1">
 
           <Link
             href="#projects"
-            className={`flex justify-between items-center w-full p-8 text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
+            className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
               isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                 : "bg-black text-white border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
             <span>Work</span>
-            <ArrowDownRight size={40} className="group-hover:translate-x-2 group-hover:translate-y-2 transition-transform" />
+            <ArrowDownRight className="w-6 h-6 md:w-10 md:h-10 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform" />
           </Link>
 
           <Link
             href="#contact"
-            className={`flex justify-between items-center w-full p-8 text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
+            className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
               isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                 : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
             <span>Contact</span>
-            <ArrowDownRight size={40} className="group-hover:translate-x-2 group-hover:translate-y-2 transition-transform" />
+            <ArrowDownRight className="w-6 h-6 md:w-10 md:h-10 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform" />
           </Link>
 
           {/* CV Button */}
           <a
             href="/Samy_Barsoum_CV.pdf"
             download="Samy_Barsoum_CV.pdf"
-            className={`flex justify-between items-center w-full p-8 text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
+            className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
               isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                 : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
             <span>Get CV</span>
-            <Download size={40} className="group-hover:translate-y-2 transition-transform" />
+            <Download className="w-6 h-6 md:w-10 md:h-10 group-hover:translate-y-2 transition-transform" />
           </a>
 
         </div>
