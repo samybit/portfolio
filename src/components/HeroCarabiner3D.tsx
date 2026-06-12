@@ -140,9 +140,49 @@ function CarabinerModel() {
   const darkMetalMaterial = <meshStandardMaterial color="#3f3f46" metalness={0.8} roughness={0.75} roughnessMap={scratchedTexture || undefined} bumpMap={scratchedTexture || undefined} bumpScale={0.01} />;
   const yellowMaterial = <meshStandardMaterial color="#eab308" roughness={0.8} />;
   
+  // Adjust the texture mapping for the complex 3D knot
+  const knotColorTexture = useMemo(() => {
+    if (!ropeColorTexture) return null;
+    const tex = ropeColorTexture.clone();
+    tex.repeat.set(2, 12); // Adjusted for the length of the complex knot curve
+    return tex;
+  }, [ropeColorTexture]);
+
+  // Mathematically define a realistic 3D wrapped knot (like a Clove Hitch or Barrel Knot)
+  const knotCurve = useMemo(() => {
+    const r = thickness * 1.25; // Loop radius (wrapping tightly around the carabiner bar)
+    const points = [
+      // Entering rope tucking under the loops
+      new THREE.Vector3(0, -0.1, r * 1.5),
+      new THREE.Vector3(0, 0.05, r * 1.05),
+      
+      // Loop 1 (top wrap)
+      new THREE.Vector3(-r, 0.15, 0),
+      new THREE.Vector3(0, 0.2, -r),
+      new THREE.Vector3(r, 0.2, 0),
+      new THREE.Vector3(0, 0.15, r),
+      
+      // Crossing over the front diagonally
+      new THREE.Vector3(-r * 0.8, 0.05, r * 1.4),
+      
+      // Loop 2 (bottom wrap)
+      new THREE.Vector3(0, -0.05, r),
+      new THREE.Vector3(r, -0.15, 0),
+      new THREE.Vector3(0, -0.2, -r),
+      
+      // Exiting
+      new THREE.Vector3(-r * 1.5, -0.1, 0),
+    ];
+    // Create a smooth 3D spline through these points
+    return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
+  }, []);
+
   // Fabric Rope Materials (Lambert material with a spiraling twisted fiber texture map)
   const yellowRopeMaterial = <meshLambertMaterial color="#facc15" map={ropeColorTexture || undefined} />;
   const silverRopeMaterial = <meshLambertMaterial color="#e5e7eb" map={ropeColorTexture || undefined} />;
+
+  const yellowKnotMaterial = <meshLambertMaterial color="#facc15" map={knotColorTexture || undefined} />;
+  const silverKnotMaterial = <meshLambertMaterial color="#e5e7eb" map={knotColorTexture || undefined} />;
 
   // Rope Helper
   const Rope = ({ 
@@ -160,15 +200,11 @@ function CarabinerModel() {
     const ropeLength = 20;
     return (
       <group position={position}>
-        {/* The tie-off knot around the carabiner bar */}
+        {/* The realistic 3D woven knot around the carabiner bar */}
         <group quaternion={barQuaternion}>
-          <mesh rotation={[Math.PI/2, 0, 0]}>
-            <torusGeometry args={[thickness * 1.5, 0.1, 16, 32]} />
-            {isYellow ? yellowRopeMaterial : silverRopeMaterial}
-          </mesh>
-          <mesh rotation={[Math.PI/2, 0, 0]} position={[0, 0, 0.15]}>
-            <torusGeometry args={[thickness * 1.4, 0.1, 16, 32]} />
-            {isYellow ? yellowRopeMaterial : silverRopeMaterial}
+          <mesh>
+            <tubeGeometry args={[knotCurve, 64, 0.08, 16, false]} />
+            {isYellow ? yellowKnotMaterial : silverKnotMaterial}
           </mesh>
         </group>
         
