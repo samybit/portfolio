@@ -101,7 +101,7 @@ function CarabinerModel() {
     const context = canvas.getContext("2d");
     if (!context) return null;
     
-    // 1. Base metal color (Zinc Gray)
+    // 1. Base metal color (Medium-Dark Gray)
     context.fillStyle = "#6b7280";
     context.fillRect(0, 0, 1024, 1024);
     
@@ -113,9 +113,9 @@ function CarabinerModel() {
       context.arc(Math.random() * 1024, Math.random() * 1024, Math.random() * 120 + 30, 0, Math.PI * 2);
       context.fill();
     }
-    // 3. Bright exposed metal / worn edges
+    // 3. Bright exposed metal / worn edges (toned down to match darker metal)
     for (let i = 0; i < 40; i++) {
-      context.fillStyle = `rgba(200, 200, 220, ${Math.random() * 0.4})`;
+      context.fillStyle = `rgba(150, 150, 160, ${Math.random() * 0.4})`;
       context.beginPath();
       context.arc(Math.random() * 1024, Math.random() * 1024, Math.random() * 80 + 20, 0, Math.PI * 2);
       context.fill();
@@ -145,7 +145,8 @@ function CarabinerModel() {
     for (let i = 0; i < 2000; i++) {
       context.beginPath();
       const isDeep = Math.random() > 0.8;
-      context.strokeStyle = isDeep ? "rgba(10,10,10,0.9)" : "rgba(240,240,240,0.8)"; 
+      // Tone down the bright scratches so they don't cause blinding glare under scene lighting
+      context.strokeStyle = isDeep ? "rgba(10,10,10,0.9)" : "rgba(160,160,160,0.5)"; 
       context.lineWidth = isDeep ? Math.random() * 4 + 1 : Math.random() * 2;
       
       const x = Math.random() * 1024;
@@ -308,7 +309,17 @@ function CarabinerModel() {
   }, []);
 
   // Materials (Rugged, tactical, heavily damaged metal)
-  const metalMaterial = <meshStandardMaterial color="#ffffff" metalness={0.9} roughness={0.7} map={scratchedTexture || undefined} roughnessMap={scratchedTexture || undefined} bumpMap={scratchedTexture || undefined} bumpScale={0.06} />;
+  const metalMaterial = (
+    <meshStandardMaterial 
+      color="#ffffff" 
+      metalness={0.4} 
+      roughness={0.9} 
+      map={scratchedTexture || undefined} 
+      roughnessMap={scratchedTexture || undefined} 
+      bumpMap={scratchedTexture || undefined} 
+      bumpScale={0.15} 
+    />
+  );
   const darkMetalMaterial = <meshStandardMaterial color="#888888" metalness={0.8} roughness={0.75} map={scratchedTexture || undefined} roughnessMap={scratchedTexture || undefined} bumpMap={scratchedTexture || undefined} bumpScale={0.04} />;
   
   // Tactical, dirty rubber material for the safety tape wrap
@@ -584,11 +595,11 @@ export default function HeroCarabiner3D() {
 
       {/* 3D Canvas */}
       <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ antialias: true }}>
-        {/* Lighting to highlight the metal */}
+        {/* Lighting to highlight the metal without blowing it out */}
         <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={2} />
+        <directionalLight position={[10, 10, 5]} intensity={1.2} />
         <directionalLight position={[-10, -10, -5]} intensity={0.5} color="#4b5563" />
-        <spotLight position={[0, 0, 10]} intensity={1} penumbra={1} />
+        <spotLight position={[0, 0, 10]} intensity={0.4} penumbra={1} />
         
         {/* Environment Map for ultra-realistic metal reflections */}
         <Environment preset="city" />
