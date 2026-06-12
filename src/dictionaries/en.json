@@ -31,9 +31,9 @@
     "list": [
       {
         "id": "bento",
-        "title": "Bento Game Tracker",
-        "description": "Bento-grid progression engine powered by Next.js 16 and Gemini 2.5 Flash.",
-        "tech": ["Next.js", "Prisma", "PostgreSQL", "TailwindCSS"],
+        "title": "Nexus Board",
+        "description": "Bento-styled game completion board designed for focused gamers. Built with the latest Next.js App Router and integrated with Google Gemini for intelligent achievement roadmaps.",
+        "tech": ["Next.js", "Gemini AI", "Prisma", "TailwindCSS"],
         "github": "https://github.com/samybit/bento-game-tracker",
         "demo": "https://bento-game-tracker.vercel.app/",
         "image": "/bento.png"
@@ -50,8 +50,8 @@
       {
         "id": "3d",
         "title": "3D Web",
-        "description": "Showcase of 3D web rendering. It integrates Framer Motion, Three.js, Suspense, and Canvas.",
-        "tech": ["React", "Three.js", "Framer Motion", "TailwindCSS"],
+        "description": "A vertical storytelling experience exploring 7 distinct approaches to 3D browser rendering. Serves as a technical reference for complex WebGL pipelines, Spline, Globe.gl, and native CSS trigonometry.",
+        "tech": ["Next.js", "Three.js", "Spline", "Framer Motion"],
         "github": "https://github.com/samybit/3d-showcase",
         "demo": "https://3d-showcase-samy.vercel.app/",
         "image": "/3dweb.png"
