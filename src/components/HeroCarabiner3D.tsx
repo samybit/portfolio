@@ -101,36 +101,56 @@ function CarabinerModel() {
     const context = canvas.getContext("2d");
     if (!context) return null;
     
-    // Base roughness
-    context.fillStyle = "#888888";
+    // 1. Base metal color (Zinc Gray)
+    context.fillStyle = "#6b7280";
     context.fillRect(0, 0, 1024, 1024);
     
-    // Add heavy industrial grime/noise
-    for (let i = 0; i < 40000; i++) {
-      context.fillStyle = Math.random() > 0.5 ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)";
-      context.fillRect(Math.random() * 1024, Math.random() * 1024, Math.random() * 4, Math.random() * 4);
+    // 2. Heavy grease and uneven patina (large organic blurry patches)
+    context.filter = "blur(15px)";
+    for (let i = 0; i < 60; i++) {
+      context.fillStyle = `rgba(20, 20, 25, ${Math.random() * 0.5})`;
+      context.beginPath();
+      context.arc(Math.random() * 1024, Math.random() * 1024, Math.random() * 120 + 30, 0, Math.PI * 2);
+      context.fill();
+    }
+    // 3. Bright exposed metal / worn edges
+    for (let i = 0; i < 40; i++) {
+      context.fillStyle = `rgba(200, 200, 220, ${Math.random() * 0.4})`;
+      context.beginPath();
+      context.arc(Math.random() * 1024, Math.random() * 1024, Math.random() * 80 + 20, 0, Math.PI * 2);
+      context.fill();
+    }
+    context.filter = "none";
+    
+    // 4. Directional Brushed Forging Grain
+    context.fillStyle = "rgba(0,0,0,0.1)";
+    for (let i = 0; i < 10000; i++) {
+      context.fillRect(Math.random() * 1024, Math.random() * 1024, Math.random() * 40 + 10, Math.random() * 2 + 1);
+    }
+    context.fillStyle = "rgba(255,255,255,0.05)";
+    for (let i = 0; i < 10000; i++) {
+      context.fillRect(Math.random() * 1024, Math.random() * 1024, Math.random() * 40 + 10, Math.random() * 2 + 1);
     }
     
-    // Draw harsh factory impacts and craters
-    for (let i = 0; i < 500; i++) {
+    // 5. Heavy factory impacts and craters
+    for (let i = 0; i < 400; i++) {
       context.beginPath();
-      context.fillStyle = Math.random() > 0.3 ? "#222222" : "#dddddd"; // Dark pits or bright chips
-      const r = Math.random() * 6 + 1; // 1 to 7px wide craters
+      context.fillStyle = Math.random() > 0.4 ? "#111111" : "#e4e4e7"; // Dark pits or bright chips
+      const r = Math.random() * 5 + 1;
       context.arc(Math.random() * 1024, Math.random() * 1024, r, 0, Math.PI * 2);
       context.fill();
     }
     
-    // Draw violent procedural scratches and gouges
-    for (let i = 0; i < 3000; i++) {
+    // 6. Violent procedural scratches and gashes
+    for (let i = 0; i < 2000; i++) {
       context.beginPath();
-      // Black strokes act as deep gashes in the bump map, white act as protruding burrs
-      const isDeep = Math.random() > 0.85;
-      context.strokeStyle = isDeep ? "#000000" : "#ffffff"; 
-      context.lineWidth = isDeep ? Math.random() * 5 + 1 : Math.random() * 2;
+      const isDeep = Math.random() > 0.8;
+      context.strokeStyle = isDeep ? "rgba(10,10,10,0.9)" : "rgba(240,240,240,0.8)"; 
+      context.lineWidth = isDeep ? Math.random() * 4 + 1 : Math.random() * 2;
       
       const x = Math.random() * 1024;
       const y = Math.random() * 1024;
-      const len = Math.random() * 120 + 20;
+      const len = Math.random() * 100 + 20;
       const angle = Math.random() * Math.PI * 2;
       
       context.moveTo(x, y);
@@ -138,9 +158,9 @@ function CarabinerModel() {
       // Draw jagged paths instead of perfect straight lines
       let curX = x;
       let curY = y;
-      for (let s = 0; s < 5; s++) {
-        curX += Math.cos(angle + (Math.random() - 0.5) * 0.3) * (len / 5);
-        curY += Math.sin(angle + (Math.random() - 0.5) * 0.3) * (len / 5);
+      for (let s = 0; s < 4; s++) {
+        curX += Math.cos(angle + (Math.random() - 0.5) * 0.4) * (len / 4);
+        curY += Math.sin(angle + (Math.random() - 0.5) * 0.4) * (len / 4);
         context.lineTo(curX, curY);
       }
       context.stroke();
@@ -149,6 +169,7 @@ function CarabinerModel() {
     const tex = new THREE.CanvasTexture(canvas);
     tex.wrapS = THREE.RepeatWrapping;
     tex.wrapT = THREE.RepeatWrapping;
+    tex.anisotropy = 4; // Improves texture rendering at steep angles on the tube
     return tex;
   }, []);
 
@@ -194,8 +215,8 @@ function CarabinerModel() {
   }, []);
 
   // Materials (Rugged, tactical, heavily damaged metal)
-  const metalMaterial = <meshStandardMaterial color="#71717a" metalness={0.9} roughness={0.7} roughnessMap={scratchedTexture || undefined} bumpMap={scratchedTexture || undefined} bumpScale={0.06} />;
-  const darkMetalMaterial = <meshStandardMaterial color="#3f3f46" metalness={0.8} roughness={0.75} roughnessMap={scratchedTexture || undefined} bumpMap={scratchedTexture || undefined} bumpScale={0.04} />;
+  const metalMaterial = <meshStandardMaterial color="#ffffff" metalness={0.9} roughness={0.7} map={scratchedTexture || undefined} roughnessMap={scratchedTexture || undefined} bumpMap={scratchedTexture || undefined} bumpScale={0.06} />;
+  const darkMetalMaterial = <meshStandardMaterial color="#888888" metalness={0.8} roughness={0.75} map={scratchedTexture || undefined} roughnessMap={scratchedTexture || undefined} bumpMap={scratchedTexture || undefined} bumpScale={0.04} />;
   const yellowMaterial = <meshStandardMaterial color="#eab308" roughness={0.8} />;
   
   // Adjust the texture mapping for the complex 3D knot
