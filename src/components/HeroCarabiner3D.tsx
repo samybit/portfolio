@@ -619,7 +619,7 @@ export default function HeroCarabiner3D() {
           20196_146
         </div>
         <div className="absolute top-[50%] left-[25%]">
-          ▼ // ARKNIGHTS:<br/>
+          ▼ // SYS.OP:<br/>
           ... /Switch/
         </div>
       </div>
