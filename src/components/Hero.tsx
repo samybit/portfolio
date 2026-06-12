@@ -40,7 +40,8 @@ export default function Hero() {
             </span>
           </div>
 
-          <p className="text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ml-2 hero-subtitle-backdrop mb-6">
+          {/* --- DESKTOP DESCRIPTION (Hidden on mobile) --- */}
+          <p className="hidden md:block text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ml-2 hero-subtitle-backdrop mb-6">
             Full-Stack Developer. <br />
             MERN Stack Specialist. <br />
             Based in Egypt. <br />
@@ -70,6 +71,14 @@ export default function Hero() {
               <GlitchText text="Barsoum" />
             </span>
           </h1>
+
+          {/* --- MOBILE DESCRIPTION (Hidden on desktop) --- */}
+          <p className="block md:hidden text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ml-2 hero-subtitle-backdrop mt-6">
+            Full-Stack Developer. <br />
+            MERN Stack Specialist. <br />
+            Based in Egypt. <br />
+            Building fast, and effective apps.
+          </p>
         </div>
 
         {/* --- RIGHT COLUMN: ACTIONS --- */}
