@@ -56,4 +56,7 @@ Open http://localhost:3000 in your browser.
 
 ## License
 
-MIT
+The code in this repository is open source and licensed under the [MIT License](LICENSE). You are completely free to use it to experiment or build your own portfolio!
+
+**A quick note on personal assets:**  
+While the code is free to use, my personal branding (my name, resume, project descriptions, and images) is copyrighted. If you decide to fork or use this codebase, please be kind enough to remove my personal data and replace it with your own amazing work. Happy coding!
