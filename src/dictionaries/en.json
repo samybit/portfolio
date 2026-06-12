@@ -45,7 +45,7 @@
         "tech": ["React", "Firebase", "Redux", "TailwindCSS"],
         "github": "https://github.com/samybit/iti-movie-app",
         "demo": "https://iti-movie-app-samy.vercel.app/",
-        "image": "/movie.png"
+        "image": "/moviedb.png"
       },
       {
         "id": "3d",
@@ -54,7 +54,7 @@
         "tech": ["React", "Three.js", "Framer Motion", "TailwindCSS"],
         "github": "https://github.com/samybit/3d-showcase",
         "demo": "https://3d-showcase-samy.vercel.app/",
-        "image": "/3d.png"
+        "image": "/3dweb.png"
       },
       {
         "id": "plants",
@@ -63,7 +63,7 @@
         "tech": ["WordPress", "WooCommerce", "Elementor", "PHP"],
         "github": "",
         "demo": "https://dev-samybit212.pantheonsite.io/",
-        "image": "/plants.png"
+        "image": "/plantswp.png"
       },
       {
         "id": "scraper",
@@ -72,7 +72,7 @@
         "tech": ["Python", "Selenium", "Data Mining"],
         "github": "https://github.com/samybit/freelance-lead-scraper",
         "demo": "#",
-        "image": "/scraper.png"
+        "image": ""
       },
       {
         "id": "ecommerce",
@@ -81,7 +81,7 @@
         "tech": ["JavaScript", "HTML5", "CSS3", "DOM"],
         "github": "https://github.com/samybit/vanilla-js-ecommerce",
         "demo": "https://samybit.github.io/vanilla-js-ecommerce/",
-        "image": "/ecommerce.png"
+        "image": ""
       },
       {
         "id": "bearbuzz",

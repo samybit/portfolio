@@ -151,7 +151,7 @@ export default function CustomContextMenu({ dict }: { dict?: any }) {
       </Link>
 
       <a
-        href="https://github.com/samybit/samybit.github.io"
+        href="https://github.com/samybit/portfolio"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
