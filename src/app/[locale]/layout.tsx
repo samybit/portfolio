@@ -13,10 +13,14 @@ const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL('https://samyb.vercel.app'),
   title: "Samy | Full-Stack Developer",
-  description: "Fresh graduate and web developer specializing in the MERN stack. Available for freelance, remote work, or full-time roles.",
-  keywords: ["Full-Stack Developer", "MERN", "React", "Next.js", "Freelance Developer", "Web Development"],
+  description: "Full-Stack Developer specializing. Available for freelance, remote work, or full-time roles.",
+  keywords: ["Full-Stack Developer", "Next.js", "React", "MERN", "TypeScript", "Web Development"],
   alternates: {
     canonical: '/',
+    languages: {
+      'en': '/en',
+      'ar': '/ar',
+    },
   },
   openGraph: {
     title: "Samy | Full-Stack Developer",
