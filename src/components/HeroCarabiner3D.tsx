@@ -145,10 +145,14 @@ function CarabinerModel() {
   const yellowMaterial = <meshStandardMaterial color="#eab308" roughness={0.8} />;
   
   // Adjust the texture mapping for the complex 3D knot
+  // NOTE: TubeGeometry UVs are swapped compared to CylinderGeometry!
+  // TubeGeometry: U = length, V = circumference
+  // CylinderGeometry: U = circumference, V = length
   const knotColorTexture = useMemo(() => {
     if (!ropeColorTexture) return null;
     const tex = ropeColorTexture.clone();
-    tex.repeat.set(2, 12); // Adjusted for the length of the complex knot curve
+    tex.repeat.set(30, 2); // 30 times along the knot length, 2 times around circumference
+    tex.needsUpdate = true;
     return tex;
   }, [ropeColorTexture]);
 
