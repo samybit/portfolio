@@ -63,6 +63,35 @@ function CarabinerModel() {
   const side2 = getCylinderProps(p2, p3);
   const side3 = getCylinderProps(p3, p1);
 
+  // Mathematically perfect continuous tube path for the carabiner body
+  const carabinerPath = useMemo(() => {
+    const cr = 0.6; // Corner radius length
+    
+    const getPt = (v1: THREE.Vector3, v2: THREE.Vector3, d: number) => {
+      const dir = new THREE.Vector3().subVectors(v2, v1).normalize();
+      return v1.clone().add(dir.multiplyScalar(d));
+    };
+
+    const p1In = getPt(p1, p3, cr);
+    const p1Out = getPt(p1, p2, cr);
+    
+    const p2In = getPt(p2, p1, cr);
+    const p2Out = getPt(p2, p3, cr);
+    
+    const p3In = getPt(p3, p2, cr);
+    const p3Out = getPt(p3, p1, cr);
+
+    const path = new THREE.CurvePath<THREE.Vector3>();
+    path.add(new THREE.LineCurve3(p1Out, p2In));
+    path.add(new THREE.QuadraticBezierCurve3(p2In, p2, p2Out));
+    path.add(new THREE.LineCurve3(p2Out, p3In));
+    path.add(new THREE.QuadraticBezierCurve3(p3In, p3, p3Out));
+    path.add(new THREE.LineCurve3(p3Out, p1In));
+    path.add(new THREE.QuadraticBezierCurve3(p1In, p1, p1Out));
+
+    return path;
+  }, []);
+
   // Procedurally generate a rugged, scratched texture for the metal using a Canvas
   const scratchedTexture = useMemo(() => {
     if (typeof window === "undefined") return null;
@@ -291,22 +320,14 @@ function CarabinerModel() {
     <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
       <group ref={groupRef} scale={responsiveScale}>
         
-        {/* --- CARABINER JOINTS (Smooth corners) --- */}
-        <mesh position={p1}>{metalMaterial}<sphereGeometry args={[thickness, 32, 32]} /></mesh>
-        <mesh position={p2}>{metalMaterial}<sphereGeometry args={[thickness, 32, 32]} /></mesh>
-        <mesh position={p3}>{metalMaterial}<sphereGeometry args={[thickness, 32, 32]} /></mesh>
-
-        {/* --- CARABINER SIDES --- */}
-        {/* Right Side */}
-        <mesh position={side1.position} quaternion={side1.quaternion}>
+        {/* --- CARABINER MAIN BODY (Perfect continuous 3D tube) --- */}
+        <mesh>
+          <tubeGeometry args={[carabinerPath, 256, thickness, 32, true]} />
           {metalMaterial}
-          <cylinderGeometry args={[thickness, thickness, side1.length, 32]} />
         </mesh>
-        
-        {/* Bottom Side (The Locking Gate) */}
-        <mesh position={side2.position} quaternion={side2.quaternion}>
-          {metalMaterial}
-          <cylinderGeometry args={[thickness, thickness, side2.length, 32]} />
+
+        {/* --- LOCKING GATE DETAILS (Overlaid on bottom side) --- */}
+        <group position={side2.position} quaternion={side2.quaternion}>
           {/* Locking Mechanism details */}
           <mesh position={[0, 0, 0]}>
             <cylinderGeometry args={[thickness * 1.3, thickness * 1.3, side2.length * 0.4, 32]} />
@@ -316,18 +337,16 @@ function CarabinerModel() {
             <cylinderGeometry args={[thickness * 1.1, thickness * 1.1, side2.length * 0.2, 32]} />
             <meshStandardMaterial color="#6b7280" metalness={0.9} roughness={0.5} />
           </mesh>
-        </mesh>
+        </group>
 
-        {/* Left Side (with Yellow Tape) */}
-        <mesh position={side3.position} quaternion={side3.quaternion}>
-          {metalMaterial}
-          <cylinderGeometry args={[thickness, thickness, side3.length, 32]} />
+        {/* --- YELLOW SAFETY TAPE (Overlaid on left side) --- */}
+        <group position={side3.position} quaternion={side3.quaternion}>
           {/* Yellow Safety Tape wrapped around */}
           <mesh position={[0, -0.5, 0]}>
             <cylinderGeometry args={[thickness * 1.05, thickness * 1.05, 1.5, 32]} />
             {yellowMaterial}
           </mesh>
-        </mesh>
+        </group>
 
         {/* --- DYNAMIC ROPES --- */}
         {/* Because these are inside the group, they automatically pivot when the carabiner rotates! */}
