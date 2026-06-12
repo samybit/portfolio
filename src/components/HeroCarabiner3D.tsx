@@ -132,11 +132,11 @@ function CarabinerModel() {
       context.fillRect(Math.random() * 1024, Math.random() * 1024, Math.random() * 40 + 10, Math.random() * 2 + 1);
     }
     
-    // 5. Heavy factory impacts and craters
+    // 5. Heavy factory impacts and craters (dark pits only)
     for (let i = 0; i < 400; i++) {
       context.beginPath();
-      context.fillStyle = Math.random() > 0.4 ? "#111111" : "#e4e4e7"; // Dark pits or bright chips
-      const r = Math.random() * 5 + 1;
+      context.fillStyle = `rgba(15, 15, 20, ${Math.random() * 0.6})`; // Dark pits
+      const r = Math.random() * 4 + 1;
       context.arc(Math.random() * 1024, Math.random() * 1024, r, 0, Math.PI * 2);
       context.fill();
     }
