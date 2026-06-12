@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Float } from "@react-three/drei";
 import { useRef, useState, useEffect, useMemo } from "react";
 import * as THREE from "three";
@@ -8,6 +8,10 @@ import * as THREE from "three";
 // --- THE TACTICAL CARABINER COMPONENT ---
 function CarabinerModel() {
   const groupRef = useRef<THREE.Group>(null);
+  
+  // Use React Three Fiber's internal size state to get pixel width for responsive scaling
+  const { size } = useThree();
+  const responsiveScale = size.width < 768 ? 0.65 : 1;
 
   // Physics simulation for tension and resisting ropes
   useFrame((state) => {
@@ -272,7 +276,7 @@ function CarabinerModel() {
 
   return (
     <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
-      <group ref={groupRef}>
+      <group ref={groupRef} scale={responsiveScale}>
         
         {/* --- CARABINER JOINTS (Smooth corners) --- */}
         <mesh position={p1}>{metalMaterial}<sphereGeometry args={[thickness, 32, 32]} /></mesh>
