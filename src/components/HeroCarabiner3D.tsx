@@ -258,6 +258,15 @@ function CarabinerModel() {
             <tubeGeometry args={[activeKnotCurve, 64, 0.08, 16, false]} />
             {isYellow ? yellowKnotMaterial : silverKnotMaterial}
           </mesh>
+          {/* Cap the hollow ends of the tube geometry to look like melted/rounded rope tips */}
+          <mesh position={activeKnotCurve.getPoint(0)}>
+            <sphereGeometry args={[0.08, 16, 16]} />
+            {isYellow ? yellowKnotMaterial : silverKnotMaterial}
+          </mesh>
+          <mesh position={activeKnotCurve.getPoint(1)}>
+            <sphereGeometry args={[0.08, 16, 16]} />
+            {isYellow ? yellowKnotMaterial : silverKnotMaterial}
+          </mesh>
         </group>
         
         {/* The main rope stretching outward in its specific pull direction */}
