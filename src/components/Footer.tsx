@@ -84,9 +84,9 @@ export default function Footer() {
 
       {/* --- LAYER 2: FOOTER CONTENT (z-10) --- */}
       <div className="relative z-10 text-center flex flex-col items-center justify-center gap-4 pointer-events-none">
-        <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter">
+        <div className="text-3xl md:text-5xl font-black uppercase tracking-tighter">
           Samy Barsoum
-        </h2>
+        </div>
         <p className="text-xl font-bold uppercase text-black bg-white px-3 py-1" suppressHydrationWarning>
           © {new Date().getFullYear()} SAMYBIT // WITH NEXT.JS & BRUTALISM.
         </p>
