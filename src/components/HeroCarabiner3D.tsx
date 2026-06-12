@@ -241,10 +241,63 @@ function CarabinerModel() {
     return tex;
   }, []);
 
+  // Procedural texture for the yellow rubber wrap (adds dirt, grease, and porous bump mapping)
+  const yellowRubberTexture = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const canvas = document.createElement("canvas");
+    canvas.width = 512;
+    canvas.height = 512;
+    const context = canvas.getContext("2d");
+    if (!context) return null;
+    
+    // Base tactical yellow
+    context.fillStyle = "#eab308";
+    context.fillRect(0, 0, 512, 512);
+    
+    // Add dirt and grease smudges (large organic patches)
+    context.filter = "blur(15px)";
+    for (let i = 0; i < 30; i++) {
+      context.fillStyle = `rgba(40, 30, 20, ${Math.random() * 0.4})`;
+      context.beginPath();
+      context.arc(Math.random() * 512, Math.random() * 512, Math.random() * 80 + 20, 0, Math.PI * 2);
+      context.fill();
+    }
+    
+    // Add rubbery micropores (subtle noise)
+    context.filter = "none";
+    for (let i = 0; i < 60000; i++) {
+      context.fillStyle = Math.random() > 0.5 ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)";
+      context.fillRect(Math.random() * 512, Math.random() * 512, 2, 2);
+    }
+    
+    // Add heavy dark edges to make the wrap look physically thick (fake ambient occlusion)
+    context.filter = "blur(8px)";
+    context.fillStyle = "rgba(0,0,0,0.6)";
+    context.fillRect(0, 0, 512, 24); // Top edge
+    context.fillRect(0, 512 - 24, 512, 24); // Bottom edge
+    context.filter = "none";
+
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping; // Crucial so the dark edges stay exactly at the top and bottom of the cylinder
+    tex.anisotropy = 4;
+    return tex;
+  }, []);
+
   // Materials (Rugged, tactical, heavily damaged metal)
   const metalMaterial = <meshStandardMaterial color="#ffffff" metalness={0.9} roughness={0.7} map={scratchedTexture || undefined} roughnessMap={scratchedTexture || undefined} bumpMap={scratchedTexture || undefined} bumpScale={0.06} />;
   const darkMetalMaterial = <meshStandardMaterial color="#888888" metalness={0.8} roughness={0.75} map={scratchedTexture || undefined} roughnessMap={scratchedTexture || undefined} bumpMap={scratchedTexture || undefined} bumpScale={0.04} />;
-  const yellowMaterial = <meshStandardMaterial color="#eab308" roughness={0.8} />;
+  
+  // Tactical, dirty rubber material for the safety tape wrap
+  const yellowMaterial = (
+    <meshStandardMaterial 
+      roughness={0.9} 
+      metalness={0.1} 
+      map={yellowRubberTexture || undefined}
+      bumpMap={yellowRubberTexture || undefined}
+      bumpScale={0.015}
+    />
+  );
   
   // Adjust the texture mapping for the complex 3D knot
   // NOTE: TubeGeometry UVs are swapped compared to CylinderGeometry!
