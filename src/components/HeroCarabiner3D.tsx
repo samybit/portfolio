@@ -329,7 +329,7 @@ function CarabinerModel() {
         {/* Because these are inside the group, they automatically pivot when the carabiner rotates! */}
         
         {/* Right Side Ropes */}
-        <Rope position={getPointOnLine(p1, p2, 0.25)} barQuaternion={side1.quaternion} pullRotation={[0, 0, -Math.PI / 3.5]} isYellow knotType="clove" />
+        <Rope position={getPointOnLine(p1, p2, 0.26)} barQuaternion={side1.quaternion} pullRotation={[0, 0, -Math.PI / 3.5]} isYellow knotType="clove" />
         <Rope position={getPointOnLine(p1, p2, 0.8)} barQuaternion={side1.quaternion} pullRotation={[0, 0, -Math.PI / 1.7]} knotType="messy" />
 
         {/* Bottom Side Ropes */}
@@ -338,7 +338,7 @@ function CarabinerModel() {
 
         {/* Left Side Ropes */}
         <Rope position={getPointOnLine(p3, p1, 0.35)} barQuaternion={side3.quaternion} pullRotation={[0, 0, Math.PI / 1.8]} knotType="messy" />
-        <Rope position={getPointOnLine(p3, p1, 0.85)} barQuaternion={side3.quaternion} pullRotation={[0, 0, Math.PI / 3.5]} isYellow knotType="wrap" />
+        <Rope position={getPointOnLine(p3, p1, 0.8)} barQuaternion={side3.quaternion} pullRotation={[0, 0, Math.PI / 3.5]} isYellow knotType="wrap" />
 
       </group>
     </Float>
