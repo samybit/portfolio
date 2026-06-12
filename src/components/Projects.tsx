@@ -113,9 +113,10 @@ interface ProjectCardProps {
   animate?: boolean;
   disableObserver?: boolean;
   isNeumorphic?: boolean;
+  asHeading?: boolean;
 }
 
-const ProjectCard = ({ project, animate = false, disableObserver = false, isNeumorphic = false }: ProjectCardProps) => {
+const ProjectCard = ({ project, animate = false, disableObserver = false, isNeumorphic = false, asHeading = true }: ProjectCardProps) => {
   const [isToggled, setIsToggled] = useState(false);
 
   // Cleanly check if valid links exist (ignoring empty strings and "#" placeholders)
@@ -139,9 +140,15 @@ const ProjectCard = ({ project, animate = false, disableObserver = false, isNeum
         {/* Default Content Block */}
         <div className="flex flex-col flex-1">
           <div>
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-black uppercase mb-2 md:mb-3 tracking-tight leading-none md:leading-tight">
-              {project.title}
-            </h3>
+            {asHeading ? (
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black uppercase mb-2 md:mb-3 tracking-tight leading-none md:leading-tight">
+                {project.title}
+              </h3>
+            ) : (
+              <div className="text-xl sm:text-2xl md:text-3xl font-black uppercase mb-2 md:mb-3 tracking-tight leading-none md:leading-tight">
+                {project.title}
+              </div>
+            )}
             <p className="text-sm sm:text-base md:text-lg font-medium text-zinc-800 leading-snug">
               {project.description}
             </p>
@@ -363,7 +370,7 @@ export default function Projects() {
         <div className="flex lg:hidden flex-col gap-6 pb-8 flex-1">
           {projects.map((project, index) => (
             <div key={`mobile-list-${index}`} className="w-full">
-              <ProjectCard project={project} animate={true} isNeumorphic={isNeumorphic} />
+              <ProjectCard project={project} animate={true} isNeumorphic={isNeumorphic} asHeading={false} />
             </div>
           ))}
         </div>
@@ -374,7 +381,7 @@ export default function Projects() {
         >
           {projects.map((project, index) => (
             <div key={`mobile-swipe-${index}`} className="w-[85vw] sm:w-[60vw] shrink-0 snap-center h-full">
-              <ProjectCard project={project} animate={false} disableObserver={true} isNeumorphic={isNeumorphic} />
+              <ProjectCard project={project} animate={false} disableObserver={true} isNeumorphic={isNeumorphic} asHeading={false} />
             </div>
           ))}
           <div className="w-[1px] shrink-0"></div>
