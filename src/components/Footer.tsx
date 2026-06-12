@@ -1,49 +1,10 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
-import { MeshDistortMaterial } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
-import * as THREE from "three";
 import { useInView } from "framer-motion";
+import dynamic from "next/dynamic";
 
-// --- 3D INTERACTIVE OBJECT: MASSIVE BACKGROUND KNOT ---
-function BackgroundKnot({ isEmber, isNeumorphic }: { isEmber: boolean; isNeumorphic: boolean }) {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (!meshRef.current) return;
-    const t = state.clock.getElapsedTime();
-    // Slow, elegant continuous rotation on all axes
-    meshRef.current.rotation.x = t * 0.05;
-    meshRef.current.rotation.y = t * 0.075;
-    meshRef.current.rotation.z = t * 0.05;
-  });
-
-  let knotColor = "#000000";
-  let knotOpacity = 0.15;
-
-  if (isEmber) {
-    knotColor = "#FF4F00";
-    knotOpacity = 0.2;
-  } else if (isNeumorphic) {
-    knotColor = "#ffffff";
-    knotOpacity = 0.4;
-  }
-
-  return (
-    <mesh ref={meshRef} position={[0, 0, -8]}>
-      <torusKnotGeometry args={[5, 1.2, 256, 32, 3, 4]} />
-      <MeshDistortMaterial 
-        color={knotColor} 
-        wireframe={true} 
-        transparent={true} 
-        opacity={knotOpacity} 
-        distort={0.25} 
-        speed={1.5} 
-      />
-    </mesh>
-  );
-}
+const Footer3D = dynamic(() => import("@/components/Footer3D"), { ssr: false });
 
 export default function Footer() {
   // 1. Hardware Observer: Tracks if the footer is anywhere near the viewport
@@ -72,14 +33,7 @@ export default function Footer() {
       {/* --- LAYER 1: 3D KNOT BACKGROUND (z-0) --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {/* 2. The Engine Killswitch: 'never' pauses the GPU completely */}
-        <Canvas
-          frameloop={isInView ? "always" : "never"}
-          camera={{ position: [0, 0, 8], fov: 50 }}
-        >
-          <ambientLight intensity={2} />
-          <directionalLight position={[10, 10, 5]} intensity={3} />
-          <BackgroundKnot isEmber={isEmber} isNeumorphic={isNeumorphic} />
-        </Canvas>
+        <Footer3D isInView={isInView} isEmber={isEmber} isNeumorphic={isNeumorphic} />
       </div>
 
       {/* --- LAYER 2: FOOTER CONTENT (z-10) --- */}

@@ -102,7 +102,7 @@ const projects: Project[] = [
     title: "CLI Expense Tracker",
     description: "Memory-safe, blazingly fast command-line tool featuring dynamic allocation and file I/O.",
     tech: ["C", "CLI", "Data Structures"],
-    github: "https://github.com/samybit",
+    github: "https://github.com/samybit/cli-expense-tracker",
     demo: "#",
     image: "/cli.png"
   }
