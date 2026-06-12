@@ -24,20 +24,11 @@ export const metadata: Metadata = {
     type: "website",
     url: 'https://samyb.vercel.app',
     siteName: 'Samy | Developer Portfolio',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Samy | Full-Stack Developer Portfolio',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: "Samy | Full-Stack Developer",
     description: "Building brutal, effective web applications.",
-    images: ['/og-image.png'],
   },
   robots: {
     index: true,
