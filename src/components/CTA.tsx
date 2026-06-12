@@ -170,9 +170,244 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
   );
 }
 
+// --- NEW 3D INTERACTIVE OBJECT: MECHANICAL ARROW ---
+function MechanicalArrow({ isCanvasInView }: { isCanvasInView: boolean }) {
+  const [isEmber, setIsEmber] = useState(false);
+  const [isNeumorphic, setIsNeumorphic] = useState(false);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsEmber(document.documentElement.classList.contains("theme-color"));
+      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const coreRef = useRef<THREE.Group>(null);
+  const mouse = useRef({ x: 0, y: 0 });
+
+  let anomalyColor = "#ffffff";
+  if (isEmber) {
+    anomalyColor = "#FF3300";
+  } else if (isNeumorphic) {
+    anomalyColor = "#3d3426";
+  }
+
+  const boxGeom = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
+  const boxMat = useMemo(() => new THREE.MeshBasicMaterial({ color: anomalyColor }), [anomalyColor]);
+
+  useEffect(() => {
+    return () => {
+      boxGeom.dispose();
+      boxMat.dispose();
+    };
+  }, [boxGeom, boxMat]);
+
+  useEffect(() => {
+    if (!isCanvasInView) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [isCanvasInView]);
+
+  useFrame(() => {
+    const core = coreRef.current;
+    if (!core) return;
+
+    const targetX = mouse.current.x * 8;
+    const targetY = mouse.current.y * 5;
+
+    // Graceful interpolation
+    core.position.x += (targetX - core.position.x) * 0.06;
+    core.position.y += (targetY - core.position.y) * 0.06;
+
+    const targetRotX = -mouse.current.y * 1.5;
+    const targetRotY = mouse.current.x * 1.5;
+
+    core.rotation.x += (targetRotX - core.rotation.x) * 0.06 + 0.005;
+    core.rotation.y += (targetRotY - core.rotation.y) * 0.06 + 0.01;
+  });
+
+  return (
+    <group ref={coreRef} rotation={[0, 0, -Math.PI / 4]}>
+      {/* Shaft */}
+      <mesh position={[0, -0.5, 0]} scale={[0.4, 6, 0.4]} geometry={boxGeom} material={boxMat} />
+      {/* Arrowhead Left Fin */}
+      <mesh position={[-0.8, 1.7, 0]} scale={[0.4, 2.5, 0.4]} rotation={[0, 0, Math.PI / 4]} geometry={boxGeom} material={boxMat} />
+      {/* Arrowhead Right Fin */}
+      <mesh position={[0.8, 1.7, 0]} scale={[0.4, 2.5, 0.4]} rotation={[0, 0, -Math.PI / 4]} geometry={boxGeom} material={boxMat} />
+      
+      {/* Decorative floating mechanical bits */}
+      <mesh position={[-2, -3, 0]} scale={[0.3, 0.3, 0.3]} geometry={boxGeom} material={boxMat} />
+      <mesh position={[2, -2, 1]} scale={[0.4, 0.4, 0.4]} geometry={boxGeom} material={boxMat} />
+    </group>
+  );
+}
+
+// --- NEW 3D INTERACTIVE OBJECT: BRUTAL CROSS ---
+function BrutalCross({ isCanvasInView }: { isCanvasInView: boolean }) {
+  const [isEmber, setIsEmber] = useState(false);
+  const [isNeumorphic, setIsNeumorphic] = useState(false);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsEmber(document.documentElement.classList.contains("theme-color"));
+      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const coreRef = useRef<THREE.Group>(null);
+  const mouse = useRef({ x: 0, y: 0 });
+
+  let anomalyColor = "#ffffff";
+  if (isEmber) {
+    anomalyColor = "#FF3300";
+  } else if (isNeumorphic) {
+    anomalyColor = "#3d3426";
+  }
+
+  const boxGeom = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
+  const boxMat = useMemo(() => new THREE.MeshBasicMaterial({ color: anomalyColor }), [anomalyColor]);
+
+  useEffect(() => {
+    return () => {
+      boxGeom.dispose();
+      boxMat.dispose();
+    };
+  }, [boxGeom, boxMat]);
+
+  useEffect(() => {
+    if (!isCanvasInView) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [isCanvasInView]);
+
+  useFrame(() => {
+    const core = coreRef.current;
+    if (!core) return;
+
+    const targetX = mouse.current.x * 8;
+    const targetY = mouse.current.y * 5;
+
+    core.position.x += (targetX - core.position.x) * 0.06;
+    core.position.y += (targetY - core.position.y) * 0.06;
+
+    const targetRotX = -mouse.current.y * 1.5;
+    const targetRotY = mouse.current.x * 1.5;
+
+    core.rotation.x += (targetRotX - core.rotation.x) * 0.06 + 0.005;
+    core.rotation.y += (targetRotY - core.rotation.y) * 0.06 + 0.01;
+    core.rotation.z += 0.005; // Slow ambient spin
+  });
+
+  return (
+    <group ref={coreRef}>
+      <mesh position={[0, 0, 0]} scale={[1.2, 5, 1.2]} geometry={boxGeom} material={boxMat} />
+      <mesh position={[0, 0, 0]} scale={[5, 1.2, 1.2]} geometry={boxGeom} material={boxMat} />
+    </group>
+  );
+}
+
+// --- NEW 3D INTERACTIVE OBJECT: WIREFRAME MONOLITH ---
+function WireframeMonolith({ isCanvasInView }: { isCanvasInView: boolean }) {
+  const [isEmber, setIsEmber] = useState(false);
+  const [isNeumorphic, setIsNeumorphic] = useState(false);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsEmber(document.documentElement.classList.contains("theme-color"));
+      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const coreRef = useRef<THREE.Group>(null);
+  const innerRef = useRef<THREE.Mesh>(null);
+  const mouse = useRef({ x: 0, y: 0 });
+
+  let anomalyColor = "#ffffff";
+  if (isEmber) {
+    anomalyColor = "#FF3300";
+  } else if (isNeumorphic) {
+    anomalyColor = "#3d3426";
+  }
+
+  const boxGeom = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
+  const wireMat = useMemo(() => new THREE.MeshBasicMaterial({ color: anomalyColor, wireframe: true }), [anomalyColor]);
+  const solidMat = useMemo(() => new THREE.MeshBasicMaterial({ color: anomalyColor }), [anomalyColor]);
+
+  useEffect(() => {
+    return () => {
+      boxGeom.dispose();
+      wireMat.dispose();
+      solidMat.dispose();
+    };
+  }, [boxGeom, wireMat, solidMat]);
+
+  useEffect(() => {
+    if (!isCanvasInView) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [isCanvasInView]);
+
+  useFrame(() => {
+    const core = coreRef.current;
+    const inner = innerRef.current;
+    if (!core || !inner) return;
+
+    const targetX = mouse.current.x * 8;
+    const targetY = mouse.current.y * 5;
+
+    core.position.x += (targetX - core.position.x) * 0.06;
+    core.position.y += (targetY - core.position.y) * 0.06;
+
+    const targetRotX = -mouse.current.y * 1.5;
+    const targetRotY = mouse.current.x * 1.5;
+
+    core.rotation.x += (targetRotX - core.rotation.x) * 0.06 + 0.005;
+    core.rotation.y += (targetRotY - core.rotation.y) * 0.06 + 0.01;
+    
+    // Counter-rotate the inner solid core for a cool effect
+    inner.rotation.x -= 0.01;
+    inner.rotation.y += 0.015;
+  });
+
+  return (
+    <group ref={coreRef}>
+      <mesh scale={[4, 4, 4]} geometry={boxGeom} material={wireMat} />
+      <mesh ref={innerRef} scale={[1, 1, 1]} geometry={boxGeom} material={solidMat} />
+    </group>
+  );
+}
+
 export default function CTA() {
   const [isEmber, setIsEmber] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
+  
+  const anomalies = ['arrow', 'cross', 'wireframe', 'leak'] as const;
+  const [anomalyIndex, setAnomalyIndex] = useState(1);
+  const activeAnomaly = anomalies[anomalyIndex];
 
   useEffect(() => {
     const checkTheme = () => {
@@ -248,7 +483,11 @@ export default function CTA() {
 
   return (
     // Swapped min-h-screen for min-h-[100dvh] and added py-16 so it never touches the screen edges
-    <section ref={ctaRef} className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center py-16 overflow-hidden border-t-8 border-b-8 border-black bg-white text-black">
+    <section 
+      ref={ctaRef} 
+      onClick={() => setAnomalyIndex(prev => (prev + 1) % anomalies.length)}
+      className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center py-16 overflow-hidden border-t-8 border-b-8 border-black bg-white text-black cursor-crosshair"
+    >
 
       {/* --- LAYER 1: MECHANICAL ARROW BACKGROUND (z-0) --- */}
       <div
@@ -332,7 +571,10 @@ export default function CTA() {
           <ambientLight intensity={2} />
           <directionalLight position={[10, 10, 5]} intensity={3} />
           <directionalLight position={[-10, -10, 2]} intensity={1.5} />
-          <SystemLeak isCanvasInView={isCanvasInView} />
+          {activeAnomaly === 'arrow' && <MechanicalArrow isCanvasInView={isCanvasInView} />}
+          {activeAnomaly === 'cross' && <BrutalCross isCanvasInView={isCanvasInView} />}
+          {activeAnomaly === 'wireframe' && <WireframeMonolith isCanvasInView={isCanvasInView} />}
+          {activeAnomaly === 'leak' && <SystemLeak isCanvasInView={isCanvasInView} />}
         </Canvas>
       </div>
 
