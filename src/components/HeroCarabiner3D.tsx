@@ -177,6 +177,47 @@ function CarabinerModel() {
     return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
   }, []);
 
+  // A simpler single-wrap knot curve
+  const simpleWrapCurve = useMemo(() => {
+    const r = thickness * 1.25;
+    const points = [
+      new THREE.Vector3(0, 0, r * 1.5), // enter
+      new THREE.Vector3(0, 0, r), // front
+      new THREE.Vector3(-r, 0.1, 0), // left
+      new THREE.Vector3(0, 0.1, -r), // back
+      new THREE.Vector3(r, 0.1, 0), // right
+      new THREE.Vector3(0, 0, r * 1.2), // crossing over front
+      new THREE.Vector3(-r * 1.5, -0.1, 0), // exit
+    ];
+    return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
+  }, []);
+
+  // A chaotic, messy tangled knot curve
+  const messyKnotCurve = useMemo(() => {
+    const r = thickness * 1.25;
+    const points = [
+      new THREE.Vector3(0, -0.2, r * 1.5), // enter
+      
+      new THREE.Vector3(0, -0.25, r), // front
+      new THREE.Vector3(r, -0.2, 0), // right
+      new THREE.Vector3(0, -0.15, -r), // back
+      new THREE.Vector3(-r, -0.1, 0), // left
+      
+      new THREE.Vector3(0, 0, r * 1.1), // cross over front
+      new THREE.Vector3(r, 0.1, 0), // right
+      new THREE.Vector3(0, 0.2, -r), // back
+      new THREE.Vector3(-r, 0.25, 0), // left
+      
+      new THREE.Vector3(0, 0.15, r * 1.2), // cross over front again
+      new THREE.Vector3(r, 0.05, 0), // right
+      new THREE.Vector3(0, -0.05, -r), // back
+      new THREE.Vector3(-r, -0.1, 0), // left
+      
+      new THREE.Vector3(-r * 1.5, -0.1, 0), // exit
+    ];
+    return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
+  }, []);
+
   // Fabric Rope Materials (Lambert material with a spiraling twisted fiber texture map)
   const yellowRopeMaterial = <meshLambertMaterial color="#facc15" map={ropeColorTexture || undefined} />;
   const silverRopeMaterial = <meshLambertMaterial color="#e5e7eb" map={ropeColorTexture || undefined} />;
@@ -189,21 +230,28 @@ function CarabinerModel() {
     position, 
     barQuaternion, 
     pullRotation, 
-    isYellow = false 
+    isYellow = false,
+    knotType = 'clove'
   }: { 
     position: THREE.Vector3, 
     barQuaternion: THREE.Quaternion, 
     pullRotation: [number, number, number], 
-    isYellow?: boolean 
+    isYellow?: boolean,
+    knotType?: 'clove' | 'wrap' | 'messy'
   }) => {
     // We create a very long cylinder so it always stretches off-screen
     const ropeLength = 20;
+    
+    let activeKnotCurve = knotCurve;
+    if (knotType === 'wrap') activeKnotCurve = simpleWrapCurve;
+    if (knotType === 'messy') activeKnotCurve = messyKnotCurve;
+
     return (
       <group position={position}>
         {/* The realistic 3D woven knot around the carabiner bar */}
         <group quaternion={barQuaternion}>
           <mesh>
-            <tubeGeometry args={[knotCurve, 64, 0.08, 16, false]} />
+            <tubeGeometry args={[activeKnotCurve, 64, 0.08, 16, false]} />
             {isYellow ? yellowKnotMaterial : silverKnotMaterial}
           </mesh>
         </group>
@@ -268,16 +316,16 @@ function CarabinerModel() {
         {/* Because these are inside the group, they automatically pivot when the carabiner rotates! */}
         
         {/* Right Side Ropes */}
-        <Rope position={getPointOnLine(p1, p2, 0.25)} barQuaternion={side1.quaternion} pullRotation={[0, 0, -Math.PI / 3.5]} isYellow />
-        <Rope position={getPointOnLine(p1, p2, 0.8)} barQuaternion={side1.quaternion} pullRotation={[0, 0, -Math.PI / 1.7]} />
+        <Rope position={getPointOnLine(p1, p2, 0.25)} barQuaternion={side1.quaternion} pullRotation={[0, 0, -Math.PI / 3.5]} isYellow knotType="clove" />
+        <Rope position={getPointOnLine(p1, p2, 0.8)} barQuaternion={side1.quaternion} pullRotation={[0, 0, -Math.PI / 1.7]} knotType="messy" />
 
         {/* Bottom Side Ropes */}
-        <Rope position={getPointOnLine(p2, p3, 0.2)} barQuaternion={side2.quaternion} pullRotation={[0, 0, -Math.PI * 0.85]} isYellow />
-        <Rope position={getPointOnLine(p2, p3, 0.75)} barQuaternion={side2.quaternion} pullRotation={[0, 0, Math.PI * 0.85]} />
+        <Rope position={getPointOnLine(p2, p3, 0.2)} barQuaternion={side2.quaternion} pullRotation={[0, 0, -Math.PI * 0.85]} isYellow knotType="wrap" />
+        <Rope position={getPointOnLine(p2, p3, 0.75)} barQuaternion={side2.quaternion} pullRotation={[0, 0, Math.PI * 0.85]} knotType="clove" />
 
         {/* Left Side Ropes */}
-        <Rope position={getPointOnLine(p3, p1, 0.35)} barQuaternion={side3.quaternion} pullRotation={[0, 0, Math.PI / 1.8]} />
-        <Rope position={getPointOnLine(p3, p1, 0.85)} barQuaternion={side3.quaternion} pullRotation={[0, 0, Math.PI / 3.5]} isYellow />
+        <Rope position={getPointOnLine(p3, p1, 0.35)} barQuaternion={side3.quaternion} pullRotation={[0, 0, Math.PI / 1.8]} knotType="messy" />
+        <Rope position={getPointOnLine(p3, p1, 0.85)} barQuaternion={side3.quaternion} pullRotation={[0, 0, Math.PI / 3.5]} isYellow knotType="wrap" />
 
       </group>
     </Float>
