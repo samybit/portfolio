@@ -241,23 +241,22 @@ function CarabinerModel() {
     return tex;
   }, []);
 
-  // Procedural texture for the yellow rubber wrap (adds dirt, grease, and porous bump mapping)
-  const yellowRubberTexture = useMemo(() => {
-    if (typeof window === "undefined") return null;
+  // Helper to generate dirty, tactical rubber textures
+  const generateRubberTexture = (baseColor: string) => {
     const canvas = document.createElement("canvas");
     canvas.width = 512;
     canvas.height = 512;
     const context = canvas.getContext("2d");
     if (!context) return null;
     
-    // Base tactical yellow
-    context.fillStyle = "#eab308";
+    // Base color
+    context.fillStyle = baseColor;
     context.fillRect(0, 0, 512, 512);
     
     // Add dirt and grease smudges (large organic patches)
     context.filter = "blur(15px)";
     for (let i = 0; i < 30; i++) {
-      context.fillStyle = `rgba(40, 30, 20, ${Math.random() * 0.4})`;
+      context.fillStyle = `rgba(10, 10, 10, ${Math.random() * 0.4})`;
       context.beginPath();
       context.arc(Math.random() * 512, Math.random() * 512, Math.random() * 80 + 20, 0, Math.PI * 2);
       context.fill();
@@ -282,6 +281,18 @@ function CarabinerModel() {
     tex.wrapT = THREE.ClampToEdgeWrapping; // Crucial so the dark edges stay exactly at the top and bottom of the cylinder
     tex.anisotropy = 4;
     return tex;
+  };
+
+  // Procedural texture for the yellow rubber wrap (adds dirt, grease, and porous bump mapping)
+  const yellowRubberTexture = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    return generateRubberTexture("#eab308");
+  }, []);
+
+  // Procedural texture for the gray rubber wrap
+  const grayRubberTexture = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    return generateRubberTexture("#4b5563"); // Dark tactical gray
   }, []);
 
   // Materials (Rugged, tactical, heavily damaged metal)
@@ -295,6 +306,17 @@ function CarabinerModel() {
       metalness={0.1} 
       map={yellowRubberTexture || undefined}
       bumpMap={yellowRubberTexture || undefined}
+      bumpScale={0.015}
+    />
+  );
+  
+  // Tactical, dirty rubber material for the gray locking gate grip
+  const grayMaterial = (
+    <meshStandardMaterial 
+      roughness={0.9} 
+      metalness={0.1} 
+      map={grayRubberTexture || undefined}
+      bumpMap={grayRubberTexture || undefined}
       bumpScale={0.015}
     />
   );
@@ -496,7 +518,7 @@ function CarabinerModel() {
           </mesh>
           <mesh position={[0, side2.length * 0.25, 0]}>
             <cylinderGeometry args={[thickness * 1.1, thickness * 1.1, side2.length * 0.2, 32]} />
-            <meshStandardMaterial color="#6b7280" metalness={0.9} roughness={0.5} />
+            {grayMaterial}
           </mesh>
         </group>
 
