@@ -20,6 +20,7 @@ The source code for my personal web development portfolio. Designed with a modul
 - **Optimized 3D Integration:** Interactive WebGL components with custom hardware killswitches (0% GPU usage when scrolled out of view).
 - **Magnetic Scroll Physics:** Custom, debounced scroll listeners for fluid, perfectly aligned full-screen section transitions without layout thrashing.
 - **Serverless Contact Form:** Uses Next.js Server Actions and the Resend API to securely handle form submissions directly from the edge.
+- **Native Internationalization (i18n):** Zero-dependency bilingual architecture (English / Arabic) with flawless RTL layout mirroring and statically generated edge routes.
 - **Production Ready:** Fully optimized with comprehensive SEO metadata, dynamic OpenGraph previews, and ARIA accessibility standards.
 
 ## Local Setup
