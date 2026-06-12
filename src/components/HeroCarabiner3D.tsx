@@ -258,6 +258,31 @@ function CarabinerModel() {
     return tex;
   }, [ropeColorTexture]);
 
+  // Procedural texture for the cross-section of a cut rope (thousands of bundled fibers)
+  const ropeEndTexture = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    const context = canvas.getContext("2d");
+    if (!context) return null;
+    
+    // Core shadows between fibers
+    context.fillStyle = "#333333";
+    context.fillRect(0, 0, 256, 256);
+    
+    // Draw densely packed fiber dots to look like a frayed cut end
+    for (let i = 0; i < 3000; i++) {
+      context.beginPath();
+      context.fillStyle = Math.random() > 0.5 ? "#ffffff" : "#aaaaaa";
+      const r = Math.random() * 2 + 0.5;
+      context.arc(Math.random() * 256, Math.random() * 256, r, 0, Math.PI * 2);
+      context.fill();
+    }
+    
+    return new THREE.CanvasTexture(canvas);
+  }, []);
+
   // Mathematically define a realistic 3D wrapped knot (like a Clove Hitch or Barrel Knot)
   const knotCurve = useMemo(() => {
     const r = thickness * 1.25; // Loop radius (wrapping tightly around the carabiner bar)
@@ -335,6 +360,10 @@ function CarabinerModel() {
   const yellowKnotMaterial = <meshStandardMaterial color="#facc15" roughness={1} map={knotColorTexture || undefined} bumpMap={knotColorTexture || undefined} bumpScale={0.02} />;
   const silverKnotMaterial = <meshStandardMaterial color="#e5e7eb" roughness={1} map={knotColorTexture || undefined} bumpMap={knotColorTexture || undefined} bumpScale={0.02} />;
 
+  // Rope End Materials (DoubleSide so it caps perfectly regardless of curve tangent direction)
+  const yellowRopeEndMaterial = <meshStandardMaterial color="#facc15" roughness={1} map={ropeEndTexture || undefined} bumpMap={ropeEndTexture || undefined} bumpScale={0.1} side={THREE.DoubleSide} />;
+  const silverRopeEndMaterial = <meshStandardMaterial color="#e5e7eb" roughness={1} map={ropeEndTexture || undefined} bumpMap={ropeEndTexture || undefined} bumpScale={0.1} side={THREE.DoubleSide} />;
+
   // Rope Helper
   const Rope = ({ 
     position, 
@@ -364,14 +393,20 @@ function CarabinerModel() {
             <tubeGeometry args={[activeKnotCurve, 64, 0.08, 16, false]} />
             {isYellow ? yellowKnotMaterial : silverKnotMaterial}
           </mesh>
-          {/* Cap the hollow ends of the tube geometry to look like melted/rounded rope tips */}
-          <mesh position={activeKnotCurve.getPoint(0)}>
-            <sphereGeometry args={[0.08, 16, 16]} />
-            {isYellow ? yellowKnotMaterial : silverKnotMaterial}
+          {/* Flat circular cross-section caps showing the frayed cut fibers of the rope */}
+          <mesh 
+            position={activeKnotCurve.getPoint(0)} 
+            quaternion={new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), activeKnotCurve.getTangent(0).normalize())}
+          >
+            <circleGeometry args={[0.08, 32]} />
+            {isYellow ? yellowRopeEndMaterial : silverRopeEndMaterial}
           </mesh>
-          <mesh position={activeKnotCurve.getPoint(1)}>
-            <sphereGeometry args={[0.08, 16, 16]} />
-            {isYellow ? yellowKnotMaterial : silverKnotMaterial}
+          <mesh 
+            position={activeKnotCurve.getPoint(1)} 
+            quaternion={new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), activeKnotCurve.getTangent(1).normalize())}
+          >
+            <circleGeometry args={[0.08, 32]} />
+            {isYellow ? yellowRopeEndMaterial : silverRopeEndMaterial}
           </mesh>
         </group>
         
