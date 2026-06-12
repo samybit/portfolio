@@ -19,6 +19,10 @@ function CarabinerModel() {
     
     const time = state.clock.elapsedTime;
     
+    // Intro animation: yanked into place by the ropes
+    // A positive Z angle decaying to 0 creates a strong clockwise snap into its final position
+    const introSpinZ = Math.exp(-time * 2) * (Math.PI / 1.5); // Spins about 120 degrees clockwise
+
     // Very subtle, slow secondary motion to simulate gentle, soft tension
     const jitterX = Math.sin(time * 3) * 0.005 + Math.cos(time * 4) * 0.005;
     const jitterY = Math.cos(time * 2.5) * 0.005 + Math.sin(time * 3.5) * 0.005;
@@ -29,10 +33,10 @@ function CarabinerModel() {
     const pullY = Math.cos(time * 0.6) * 0.04;
     const pullZ = Math.sin(time * 0.5) * 0.02;
     
-    // Apply rotation tension
+    // Apply rotation tension + the explosive intro animation
     groupRef.current.rotation.x = pullX + jitterX;
     groupRef.current.rotation.y = pullY + jitterY;
-    groupRef.current.rotation.z = pullZ + jitterZ;
+    groupRef.current.rotation.z = pullZ + jitterZ + introSpinZ;
 
     // Apply slight physical displacement (getting pulled slightly off-center)
     groupRef.current.position.x = pullX * 2 + jitterX * 1.5;
