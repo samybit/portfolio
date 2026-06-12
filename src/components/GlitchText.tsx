@@ -62,7 +62,7 @@ function HoverChar({ char }: { char: string }) {
         // Instant color change on hover, smooth 0.1s transition when the JS timer clears it
         transition: color ? "none" : "color 0.1s ease",
       }}
-      className="inline-block"
+      className="relative z-10"
     >
       {char === " " ? "\u00A0" : char}
     </span>

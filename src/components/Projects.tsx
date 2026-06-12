@@ -33,90 +33,16 @@ interface Project {
   image: string;
 }
 
-const projects: Project[] = [
-  {
-    title: "Bento Game Tracker",
-    description: "Bento-grid progression engine powered by Next.js 16 and Gemini 2.5 Flash Lite. Features real-time AI achievement assistant.",
-    tech: ["Next.js", "Prisma", "PostgreSQL", "Gemini AI"],
-    github: "https://github.com/samybit/bento-game-tracker",
-    demo: "https://bento-game-tracker.vercel.app",
-    image: "/bento.png"
-  },
-  {
-    title: "Movie Intelligence App",
-    description: "Cinematic platform featuring Firebase authentication, global state management, and localized filtering system.",
-    tech: ["React", "Shadcn UI", "Firebase", "i18n"],
-    github: "https://github.com/samybit/iti-movie-app",
-    demo: "https://iti-movie-app.pages.dev/",
-    image: "/moviedb.png"
-  },
-  {
-    title: "3D Web",
-    description: "Showcase of 3D web rendering. It integrates Framer Motion, Three.js, Spline, Globe.gl, Atropos, and Pure CSS.",
-    tech: ["react", "nextjs", "webgl"],
-    github: "https://github.com/samybit/3d-showcase",
-    demo: "https://3d-showcase-pi.vercel.app",
-    image: "/3dweb.png"
-  },
-  {
-    title: "Verdant Plants Store",
-    description: "Fully functional e-commerce boutique powered by WordPress and WooCommerce. Features catalog management and Kadence UI blocks.",
-    tech: ["WordPress", "WooCommerce", "Kadence UI", "LocalWP"],
-    github: "",
-    demo: "#",
-    image: "/plantswp.png"
-  },
-  {
-    title: "Lead Scraper",
-    description: "Automated freelance lead generation and scraping pipeline built for efficiency.",
-    tech: ["n8n", "Python", "Automation", "gemini-ai"],
-    github: "https://github.com/samybit/freelance-lead-scraper",
-    demo: "#",
-    image: ""
-  },
-  {
-    title: "Vanilla JS E-Commerce",
-    description: "Full-scale store engine with role-based access control (Admin/User), product management, and persistent data.",
-    tech: ["JavaScript", "HTML", "CSS", "LocalStorage"],
-    github: "https://github.com/samybit/vanilla-js-ecommerce",
-    demo: "https://samybit.github.io/vanilla-js-ecommerce/",
-    image: ""
-  },
-  {
-    title: "BearBuzz",
-    description: "Dual-interface (CLI & GUI) Python engine tracking stock volatility, dispatching automated Twilio SMS alerts with live financial headlines.",
-    tech: ["Python", "Twilio API", "CI/CD", "Tkinter"],
-    github: "https://github.com/samybit/bearbuzz",
-    demo: "#",
-    image: "/bearbuzz.png"
-  },
-  // {
-  //   title: "Questlog",
-  //   description: "Full-stack progression engine tracking video game milestones and visual completion percentages via a dynamic dashboard.",
-  //   tech: ["Full-Stack", "Data Vis", "Tracking"],
-  //   github: "https://github.com/samybit/game-completion-board",
-  //   demo: "",
-  //   image: ""
-  // },
-  {
-    title: "CLI Expense Tracker",
-    description: "Memory-safe, blazingly fast command-line tool featuring dynamic allocation and file I/O.",
-    tech: ["C", "CLI", "Data Structures"],
-    github: "https://github.com/samybit/cli-expense-tracker",
-    demo: "#",
-    image: "/cli.png"
-  }
-];
-
 interface ProjectCardProps {
   project: Project;
+  dict: any;
   animate?: boolean;
   disableObserver?: boolean;
   isNeumorphic?: boolean;
   asHeading?: boolean;
 }
 
-const ProjectCard = ({ project, animate = false, disableObserver = false, isNeumorphic = false, asHeading = true }: ProjectCardProps) => {
+const ProjectCard = ({ project, dict, animate = false, disableObserver = false, isNeumorphic = false, asHeading = true }: ProjectCardProps) => {
   const [isToggled, setIsToggled] = useState(false);
 
   // Cleanly check if valid links exist (ignoring empty strings and "#" placeholders)
@@ -189,7 +115,6 @@ const ProjectCard = ({ project, animate = false, disableObserver = false, isNeum
       </div>
 
       {/* BOTTOM LINKS BLOCK */}
-      {/* Added min-h-[48px] md:min-h-[52px] to force the exact same physical footprint even if empty */}
       <div className="flex flex-wrap gap-4 border-t-4 border-black pt-3 md:pt-4 flex-none relative z-20 min-h-[48px] md:min-h-[52px]">
         {hasGithub && (
           <a
@@ -198,7 +123,7 @@ const ProjectCard = ({ project, animate = false, disableObserver = false, isNeum
             rel="noopener noreferrer"
             className="group flex items-center gap-1.5 text-sm md:text-base font-bold uppercase hover:bg-white hover:text-black px-3 py-1.5 transition-all border-2 border-black shrink-0"
           >
-            <GithubIcon size={20} /> Repo
+            <GithubIcon size={20} /> {dict?.repo || "Repo"}
           </a>
         )}
 
@@ -209,18 +134,18 @@ const ProjectCard = ({ project, animate = false, disableObserver = false, isNeum
             rel="noopener noreferrer"
             className="group flex items-center gap-1.5 text-sm md:text-base font-bold uppercase hover:bg-white hover:text-black px-3 py-1.5 transition-all border-2 border-black shrink-0"
           >
-            <span className="relative flex h-2.5 w-2.5 mr-1">
+            <span className="relative flex h-2.5 w-2.5 me-1">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-black"></span>
             </span>
-            Live Demo <ExternalLink size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            {dict?.demo || "Live Demo"} <ExternalLink size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" />
           </a>
         )}
 
         {/* Fallback state when both links are missing */}
         {!hasGithub && !hasDemo && (
           <span className="text-sm md:text-base font-bold uppercase text-zinc-500 flex items-center cursor-not-allowed">
-            [ Offline / Local Build ]
+            {dict?.offline || "[ Offline / Local Build ]"}
           </span>
         )}
       </div>
@@ -228,10 +153,12 @@ const ProjectCard = ({ project, animate = false, disableObserver = false, isNeum
   );
 };
 
-export default function Projects() {
+export default function Projects({ dict }: { dict: any }) {
   const [page, setPage] = useState(0);
   const [showAllMobile, setShowAllMobile] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
+
+  const projects = dict?.list || [];
 
   useEffect(() => {
     setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
@@ -244,7 +171,7 @@ export default function Projects() {
   }, []);
 
   const itemsPerPage = 4;
-  const totalPages = Math.ceil(projects.length / itemsPerPage);
+  const totalPages = Math.ceil(projects.length / itemsPerPage) || 1;
 
   const nextSlide = () => {
     playTick();
@@ -270,8 +197,6 @@ export default function Projects() {
       entries.forEach(entry => {
         const card = entry.target;
 
-        // DYNAMIC CHECK: lg breakpoint in Tailwind is 1024px.
-        // Only apply this auto-hover logic on mobile/tablet screens.
         if (window.innerWidth < 1024) {
           if (entry.isIntersecting) {
             card.classList.add('mobile-active');
@@ -284,13 +209,16 @@ export default function Projects() {
       });
     }, observerOptions);
 
-    // Find all project cards and begin observing
     const cards = document.querySelectorAll('.project-card');
     cards.forEach(card => scrollObserver.observe(card));
 
-    // Clean up on unmount or when dependencies change (like pagination)
     return () => scrollObserver.disconnect();
   }, [page, showAllMobile]);
+
+  // Handle title splitting dynamically for languages (first word on top, rest on bottom)
+  const titleWords = (dict?.title || "Selected Works").split(" ");
+  const titleFirst = titleWords[0];
+  const titleRest = titleWords.slice(1).join(" ");
 
   return (
     <section id="projects" className="snap-start relative w-full min-h-[80vh] flex flex-col pt-24 pb-8 px-6 md:px-12 lg:px-24 border-b-8 border-black overflow-hidden">
@@ -298,13 +226,13 @@ export default function Projects() {
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 lg:mb-12 gap-6 flex-none">
         <div className="w-full md:w-auto">
           <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">
-            <DecryptText text="Selected" />
+            <DecryptText text={titleFirst} />
             <br />
-            <DecryptText text="Works" />
+            {titleRest && <DecryptText text={titleRest} />}
           </h2>
 
           <p className="hidden lg:block text-lg font-bold uppercase text-zinc-500 mt-4 tracking-widest">
-            [ PAGE 0{page + 1} / 0{totalPages} ]
+            {dict?.pageFormat ? dict.pageFormat.replace('{current}', `0${page + 1}`).replace('{total}', `0${totalPages}`) : `[ PAGE 0${page + 1} / 0${totalPages} ]`}
           </p>
 
           <div className={`flex lg:hidden items-center justify-between mt-6 p-2 transition-all duration-300 ${
@@ -312,8 +240,8 @@ export default function Projects() {
               ? "bg-[#e0e5ec] rounded-2xl shadow-[inset_3px_3px_6px_rgba(163,177,198,0.5),_inset_-3px_-3px_6px_rgba(255,255,255,0.7)]"
               : "border-2 border-black bg-white"
           }`}>
-            <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-zinc-500 pl-2">
-              {showAllMobile ? "[ Scroll ↓ ]" : "[ Swipe & Tap ]"}
+            <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-zinc-500 ps-2">
+              {showAllMobile ? "[ Scroll ↓ ]" : `[ ${dict?.swipeHint || "Swipe to explore"} ]`}
             </span>
             <button
               onClick={() => setShowAllMobile(!showAllMobile)}
@@ -323,7 +251,7 @@ export default function Projects() {
                   : "bg-black text-white border-2 border-transparent hover:border-black"
               }`}
             >
-              {showAllMobile ? "Swipe View" : "View All"}
+              {showAllMobile ? (dict?.hide || "Hide Projects") : (dict?.viewAll || "View All Projects")}
             </button>
           </div>
         </div>
@@ -334,7 +262,7 @@ export default function Projects() {
           rel="noopener noreferrer"
           className="hidden md:block text-xl font-bold uppercase border-b-4 border-black pb-1 hover:bg-black hover:text-white transition-colors"
         >
-          View full GitHub →
+          {dict?.viewGithub || "View full GitHub →"}
         </a>
       </div>
 
@@ -343,8 +271,8 @@ export default function Projects() {
 
         {/* The 2x2 Grid container */}
         <div className="grid grid-cols-2 grid-rows-2 gap-6 xl:gap-8 h-full w-full">
-          {currentProjects.map((project, index) => (
-            <ProjectCard key={`desktop-${page}-${index}`} project={project} animate={true} isNeumorphic={isNeumorphic} />
+          {currentProjects.map((project: Project, index: number) => (
+            <ProjectCard key={`desktop-${page}-${index}`} project={project} dict={dict} animate={true} isNeumorphic={isNeumorphic} />
           ))}
         </div>
 
@@ -352,14 +280,14 @@ export default function Projects() {
         <div className={`flex flex-col border-4 border-black bg-white h-full w-full transition-all duration-200 ease-in-out ${
           isNeumorphic
             ? "brutalist-shadow-static"
-            : "shadow-[8px_8px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_#000] active:translate-x-2 active:translate-y-2 active:shadow-none"
+            : "shadow-[8px_8px_0px_#000] hover:-translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_#000] active:-translate-x-2 active:translate-y-2 active:shadow-none rtl:shadow-[-8px_8px_0px_#000] rtl:hover:translate-x-1 rtl:hover:shadow-[-4px_4px_0px_#000] rtl:active:translate-x-2"
         }`}>
           <button onClick={prevSlide} className="flex-1 flex flex-col items-center justify-center gap-2 border-b-4 border-black hover:bg-black hover:text-white transition-colors group">
             <ArrowUp size={32} className="group-hover:-translate-y-2 transition-transform" />
-            <span className="font-black uppercase tracking-widest text-xs rotate-180 [writing-mode:vertical-rl]">Prev</span>
+            <span className="font-black uppercase tracking-widest text-xs rotate-180 [writing-mode:vertical-rl] rtl:-rotate-180">{dict?.prev || "Prev"}</span>
           </button>
           <button onClick={nextSlide} className="flex-1 flex flex-col items-center justify-center gap-2 hover:bg-black hover:text-white transition-colors group">
-            <span className="font-black uppercase tracking-widest text-xs [writing-mode:vertical-rl]">Next</span>
+            <span className="font-black uppercase tracking-widest text-xs [writing-mode:vertical-rl]">{dict?.next || "Next"}</span>
             <ArrowDown size={32} className="group-hover:translate-y-2 transition-transform" />
           </button>
         </div>
@@ -368,9 +296,9 @@ export default function Projects() {
       {/* --- MOBILE VIEW --- */}
       {showAllMobile ? (
         <div aria-hidden="true" className="flex lg:hidden flex-col gap-6 pb-8 flex-1">
-          {projects.map((project, index) => (
+          {projects.map((project: Project, index: number) => (
             <div key={`mobile-list-${index}`} className="w-full">
-              <ProjectCard project={project} animate={true} isNeumorphic={isNeumorphic} asHeading={false} />
+              <ProjectCard project={project} dict={dict} animate={true} isNeumorphic={isNeumorphic} asHeading={false} />
             </div>
           ))}
         </div>
@@ -380,9 +308,9 @@ export default function Projects() {
           className="flex lg:hidden overflow-x-auto gap-4 pt-5 pb-6 snap-x snap-mandatory -mx-6 px-6 flex-1 min-h-[320px] hide-scrollbar"
           style={{ WebkitOverflowScrolling: 'touch' }}
         >
-          {projects.map((project, index) => (
+          {projects.map((project: Project, index: number) => (
             <div key={`mobile-swipe-${index}`} className="w-[85vw] sm:w-[60vw] shrink-0 snap-center h-full">
-              <ProjectCard project={project} animate={false} disableObserver={true} isNeumorphic={isNeumorphic} asHeading={false} />
+              <ProjectCard project={project} dict={dict} animate={false} disableObserver={true} isNeumorphic={isNeumorphic} asHeading={false} />
             </div>
           ))}
           <div className="w-[1px] shrink-0"></div>
@@ -401,7 +329,7 @@ export default function Projects() {
               : "bg-black text-white border-4 border-black hover:bg-white hover:text-black"
           }`}
         >
-          View Full GitHub →
+          {dict?.viewGithub || "View Full GitHub →"}
         </a>
       </div>
 

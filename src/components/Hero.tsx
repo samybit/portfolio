@@ -7,7 +7,7 @@ import SproutingFlowers from "@/components/SproutingFlowers";
 import GlitchText from "@/components/GlitchText";
 import HeroCarabiner3D from "@/components/HeroCarabiner3D";
 
-export default function Hero() {
+export default function Hero({ dict }: { dict: any }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
 
@@ -32,21 +32,17 @@ export default function Hero() {
 
         {/* --- LEFT COLUMN: TYPOGRAPHY --- */}
         <div className="flex-1 animate-slide-up">
+
           <div className="flex items-center gap-4 mb-6">
             <span className={`text-xl font-bold uppercase tracking-widest border-b-4 pb-1 bg-white ${
               isNeumorphic ? "border-[#a3b1c6]" : "border-black"
             }`}>
-              Available for Full-Time Roles
+              {dict?.availability || "Available for Full-Time Roles"}
             </span>
           </div>
 
           {/* --- DESKTOP DESCRIPTION (Hidden on mobile) --- */}
-          <p className="hidden md:block text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ml-2 hero-subtitle-backdrop mb-6">
-            Full-Stack Developer. <br />
-            MERN Stack Specialist. <br />
-            Based in Egypt. <br />
-            Building fast, and effective apps.
-          </p>
+          <p className="hidden md:block text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ms-2 hero-subtitle-backdrop mb-6" dangerouslySetInnerHTML={{ __html: dict?.description || "Full-Stack Developer. <br /> MERN Stack Specialist. <br /> Based in Egypt. <br /> Building fast, and effective apps." }} />
 
           <h1 className="text-[18vw] sm:text-7xl md:text-9xl lg:text-[8rem] xl:text-[10rem] font-black uppercase tracking-tighter leading-[0.85]">
             {/* --- WRAP 'SAMY' IN A TRIGGER SPAN --- */}
@@ -58,7 +54,7 @@ export default function Hero() {
             >
               <span className={`relative z-20 inline-block hero-samy-text ${isHovered ? "text-white" : "text-black"
                 }`}>
-                Samy
+                {dict?.samy || "Samy"}
               </span>
               <SproutingFlowers isHovered={isHovered} />
             </span>
@@ -68,21 +64,16 @@ export default function Hero() {
             {/* Added cursor-crosshair to match the 'Samy' interaction */}
             <span className="bg-black text-white px-2 sm:px-4 inline-block mt-4 md:mt-4 transform -skew-x-6 z-20 relative cursor-crosshair">
               {/* Wrapped the text in the new engine */}
-              <GlitchText text="Barsoum" />
+              <GlitchText text={dict?.barsoum || "Barsoum"} />
             </span>
           </h1>
 
           {/* --- MOBILE DESCRIPTION (Hidden on desktop) --- */}
-          <p className="block md:hidden text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ml-2 hero-subtitle-backdrop mt-6">
-            Full-Stack Developer. <br />
-            MERN Stack Specialist. <br />
-            Based in Egypt. <br />
-            Building fast, and effective apps.
-          </p>
+          <p className="block md:hidden text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ms-2 hero-subtitle-backdrop mt-6" dangerouslySetInnerHTML={{ __html: dict?.description || "Full-Stack Developer. <br /> MERN Stack Specialist. <br /> Based in Egypt. <br /> Building fast, and effective apps." }} />
         </div>
 
         {/* --- RIGHT COLUMN: ACTIONS --- */}
-        <div className="flex flex-col w-full lg:w-[400px] xl:w-[450px] gap-4 md:gap-6 border-black border-l-0 lg:border-l-8 lg:pl-12 lg:py-8 shrink-0 animate-slide-up-delay-1">
+        <div className="flex flex-col w-full lg:w-[400px] xl:w-[450px] gap-4 md:gap-6 border-black border-t-0 lg:border-t-0 border-s-0 lg:border-s-8 lg:ps-12 lg:py-8 shrink-0 animate-slide-up-delay-1">
 
           <Link
             href="#projects"
@@ -92,8 +83,8 @@ export default function Hero() {
                 : "bg-black text-white border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
-            <span>Work</span>
-            <ArrowDownRight className="w-6 h-6 md:w-10 md:h-10 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform" />
+            <span>{dict?.work || "Work"}</span>
+            <ArrowDownRight className="w-6 h-6 md:w-10 md:h-10 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-2" />
           </Link>
 
           <Link
@@ -104,8 +95,8 @@ export default function Hero() {
                 : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
-            <span>Contact</span>
-            <ArrowDownRight className="w-6 h-6 md:w-10 md:h-10 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform" />
+            <span>{dict?.contact || "Contact"}</span>
+            <ArrowDownRight className="w-6 h-6 md:w-10 md:h-10 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-2" />
           </Link>
 
           {/* CV Button */}
@@ -118,7 +109,7 @@ export default function Hero() {
                 : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
-            <span>Get CV</span>
+            <span>{dict?.getCV || "Get CV"}</span>
             <Download className="w-6 h-6 md:w-10 md:h-10 group-hover:translate-y-2 transition-transform" />
           </a>
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SystemOverride from "@/components/SystemOverride";
@@ -36,20 +36,37 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+import { getDictionary, Locale } from "@/dictionaries/getDictionary";
+
+export async function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'ar' }];
+}
+
+
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
+  
+  if (!['en', 'ar'].includes(locale)) {
+    import('next/navigation').then(m => m.notFound());
+  }
+
+  const dict = await getDictionary(locale as Locale);
+
   return (
-    <html lang="en" className="scroll-smooth snap-y snap-mandatory" data-scroll-behavior="smooth">
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="scroll-smooth snap-y snap-mandatory" data-scroll-behavior="smooth">
       <body className={`${spaceGrotesk.className} text-black antialiased selection:bg-black selection:text-white`}>
         <SystemOverride />
-        <CustomContextMenu />
+        <CustomContextMenu dict={dict.menu} />
         <GhostInTheMachine />
-        <Navbar />
+        <Navbar dict={dict.nav} currentLocale={locale as Locale} />
         {children}
-        <Footer />
+        <Footer dict={dict.footer} />
       </body>
     </html>
   );

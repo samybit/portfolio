@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Disc3 } from "lucide-react";
 
-export default function AudioPlayer() {
+export default function AudioPlayer({ dict }: { dict?: any }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -36,18 +36,18 @@ export default function AudioPlayer() {
           className={isPlaying ? "animate-spin text-black" : "text-zinc-400"}
           style={{ animationDuration: '3s' }}
         />
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col items-start text-start">
           <span className="text-sm font-black uppercase tracking-widest leading-none mb-1">Crystals / 01</span>
-          <span className="text-xs font-bold text-zinc-500 uppercase leading-none">Press to Play</span>
+          <span className="text-xs font-bold text-zinc-500 uppercase leading-none">{dict?.pressToPlay || "Press to Play"}</span>
         </div>
       </div>
 
       <button
         onClick={togglePlay}
-        className="bg-black text-white w-10 h-10 flex items-center justify-center shrink-0 hover:bg-white hover:text-black border-2 border-black transition-colors"
+        className="bg-black text-white w-10 h-10 flex items-center justify-center shrink-0 hover:bg-white hover:text-black border-2 border-black transition-colors rtl:rotate-180"
         aria-label={isPlaying ? "Pause" : "Play"}
       >
-        {isPlaying ? <Pause size={20} /> : <Play size={20} className="ml-0.5" />}
+        {isPlaying ? <Pause size={20} className="rtl:rotate-180" /> : <Play size={20} className="ml-0.5 rtl:ml-0 rtl:mr-0.5 rtl:rotate-180" />}
       </button>
 
       {/* Hidden audio engine pointing to the file in your public folder */}

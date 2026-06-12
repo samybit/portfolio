@@ -401,7 +401,7 @@ function WireframeMonolith({ isCanvasInView }: { isCanvasInView: boolean }) {
   );
 }
 
-export default function CTA() {
+export default function CTA({ dict }: { dict: any }) {
   const [isEmber, setIsEmber] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
   
@@ -427,7 +427,8 @@ export default function CTA() {
     const contactSection = document.getElementById("contact");
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: "smooth" });
-      window.history.pushState(null, "", "/#contact");
+      const currentLocale = window.location.pathname.split('/')[1] || 'en';
+      window.history.pushState(null, "", `/${currentLocale}#contact`);
     }
   };
 
@@ -503,16 +504,16 @@ export default function CTA() {
 
         {/* LEFT SIDE: The Quote */}
         <div className="flex-1 flex flex-col relative w-full">
-          <div className="absolute -top-8 -left-2 md:-top-16 md:-left-8 text-black font-black text-[10rem] md:text-[18rem] leading-none opacity-5 pointer-events-none select-none">
+          <div className="absolute -top-8 -left-2 md:-top-16 md:-left-8 text-black font-black text-[10rem] md:text-[18rem] leading-none opacity-5 pointer-events-none select-none rtl:-left-auto rtl:-right-2 rtl:md:-right-8">
             "
           </div>
           <motion.blockquote
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-7xl font-black uppercase tracking-tighter leading-none relative z-10 bg-white/70 backdrop-blur-sm p-4 -ml-4 quote-backdrop"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-7xl font-black uppercase tracking-tighter leading-none relative z-10 bg-white/70 backdrop-blur-sm p-4 -ms-4 quote-backdrop"
           >
-            "It's no use going back to yesterday, because I was a different person then."
+            "{dict?.quote || "It's no use going back to yesterday, because I was a different person then."}"
           </motion.blockquote>
 
           <motion.div
@@ -520,14 +521,14 @@ export default function CTA() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="flex items-center gap-4 mt-8 relative z-10 bg-white/70 backdrop-blur-sm p-4 -ml-4 max-w-max quote-backdrop"
+            className="flex items-center gap-4 mt-8 relative z-10 bg-white/70 backdrop-blur-sm p-4 -ms-4 max-w-max quote-backdrop"
           >
             {/* Brutalist Divider */}
             <div className="h-2 w-8 sm:w-16 md:w-24 bg-black shrink-0"></div>
 
             {/* Attribution */}
-            <span className="text-sm sm:text-base md:text-lg font-bold tracking-widest uppercase text-zinc-600 whitespace-nowrap pr-1">
-              [ Alice in Wonderland / Lewis Carroll ]
+            <span className="text-sm sm:text-base md:text-lg font-bold tracking-widest uppercase text-zinc-600 whitespace-nowrap pe-1">
+              {dict?.attribution || "[ Alice in Wonderland / Lewis Carroll ]"}
             </span>
           </motion.div>
         </div>
@@ -541,18 +542,18 @@ export default function CTA() {
         >
           <div className="brutalist-container bg-white text-black border-4 md:border-8 border-black p-8 md:p-12 text-center flex flex-col items-center gap-6 brutalist-shadow pointer-events-auto max-w-lg xl:max-w-xl mx-auto">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none">
-              Ready to build?
+              {dict?.title || "Ready to build?"}
             </h2>
             <p className="text-base md:text-lg lg:text-xl font-bold uppercase text-zinc-600">
-              Currently open for freelance projects and full-time roles. Let's make something impactful.
+              {dict?.description || "Currently open for freelance projects and full-time roles. Let's make something impactful."}
             </p>
             <Link
-              href="/#contact"
+              href="#contact"
               onClick={handleScroll}
               className="group/btn relative inline-flex items-center justify-center bg-black text-white px-8 py-4 text-lg md:text-xl font-black uppercase tracking-widest border-4 border-black hover:bg-white hover:text-black transition-colors duration-200 mt-4"
             >
-              <span>Get in touch</span>
-              <ArrowUpRight className="ml-3 w-6 h-6 group-hover/btn:rotate-90 transition-transform duration-200" />
+              <span>{dict?.button || "Get in touch"}</span>
+              <ArrowUpRight className="ms-3 w-6 h-6 group-hover/btn:rotate-90 transition-transform duration-200 rtl:-scale-x-100 rtl:group-hover/btn:-rotate-90" />
             </Link>
           </div>
         </motion.div>

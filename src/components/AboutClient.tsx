@@ -1,12 +1,12 @@
 "use client";
 
-import { ArrowLeft, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal } from "lucide-react";
+import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AudioPlayer from "@/components/AudioPlayer";
 import DecryptText from "@/components/DecryptText";
 
-export default function AboutPage() {
+export default function AboutClient({ dict, tabTitles, locale }: { dict: any, tabTitles: any, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
 
@@ -16,7 +16,7 @@ export default function AboutPage() {
 
   // Enforce the tab title on mount and fix the refresh scroll-creep
   useEffect(() => {
-    document.title = "About | Samy Barsoum";
+    document.title = tabTitles?.about || "About | Samy Barsoum";
 
     // Tell the browser to turn off its automatic scroll memory
     if ('scrollRestoration' in history) {
@@ -31,7 +31,7 @@ export default function AboutPage() {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
     return () => observer.disconnect();
-  }, []);
+  }, [tabTitles]);
 
   useEffect(() => {
     if (toastMessage) {
@@ -68,31 +68,27 @@ export default function AboutPage() {
       icon: <Workflow size={32} />,
       tech: ["Git", "Jira", "Trello", "Notion", "Slack"]
     },
-    // {
-    //   category: "Systems & Low-Level",
-    //   icon: <Terminal size={32} />,
-    //   tech: ["C", "Rust", "WSL Environment", "CLI Tooling"]
-    // }
   ];
 
   return (
-    <main className="min-h-screen px-6 md:px-12 lg:px-24 pt-30 md:pt-32 pb-24">
+    <main className="min-h-screen px-6 md:px-12 lg:px-24 pt-30 md:pt-32 pb-24" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
 
       {/* --- HEADER --- */}
       <div className="animate-slide-up max-w-7xl mx-auto mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-6">
         {/* LEFT SIDE: Title & Back Button */}
         <div>
-          <Link href="/" className="inline-flex items-center gap-2 text-xl font-bold uppercase mb-8 hover:bg-black hover:text-white px-3 py-1 border-4 border-transparent hover:border-black transition-all">
-            <ArrowLeft size={24} /> Return to Grid
+          <Link href={`/${locale}`} className="inline-flex items-center gap-2 text-xl font-bold uppercase mb-8 hover:bg-black hover:text-white px-3 py-1 border-4 border-transparent hover:border-black transition-all">
+            {locale === 'ar' ? <ArrowRight size={24} /> : <ArrowLeft size={24} />} {dict?.returnGrid || "Return to Grid"}
           </Link>
-          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">
-            <DecryptText text="About" /> <br /> <span className="bg-black text-white px-4 inline-block mt-2 transform -skew-x-2"><DecryptText text="me" /></span>
+          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none flex flex-wrap items-baseline gap-4">
+            <DecryptText text={dict?.about || "About"} />
+            <span className="bg-black text-white px-4 inline-block transform -skew-x-2"><DecryptText text={dict?.me || "me"} /></span>
           </h1>
         </div>
 
         {/* RIGHT SIDE: The Music Player */}
         <div className="w-full md:w-auto shrink-0">
-          <AudioPlayer />
+          <AudioPlayer dict={dict} />
         </div>
       </div>
 
@@ -109,14 +105,14 @@ export default function AboutPage() {
                 isNeumorphic ? "border-[#a3b1c6]" : "border-white"
               }`}>
                 <GraduationCap size={40} />
-                <h2 className="text-4xl font-black uppercase">Education</h2>
+                <h2 className="text-4xl font-black uppercase">{dict?.education || "Education"}</h2>
               </div>
-              <h3 className="text-3xl font-bold uppercase leading-tight mb-2">Ain Shams University</h3>
+              <h3 className="text-3xl font-bold uppercase leading-tight mb-2">{dict?.eduSchool || "Ain Shams University"}</h3>
               <p className={`text-xl font-bold mb-6 uppercase transition-all duration-300 ${
                 isNeumorphic ? "text-zinc-500" : "text-zinc-400"
-              }`}>Bachelor of Commerce (B.B.A.) // 2019 - 2023</p>
+              }`}>{dict?.eduDegree || "Bachelor of Commerce (B.B.A.) // 2019 - 2023"}</p>
               <p className="text-lg md:text-xl font-medium leading-relaxed">
-                Specialized in accounting and project management, which strengthened my problem-solving skills and gave me a solid understanding of real-world product needs.
+                {dict?.eduDesc || "Specialized in accounting and project management, which strengthened my problem-solving skills and gave me a solid understanding of real-world product needs."}
               </p>
             </div>
           </section>
@@ -126,7 +122,7 @@ export default function AboutPage() {
               isNeumorphic ? "border-[#a3b1c6]" : "border-black"
             }`}>
               <Award size={40} />
-              <h2 className="text-4xl font-black uppercase">Clearances</h2>
+              <h2 className="text-4xl font-black uppercase">{dict?.clearances || "Clearances"}</h2>
             </div>
 
             <div className="flex flex-col gap-6">
@@ -134,9 +130,9 @@ export default function AboutPage() {
               <a
                 onClick={(e) => {
                   e.preventDefault();
-                  showToast("MERN Stack certificate is not online yet.");
+                  showToast(dict?.notOnline || "MERN Stack certificate is not online yet.");
                 }}
-                className={`group block border-l-8 pl-4 py-2 transition-all cursor-pointer ${
+                className={`group block border-s-8 ps-4 py-2 transition-all cursor-pointer ${
                   isNeumorphic
                     ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
                     : "border-black hover:bg-black hover:text-white"
@@ -144,7 +140,7 @@ export default function AboutPage() {
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-2xl font-black uppercase leading-tight">MERN Stack &  Gen AI</h3>
+                    <h3 className="text-2xl font-black uppercase leading-tight">{dict?.mernStack || "MERN Stack & Gen AI"}</h3>
                     <div className="flex items-center gap-3 mt-1">
                       <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">ITI (MCIT)</p>
                       {/* Brutalist Year Tag */}
@@ -161,7 +157,7 @@ export default function AboutPage() {
                 href="https://cs50.harvard.edu/certificates/09d4b4ad-f9dd-4cf3-a1dc-7385742119f9"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group block border-l-8 pl-4 py-2 transition-all cursor-pointer ${
+                className={`group block border-s-8 ps-4 py-2 transition-all cursor-pointer ${
                   isNeumorphic
                     ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
                     : "border-black hover:bg-black hover:text-white"
@@ -169,7 +165,7 @@ export default function AboutPage() {
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-2xl font-black uppercase leading-tight">CS50x</h3>
+                    <h3 className="text-2xl font-black uppercase leading-tight">{dict?.cs50 || "CS50x"}</h3>
                     <div className="flex items-center gap-3 mt-1">
                       <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">edX (Harvard)</p>
                       <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none">
@@ -177,7 +173,7 @@ export default function AboutPage() {
                       </span>
                     </div>
                   </div>
-                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-300 mr-4 shrink-0" />
+                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 rtl:translate-x-4 ltr:-translate-x-4 group-hover:translate-x-0 transition-all duration-300 mx-4 shrink-0" />
                 </div>
               </a>
 
@@ -186,7 +182,7 @@ export default function AboutPage() {
                 href="https://i.ibb.co/ynPJ6szk/FWD-data-Certificate.png"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group block border-l-8 pl-4 py-2 transition-all cursor-pointer ${
+                className={`group block border-s-8 ps-4 py-2 transition-all cursor-pointer ${
                   isNeumorphic
                     ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
                     : "border-black hover:bg-black hover:text-white"
@@ -194,7 +190,7 @@ export default function AboutPage() {
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-2xl font-black uppercase leading-tight">Data Analysis</h3>
+                    <h3 className="text-2xl font-black uppercase leading-tight">{dict?.dataAnalysis || "Data Analysis"}</h3>
                     <div className="flex items-center gap-3 mt-1">
                       <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">Egypt FWD (MCIT)</p>
                       <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none">
@@ -202,7 +198,7 @@ export default function AboutPage() {
                       </span>
                     </div>
                   </div>
-                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-300 mr-4 shrink-0" />
+                  <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 rtl:translate-x-4 ltr:-translate-x-4 group-hover:translate-x-0 transition-all duration-300 mx-4 shrink-0" />
                 </div>
               </a>
             </div>
@@ -213,7 +209,7 @@ export default function AboutPage() {
         {/* --- TECHNICAL ARSENAL --- */}
         <section className="animate-slide-up-delay-2">
           <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
-            <h2 className="text-4xl font-black uppercase tracking-widest">Technical Arsenal</h2>
+            <h2 className="text-4xl font-black uppercase tracking-widest">{dict?.techArsenal || "Technical Arsenal"}</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -236,7 +232,7 @@ export default function AboutPage() {
                   }`}>
                     {category.icon}
                   </div>
-                  <h3 className="text-2xl font-black uppercase leading-none">{category.category}</h3>
+                  <h3 className="text-2xl font-black uppercase leading-none text-left rtl:text-right">{category.category}</h3>
                 </div>
 
                 <ul className="flex flex-col gap-3">
@@ -262,9 +258,9 @@ export default function AboutPage() {
             ? "brutalist-container"
             : "bg-white border-4 border-black"
         }`}>
-          <div className="flex flex-col text-center md:text-left">
-            <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight">Legacy Systems</h2>
-            <p className="text-lg md:text-xl font-bold text-zinc-500 uppercase mt-1">Explore previous portfolio iterations</p>
+          <div className="flex flex-col text-center md:text-left rtl:md:text-right">
+            <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight">{dict?.legacySys || "Legacy Systems"}</h2>
+            <p className="text-lg md:text-xl font-bold text-zinc-500 uppercase mt-1">{dict?.legacyDesc || "Explore previous portfolio iterations"}</p>
           </div>
           <div className="flex flex-col sm:flex-row w-full md:w-auto gap-6 shrink-0">
             <a
@@ -277,7 +273,7 @@ export default function AboutPage() {
                   : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
               }`}
             >
-              Version 1.0 <ExternalLink size={24} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              {dict?.v1 || "Version 1.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </a>
             <a
               href="https://samybit.github.io/brutalist-portfolio/"
@@ -289,7 +285,7 @@ export default function AboutPage() {
                   : "bg-black text-white border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
               }`}
             >
-              Version 2.0 <ExternalLink size={24} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              {dict?.v2 || "Version 2.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </a>
           </div>
         </section>
@@ -305,7 +301,7 @@ export default function AboutPage() {
           <span>{toastMessage}</span>
           <button
             onClick={() => setToastMessage(null)}
-            className="font-black text-xl hover:text-zinc-600 transition-colors ml-6 cursor-pointer"
+            className="font-black text-xl hover:text-zinc-600 transition-colors mx-6 cursor-pointer"
           >
             ×
           </button>

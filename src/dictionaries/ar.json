@@ -1,0 +1,170 @@
+{
+  "nav": {
+    "about": "حول",
+    "work": "أعمالي",
+    "github": "جيت هاب",
+    "contact": "تواصل",
+    "toggleLang": "EN"
+  },
+  "hero": {
+    "availability": "متاح للعمل بدوام كامل",
+    "description": "مطور واجهات متكاملة. <br/> متخصص في MERN Stack. <br/> مقره في مصر. <br/> بناء تطبيقات سريعة وفعالة.",
+    "samy": "سامي",
+    "barsoum": "برسوم",
+    "work": "أعمالي",
+    "contact": "تواصل",
+    "getCV": "السيرة الذاتية",
+    "pressToPlay": "اضغط للتشغيل"
+  },
+  "projects": {
+    "title": "أعمال مختارة",
+    "swipeHint": "اسحب للاستكشاف",
+    "viewAll": "عرض كل المشاريع",
+    "hide": "إخفاء المشاريع",
+    "repo": "الكود",
+    "demo": "معاينة حية",
+    "offline": "[ غير متصل / نسخة محلية ]",
+    "viewGithub": "عرض حساب جيت هاب كامل ←",
+    "prev": "السابق",
+    "next": "التالي",
+    "pageFormat": "[ صفحة {current} / {total} ]",
+    "list": [
+      {
+        "id": "bento",
+        "title": "Bento Game Tracker",
+        "description": "محرك تتبع الألعاب Bento-grid مدعوم بـ Next.js 16 و Gemini 2.5 Flash.",
+        "tech": ["Next.js", "Prisma", "PostgreSQL", "TailwindCSS"],
+        "github": "https://github.com/samybit/bento-game-tracker",
+        "demo": "https://bento-game-tracker.vercel.app/",
+        "image": "/bento.png"
+      },
+      {
+        "id": "movie",
+        "title": "Movie Intelligence App",
+        "description": "منصة سينمائية تتميز بمصادقة Firebase وإدارة الحالة العالمية وخوارزمية تقييم متقدمة بأسلوب IMDB.",
+        "tech": ["React", "Firebase", "Redux", "TailwindCSS"],
+        "github": "https://github.com/samybit/iti-movie-app",
+        "demo": "https://iti-movie-app-samy.vercel.app/",
+        "image": "/movie.png"
+      },
+      {
+        "id": "3d",
+        "title": "3D Web",
+        "description": "عرض تقديمي لتقنيات الويب ثلاثية الأبعاد. يدمج Framer Motion و Three.js و Suspense و Canvas.",
+        "tech": ["React", "Three.js", "Framer Motion", "TailwindCSS"],
+        "github": "https://github.com/samybit/3d-showcase",
+        "demo": "https://3d-showcase-samy.vercel.app/",
+        "image": "/3d.png"
+      },
+      {
+        "id": "plants",
+        "title": "Verdant Plants Store",
+        "description": "متجر إلكتروني متكامل مدعوم بـ WordPress و WooCommerce.",
+        "tech": ["WordPress", "WooCommerce", "Elementor", "PHP"],
+        "github": "",
+        "demo": "https://dev-samybit212.pantheonsite.io/",
+        "image": "/plants.png"
+      },
+      {
+        "id": "scraper",
+        "title": "Lead Scraper",
+        "description": "أداة أتمتة للمستقلين. تقوم باستخراج بيانات العملاء المستهدفين في مجال تطوير الويب من Twitter (X) و Reddit باستخدام Python و Selenium.",
+        "tech": ["Python", "Selenium", "Data Mining"],
+        "github": "https://github.com/samybit/freelance-lead-scraper",
+        "demo": "#",
+        "image": "/scraper.png"
+      },
+      {
+        "id": "ecommerce",
+        "title": "Vanilla JS E-Commerce",
+        "description": "محرك تجارة إلكترونية باستخدام Vanilla JavaScript نقي مع عربة تسوق متكاملة وتدفق دفع سلس ونوافذ منبثقة مخصصة.",
+        "tech": ["JavaScript", "HTML5", "CSS3", "DOM"],
+        "github": "https://github.com/samybit/vanilla-js-ecommerce",
+        "demo": "https://samybit.github.io/vanilla-js-ecommerce/",
+        "image": "/ecommerce.png"
+      },
+      {
+        "id": "bearbuzz",
+        "title": "BearBuzz",
+        "description": "محرك Python بواجهتين (CLI و GUI) لتتبع تقلبات الأسهم، وإرسال تنبيهات Twilio SMS تلقائية مع عناوين الأخبار المالية المباشرة.",
+        "tech": ["Python", "Twilio API", "CI/CD", "Tkinter"],
+        "github": "https://github.com/samybit/bearbuzz",
+        "demo": "#",
+        "image": "/bearbuzz.png"
+      },
+      {
+        "id": "cli",
+        "title": "CLI Expense Tracker",
+        "description": "أداة سطر أوامر آمنة الذاكرة وسريعة جداً تتميز بالتخصيص الديناميكي وإدخال/إخراج الملفات.",
+        "tech": ["C", "CLI", "Data Structures"],
+        "github": "https://github.com/samybit/cli-expense-tracker",
+        "demo": "#",
+        "image": "/cli.png"
+      }
+    ]
+  },
+  "cta": {
+    "quote": "لا فائدة من العودة إلى الأمس، لأنني كنت شخصاً مختلفاً حينها.",
+    "attribution": "[ أليس في بلاد العجائب / لويس كارول ]",
+    "title": "مستعد للبناء؟",
+    "description": "متاح حالياً لمشاريع العمل الحر والأدوار بدوام كامل. دعنا نصنع شيئاً مؤثراً.",
+    "button": "تواصل معي"
+  },
+  "contact": {
+    "lets": "دعنا",
+    "talk": "نتحدث",
+    "description": "اترك رسالة لمناقشة مشروع، أو دور بدوام كامل، أو لمجرد إلقاء التحية.",
+    "networks": "الشبكات الموثقة",
+    "nameLabel": "الاسم",
+    "emailLabel": "البريد الإلكتروني",
+    "emailPlaceholder": "...@example.com",
+    "messageLabel": "الرسالة",
+    "messagePlaceholder": "صف مشروعك، أو دوراً متاحاً، أو كيف يمكننا التعاون...",
+    "btnSending": "جاري الإرسال...",
+    "btnSend": "إرسال الرسالة",
+    "errEmail": "البريد الإلكتروني الصالح مطلوب.",
+    "errMessage": "الرسالة مطلوبة.",
+    "errSend": "فشل الإرسال. يرجى المحاولة مرة أخرى.",
+    "success": "تم استلام الرسالة. سأتواصل معك قريباً."
+  },
+  "footer": {
+    "samy": "سامي برسوم",
+    "copyright": "© {year} سامي // بـ NEXT.JS و BRUTALISM.",
+    "backToTop": "↑ العودة للأعلى"
+  },
+  "menu": {
+    "systemMenu": "قائمة_النظام",
+    "copy": "نسخ",
+    "paste": "لصق",
+    "copyUrl": "نسخ الرابط",
+    "specs": "المواصفات",
+    "source": "المصدر",
+    "contact": "تواصل"
+  },
+  "tabTitles": {
+    "hero": "سامي | مطور واجهات متكاملة",
+    "projects": "أعمالي | سامي برسوم",
+    "contact": "تواصل | سامي برسوم",
+    "about": "حول | سامي برسوم"
+  },
+  "about": {
+    "returnGrid": "العودة للرئيسية",
+    "about": "نبذة",
+    "me": "عني",
+    "education": "التعليم",
+    "eduSchool": "جامعة عين شمس",
+    "eduDegree": "بكالوريوس تجارة وإدارة أعمال // 2019 - 2023",
+    "eduDesc": "تخصصت في المحاسبة وإدارة المشاريع، مما عزز مهارات حل المشكلات لدي ومنحني فهمًا قويًا لاحتياجات المنتجات في العالم الحقيقي.",
+    "clearances": "الشهادات",
+    "notOnline": "شهادة MERN Stack ليست متوفرة على الإنترنت بعد.",
+    "mernStack": "MERN Stack & Gen AI",
+    "cs50": "CS50x",
+    "dataAnalysis": "تحليل البيانات",
+    "techArsenal": "المهارات التقنيه",
+    "legacySys": "أنظمة سابقة",
+    "legacyDesc": "استكشف الإصدارات السابقة من معرض أعمالي",
+    "v1": "الإصدار 1.0",
+    "v2": "الإصدار 2.0",
+    "pressToPlay": "اضغط للتشغيل"
+  }
+}

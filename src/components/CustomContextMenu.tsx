@@ -23,14 +23,17 @@ const GithubIcon = ({ size = 16 }: { size?: number }) => (
   </svg>
 );
 
-export default function CustomContextMenu() {
+export default function CustomContextMenu({ dict }: { dict?: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [currentLocale, setCurrentLocale] = useState("en");
 
   // Track exactly what element was right-clicked to enable precise pasting
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
+    setCurrentLocale(window.location.pathname.split('/')[1] || "en");
+
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
 
@@ -106,20 +109,21 @@ export default function CustomContextMenu() {
     <div
       className="fixed z-[9999] bg-white border-4 border-black brutalist-shadow flex flex-col w-[200px] context-menu-wrapper"
       style={{ top: `${position.y}px`, left: `${position.x}px` }}
+      dir={currentLocale === "ar" ? "rtl" : "ltr"}
     >
       {/* Menu Header */}
       <div className="bg-black text-white px-3 py-2 text-xs font-black uppercase tracking-widest flex items-center gap-2 cursor-default">
-        <Terminal size={14} /> System_Menu
+        <Terminal size={14} /> {dict?.systemMenu || "System_Menu"}
       </div>
 
       {/* Windows 11 Style Action Bar */}
       <div className="flex border-b-4 border-black bg-white">
         <button
           onClick={handleCopy}
-          className="flex-1 flex flex-col items-center justify-center py-3 border-r-4 border-black hover:bg-black hover:text-white transition-colors group"
+          className="flex-1 flex flex-col items-center justify-center py-3 border-r-4 border-black rtl:border-r-0 rtl:border-l-4 rtl:border-black hover:bg-black hover:text-white transition-colors group"
         >
           <Copy size={20} className="mb-1" />
-          <span className="text-[10px] font-black uppercase tracking-widest">Copy</span>
+          <span className="text-[10px] font-black uppercase tracking-widest">{dict?.copy || "Copy"}</span>
         </button>
 
         <button
@@ -127,40 +131,40 @@ export default function CustomContextMenu() {
           className="flex-1 flex flex-col items-center justify-center py-3 hover:bg-black hover:text-white transition-colors group"
         >
           <ClipboardPaste size={20} className="mb-1" />
-          <span className="text-[10px] font-black uppercase tracking-widest">Paste</span>
+          <span className="text-[10px] font-black uppercase tracking-widest">{dict?.paste || "Paste"}</span>
         </button>
       </div>
 
       {/* Menu Actions */}
       <button
         onClick={copyUrl}
-        className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
+        className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
       >
-        <LinkIcon size={16} /> Copy URL
+        <LinkIcon size={16} /> {dict?.copyUrl || "Copy URL"}
       </button>
 
       <Link
-        href="/about"
-        className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
+        href={`/${currentLocale}/about`}
+        className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
       >
-        <User size={16} /> Specs
+        <User size={16} /> {dict?.specs || "Specs"}
       </Link>
 
       <a
         href="https://github.com/samybit/samybit.github.io"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
+        className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
       >
         {/* Replaced Lucide Github with custom inline SVG */}
-        <GithubIcon size={16} /> Source
+        <GithubIcon size={16} /> {dict?.source || "Source"}
       </a>
 
       <Link
-        href="/#contact"
-        className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-black uppercase hover:bg-black hover:text-white transition-colors"
+        href={`/${currentLocale}#contact`}
+        className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase hover:bg-black hover:text-white transition-colors"
       >
-        <Mail size={16} /> Contact
+        <Mail size={16} /> {dict?.contact || "Contact"}
       </Link>
     </div>
   );

@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 
 const Footer3D = dynamic(() => import("@/components/Footer3D"), { ssr: false });
 
-export default function Footer() {
+export default function Footer({ dict }: { dict: any }) {
   // 1. Hardware Observer: Tracks if the footer is anywhere near the viewport
   const footerRef = useRef<HTMLElement>(null);
   // The margin ensures it wakes up slightly before the user actually sees it
@@ -28,6 +28,9 @@ export default function Footer() {
     return () => observer.disconnect();
   }, []);
 
+  const currentYear = new Date().getFullYear();
+  const copyrightText = (dict?.copyright || "© {year} SAMYBIT // WITH NEXT.JS & BRUTALISM.").replace('{year}', currentYear.toString());
+
   return (
     <footer ref={footerRef} className="relative overflow-hidden bg-white border-t-8 border-black p-6 md:p-12">
       {/* --- LAYER 1: 3D KNOT BACKGROUND (z-0) --- */}
@@ -39,16 +42,16 @@ export default function Footer() {
       {/* --- LAYER 2: FOOTER CONTENT (z-10) --- */}
       <div className="relative z-10 text-center flex flex-col items-center justify-center gap-4 pointer-events-none">
         <div className="text-3xl md:text-5xl font-black uppercase tracking-tighter">
-          Samy Barsoum
+          {dict?.samy || "Samy Barsoum"}
         </div>
         <p className="text-xl font-bold uppercase text-black bg-white px-3 py-1" suppressHydrationWarning>
-          © {new Date().getFullYear()} SAMYBIT // WITH NEXT.JS & BRUTALISM.
+          {copyrightText}
         </p>
         <a
           href="#"
           className="mt-4 text-lg font-bold uppercase border-b-4 border-black pb-1 hover:bg-black hover:text-white transition-colors pointer-events-auto"
         >
-          ↑ Back to top
+          {dict?.backToTop || "↑ Back to top"}
         </a>
       </div>
     </footer>

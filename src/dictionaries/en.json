@@ -1,0 +1,170 @@
+{
+  "nav": {
+    "about": "About",
+    "work": "Work",
+    "github": "GitHub",
+    "contact": "Contact",
+    "toggleLang": "AR"
+  },
+  "hero": {
+    "availability": "Available for Full-Time Roles",
+    "description": "Full-Stack Developer. <br/> MERN Stack Specialist. <br/> Based in Egypt. <br/> Building fast, and effective apps.",
+    "samy": "Samy",
+    "barsoum": "Barsoum",
+    "work": "Work",
+    "contact": "Contact",
+    "getCV": "Get CV",
+    "pressToPlay": "Press to Play"
+  },
+  "projects": {
+    "title": "Selected Works",
+    "swipeHint": "Swipe to explore",
+    "viewAll": "View All Projects",
+    "hide": "Hide Projects",
+    "repo": "Repo",
+    "demo": "Live Demo",
+    "offline": "[ Offline / Local Build ]",
+    "viewGithub": "View Full GitHub →",
+    "prev": "Prev",
+    "next": "Next",
+    "pageFormat": "[ PAGE {current} / {total} ]",
+    "list": [
+      {
+        "id": "bento",
+        "title": "Bento Game Tracker",
+        "description": "Bento-grid progression engine powered by Next.js 16 and Gemini 2.5 Flash.",
+        "tech": ["Next.js", "Prisma", "PostgreSQL", "TailwindCSS"],
+        "github": "https://github.com/samybit/bento-game-tracker",
+        "demo": "https://bento-game-tracker.vercel.app/",
+        "image": "/bento.png"
+      },
+      {
+        "id": "movie",
+        "title": "Movie Intelligence App",
+        "description": "Cinematic platform featuring Firebase authentication, global state management, and an advanced IMDB-style rating algorithm.",
+        "tech": ["React", "Firebase", "Redux", "TailwindCSS"],
+        "github": "https://github.com/samybit/iti-movie-app",
+        "demo": "https://iti-movie-app-samy.vercel.app/",
+        "image": "/movie.png"
+      },
+      {
+        "id": "3d",
+        "title": "3D Web",
+        "description": "Showcase of 3D web rendering. It integrates Framer Motion, Three.js, Suspense, and Canvas.",
+        "tech": ["React", "Three.js", "Framer Motion", "TailwindCSS"],
+        "github": "https://github.com/samybit/3d-showcase",
+        "demo": "https://3d-showcase-samy.vercel.app/",
+        "image": "/3d.png"
+      },
+      {
+        "id": "plants",
+        "title": "Verdant Plants Store",
+        "description": "Fully functional e-commerce boutique powered by WordPress and WooCommerce.",
+        "tech": ["WordPress", "WooCommerce", "Elementor", "PHP"],
+        "github": "",
+        "demo": "https://dev-samybit212.pantheonsite.io/",
+        "image": "/plants.png"
+      },
+      {
+        "id": "scraper",
+        "title": "Lead Scraper",
+        "description": "Freelancer automation tool. Scrapes Twitter (X) and Reddit for targeted web development client leads using Python and Selenium.",
+        "tech": ["Python", "Selenium", "Data Mining"],
+        "github": "https://github.com/samybit/freelance-lead-scraper",
+        "demo": "#",
+        "image": "/scraper.png"
+      },
+      {
+        "id": "ecommerce",
+        "title": "Vanilla JS E-Commerce",
+        "description": "A pure Vanilla JavaScript e-commerce engine with an integrated cart, seamless checkout flow, and custom modal windows.",
+        "tech": ["JavaScript", "HTML5", "CSS3", "DOM"],
+        "github": "https://github.com/samybit/vanilla-js-ecommerce",
+        "demo": "https://samybit.github.io/vanilla-js-ecommerce/",
+        "image": "/ecommerce.png"
+      },
+      {
+        "id": "bearbuzz",
+        "title": "BearBuzz",
+        "description": "Dual-interface (CLI & GUI) Python engine tracking stock volatility, dispatching automated Twilio SMS alerts with live financial headlines.",
+        "tech": ["Python", "Twilio API", "CI/CD", "Tkinter"],
+        "github": "https://github.com/samybit/bearbuzz",
+        "demo": "#",
+        "image": "/bearbuzz.png"
+      },
+      {
+        "id": "cli",
+        "title": "CLI Expense Tracker",
+        "description": "Memory-safe, blazingly fast command-line tool featuring dynamic allocation and file I/O.",
+        "tech": ["C", "CLI", "Data Structures"],
+        "github": "https://github.com/samybit/cli-expense-tracker",
+        "demo": "#",
+        "image": "/cli.png"
+      }
+    ]
+  },
+  "cta": {
+    "quote": "It's no use going back to yesterday, because I was a different person then.",
+    "attribution": "[ Alice in Wonderland / Lewis Carroll ]",
+    "title": "Ready to build?",
+    "description": "Currently open for freelance projects and full-time roles. Let's make something impactful.",
+    "button": "Get in touch"
+  },
+  "contact": {
+    "lets": "Let's",
+    "talk": "Talk",
+    "description": "Drop a message to discuss a project, a full-time role, or just to say hi.",
+    "networks": "Verified Networks",
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "...@example.com",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Describe your project, an open role, or how we can collaborate...",
+    "btnSending": "Sending...",
+    "btnSend": "Send Message",
+    "errEmail": "VALID EMAIL IS REQUIRED.",
+    "errMessage": "MESSAGE IS REQUIRED.",
+    "errSend": "FAILED TO SEND. PLEASE TRY AGAIN.",
+    "success": "Message Received. I'll be in touch."
+  },
+  "footer": {
+    "samy": "Samy Barsoum",
+    "copyright": "© {year} SAMYBIT // WITH NEXT.JS & BRUTALISM.",
+    "backToTop": "↑ Back to top"
+  },
+  "menu": {
+    "systemMenu": "System_Menu",
+    "copy": "Copy",
+    "paste": "Paste",
+    "copyUrl": "Copy URL",
+    "specs": "Specs",
+    "source": "Source",
+    "contact": "Contact"
+  },
+  "tabTitles": {
+    "hero": "Samy | Full-Stack Developer",
+    "projects": "Work | Samy Barsoum",
+    "contact": "Contact | Samy Barsoum",
+    "about": "About | Samy Barsoum"
+  },
+  "about": {
+    "returnGrid": "Return to Grid",
+    "about": "About",
+    "me": "me",
+    "education": "Education",
+    "eduSchool": "Ain Shams University",
+    "eduDegree": "Bachelor of Commerce (B.B.A.) // 2019 - 2023",
+    "eduDesc": "Specialized in accounting and project management, which strengthened my problem-solving skills and gave me a solid understanding of real-world product needs.",
+    "clearances": "Clearances",
+    "notOnline": "MERN Stack certificate is not online yet.",
+    "mernStack": "MERN Stack & Gen AI",
+    "cs50": "CS50x",
+    "dataAnalysis": "Data Analysis",
+    "techArsenal": "Technical Arsenal",
+    "legacySys": "Legacy Systems",
+    "legacyDesc": "Explore previous portfolio iterations",
+    "v1": "Version 1.0",
+    "v2": "Version 2.0",
+    "pressToPlay": "Press to Play"
+  }
+}

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-export default function TabTitleUpdater() {
+export default function TabTitleUpdater({ dict }: { dict: any }) {
   useEffect(() => {
     // Set up the radar (Intersection Observer)
     const observer = new IntersectionObserver(
@@ -11,11 +11,11 @@ export default function TabTitleUpdater() {
           // If a section is actively taking up the screen, change the title
           if (entry.isIntersecting) {
             if (entry.target.id === "projects") {
-              document.title = "Work | Samy Barsoum";
+              document.title = dict?.projects || "Work | Samy Barsoum";
             } else if (entry.target.id === "contact") {
-              document.title = "Contact | Samy Barsoum";
+              document.title = dict?.contact || "Contact | Samy Barsoum";
             } else if (entry.target.id === "hero") {
-              document.title = "Samy | Full-Stack Developer";
+              document.title = dict?.hero || "Samy | Full-Stack Developer";
             }
           }
         });
@@ -36,7 +36,7 @@ export default function TabTitleUpdater() {
 
     // Cleanup the observer if the component unmounts
     return () => observer.disconnect();
-  }, []);
+  }, [dict]);
 
   return null; // This component is strictly logical, no UI
 }

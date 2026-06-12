@@ -6,7 +6,7 @@ import { sendEmail } from "@/actions/send-email";
 import { playPowerUp } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";
 
-export default function Contact() {
+export default function Contact({ dict }: { dict: any }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errors, setErrors] = useState<{ email?: string; message?: string }>({});
   const [values, setValues] = useState({ name: "", email: "", message: "" });
@@ -58,8 +58,8 @@ export default function Contact() {
     const formData = new FormData(e.currentTarget);
     const newErrors: { email?: string; message?: string } = {};
 
-    if (!isEmailValid) newErrors.email = "VALID EMAIL IS REQUIRED.";
-    if (!isMessageValid) newErrors.message = "MESSAGE IS REQUIRED.";
+    if (!isEmailValid) newErrors.email = dict?.errEmail || "VALID EMAIL IS REQUIRED.";
+    if (!isMessageValid) newErrors.message = dict?.errMessage || "MESSAGE IS REQUIRED.";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -95,35 +95,35 @@ export default function Contact() {
         {/* --- LEFT COLUMN: TEXT & SOCIALS --- */}
         <div className="flex-1 w-full relative z-30">
           <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-8 relative z-30">
-            <DecryptText text="Let's" />
+            <DecryptText text={dict?.lets || "Let's"} />
             <br />
-            <DecryptText text="Talk" />
+            <DecryptText text={dict?.talk || "Talk"} />
           </h2>
           <p className="text-2xl font-bold max-w-md text-zinc-400 uppercase mb-16 relative z-30">
-            Drop a message to discuss a project, a full-time role, or just to say hi.
+            {dict?.description || "Drop a message to discuss a project, a full-time role, or just to say hi."}
           </p>
 
           <div className="flex flex-col gap-4 relative z-30">
             <h3 className="text-xl font-black uppercase tracking-widest text-zinc-400 mb-2 border-b-4 border-white pb-2 inline-block self-start">
-              Verified Networks
+              {dict?.networks || "Verified Networks"}
             </h3>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-4">
               <a href="https://linkedin.com/in/samybit/" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors">
                 <span>LinkedIn</span>
-                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
               </a>
               <a href="https://www.upwork.com/freelancers/~015e572ae8edee2be8" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors">
                 <span>Upwork</span>
-                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
               </a>
               <a href="https://contra.com/samy_barsoum_akavah3d" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors">
                 <span>Contra</span>
-                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
               </a>
               <a href="https://mostaql.com/u/Samy_01" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors">
                 <span>mostaql</span>
-                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
               </a>
             </div>
           </div>
@@ -140,13 +140,13 @@ export default function Contact() {
             {status === "success" ? (
               <div className="p-8 border-4 border-black bg-green-400 text-black text-2xl font-black uppercase text-center flex flex-col items-center gap-4 relative z-20">
                 <Check size={48} className="text-black" />
-                Message Received. I'll be in touch.
+                {dict?.success || "Message Received. I'll be in touch."}
               </div>
             ) : (
               <>
                 <div className="flex flex-col gap-1.5 relative z-20 pb-5 md:pb-6">
                   <label htmlFor="name" className="text-lg md:text-xl font-black uppercase tracking-wide flex items-center select-none">
-                    Name
+                    {dict?.nameLabel || "Name"}
                   </label>
                   <input
                     type="text"
@@ -163,7 +163,7 @@ export default function Contact() {
 
                 <div className="flex flex-col gap-1.5 relative z-20 pb-5 md:pb-6">
                   <label htmlFor="email" className="text-lg md:text-xl font-black uppercase tracking-wide flex items-center select-none">
-                    Email<span className="text-red-600 ml-1 font-black">*</span>
+                    {dict?.emailLabel || "Email"}<span className="text-red-600 ms-1 font-black">*</span>
                   </label>
                   <input
                     type="email"
@@ -171,15 +171,16 @@ export default function Contact() {
                     name="email"
                     value={values.email}
                     onChange={handleChange}
-                    className={getInputStyle(isEmailValid, showEmailError)}
-                    placeholder="...@example.com"
+                    className={`${getInputStyle(isEmailValid, showEmailError)} text-left`}
+                    placeholder={dict?.emailPlaceholder || "...@example.com"}
                     aria-invalid={showEmailError ? "true" : "false"}
                     aria-describedby={errors.email ? "email-error" : undefined}
                     autoComplete="email"
+                    dir="ltr"
                   />
                   <span
                     id="email-error"
-                    className={`absolute bottom-0 left-0 text-red-600 text-sm md:text-base font-black uppercase tracking-wide border-l-4 border-red-600 pl-2 transition-all duration-300 ease-out ${errors.email ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
+                    className={`absolute bottom-0 left-0 rtl:left-auto rtl:right-0 text-red-600 text-sm md:text-base font-black uppercase tracking-wide border-s-4 border-red-600 ps-2 transition-all duration-300 ease-out ${errors.email ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
                       }`}
                   >
                     {errors.email}
@@ -188,7 +189,7 @@ export default function Contact() {
 
                 <div className="flex flex-col gap-1.5 relative z-20 pb-5 md:pb-6">
                   <label htmlFor="message" className="text-lg md:text-xl font-black uppercase tracking-wide flex items-center select-none">
-                    Message<span className="text-red-600 ml-1 font-black">*</span>
+                    {dict?.messageLabel || "Message"}<span className="text-red-600 ms-1 font-black">*</span>
                   </label>
                   <textarea
                     id="message"
@@ -197,13 +198,13 @@ export default function Contact() {
                     value={values.message}
                     onChange={handleChange}
                     className={getInputStyle(isMessageValid, showMessageError)}
-                    placeholder="Describe your project, an open role, or how we can collaborate..."
+                    placeholder={dict?.messagePlaceholder || "Describe your project, an open role, or how we can collaborate..."}
                     aria-invalid={showMessageError ? "true" : "false"}
                     aria-describedby={errors.message ? "message-error" : undefined}
                   />
                   <span
                     id="message-error"
-                    className={`absolute bottom-0 left-0 text-red-600 text-sm md:text-base font-black uppercase tracking-wide border-l-4 border-red-600 pl-2 transition-all duration-300 ease-out ${errors.message ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
+                    className={`absolute bottom-0 left-0 rtl:left-auto rtl:right-0 text-red-600 text-sm md:text-base font-black uppercase tracking-wide border-s-4 border-red-600 ps-2 transition-all duration-300 ease-out ${errors.message ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
                       }`}
                   >
                     {errors.message}
@@ -222,30 +223,30 @@ export default function Contact() {
                       ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                       : `bg-black text-white border-4 border-black ${
                           status === "loading"
-                            ? "opacity-80 cursor-wait translate-x-1 translate-y-1 shadow-[4px_4px_0px_#000]"
-                            : "shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                            ? "opacity-80 cursor-wait translate-x-1 translate-y-1 shadow-[4px_4px_0px_#000] rtl:translate-x-[-4px] rtl:shadow-[-4px_4px_0px_#000]"
+                            : "shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2 rtl:shadow-[-8px_8px_0px_#000] rtl:hover:-translate-x-1 rtl:hover:shadow-[-4px_4px_0px_#000] rtl:active:-translate-x-2"
                         }`
                   }`}
                 >
                   <span className="transition-transform duration-300">
-                    {status === "loading" ? "Sending..." : "Send Message"}
+                    {status === "loading" ? (dict?.btnSending || "Sending...") : (dict?.btnSend || "Send Message")}
                   </span>
 
                   <div className={`overflow-hidden flex items-center transition-all duration-300 ease-out ${status === "loading"
-                    ? "w-6 md:w-8 ml-3 opacity-100"
-                    : "w-0 opacity-0 group-hover:w-6 md:group-hover:w-8 group-hover:ml-3 group-hover:opacity-100"
+                    ? "w-6 md:w-8 ms-3 opacity-100"
+                    : "w-0 opacity-0 group-hover:w-6 md:group-hover:w-8 group-hover:ms-3 group-hover:opacity-100"
                     }`}>
                     {status === "loading" ? (
                       <Loader2 className="w-5 h-5 md:w-6 md:h-6 shrink-0 animate-spin" />
                     ) : (
-                      <Send className="w-5 h-5 md:w-6 md:h-6 shrink-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+                      <Send className="w-5 h-5 md:w-6 md:h-6 shrink-0 rtl:translate-x-full -translate-x-full rtl:group-hover:-translate-x-0 group-hover:translate-x-0 transition-transform duration-300 ease-out rtl:-scale-x-100" />
                     )}
                   </div>
                 </button>
 
                 {status === "error" && (
                   <p className="text-red-600 font-black uppercase text-center mt-2 border-4 border-red-600 p-2 bg-red-100 relative z-20">
-                    FAILED TO SEND. PLEASE TRY AGAIN.
+                    {dict?.errSend || "FAILED TO SEND. PLEASE TRY AGAIN."}
                   </p>
                 )}
               </>
