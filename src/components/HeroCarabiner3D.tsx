@@ -173,44 +173,71 @@ function CarabinerModel() {
     return tex;
   }, []);
 
-  // Procedurally generate a twisted rope fabric texture
-  const ropeColorTexture = useMemo(() => {
+    const ropeColorTexture = useMemo(() => {
     if (typeof window === "undefined") return null;
     const canvas = document.createElement("canvas");
-    canvas.width = 256;
-    canvas.height = 256;
+    // High res for detailed fibers
+    canvas.width = 512;
+    canvas.height = 512;
     const context = canvas.getContext("2d");
     if (!context) return null;
     
-    // Base fabric color
-    context.fillStyle = "#ffffff";
-    context.fillRect(0, 0, 256, 256);
+    // Deep shadows between strands
+    context.fillStyle = "#888888";
+    context.fillRect(0, 0, 512, 512);
     
-    // Draw thick spiral shadow lines to create twisted rope segments
-    context.strokeStyle = "#cccccc";
-    context.lineWidth = 16;
-    for (let i = -256; i < 512; i += 48) {
+    // Draw thick twisted strands with fake 3D volume
+    for (let i = -512; i < 1024; i += 128) {
+      // Extended bounds to avoid seams when repeating! 
+      // A line from y=-512 to y=1024 (dy=1536) requires dx=1536 for a perfect 45-degree angle.
+      // This ensures the stroke never gets cut off by the visible 512x512 canvas bounds.
+      const startX = i - 512;
+      const startY = -512;
+      const endX = i + 1024;
+      const endY = 1024;
+
+      // 1. Thick strand body (mid-height)
       context.beginPath();
-      context.moveTo(i, 0);
-      context.lineTo(i + 256, 256);
+      context.lineWidth = 100;
+      context.strokeStyle = "#ffffff"; 
+      context.moveTo(startX, startY);
+      context.lineTo(endX, endY);
       context.stroke();
-    }
-    
-    // Add thin fibrous threads following the spiral
-    context.strokeStyle = "#eeeeee";
-    context.lineWidth = 2;
-    for (let i = -256; i < 512; i += 6) {
+      
+      // 2. Crease shadows on edges (low height)
       context.beginPath();
-      context.moveTo(i, 0);
-      context.lineTo(i + 256, 256);
+      context.lineWidth = 15;
+      context.strokeStyle = "#666666";
+      context.moveTo(startX - 45, startY);
+      context.lineTo(endX - 45, endY);
       context.stroke();
+      
+      context.beginPath();
+      context.lineWidth = 15;
+      context.strokeStyle = "#666666";
+      context.moveTo(startX + 45, startY);
+      context.lineTo(endX + 45, endY);
+      context.stroke();
+      
+      // 3. Woven micro-fibers (high and low height)
+      context.lineWidth = 2;
+      for (let f = -40; f < 40; f += 6) {
+        context.beginPath();
+        // Fibers criss-cross slightly creating a braided look
+        const jitter = Math.random() * 2 - 1;
+        context.strokeStyle = Math.random() > 0.5 ? "#ffffff" : "#aaaaaa";
+        context.moveTo(startX + f, startY);
+        context.lineTo(endX + f + jitter * 20, endY);
+        context.stroke();
+      }
     }
     
     const tex = new THREE.CanvasTexture(canvas);
     tex.wrapS = THREE.RepeatWrapping;
     tex.wrapT = THREE.RepeatWrapping;
+    tex.anisotropy = 4;
     // Repeat along the cylinder to compress the spirals into tight twisted rope strands
-    tex.repeat.set(2, 60); 
+    tex.repeat.set(2, 40); 
     return tex;
   }, []);
 
@@ -301,12 +328,12 @@ function CarabinerModel() {
     return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
   }, []);
 
-  // Fabric Rope Materials (Lambert material with a spiraling twisted fiber texture map)
-  const yellowRopeMaterial = <meshLambertMaterial color="#facc15" map={ropeColorTexture || undefined} />;
-  const silverRopeMaterial = <meshLambertMaterial color="#e5e7eb" map={ropeColorTexture || undefined} />;
+  // Fabric Rope Materials (Standard material with a spiraling twisted fiber texture map + bump mapping)
+  const yellowRopeMaterial = <meshStandardMaterial color="#facc15" roughness={1} map={ropeColorTexture || undefined} bumpMap={ropeColorTexture || undefined} bumpScale={0.02} />;
+  const silverRopeMaterial = <meshStandardMaterial color="#e5e7eb" roughness={1} map={ropeColorTexture || undefined} bumpMap={ropeColorTexture || undefined} bumpScale={0.02} />;
 
-  const yellowKnotMaterial = <meshLambertMaterial color="#facc15" map={knotColorTexture || undefined} />;
-  const silverKnotMaterial = <meshLambertMaterial color="#e5e7eb" map={knotColorTexture || undefined} />;
+  const yellowKnotMaterial = <meshStandardMaterial color="#facc15" roughness={1} map={knotColorTexture || undefined} bumpMap={knotColorTexture || undefined} bumpScale={0.02} />;
+  const silverKnotMaterial = <meshStandardMaterial color="#e5e7eb" roughness={1} map={knotColorTexture || undefined} bumpMap={knotColorTexture || undefined} bumpScale={0.02} />;
 
   // Rope Helper
   const Rope = ({ 
