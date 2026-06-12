@@ -157,6 +157,7 @@ export default function Contact() {
                     className={getInputStyle(isNameFilled, false)}
                     placeholder=""
                     aria-invalid="false"
+                    autoComplete="name"
                   />
                 </div>
 
@@ -174,6 +175,7 @@ export default function Contact() {
                     placeholder="...@example.com"
                     aria-invalid={showEmailError ? "true" : "false"}
                     aria-describedby={errors.email ? "email-error" : undefined}
+                    autoComplete="email"
                   />
                   <span
                     id="email-error"
