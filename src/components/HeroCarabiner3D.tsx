@@ -18,10 +18,9 @@ function CarabinerModel() {
     if (!groupRef.current) return;
     
     const time = state.clock.elapsedTime;
-    
     // Intro animation: yanked into place by the ropes
-    // A positive Z angle decaying to 0 creates a strong clockwise snap into its final position
-    const introSpinZ = Math.exp(-time * 2) * (Math.PI / 1.5); // Spins about 120 degrees clockwise
+    // A positive Z angle decaying to 0 creates a strong, smooth clockwise snap into its final position.
+    const introSpinZ = Math.exp(-time * 1.2) * (Math.PI / 1.5);
 
     // Very subtle, slow secondary motion to simulate gentle, soft tension
     const jitterX = Math.sin(time * 3) * 0.005 + Math.cos(time * 4) * 0.005;
@@ -38,9 +37,15 @@ function CarabinerModel() {
     groupRef.current.rotation.y = pullY + jitterY;
     groupRef.current.rotation.z = pullZ + jitterZ + introSpinZ;
 
-    // Apply slight physical displacement (getting pulled slightly off-center)
-    groupRef.current.position.x = pullX * 2 + jitterX * 1.5;
-    groupRef.current.position.y = pullY * 2 + jitterY * 1.5;
+    // Intro positional yank: Simulates competing tension from different ropes
+    // We use damped sine waves (underdamped spring physics) with different frequencies.
+    // Lower decay rates and frequencies make the motion slower, broader, and much smoother.
+    const introPullX = Math.exp(-time * 1.2) * Math.cos(time * 3) * -3.0; 
+    const introPullY = Math.exp(-time * 1.5) * Math.sin(time * 4) * -2.0;
+
+    // Apply slight physical displacement (getting pulled slightly off-center) + intro pull
+    groupRef.current.position.x = pullX * 2 + jitterX * 1.5 + introPullX;
+    groupRef.current.position.y = pullY * 2 + jitterY * 1.5 + introPullY;
   });
 
   // Math for the triangle
