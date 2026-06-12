@@ -367,7 +367,7 @@ export default function Projects() {
 
       {/* --- MOBILE VIEW --- */}
       {showAllMobile ? (
-        <div className="flex lg:hidden flex-col gap-6 pb-8 flex-1">
+        <div aria-hidden="true" className="flex lg:hidden flex-col gap-6 pb-8 flex-1">
           {projects.map((project, index) => (
             <div key={`mobile-list-${index}`} className="w-full">
               <ProjectCard project={project} animate={true} isNeumorphic={isNeumorphic} asHeading={false} />
@@ -376,6 +376,7 @@ export default function Projects() {
         </div>
       ) : (
         <div
+          aria-hidden="true"
           className="flex lg:hidden overflow-x-auto gap-4 pt-5 pb-6 snap-x snap-mandatory -mx-6 px-6 flex-1 min-h-[320px] hide-scrollbar"
           style={{ WebkitOverflowScrolling: 'touch' }}
         >
