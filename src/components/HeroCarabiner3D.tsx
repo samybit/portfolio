@@ -65,7 +65,7 @@ function CarabinerModel() {
 
   // Mathematically perfect continuous tube path for the carabiner body
   const carabinerPath = useMemo(() => {
-    const cr = 0.6; // Corner radius length
+    const cr = 0.4; // Corner radius length
     
     const getPt = (v1: THREE.Vector3, v2: THREE.Vector3, d: number) => {
       const dir = new THREE.Vector3().subVectors(v2, v1).normalize();
