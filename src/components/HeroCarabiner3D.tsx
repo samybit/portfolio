@@ -424,6 +424,24 @@ function CarabinerModel() {
     return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
   }, []);
 
+  // Modified curve specifically for removing the extra tail on a targeted rope
+  const cloveNoTailCurve = useMemo(() => {
+    const r = thickness * 1.25; 
+    const points = [
+      new THREE.Vector3(0, 0.05, r * 1.05), // Starts inside the wrap
+      new THREE.Vector3(-r, 0.15, 0),
+      new THREE.Vector3(0, 0.2, -r),
+      new THREE.Vector3(r, 0.2, 0),
+      new THREE.Vector3(0, 0.15, r),
+      new THREE.Vector3(-r * 0.8, 0.05, r * 1.4),
+      new THREE.Vector3(0, -0.05, r),
+      new THREE.Vector3(r, -0.15, 0),
+      new THREE.Vector3(0, -0.2, -r),
+      new THREE.Vector3(-r * 1.5, -0.1, 0),
+    ];
+    return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
+  }, []);
+
   // A simpler single-wrap knot curve
   const simpleWrapCurve = useMemo(() => {
     const r = thickness * 1.25;
@@ -482,13 +500,15 @@ function CarabinerModel() {
     barQuaternion, 
     pullRotation, 
     isYellow = false,
-    knotType = 'clove'
+    knotType = 'clove',
+    removeFirstTail = false
   }: { 
     position: THREE.Vector3, 
     barQuaternion: THREE.Quaternion, 
     pullRotation: [number, number, number], 
     isYellow?: boolean,
-    knotType?: 'clove' | 'wrap' | 'messy'
+    knotType?: 'clove' | 'wrap' | 'messy',
+    removeFirstTail?: boolean
   }) => {
     // We create a very long cylinder so it always stretches off-screen
     const ropeLength = 20;
@@ -496,6 +516,7 @@ function CarabinerModel() {
     let activeKnotCurve = knotCurve;
     if (knotType === 'wrap') activeKnotCurve = simpleWrapCurve;
     if (knotType === 'messy') activeKnotCurve = messyKnotCurve;
+    if (removeFirstTail && knotType === 'clove') activeKnotCurve = cloveNoTailCurve;
 
     return (
       <group position={position}>
@@ -506,13 +527,15 @@ function CarabinerModel() {
             {isYellow ? yellowKnotMaterial : silverKnotMaterial}
           </mesh>
           {/* Flat circular cross-section caps showing the frayed cut fibers of the rope */}
-          <mesh 
-            position={activeKnotCurve.getPoint(0)} 
-            quaternion={new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), activeKnotCurve.getTangent(0).normalize())}
-          >
-            <circleGeometry args={[0.08, 32]} />
-            {isYellow ? yellowRopeEndMaterial : silverRopeEndMaterial}
-          </mesh>
+          {!removeFirstTail && (
+            <mesh 
+              position={activeKnotCurve.getPoint(0)} 
+              quaternion={new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), activeKnotCurve.getTangent(0).normalize())}
+            >
+              <circleGeometry args={[0.08, 32]} />
+              {isYellow ? yellowRopeEndMaterial : silverRopeEndMaterial}
+            </mesh>
+          )}
           <mesh 
             position={activeKnotCurve.getPoint(1)} 
             quaternion={new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), activeKnotCurve.getTangent(1).normalize())}
@@ -577,7 +600,7 @@ function CarabinerModel() {
 
         {/* Bottom Side Ropes */}
         <Rope position={getPointOnLine(p2, p3, 0.2)} barQuaternion={side2.quaternion} pullRotation={[0, 0, -Math.PI * 0.85]} isYellow knotType="wrap" />
-        <Rope position={getPointOnLine(p2, p3, 0.75)} barQuaternion={side2.quaternion} pullRotation={[0, 0, Math.PI * 0.85]} knotType="clove" />
+        <Rope position={getPointOnLine(p2, p3, 0.75)} barQuaternion={side2.quaternion} pullRotation={[0, 0, Math.PI * 0.85]} knotType="clove" removeFirstTail />
 
         {/* Left Side Ropes */}
         <Rope position={getPointOnLine(p3, p1, 0.35)} barQuaternion={side3.quaternion} pullRotation={[0, 0, Math.PI / 1.8]} knotType="messy" />
