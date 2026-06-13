@@ -50,7 +50,7 @@
       {
         "id": "3d",
         "title": "3D Web",
-        "description": "A vertical storytelling experience exploring 7 distinct approaches to 3D browser rendering. Serves as a technical reference for complex WebGL pipelines, Spline, Globe.gl, and native CSS trigonometry.",
+        "description": "A vertical storytelling experience exploring 7 distinct approaches to 3D browser rendering. Serves as a technical reference for WebGL pipelines, Spline, Globe.gl, and native CSS trigonometry.",
         "tech": ["Next.js", "Three.js", "Spline", "Framer Motion"],
         "github": "https://github.com/samybit/3d-showcase",
         "demo": "https://3d-showcase-samy.vercel.app/",

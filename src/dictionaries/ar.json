@@ -50,7 +50,7 @@
       {
         "id": "3d",
         "title": "3D Web",
-        "description": "تجربة سردية تستكشف 7 أساليب لتجسيد البعد الثالث في المتصفح. تعتبر مرجعاً تقنياً لمكتبات معقدة مثل Three.js و Spline و Globe.gl والرياضيات المدمجة في CSS.",
+        "description": "تجربة سردية تستكشف 7 أساليب لتجسيد البعد الثالث في المتصفح. تعتبر مرجعاً تقنياً لمكتبات مثل Three.js و Spline و Globe.gl والرياضيات المدمجة في CSS.",
         "tech": ["Next.js", "Three.js", "Spline", "Framer Motion"],
         "github": "https://github.com/samybit/3d-showcase",
         "demo": "https://3d-showcase-samy.vercel.app/",

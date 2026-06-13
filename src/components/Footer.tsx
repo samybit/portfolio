@@ -41,7 +41,7 @@ export default function Footer({ dict }: { dict: any }) {
 
       {/* --- LAYER 2: FOOTER CONTENT (z-10) --- */}
       <div className="relative z-10 text-center flex flex-col items-center justify-center gap-6 pointer-events-none">
-        <p className="text-xl font-bold uppercase text-black bg-white px-3 py-1" suppressHydrationWarning>
+        <p className="text-[clamp(0.75rem,3.5vw,1.25rem)] whitespace-nowrap font-bold uppercase text-black bg-white px-3 py-1" suppressHydrationWarning>
           {copyrightText}
         </p>
         <a
