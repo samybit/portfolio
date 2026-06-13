@@ -1,7 +1,7 @@
 "use client";
 
 import { ExternalLink, ArrowUp, ArrowDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { playTick } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";
@@ -215,6 +215,54 @@ export default function Projects({ dict }: { dict: any }) {
     return () => scrollObserver.disconnect();
   }, [page, showAllMobile]);
 
+  // --- DESKTOP MAGNETIC SCROLL LOCK ---
+  const gridContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    let hasSnapped = false;
+
+    const handleScroll = () => {
+      // Evaluate layout only when user stops scrolling to prevent lag
+      clearTimeout(timeoutId);
+
+      timeoutId = setTimeout(() => {
+        if (!gridContainerRef.current) return;
+        
+        // This lock only applies to the desktop grid view
+        if (window.innerWidth < 1024) return;
+
+        const rect = gridContainerRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+
+        const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+        const ratio = visibleHeight / windowHeight;
+
+        if (ratio < 0.2) {
+          hasSnapped = false;
+        }
+
+        // Magnetic zone: mostly visible but not perfectly centered
+        if (ratio >= 0.55 && ratio < 0.98) {
+          if (!hasSnapped) {
+            gridContainerRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+            hasSnapped = true;
+          }
+        } else if (ratio >= 0.98) {
+          // Manual perfect centering locks it so they can easily leave
+          hasSnapped = true;
+        }
+      }, 150);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
   // Handle title splitting dynamically for languages (first word on top, rest on bottom)
   const titleWords = (dict?.title || "Selected Works").split(" ");
   const titleFirst = titleWords[0];
@@ -267,7 +315,7 @@ export default function Projects({ dict }: { dict: any }) {
       </div>
 
       {/* --- DESKTOP VIEW: Paginated Grid & Controls --- */}
-      <div className="hidden lg:grid grid-cols-[1fr_5rem] gap-6 xl:gap-8 flex-1 min-h-0">
+      <div ref={gridContainerRef} className="hidden lg:grid grid-cols-[1fr_5rem] gap-6 xl:gap-8 flex-1 min-h-0">
 
         {/* The 2x2 Grid container */}
         <div className="grid grid-cols-2 grid-rows-2 gap-6 xl:gap-8 h-full w-full">
