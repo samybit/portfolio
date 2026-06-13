@@ -34,7 +34,7 @@ export default function Hero({ dict }: { dict: any }) {
         <div className="flex-1 animate-slide-up">
 
           <div className="flex items-center gap-4 mb-6">
-            <span className={`text-xl font-bold uppercase tracking-widest border-b-4 pb-1 bg-white ${
+            <span className={`text-[clamp(0.75rem,4.5vw,1.25rem)] whitespace-nowrap font-bold uppercase tracking-widest border-b-4 pb-1 bg-white ${
               isNeumorphic ? "border-[#a3b1c6]" : "border-black"
             }`}>
               {dict?.availability || "Available for Full-Time Roles"}
