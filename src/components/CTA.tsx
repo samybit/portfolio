@@ -101,7 +101,7 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
 
       // Move down at the original graceful slow speed
       drop.position.y -= data.speed;
-      
+
       // Slowly rotate
       drop.rotation.x += data.rotSpeedX;
       drop.rotation.y += data.rotSpeedY;
@@ -115,7 +115,7 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
       if (distanceY > startBuddingDist) {
         scaleFactor = Math.min((distanceY - startBuddingDist) / (fullGrowthDist - startBuddingDist), 1);
       }
-      
+
       // Smoothstep easing for organic scale growth
       const easedScale = scaleFactor * scaleFactor * (3 - 2 * scaleFactor);
       drop.scale.set(data.scale * easedScale, data.scale * easedScale, data.scale * easedScale);
@@ -137,7 +137,7 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
       if (drop.position.y < -5) {
         const radius = 2.1;
         // Spans a very wide bottom hemisphere (almost equator to equator) for a wide rain effect
-        const angle = -Math.PI / 2 + (Math.random() - 0.5) * 2.4; 
+        const angle = -Math.PI / 2 + (Math.random() - 0.5) * 2.4;
         drop.userData.offsetX = Math.cos(angle) * radius * 0.95;
         drop.userData.offsetZ = (Math.random() - 0.5) * 2.5;
 
@@ -175,7 +175,7 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
   );
 }
 
-// --- NEW 3D INTERACTIVE OBJECT: MECHANICAL ARROW ---
+// --- 3D INTERACTIVE OBJECT: MECHANICAL ARROW ---
 function MechanicalArrow({ isCanvasInView }: { isCanvasInView: boolean }) {
   const [isEmber, setIsEmber] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
@@ -252,7 +252,7 @@ function MechanicalArrow({ isCanvasInView }: { isCanvasInView: boolean }) {
       <mesh position={[-0.8, 1.7, 0]} scale={[0.4, 2.5, 0.4]} rotation={[0, 0, Math.PI / 4]} geometry={boxGeom} material={boxMat} />
       {/* Arrowhead Right Fin */}
       <mesh position={[0.8, 1.7, 0]} scale={[0.4, 2.5, 0.4]} rotation={[0, 0, -Math.PI / 4]} geometry={boxGeom} material={boxMat} />
-      
+
       {/* Decorative floating mechanical bits */}
       <mesh position={[-2, -3, 0]} scale={[0.3, 0.3, 0.3]} geometry={boxGeom} material={boxMat} />
       <mesh position={[2, -2, 1]} scale={[0.4, 0.4, 0.4]} geometry={boxGeom} material={boxMat} />
@@ -260,7 +260,7 @@ function MechanicalArrow({ isCanvasInView }: { isCanvasInView: boolean }) {
   );
 }
 
-// --- NEW 3D INTERACTIVE OBJECT: BRUTAL CROSS ---
+// --- 3D INTERACTIVE OBJECT: BRUTAL CROSS ---
 function BrutalCross({ isCanvasInView }: { isCanvasInView: boolean }) {
   const [isEmber, setIsEmber] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
@@ -337,7 +337,7 @@ function BrutalCross({ isCanvasInView }: { isCanvasInView: boolean }) {
   );
 }
 
-// --- NEW 3D INTERACTIVE OBJECT: WIREFRAME MONOLITH ---
+// --- 3D INTERACTIVE OBJECT: WIREFRAME MONOLITH ---
 function WireframeMonolith({ isCanvasInView }: { isCanvasInView: boolean }) {
   const [isEmber, setIsEmber] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
@@ -407,7 +407,7 @@ function WireframeMonolith({ isCanvasInView }: { isCanvasInView: boolean }) {
 
     core.rotation.x += (targetRotX - core.rotation.x) * 0.06 + 0.005;
     core.rotation.y += (targetRotY - core.rotation.y) * 0.06 + 0.01;
-    
+
     // Counter-rotate the inner solid core for a cool effect
     inner.rotation.x -= 0.01;
     inner.rotation.y += 0.015;
@@ -424,7 +424,7 @@ function WireframeMonolith({ isCanvasInView }: { isCanvasInView: boolean }) {
 export default function CTA({ dict }: { dict: any }) {
   const [isEmber, setIsEmber] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
-  
+
   const anomalies = ['arrow', 'cross', 'wireframe', 'leak'] as const;
   const [anomalyIndex, setAnomalyIndex] = useState(1);
   const activeAnomaly = anomalies[anomalyIndex];
@@ -504,10 +504,10 @@ export default function CTA({ dict }: { dict: any }) {
 
   return (
     // Swapped min-h-screen for min-h-[100dvh] and added py-16 so it never touches the screen edges
-    <section 
-      ref={ctaRef} 
+    <section
+      ref={ctaRef}
       onClick={() => setAnomalyIndex(prev => (prev + 1) % anomalies.length)}
-      className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center py-16 overflow-hidden border-t-8 border-b-8 border-black bg-white text-black cursor-crosshair"
+      className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center py-16 overflow-hidden border-t-8 border-b-8 border-black bg-white text-black"
     >
 
       {/* --- LAYER 1: MECHANICAL ARROW BACKGROUND (z-0) --- */}
@@ -581,8 +581,7 @@ export default function CTA({ dict }: { dict: any }) {
       </div>
 
       {/* --- LAYER 3: 3D SCANNER (z-20) --- */}
-      <div className="absolute inset-0 z-20 mix-blend-difference pointer-events-none">
-        {/* 2. The Engine Killswitch: pauses the heavy GPU calculations when scrolled away */}
+      {/* <div className="absolute inset-0 z-20 mix-blend-difference pointer-events-none">
         <Canvas
           frameloop={isCanvasInView ? "always" : "never"}
           dpr={[1, 1.5]}
@@ -597,7 +596,7 @@ export default function CTA({ dict }: { dict: any }) {
           {activeAnomaly === 'wireframe' && <WireframeMonolith isCanvasInView={isCanvasInView} />}
           {activeAnomaly === 'leak' && <SystemLeak isCanvasInView={isCanvasInView} />}
         </Canvas>
-      </div>
+      </div> */}
 
     </section>
   );
