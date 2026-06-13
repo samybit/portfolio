@@ -22,13 +22,13 @@ export default function Hero({ dict }: { dict: any }) {
 
   return (
     // Added 'relative' to contain the absolute background
-    <section id="hero" className="relative min-h-[90vh] flex flex-col justify-center items-start px-6 md:px-12 lg:px-24 border-b-8 border-black pt-30 md:pt-28 pb-11 overflow-hidden">
+    <section id="hero" className="relative min-h-[100svh] flex flex-col justify-center items-start px-6 md:px-12 lg:px-24 border-b-8 border-black pt-30 md:pt-28 pb-11 overflow-hidden">
 
       {/* --- 3D TACTICAL CARABINER BACKGROUND --- */}
       <HeroCarabiner3D />
 
       {/* Added 'relative z-10' so the content sits above the 3D grid */}
-      <div className="relative z-10 w-full max-w-[90rem] mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-12 lg:gap-16">
+      <div className="relative z-10 w-full max-w-[90rem] mx-auto flex flex-col min-[1300px]:flex-row min-[1300px]:items-center justify-between gap-12 min-[1300px]:gap-16">
 
         {/* --- LEFT COLUMN: TYPOGRAPHY --- */}
         <div className="flex-1 animate-slide-up">
@@ -73,7 +73,7 @@ export default function Hero({ dict }: { dict: any }) {
         </div>
 
         {/* --- RIGHT COLUMN: ACTIONS --- */}
-        <div className="flex flex-col w-full lg:w-[400px] xl:w-[450px] gap-4 md:gap-6 border-black border-t-0 lg:border-t-0 border-s-0 lg:border-s-8 lg:ps-12 lg:py-8 shrink-0 animate-slide-up-delay-1">
+        <div className="flex flex-col w-full min-[1300px]:w-[450px] gap-4 md:gap-6 border-black border-t-0 border-s-0 min-[1300px]:border-s-8 min-[1300px]:ps-12 min-[1300px]:py-8 shrink-0 animate-slide-up-delay-1">
 
           <Link
             href="#projects"
