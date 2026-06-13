@@ -43,9 +43,14 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
   useEffect(() => {
     return () => {
       boxGeom.dispose();
+    };
+  }, [boxGeom]);
+
+  useEffect(() => {
+    return () => {
       boxMat.dispose();
     };
-  }, [boxGeom, boxMat]);
+  }, [boxMat]);
 
   const dropsData = useMemo(() => {
     return Array.from({ length: 25 }, () => ({
@@ -202,9 +207,14 @@ function MechanicalArrow({ isCanvasInView }: { isCanvasInView: boolean }) {
   useEffect(() => {
     return () => {
       boxGeom.dispose();
+    };
+  }, [boxGeom]);
+
+  useEffect(() => {
+    return () => {
       boxMat.dispose();
     };
-  }, [boxGeom, boxMat]);
+  }, [boxMat]);
 
   useEffect(() => {
     if (!isCanvasInView) return;
@@ -282,9 +292,14 @@ function BrutalCross({ isCanvasInView }: { isCanvasInView: boolean }) {
   useEffect(() => {
     return () => {
       boxGeom.dispose();
+    };
+  }, [boxGeom]);
+
+  useEffect(() => {
+    return () => {
       boxMat.dispose();
     };
-  }, [boxGeom, boxMat]);
+  }, [boxMat]);
 
   useEffect(() => {
     if (!isCanvasInView) return;
@@ -356,10 +371,15 @@ function WireframeMonolith({ isCanvasInView }: { isCanvasInView: boolean }) {
   useEffect(() => {
     return () => {
       boxGeom.dispose();
+    };
+  }, [boxGeom]);
+
+  useEffect(() => {
+    return () => {
       wireMat.dispose();
       solidMat.dispose();
     };
-  }, [boxGeom, wireMat, solidMat]);
+  }, [wireMat, solidMat]);
 
   useEffect(() => {
     if (!isCanvasInView) return;

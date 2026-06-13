@@ -49,6 +49,7 @@ export default function Footer3D({ isInView, isEmber, isNeumorphic }: { isInView
     <Canvas
       frameloop={isInView ? "always" : "never"}
       camera={{ position: [0, 0, 8], fov: 50 }}
+      dpr={[1, 1.5]}
     >
       <ambientLight intensity={2} />
       <directionalLight position={[10, 10, 5]} intensity={3} />

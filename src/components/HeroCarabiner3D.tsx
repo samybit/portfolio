@@ -5,6 +5,233 @@ import { Environment, Float } from "@react-three/drei";
 import { useRef, useState, useEffect, useMemo } from "react";
 import * as THREE from "three";
 
+// --- PROCEDURAL TEXTURE CACHE ---
+const textureCache: Record<string, THREE.CanvasTexture> = {};
+
+const getScratchedTexture = () => {
+  if (typeof window === "undefined") return null;
+  if (textureCache.scratched) return textureCache.scratched;
+  
+  const canvas = document.createElement("canvas");
+  canvas.width = 1024;
+  canvas.height = 1024;
+  const context = canvas.getContext("2d");
+  if (!context) return null;
+  
+  context.fillStyle = "#6b7280";
+  context.fillRect(0, 0, 1024, 1024);
+  
+  context.filter = "blur(15px)";
+  for (let i = 0; i < 60; i++) {
+    context.fillStyle = `rgba(20, 20, 25, ${Math.random() * 0.5})`;
+    context.beginPath();
+    context.arc(Math.random() * 1024, Math.random() * 1024, Math.random() * 120 + 30, 0, Math.PI * 2);
+    context.fill();
+  }
+  for (let i = 0; i < 40; i++) {
+    context.fillStyle = `rgba(150, 150, 160, ${Math.random() * 0.4})`;
+    context.beginPath();
+    context.arc(Math.random() * 1024, Math.random() * 1024, Math.random() * 80 + 20, 0, Math.PI * 2);
+    context.fill();
+  }
+  context.filter = "none";
+  
+  context.fillStyle = "rgba(0,0,0,0.1)";
+  for (let i = 0; i < 10000; i++) {
+    context.fillRect(Math.random() * 1024, Math.random() * 1024, Math.random() * 40 + 10, Math.random() * 2 + 1);
+  }
+  context.fillStyle = "rgba(255,255,255,0.05)";
+  for (let i = 0; i < 10000; i++) {
+    context.fillRect(Math.random() * 1024, Math.random() * 1024, Math.random() * 40 + 10, Math.random() * 2 + 1);
+  }
+  
+  for (let i = 0; i < 400; i++) {
+    context.beginPath();
+    context.fillStyle = `rgba(15, 15, 20, ${Math.random() * 0.6})`; 
+    const r = Math.random() * 4 + 1;
+    context.arc(Math.random() * 1024, Math.random() * 1024, r, 0, Math.PI * 2);
+    context.fill();
+  }
+  
+  for (let i = 0; i < 2000; i++) {
+    context.beginPath();
+    const isDeep = Math.random() > 0.8;
+    context.strokeStyle = isDeep ? "rgba(10,10,10,0.9)" : "rgba(160,160,160,0.5)"; 
+    context.lineWidth = isDeep ? Math.random() * 4 + 1 : Math.random() * 2;
+    
+    const x = Math.random() * 1024;
+    const y = Math.random() * 1024;
+    const len = Math.random() * 100 + 20;
+    const angle = Math.random() * Math.PI * 2;
+    
+    context.moveTo(x, y);
+    
+    let curX = x;
+    let curY = y;
+    for (let s = 0; s < 4; s++) {
+      curX += Math.cos(angle + (Math.random() - 0.5) * 0.4) * (len / 4);
+      curY += Math.sin(angle + (Math.random() - 0.5) * 0.4) * (len / 4);
+      context.lineTo(curX, curY);
+    }
+    context.stroke();
+  }
+  
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  tex.anisotropy = 4;
+  textureCache.scratched = tex;
+  return tex;
+};
+
+const getRopeColorTexture = () => {
+  if (typeof window === "undefined") return null;
+  if (textureCache.ropeColor) return textureCache.ropeColor;
+  
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 512;
+  const context = canvas.getContext("2d");
+  if (!context) return null;
+  
+  context.fillStyle = "#888888";
+  context.fillRect(0, 0, 512, 512);
+  
+  for (let i = -512; i < 1024; i += 128) {
+    const startX = i - 512;
+    const startY = -512;
+    const endX = i + 1024;
+    const endY = 1024;
+
+    context.beginPath();
+    context.lineWidth = 100;
+    context.strokeStyle = "#ffffff"; 
+    context.moveTo(startX, startY);
+    context.lineTo(endX, endY);
+    context.stroke();
+    
+    context.beginPath();
+    context.lineWidth = 15;
+    context.strokeStyle = "#666666";
+    context.moveTo(startX - 45, startY);
+    context.lineTo(endX - 45, endY);
+    context.stroke();
+    
+    context.beginPath();
+    context.lineWidth = 15;
+    context.strokeStyle = "#666666";
+    context.moveTo(startX + 45, startY);
+    context.lineTo(endX + 45, endY);
+    context.stroke();
+    
+    context.lineWidth = 2;
+    for (let f = -40; f < 40; f += 6) {
+      context.beginPath();
+      const jitter = Math.random() * 2 - 1;
+      context.strokeStyle = Math.random() > 0.5 ? "#ffffff" : "#aaaaaa";
+      context.moveTo(startX + f, startY);
+      context.lineTo(endX + f + jitter * 20, endY);
+      context.stroke();
+    }
+  }
+  
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  tex.anisotropy = 4;
+  tex.repeat.set(2, 40); 
+  textureCache.ropeColor = tex;
+  return tex;
+};
+
+const generateRubberTexture = (baseColor: string, cacheKey: string) => {
+  if (typeof window === "undefined") return null;
+  if (textureCache[cacheKey]) return textureCache[cacheKey];
+  
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 512;
+  const context = canvas.getContext("2d");
+  if (!context) return null;
+  
+  context.fillStyle = baseColor;
+  context.fillRect(0, 0, 512, 512);
+  
+  context.filter = "blur(15px)";
+  for (let i = 0; i < 30; i++) {
+    context.fillStyle = `rgba(10, 10, 10, ${Math.random() * 0.4})`;
+    const cx = Math.random() * 512;
+    const cy = Math.random() * 512;
+    const r = Math.random() * 80 + 20;
+    
+    const drawSmudge = (x: number, y: number) => {
+      context.beginPath();
+      context.arc(x, y, r, 0, Math.PI * 2);
+      context.fill();
+    };
+
+    drawSmudge(cx, cy);
+    if (cx - r < 0) drawSmudge(cx + 512, cy);
+    if (cx + r > 512) drawSmudge(cx - 512, cy);
+  }
+  
+  context.filter = "none";
+  for (let i = 0; i < 60000; i++) {
+    context.fillStyle = Math.random() > 0.5 ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)";
+    context.fillRect(Math.random() * 512, Math.random() * 512, 2, 2);
+  }
+  
+  context.filter = "blur(8px)";
+  context.fillStyle = "rgba(0,0,0,0.6)";
+  context.fillRect(0, 0, 512, 24); 
+  context.fillRect(0, 512 - 24, 512, 24); 
+  context.filter = "none";
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.ClampToEdgeWrapping;
+  tex.anisotropy = 4;
+  textureCache[cacheKey] = tex;
+  return tex;
+};
+
+const getKnotColorTexture = () => {
+  if (typeof window === "undefined") return null;
+  if (textureCache.knotColor) return textureCache.knotColor;
+  const ropeColor = getRopeColorTexture();
+  if (!ropeColor) return null;
+  const tex = ropeColor.clone();
+  tex.repeat.set(30, 2);
+  tex.needsUpdate = true;
+  textureCache.knotColor = tex;
+  return tex;
+};
+
+const getRopeEndTexture = () => {
+  if (typeof window === "undefined") return null;
+  if (textureCache.ropeEnd) return textureCache.ropeEnd;
+  const canvas = document.createElement("canvas");
+  canvas.width = 256;
+  canvas.height = 256;
+  const context = canvas.getContext("2d");
+  if (!context) return null;
+  
+  context.fillStyle = "#333333";
+  context.fillRect(0, 0, 256, 256);
+  
+  for (let i = 0; i < 3000; i++) {
+    context.beginPath();
+    context.fillStyle = Math.random() > 0.5 ? "#ffffff" : "#aaaaaa";
+    const r = Math.random() * 2 + 0.5;
+    context.arc(Math.random() * 256, Math.random() * 256, r, 0, Math.PI * 2);
+    context.fill();
+  }
+  
+  const tex = new THREE.CanvasTexture(canvas);
+  textureCache.ropeEnd = tex;
+  return tex;
+};
+
 // --- THE TACTICAL CARABINER COMPONENT ---
 function CarabinerModel() {
   const groupRef = useRef<THREE.Group>(null);
@@ -106,221 +333,12 @@ function CarabinerModel() {
     return path;
   }, []);
 
-  // Procedurally generate a rugged, scratched texture for the metal using a Canvas
-  const scratchedTexture = useMemo(() => {
-    if (typeof window === "undefined") return null;
-    const canvas = document.createElement("canvas");
-    canvas.width = 1024;
-    canvas.height = 1024;
-    const context = canvas.getContext("2d");
-    if (!context) return null;
-    
-    // 1. Base metal color (Medium-Dark Gray)
-    context.fillStyle = "#6b7280";
-    context.fillRect(0, 0, 1024, 1024);
-    
-    // 2. Heavy grease and uneven patina (large organic blurry patches)
-    context.filter = "blur(15px)";
-    for (let i = 0; i < 60; i++) {
-      context.fillStyle = `rgba(20, 20, 25, ${Math.random() * 0.5})`;
-      context.beginPath();
-      context.arc(Math.random() * 1024, Math.random() * 1024, Math.random() * 120 + 30, 0, Math.PI * 2);
-      context.fill();
-    }
-    // 3. Bright exposed metal / worn edges (toned down to match darker metal)
-    for (let i = 0; i < 40; i++) {
-      context.fillStyle = `rgba(150, 150, 160, ${Math.random() * 0.4})`;
-      context.beginPath();
-      context.arc(Math.random() * 1024, Math.random() * 1024, Math.random() * 80 + 20, 0, Math.PI * 2);
-      context.fill();
-    }
-    context.filter = "none";
-    
-    // 4. Directional Brushed Forging Grain
-    context.fillStyle = "rgba(0,0,0,0.1)";
-    for (let i = 0; i < 10000; i++) {
-      context.fillRect(Math.random() * 1024, Math.random() * 1024, Math.random() * 40 + 10, Math.random() * 2 + 1);
-    }
-    context.fillStyle = "rgba(255,255,255,0.05)";
-    for (let i = 0; i < 10000; i++) {
-      context.fillRect(Math.random() * 1024, Math.random() * 1024, Math.random() * 40 + 10, Math.random() * 2 + 1);
-    }
-    
-    // 5. Heavy factory impacts and craters (dark pits only)
-    for (let i = 0; i < 400; i++) {
-      context.beginPath();
-      context.fillStyle = `rgba(15, 15, 20, ${Math.random() * 0.6})`; // Dark pits
-      const r = Math.random() * 4 + 1;
-      context.arc(Math.random() * 1024, Math.random() * 1024, r, 0, Math.PI * 2);
-      context.fill();
-    }
-    
-    // 6. Violent procedural scratches and gashes
-    for (let i = 0; i < 2000; i++) {
-      context.beginPath();
-      const isDeep = Math.random() > 0.8;
-      // Tone down the bright scratches so they don't cause blinding glare under scene lighting
-      context.strokeStyle = isDeep ? "rgba(10,10,10,0.9)" : "rgba(160,160,160,0.5)"; 
-      context.lineWidth = isDeep ? Math.random() * 4 + 1 : Math.random() * 2;
-      
-      const x = Math.random() * 1024;
-      const y = Math.random() * 1024;
-      const len = Math.random() * 100 + 20;
-      const angle = Math.random() * Math.PI * 2;
-      
-      context.moveTo(x, y);
-      
-      // Draw jagged paths instead of perfect straight lines
-      let curX = x;
-      let curY = y;
-      for (let s = 0; s < 4; s++) {
-        curX += Math.cos(angle + (Math.random() - 0.5) * 0.4) * (len / 4);
-        curY += Math.sin(angle + (Math.random() - 0.5) * 0.4) * (len / 4);
-        context.lineTo(curX, curY);
-      }
-      context.stroke();
-    }
-    
-    const tex = new THREE.CanvasTexture(canvas);
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.RepeatWrapping;
-    tex.anisotropy = 4; // Improves texture rendering at steep angles on the tube
-    return tex;
-  }, []);
-
-    const ropeColorTexture = useMemo(() => {
-    if (typeof window === "undefined") return null;
-    const canvas = document.createElement("canvas");
-    // High res for detailed fibers
-    canvas.width = 512;
-    canvas.height = 512;
-    const context = canvas.getContext("2d");
-    if (!context) return null;
-    
-    // Deep shadows between strands
-    context.fillStyle = "#888888";
-    context.fillRect(0, 0, 512, 512);
-    
-    // Draw thick twisted strands with fake 3D volume
-    for (let i = -512; i < 1024; i += 128) {
-      // Extended bounds to avoid seams when repeating! 
-      // A line from y=-512 to y=1024 (dy=1536) requires dx=1536 for a perfect 45-degree angle.
-      // This ensures the stroke never gets cut off by the visible 512x512 canvas bounds.
-      const startX = i - 512;
-      const startY = -512;
-      const endX = i + 1024;
-      const endY = 1024;
-
-      // 1. Thick strand body (mid-height)
-      context.beginPath();
-      context.lineWidth = 100;
-      context.strokeStyle = "#ffffff"; 
-      context.moveTo(startX, startY);
-      context.lineTo(endX, endY);
-      context.stroke();
-      
-      // 2. Crease shadows on edges (low height)
-      context.beginPath();
-      context.lineWidth = 15;
-      context.strokeStyle = "#666666";
-      context.moveTo(startX - 45, startY);
-      context.lineTo(endX - 45, endY);
-      context.stroke();
-      
-      context.beginPath();
-      context.lineWidth = 15;
-      context.strokeStyle = "#666666";
-      context.moveTo(startX + 45, startY);
-      context.lineTo(endX + 45, endY);
-      context.stroke();
-      
-      // 3. Woven micro-fibers (high and low height)
-      context.lineWidth = 2;
-      for (let f = -40; f < 40; f += 6) {
-        context.beginPath();
-        // Fibers criss-cross slightly creating a braided look
-        const jitter = Math.random() * 2 - 1;
-        context.strokeStyle = Math.random() > 0.5 ? "#ffffff" : "#aaaaaa";
-        context.moveTo(startX + f, startY);
-        context.lineTo(endX + f + jitter * 20, endY);
-        context.stroke();
-      }
-    }
-    
-    const tex = new THREE.CanvasTexture(canvas);
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.RepeatWrapping;
-    tex.anisotropy = 4;
-    // Repeat along the cylinder to compress the spirals into tight twisted rope strands
-    tex.repeat.set(2, 40); 
-    return tex;
-  }, []);
-
-  // Helper to generate dirty, tactical rubber textures
-  const generateRubberTexture = (baseColor: string) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = 512;
-    canvas.height = 512;
-    const context = canvas.getContext("2d");
-    if (!context) return null;
-    
-    // Base color
-    context.fillStyle = baseColor;
-    context.fillRect(0, 0, 512, 512);
-    
-    // Add dirt and grease smudges (large organic patches)
-    context.filter = "blur(15px)";
-    for (let i = 0; i < 30; i++) {
-      context.fillStyle = `rgba(10, 10, 10, ${Math.random() * 0.4})`;
-      const cx = Math.random() * 512;
-      const cy = Math.random() * 512;
-      const r = Math.random() * 80 + 20;
-      
-      const drawSmudge = (x: number, y: number) => {
-        context.beginPath();
-        context.arc(x, y, r, 0, Math.PI * 2);
-        context.fill();
-      };
-
-      // Draw the main smudge
-      drawSmudge(cx, cy);
-      // Duplicate smudge on the opposite edge to make the texture perfectly tileable and remove the vertical seam!
-      if (cx - r < 0) drawSmudge(cx + 512, cy);
-      if (cx + r > 512) drawSmudge(cx - 512, cy);
-    }
-    
-    // Add rubbery micropores (subtle noise)
-    context.filter = "none";
-    for (let i = 0; i < 60000; i++) {
-      context.fillStyle = Math.random() > 0.5 ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)";
-      context.fillRect(Math.random() * 512, Math.random() * 512, 2, 2);
-    }
-    
-    // Add heavy dark edges to make the wrap look physically thick (fake ambient occlusion)
-    context.filter = "blur(8px)";
-    context.fillStyle = "rgba(0,0,0,0.6)";
-    context.fillRect(0, 0, 512, 24); // Top edge
-    context.fillRect(0, 512 - 24, 512, 24); // Bottom edge
-    context.filter = "none";
-
-    const tex = new THREE.CanvasTexture(canvas);
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.ClampToEdgeWrapping; // Crucial so the dark edges stay exactly at the top and bottom of the cylinder
-    tex.anisotropy = 4;
-    return tex;
-  };
-
-  // Procedural texture for the yellow rubber wrap (adds dirt, grease, and porous bump mapping)
-  const yellowRubberTexture = useMemo(() => {
-    if (typeof window === "undefined") return null;
-    return generateRubberTexture("#eab308");
-  }, []);
-
-  // Procedural texture for the gray rubber wrap
-  const grayRubberTexture = useMemo(() => {
-    if (typeof window === "undefined") return null;
-    return generateRubberTexture("#4b5563"); // Dark tactical gray
-  }, []);
+  const scratchedTexture = getScratchedTexture();
+  const ropeColorTexture = getRopeColorTexture();
+  const yellowRubberTexture = generateRubberTexture("#eab308", "yellowRubber");
+  const grayRubberTexture = generateRubberTexture("#4b5563", "grayRubber");
+  const knotColorTexture = getKnotColorTexture();
+  const ropeEndTexture = getRopeEndTexture();
 
   // Materials (Rugged, tactical, heavily damaged metal)
   const metalMaterial = (
@@ -357,43 +375,6 @@ function CarabinerModel() {
       bumpScale={0.015}
     />
   );
-  
-  // Adjust the texture mapping for the complex 3D knot
-  // NOTE: TubeGeometry UVs are swapped compared to CylinderGeometry!
-  // TubeGeometry: U = length, V = circumference
-  // CylinderGeometry: U = circumference, V = length
-  const knotColorTexture = useMemo(() => {
-    if (!ropeColorTexture) return null;
-    const tex = ropeColorTexture.clone();
-    tex.repeat.set(30, 2); // 30 times along the knot length, 2 times around circumference
-    tex.needsUpdate = true;
-    return tex;
-  }, [ropeColorTexture]);
-
-  // Procedural texture for the cross-section of a cut rope (thousands of bundled fibers)
-  const ropeEndTexture = useMemo(() => {
-    if (typeof window === "undefined") return null;
-    const canvas = document.createElement("canvas");
-    canvas.width = 256;
-    canvas.height = 256;
-    const context = canvas.getContext("2d");
-    if (!context) return null;
-    
-    // Core shadows between fibers
-    context.fillStyle = "#333333";
-    context.fillRect(0, 0, 256, 256);
-    
-    // Draw densely packed fiber dots to look like a frayed cut end
-    for (let i = 0; i < 3000; i++) {
-      context.beginPath();
-      context.fillStyle = Math.random() > 0.5 ? "#ffffff" : "#aaaaaa";
-      const r = Math.random() * 2 + 0.5;
-      context.arc(Math.random() * 256, Math.random() * 256, r, 0, Math.PI * 2);
-      context.fill();
-    }
-    
-    return new THREE.CanvasTexture(canvas);
-  }, []);
 
   // Mathematically define a realistic 3D wrapped knot (like a Clove Hitch or Barrel Knot)
   const knotCurve = useMemo(() => {
@@ -660,7 +641,7 @@ export default function HeroCarabiner3D() {
       {/* 3D Canvas (Delayed to give UI animations priority, then fades in) */}
       <div className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${shouldRenderWebGL ? 'opacity-100' : 'opacity-0'}`}>
         {shouldRenderWebGL && (
-          <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ antialias: true }}>
+          <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ antialias: true }} dpr={[1, 1.5]}>
             {/* Lighting to highlight the metal without blowing it out */}
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 5]} intensity={1.2} />
