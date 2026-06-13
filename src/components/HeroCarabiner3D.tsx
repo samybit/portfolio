@@ -591,9 +591,15 @@ function CarabinerModel() {
 // --- MAIN WRAPPER COMPONENT ---
 export default function HeroCarabiner3D() {
   const [mounted, setMounted] = useState(false);
+  const [shouldRenderWebGL, setShouldRenderWebGL] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    // Delay WebGL initialization so CSS animations get absolute priority and run at 60FPS
+    const timer = setTimeout(() => {
+      setShouldRenderWebGL(true);
+    }, 800);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!mounted) return null;
@@ -607,20 +613,24 @@ export default function HeroCarabiner3D() {
         style={{ backgroundImage: 'repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 40px, currentColor 40px, currentColor 41px)' }} 
       />
 
-      {/* 3D Canvas */}
-      <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ antialias: true }}>
-        {/* Lighting to highlight the metal without blowing it out */}
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1.2} />
-        <directionalLight position={[-10, -10, -5]} intensity={0.5} color="#4b5563" />
-        <spotLight position={[0, 0, 10]} intensity={0.4} penumbra={1} />
-        
-        {/* Environment Map for ultra-realistic metal reflections */}
-        <Environment preset="city" />
+      {/* 3D Canvas (Delayed to give UI animations priority, then fades in) */}
+      <div className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${shouldRenderWebGL ? 'opacity-100' : 'opacity-0'}`}>
+        {shouldRenderWebGL && (
+          <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ antialias: true }}>
+            {/* Lighting to highlight the metal without blowing it out */}
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[10, 10, 5]} intensity={1.2} />
+            <directionalLight position={[-10, -10, -5]} intensity={0.5} color="#4b5563" />
+            <spotLight position={[0, 0, 10]} intensity={0.4} penumbra={1} />
+            
+            {/* Environment Map for ultra-realistic metal reflections */}
+            <Environment preset="city" />
 
-        {/* The 3D Scene */}
-        <CarabinerModel />
-      </Canvas>
+            {/* The 3D Scene */}
+            <CarabinerModel />
+          </Canvas>
+        )}
+      </div>
 
       {/* 2D Tech/Arknights style UI text floating over the 3D scene */}
       <div className="absolute inset-0 pointer-events-none text-black opacity-60 font-mono text-[10px] hidden sm:block">
