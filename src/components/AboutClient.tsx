@@ -142,9 +142,9 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
                   <div>
                     <h3 className="text-2xl font-black uppercase leading-tight">{dict?.mernStack || "MERN Stack & Gen AI"}</h3>
                     <div className="flex items-center gap-3 mt-1">
-                      <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">ITI (MCIT)</p>
+                      <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none whitespace-nowrap">ITI (MCIT)</p>
                       {/* Brutalist Year Tag */}
-                      <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none">
+                      <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none whitespace-nowrap">
                         // 2026
                       </span>
                     </div>
@@ -167,8 +167,8 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
                   <div>
                     <h3 className="text-2xl font-black uppercase leading-tight">{dict?.cs50 || "CS50x"}</h3>
                     <div className="flex items-center gap-3 mt-1">
-                      <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">edX (Harvard)</p>
-                      <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none">
+                      <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none whitespace-nowrap">edX (Harvard)</p>
+                      <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none whitespace-nowrap">
                         // 2025
                       </span>
                     </div>
@@ -192,8 +192,8 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
                   <div>
                     <h3 className="text-2xl font-black uppercase leading-tight">{dict?.dataAnalysis || "Data Analysis"}</h3>
                     <div className="flex items-center gap-3 mt-1">
-                      <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none">Egypt FWD (MCIT)</p>
-                      <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none">
+                      <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none whitespace-nowrap">Egypt FWD (MCIT)</p>
+                      <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none whitespace-nowrap">
                         // 2021
                       </span>
                     </div>
