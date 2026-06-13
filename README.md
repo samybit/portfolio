@@ -19,6 +19,7 @@ The source code for my personal web development portfolio. Designed with a modul
 - **Multi-Theme Architecture:** A dynamic theme engine featuring strict Default Brutalism, frosted-glass Neumorphism, and the vibrant Ember (Warm Charcoal & Fiery Orange) styles.
 - **Optimized 3D Integration:** Interactive WebGL components with custom hardware killswitches (0% GPU usage when scrolled out of view).
 - **Magnetic Scroll Physics:** Custom, debounced scroll listeners for fluid, perfectly aligned full-screen section transitions without layout thrashing.
+- **Parallax Inversion Effect:** A seamless, single-DOM scroll mask that elegantly inverts layout colors and typography using backdrop filters.
 - **Serverless Contact Form:** Uses Next.js Server Actions and the Resend API to securely handle form submissions directly from the edge.
 - **Native Internationalization (i18n):** Zero-dependency bilingual architecture (English / Arabic) with flawless RTL layout mirroring and statically generated edge routes.
 - **Production Ready:** Fully optimized with comprehensive SEO metadata, dynamic OpenGraph previews, and ARIA accessibility standards.
