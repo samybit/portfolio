@@ -68,11 +68,11 @@
       {
         "id": "scraper",
         "title": "Lead Scraper",
-        "description": "Freelancer automation tool. Scrapes Twitter (X) and Reddit for targeted web development client leads using Python and Selenium.",
-        "tech": ["Python", "Selenium", "Data Mining"],
+        "description": "An automated n8n workflow orchestrating a Python/Flask microservice. It scrapes daily job postings, leverages an LLM to summarize key requirements, and delivers professional insights via email.",
+        "tech": ["n8n", "Python", "LLM API", "Docker"],
         "github": "https://github.com/samybit/freelance-lead-scraper",
         "demo": "#",
-        "image": ""
+        "image": "/lead-scraper.png"
       },
       {
         "id": "ecommerce",
