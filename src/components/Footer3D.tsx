@@ -5,38 +5,40 @@ import { MeshDistortMaterial } from "@react-three/drei";
 import { useRef } from "react";
 import * as THREE from "three";
 
-function BackgroundKnot({ isEmber, isNeumorphic }: { isEmber: boolean; isNeumorphic: boolean }) {
+function FooterLandscape({ isEmber, isNeumorphic }: { isEmber: boolean; isNeumorphic: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
     if (!meshRef.current) return;
     const t = state.clock.getElapsedTime();
-    meshRef.current.rotation.x = t * 0.05;
-    meshRef.current.rotation.y = t * 0.075;
-    meshRef.current.rotation.z = t * 0.05;
+    // Slowly rock the landscape and make it breathe vertically
+    meshRef.current.rotation.z = Math.sin(t * 0.1) * 0.05;
+    meshRef.current.position.y = -2 + Math.sin(t * 0.5) * 0.15;
   });
 
-  let knotColor = "#000000";
-  let knotOpacity = 0.15;
+  let color = "#000000";
+  let opacity = 0.25;
 
   if (isEmber) {
-    knotColor = "#FF4F00";
-    knotOpacity = 0.2;
+    color = "#FF4F00";
+    opacity = 0.35;
   } else if (isNeumorphic) {
-    knotColor = "#ffffff";
-    knotOpacity = 0.4;
+    color = "#ffffff";
+    opacity = 0.5;
   }
 
   return (
-    <mesh ref={meshRef} position={[0, 0, -8]}>
-      <torusKnotGeometry args={[5, 1.2, 256, 32, 3, 4]} />
+    // Tilt the plane backwards sharply so we are looking across it like an ocean
+    <mesh ref={meshRef} position={[0, -2.5, -5]} rotation={[-Math.PI / 2.2, 0, 0]}>
+      {/* A massive plane to act as a landscape: width, height, widthSegments, heightSegments */}
+      <planeGeometry args={[100, 60, 96, 48]} />
       <MeshDistortMaterial 
-        color={knotColor} 
+        color={color} 
         wireframe={true} 
         transparent={true} 
-        opacity={knotOpacity} 
-        distort={0.25} 
-        speed={1.5} 
+        opacity={opacity} 
+        distort={0.15} 
+        speed={0.8} 
       />
     </mesh>
   );
@@ -50,7 +52,7 @@ export default function Footer3D({ isInView, isEmber, isNeumorphic }: { isInView
     >
       <ambientLight intensity={2} />
       <directionalLight position={[10, 10, 5]} intensity={3} />
-      <BackgroundKnot isEmber={isEmber} isNeumorphic={isNeumorphic} />
+      <FooterLandscape isEmber={isEmber} isNeumorphic={isNeumorphic} />
     </Canvas>
   );
 }

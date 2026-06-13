@@ -32,7 +32,7 @@ export default function Footer({ dict }: { dict: any }) {
   const copyrightText = (dict?.copyright || "© {year} SAMYBIT // WITH NEXT.JS & BRUTALISM.").replace('{year}', currentYear.toString());
 
   return (
-    <footer ref={footerRef} className="relative overflow-hidden bg-white border-t-8 border-black p-6 md:p-12">
+    <footer ref={footerRef} className="relative min-h-[20vh] flex items-center justify-center overflow-hidden bg-white border-t-8 border-black py-6 px-6 md:py-8 md:px-12">
       {/* --- LAYER 1: 3D KNOT BACKGROUND (z-0) --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {/* 2. The Engine Killswitch: 'never' pauses the GPU completely */}
@@ -40,16 +40,13 @@ export default function Footer({ dict }: { dict: any }) {
       </div>
 
       {/* --- LAYER 2: FOOTER CONTENT (z-10) --- */}
-      <div className="relative z-10 text-center flex flex-col items-center justify-center gap-4 pointer-events-none">
-        <div className="text-3xl md:text-5xl font-black uppercase tracking-tighter">
-          {dict?.samy || "Samy Barsoum"}
-        </div>
+      <div className="relative z-10 text-center flex flex-col items-center justify-center gap-6 pointer-events-none">
         <p className="text-xl font-bold uppercase text-black bg-white px-3 py-1" suppressHydrationWarning>
           {copyrightText}
         </p>
         <a
           href="#"
-          className="mt-4 text-lg font-bold uppercase border-b-4 border-black pb-1 hover:bg-black hover:text-white transition-colors pointer-events-auto"
+          className="text-lg font-bold uppercase border-b-4 border-black pb-1 hover:bg-black hover:text-white transition-colors pointer-events-auto"
         >
           {dict?.backToTop || "↑ Back to top"}
         </a>
