@@ -3,6 +3,7 @@
 import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import AudioPlayer from "@/components/AudioPlayer";
 import DecryptText from "@/components/DecryptText";
 import MedievalCorner from "@/components/MedievalCorner";
@@ -10,6 +11,22 @@ import MedievalCorner from "@/components/MedievalCorner";
 export default function AboutClient({ dict, tabTitles, locale }: { dict: any, tabTitles: any, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
+
+  // --- FRAMER MOTION CLIP-PATH SETUP ---
+  const { scrollY } = useScroll();
+
+  // 1. Animates the parallax clipping mask for the image (from bottom up).
+  // Reduced to 315px so the effect completes faster on smaller laptop viewports
+  const imageBottomInset = useTransform(scrollY, [0, 315], [0, 115]);
+  const clipPathImage = useTransform(imageBottomInset, (val) => `inset(0% 0% ${val}% 0%)`);
+
+  // 2. Animates the exact inverse clipping mask for the backdrop-filter!
+  // It covers exactly what the image reveals, creating a perfect seamless boundary.
+  const filterTopInset = useTransform(scrollY, [0, 315], [100, -15]);
+  const clipPathFilter = useTransform(filterTopInset, (val) => `inset(${val}% 0% 0% 0%)`);
+
+  // 3. Parallax effect specifically for the background image inside the mask.
+  const imageY = useTransform(scrollY, [0, 600], [0, -150]);
 
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -71,9 +88,8 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
     },
   ];
 
-  return (
-    <main className="min-h-screen px-6 md:px-12 lg:px-24 pt-28 md:pt-26 pb-24" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-
+  const topContent = (
+    <>
       {/* --- HEADER --- */}
       <div className="animate-slide-up max-w-7xl mx-auto mb-8 md:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-6">
         {/* LEFT SIDE: Title & Back Button */}
@@ -88,12 +104,13 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
         </div>
 
         {/* RIGHT SIDE: The Music Player */}
-        <div className="w-full md:w-auto shrink-0">
+        <div className="w-full md:w-auto shrink-0 relative z-10">
           <AudioPlayer dict={dict} />
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto flex flex-col gap-16">
+      {/* Sized naturally to the content to end right below the cards */}
+      <div className="max-w-7xl mx-auto flex flex-col gap-8 md:gap-10 relative z-10">
 
         {/* --- EDUCATION & CERTS ROW --- */}
         <div className="animate-slide-up-delay-1 grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -206,6 +223,57 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
           </section>
 
         </div>
+      </div>
+    </>
+  );
+
+  return (
+    <main className="min-h-screen pb-24 overflow-x-hidden" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+
+      {/* --- TEXT & PARALLAX BACKGROUND BLOCK --- */}
+      {/* 
+        This wrapper uses a single DOM tree! 
+        1. Base background color is defined here so backdrop-filter has something solid to invert.
+        2. Parallax image placed at Z-0 (behind content).
+        3. Content placed at Z-10. Native CSS hovers work perfectly!
+        4. Backdrop filter placed at Z-20, exactly mathematically inverse to the image. 
+      */}
+      <div className={`relative w-full ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}`}>
+
+        {/* LAYER 0: THE BACKGROUND IMAGE (clipped from bottom up) */}
+        <motion.div
+          style={{ clipPath: clipPathImage }}
+          className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none"
+        >
+          <motion.img
+            style={{ y: imageY }}
+            src="/about.jpg"
+            alt=""
+            className="absolute -top-[25%] left-0 w-full h-[150%] object-cover object-center"
+          />
+          {/* Dark overlay to make the image darker as requested */}
+          <div className="absolute -top-[25%] left-0 bg-black/30 w-full h-[150%]"></div>
+        </motion.div>
+
+        {/* LAYER 1: THE SINGLE-SOURCE CONTENT (Normal text) */}
+        <div className="relative z-10 px-6 md:px-12 lg:px-24 pt-28 md:pt-26 pb-6">
+          {topContent}
+        </div>
+
+        {/* LAYER 2: THE INVERT FILTER (covers the exact opposite of the image!) */}
+        <motion.div
+          style={{ 
+            clipPath: clipPathFilter,
+            backdropFilter: 'invert(1) hue-rotate(180deg)'
+          }}
+          className="absolute top-0 left-0 w-full h-full z-20 pointer-events-none"
+          aria-hidden="true"
+        />
+
+      </div>
+
+      {/* WE START A NEW CONTAINER FOR THE REST OF THE PAGE */}
+      <div className="max-w-7xl mx-auto flex flex-col gap-16 mt-8 px-6 md:px-12 lg:px-24 relative z-10">
 
         {/* --- TECHNICAL ARSENAL --- */}
         <section className="animate-slide-up-delay-2">
