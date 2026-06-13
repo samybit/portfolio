@@ -37,7 +37,7 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
           style={{ animationDuration: '3s' }}
         />
         <div className="flex flex-col items-start text-start">
-          <span className="text-sm font-black uppercase tracking-widest leading-none mb-1">Crystals / 01</span>
+          <span className="text-sm font-black uppercase tracking-widest leading-none mb-1">med!cine</span>
           <span className="text-xs font-bold text-zinc-500 uppercase leading-none">{dict?.pressToPlay || "Press to Play"}</span>
         </div>
       </div>

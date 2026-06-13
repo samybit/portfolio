@@ -46,7 +46,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
     {
       category: "Frontend & Design",
       icon: <LayoutTemplate size={32} />,
-      tech: ["Next.js", "React", "Angular", "TypeScript", "Tailwind CSS", "Figma"]
+      tech: ["Next.js", "React", "Angular", "TypeScript", "Tailwind CSS"]
     },
     {
       category: "Backend & Database",
@@ -56,12 +56,12 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
     {
       category: "Architecture & DevOps",
       icon: <Server size={32} />,
-      tech: ["Docker", "Kubernetes", "Jenkins", "Prometheus", "Grafana", "Linux OS", "Nexus Repo"]
+      tech: ["Docker", "Kubernetes", "Jenkins", "Linux OS", "Nexus Repo"]
     },
     {
       category: "API & Testing",
       icon: <Wrench size={32} />,
-      tech: ["Postman", "Swagger", "Jest", "Cypress", "Selenium", "BeautifulSoup", "REST APIs"]
+      tech: ["Postman", "Swagger", "Jest", "Selenium", "BeautifulSoup", "REST APIs", "GraphQL"]
     },
     {
       category: "Agile & Collab",
