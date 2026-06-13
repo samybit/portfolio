@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import AudioPlayer from "@/components/AudioPlayer";
 import DecryptText from "@/components/DecryptText";
+import MedievalCorner from "@/components/MedievalCorner";
 
 export default function AboutClient({ dict, tabTitles, locale }: { dict: any, tabTitles: any, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -253,40 +254,54 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
         </section>
 
         {/* --- ARCHIVES / OLD PORTFOLIOS --- */}
-        <section className={`animate-slide-up-delay-2 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8 transition-all duration-300 ${
+        <section className={`animate-slide-up-delay-2 relative p-8 md:p-10 my-10 mx-6 md:mx-10 transition-all duration-300 ${
           isNeumorphic
             ? "brutalist-container"
-            : "bg-white border-4 border-black"
+            : "bg-white border-4 border-black med-border"
         }`}>
-          <div className="flex flex-col text-center md:text-left rtl:md:text-right">
-            <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight">{dict?.legacySys || "Legacy Systems"}</h2>
-            <p className="text-lg md:text-xl font-bold text-zinc-500 uppercase mt-1">{dict?.legacyDesc || "Explore previous portfolio iterations"}</p>
-          </div>
-          <div className="flex flex-col sm:flex-row w-full md:w-auto gap-6 shrink-0">
-            <a
-              href="https://my-portfolio-seven-beta-98.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`px-6 py-4 flex items-center justify-center gap-3 text-xl font-black uppercase transition-all duration-300 group ${
-                isNeumorphic
-                  ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                  : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
-              }`}
-            >
-              {dict?.v1 || "Version 1.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </a>
-            <a
-              href="https://samybit.github.io/brutalist-portfolio/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`px-6 py-4 flex items-center justify-center gap-3 text-xl font-black uppercase transition-all duration-300 group ${
-                isNeumorphic
-                  ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                  : "bg-black text-white border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
-              }`}
-            >
-              {dict?.v2 || "Version 2.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </a>
+
+          {/* Corner ornaments – only rendered in default / non-neumorphic themes */}
+          {!isNeumorphic && (
+            <>
+              <MedievalCorner pos="tl" />
+              <MedievalCorner pos="tr" />
+              <MedievalCorner pos="bl" />
+              <MedievalCorner pos="br" />
+            </>
+          )}
+
+          {/* Content Wrapper (z-20 so it renders OVER the corner SVGs) */}
+          <div className="relative z-20 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex flex-col text-center md:text-left rtl:md:text-right">
+              <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight">{dict?.legacySys || "Legacy Systems"}</h2>
+              <p className="text-lg md:text-xl font-bold text-zinc-500 uppercase mt-1">{dict?.legacyDesc || "Explore previous portfolio iterations"}</p>
+            </div>
+            <div className="flex flex-col sm:flex-row w-full md:w-auto gap-6 shrink-0">
+              <a
+                href="https://my-portfolio-seven-beta-98.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`px-6 py-4 flex items-center justify-center gap-3 text-xl font-black uppercase transition-all duration-300 group ${
+                  isNeumorphic
+                    ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                    : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                }`}
+              >
+                {dict?.v1 || "Version 1.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </a>
+              <a
+                href="https://samybit.github.io/brutalist-portfolio/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`px-6 py-4 flex items-center justify-center gap-3 text-xl font-black uppercase transition-all duration-300 group ${
+                  isNeumorphic
+                    ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                    : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                }`}
+              >
+                {dict?.v2 || "Version 2.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </a>
+            </div>
           </div>
         </section>
 

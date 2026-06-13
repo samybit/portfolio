@@ -933,3 +933,51 @@ html.theme-transitioning * {
   scrollbar-width: none;
 }
 
+
+/* ================================================================
+   MEDIEVAL DRAWN FRAME — "Legacy Systems" card
+   Three concentric border lines (matching illuminated manuscripts):
+     ① thin outer   – CSS outline
+     ② thick main   – CSS border (existing border-4)
+     ③ thin inner   – CSS inset box-shadow
+   Plus 4 corner SVG ornaments (diamond bosses, see MedievalCorner.tsx)
+================================================================ */
+
+.med-border {
+  /* ① Thin outer line */
+  outline: 1.5px solid black;
+  outline-offset: 7px;
+  /* ③ Thin inner line (layered inset shadows) */
+  box-shadow:
+    inset 0 0 0 8px  white,      /* gap between thick border and inner line */
+    inset 0 0 0 9.5px black;     /* 1.5px inner thin line                  */
+}
+
+/* Background fill for the SVG cover rect that erases CSS border corners */
+.med-corner-bg {
+  fill: white;
+}
+
+/* ── Ember theme ──────────────────────────────────── */
+html.theme-color .med-border {
+  outline-color: #FF4F00 !important;
+  box-shadow:
+    inset 0 0 0 8px  #1A1716,
+    inset 0 0 0 9.5px #FF4F00 !important;
+}
+
+html.theme-color .med-corner-bg {
+  fill: #1A1716;
+}
+
+/* ── Invert/dark theme ────────────────────────────── */
+html.invert-theme .med-border {
+  outline-color: white !important;
+  box-shadow:
+    inset 0 0 0 8px  black,
+    inset 0 0 0 9.5px white !important;
+}
+
+html.invert-theme .med-corner-bg {
+  fill: black;
+}
