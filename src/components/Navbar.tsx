@@ -14,7 +14,7 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
   const [activeHash, setActiveHash] = useState("");
   const navRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollY = useRef(0);
 
   const isHome = pathname === `/${currentLocale}` || pathname === `/${currentLocale}/`;
 
@@ -24,23 +24,23 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
       
       // If mobile menu is open, don't hide the navbar
       if (isOpen) {
-        setLastScrollY(currentScrollY);
+        lastScrollY.current = currentScrollY;
         return;
       }
       
       // Hide if scrolling down and past 80px, show if scrolling up
-      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
         setIsVisible(false);
-      } else if (currentScrollY < lastScrollY) {
+      } else if (currentScrollY < lastScrollY.current) {
         setIsVisible(true);
       }
       
-      setLastScrollY(currentScrollY);
+      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY, isOpen]);
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isHome) {
