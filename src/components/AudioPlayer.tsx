@@ -50,8 +50,11 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
         {isPlaying ? <Pause size={20} className="rtl:rotate-180" /> : <Play size={20} className="ml-0.5 rtl:ml-0 rtl:mr-0.5 rtl:rotate-180" />}
       </button>
 
-      {/* Hidden audio engine pointing to the file in your public folder */}
-      <audio ref={audioRef} src="/track.mp3" preload="metadata" />
+      {/* Hidden audio engine with Opus preferred and MP3 fallback for older iPhones */}
+      <audio ref={audioRef} preload="metadata">
+        <source src="/track.opus" type="audio/ogg; codecs=opus" />
+        <source src="/track.mp3" type="audio/mpeg" />
+      </audio>
     </div>
   );
 }
