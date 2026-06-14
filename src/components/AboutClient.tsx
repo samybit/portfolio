@@ -91,7 +91,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
   const topContent = (
     <>
       {/* --- HEADER --- */}
-      <div className="animate-slide-up max-w-7xl mx-auto mb-8 md:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-6">
+      <div className="animate-slide-up max-w-7xl mx-auto mb-8 md:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-12 md:gap-6">
         {/* LEFT SIDE: Title & Back Button */}
         <div>
           <Link href={`/${locale}`} className="inline-flex items-center gap-2 text-xl font-bold uppercase mb-6 bg-white text-black hover:bg-black hover:text-white px-3 py-1 border-4 border-transparent hover:border-black transition-all">
