@@ -6,13 +6,16 @@ import { Play, RotateCcw } from "lucide-react";
 const LEVELS = [
   {
     // Level 1: The Gap
-    start: { x: 50, y: 500 },
-    exit: { x: 700, y: 500, w: 40, h: 40 },
+    start: { x: 50, y: 150 },
+    exit: { x: 700, y: 150, w: 40, h: 40 },
     platforms: [
-      { x: 0, y: 540, w: 200, h: 60 },
-      { x: 600, y: 540, w: 200, h: 60 },
+      { x: 0, y: 200, w: 200, h: 400 },
+      { x: 600, y: 200, w: 200, h: 400 },
     ],
-    hint: "Click to shoot a stake into a wall. Hold Right Click to pull it closer."
+    hint: {
+      en: "Left Click to shoot a stake into the floor. Hold Right Click to pull it up. Press R to recall stakes.",
+      ar: "انقر يساراً لإطلاق وتد في الأرضية ويمينياً لسحبها لأعلى للعبور. اضغط R لاسترجاع الأوتاد."
+    }
   },
   {
     // Level 2: The Chimney
@@ -23,18 +26,25 @@ const LEVELS = [
       { x: 0, y: 150, w: 300, h: 20 },
       { x: 650, y: 140, w: 150, h: 20 },
     ],
-    hint: "Pull a wall inward to create a narrow chimney. Wall-jump up it."
+    hint: {
+      en: "Pull a wall inward to create a narrow chimney. Wall-jump up it.",
+      ar: "اسحب الحائط للداخل لإنشاء مدخنة ضيقة. اقفز بين الحوائط للصعود."
+    }
   },
   {
-    // Level 3: The Squeeze
-    start: { x: 50, y: 100 },
+    // Level 3: The Recall
+    start: { x: 50, y: 500 },
     exit: { x: 700, y: 500, w: 40, h: 40 },
     platforms: [
-      { x: 0, y: 150, w: 200, h: 20 },
-      { x: 250, y: 0, w: 50, h: 450 }, // vertical barrier
+      { x: 0, y: 540, w: 200, h: 60 },
+      { x: 300, y: 200, w: 50, h: 400 }, // Middle low wall (blocks floor, must go over)
+      { x: 500, y: 0, w: 50, h: 400 },   // Right high wall (blocks ceiling, must go under)
       { x: 600, y: 540, w: 200, h: 60 },
     ],
-    hint: "Pull the ceiling down to slip under barriers. Press R to recall stakes."
+    hint: {
+      en: "Pull the floor up to cross the first wall, then press R to drop the floor and go under the second.",
+      ar: "اسحب الأرضية لأعلى لعبور الحائط الأول، ثم اضغط R لإسقاط الأرضية والمرور تحت الثاني."
+    }
   },
   {
     // Level 4: The Crush
@@ -45,7 +55,10 @@ const LEVELS = [
       { x: 300, y: 350, w: 200, h: 20 },
       { x: 0, y: 150, w: 200, h: 20 },
     ],
-    hint: "Careful not to get crushed between the moving frame and static platforms."
+    hint: {
+      en: "Careful not to get crushed between the moving frame and static platforms.",
+      ar: "احذر من الانسحاق بين الإطار المتحرك والمنصات الثابتة."
+    }
   }
 ];
 
@@ -411,13 +424,13 @@ export default function WindowframeGame({ locale }: { locale: 'en' | 'ar' }) {
   }, [isPlaying, gameOver, gameWon, currentLevel]);
 
   return (
-    <div className="w-full max-w-3xl mx-auto flex flex-col items-center animate-fade-in">
+    <div className="w-full max-w-xl mx-auto flex flex-col items-center animate-fade-in">
       <div className="flex justify-between w-full mb-2 px-2 font-black uppercase tracking-widest text-sm md:text-base">
         <span>{t.lvl} {currentLevel + 1} / {LEVELS.length}</span>
       </div>
       
       <div 
-        className="relative w-full h-[400px] md:h-[500px] bg-white border-4 border-black overflow-hidden group shadow-[8px_8px_0px_0px_#000000] focus:outline-none"
+        className="relative w-full aspect-[4/3] bg-white border-4 border-black overflow-hidden group shadow-[8px_8px_0px_0px_#000000] focus:outline-none"
         onContextMenu={(e) => { e.preventDefault(); return false; }}
       >
         {!isPlaying && !gameOver && !gameWon && (
@@ -465,7 +478,7 @@ export default function WindowframeGame({ locale }: { locale: 'en' | 'ar' }) {
         
         {isPlaying && (
           <div className="absolute bottom-4 left-0 w-full text-center text-xs md:text-sm font-black text-zinc-500 uppercase opacity-70 pointer-events-none tracking-widest bg-white/50 py-1">
-            {LEVELS[currentLevel]?.hint}
+            {LEVELS[currentLevel]?.hint[locale]}
           </div>
         )}
       </div>
