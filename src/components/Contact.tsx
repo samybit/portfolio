@@ -11,6 +11,7 @@ export default function Contact({ dict }: { dict: any }) {
   const [errors, setErrors] = useState<{ email?: string; message?: string }>({});
   const [values, setValues] = useState({ name: "", email: "", message: "" });
   const [isNeumorphic, setIsNeumorphic] = useState(false);
+  const [isFlying, setIsFlying] = useState(false);
 
   useEffect(() => {
     setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
@@ -68,6 +69,13 @@ export default function Contact({ dict }: { dict: any }) {
     }
 
     setErrors({});
+    
+    // Start the flying animation
+    setIsFlying(true);
+    
+    // Wait for the animation to finish (matching the 0.6s in CSS)
+    await new Promise(resolve => setTimeout(resolve, 600));
+
     setStatus("loading");
 
     const result = await sendEmail(formData);
@@ -75,8 +83,10 @@ export default function Contact({ dict }: { dict: any }) {
     if (result?.error) {
       setStatus("error");
       isSubmitting.current = false; // Unlock the gate so they can try sending again
+      setIsFlying(false); // Reset flying state
     } else {
       setStatus("success");
+      setIsFlying(false); // Reset flying state
     }
   }
 
@@ -135,7 +145,7 @@ export default function Contact({ dict }: { dict: any }) {
           <form
             onSubmit={handleSubmit}
             noValidate
-            className="relative z-10 bg-white text-black border-4 border-black flex flex-col gap-2 md:gap-3 p-6 lg:p-8 overflow-hidden shadow-[8px_8px_0px_#fff]"
+            className="relative z-10 bg-white text-black border-4 border-black flex flex-col gap-2 md:gap-3 p-6 lg:p-8 shadow-[8px_8px_0px_#fff]"
           >
             {status === "success" ? (
               <div className="p-8 border-4 border-black bg-green-400 text-black text-2xl font-black uppercase text-center flex flex-col items-center gap-4 relative z-20">
@@ -232,14 +242,14 @@ export default function Contact({ dict }: { dict: any }) {
                     {status === "loading" ? (dict?.btnSending || "Sending...") : (dict?.btnSend || "Send Message")}
                   </span>
 
-                  <div className={`overflow-hidden flex items-center transition-all duration-300 ease-out ${status === "loading"
-                    ? "w-6 md:w-8 ms-3 opacity-100"
-                    : "w-0 opacity-0 group-hover:w-6 group-active:w-6 md:group-hover:w-8 group-hover:ms-2 group-active:ms-2 md:group-hover:ms-3 group-hover:opacity-100 group-active:opacity-100"
+                  <div className={`flex items-center transition-all duration-300 ease-out ${status === "loading" || isFlying
+                    ? "w-6 md:w-8 ms-3 opacity-100 overflow-visible"
+                    : "w-0 opacity-0 overflow-hidden group-hover:w-6 group-active:w-6 md:group-hover:w-8 group-hover:ms-2 group-active:ms-2 md:group-hover:ms-3 group-hover:opacity-100 group-active:opacity-100"
                     }`}>
                     {status === "loading" ? (
                       <Loader2 className="w-5 h-5 md:w-6 md:h-6 shrink-0 animate-spin" />
                     ) : (
-                      <Send className="w-5 h-5 md:w-6 md:h-6 shrink-0 rtl:translate-x-full -translate-x-full rtl:group-hover:-translate-x-0 group-hover:translate-x-0 rtl:group-active:-translate-x-0 group-active:translate-x-0 transition-transform duration-300 ease-out rtl:-scale-x-100" />
+                      <Send className={`w-5 h-5 md:w-6 md:h-6 shrink-0 ${isFlying ? 'animate-fly-out' : 'rtl:-scale-x-100 rtl:translate-x-full -translate-x-full rtl:group-hover:-translate-x-0 group-hover:translate-x-0 rtl:group-active:-translate-x-0 group-active:translate-x-0 transition-transform duration-300 ease-out'}`} />
                     )}
                   </div>
                 </button>
