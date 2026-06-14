@@ -13,6 +13,38 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   
+  const tracks = [
+    { title: "med!cine", opus: "/track.opus", mp3: "/track.mp3" },
+    { title: "Eternal Flame", opus: "/track2.opus", mp3: "/track2.mp3" }
+  ];
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [isTitleLong, setIsTitleLong] = useState(false);
+  const titleRef = useRef<HTMLSpanElement>(null);
+
+  const switchTrack = (index: number) => {
+    setCurrentTrackIndex(index);
+    setProgress(0);
+  };
+
+  const prevTrack = () => switchTrack((currentTrackIndex - 1 + tracks.length) % tracks.length);
+  const nextTrack = () => switchTrack((currentTrackIndex + 1) % tracks.length);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.load();
+      if (isPlaying) {
+        audioRef.current.play().catch(e => console.error("Auto-play prevented", e));
+      }
+    }
+  }, [currentTrackIndex]);
+  
+  useEffect(() => {
+    if (titleRef.current) {
+      // The container is 110px. If the text's natural width is bigger, it's too long.
+      setIsTitleLong(titleRef.current.scrollWidth > 110);
+    }
+  }, [currentTrackIndex, tracks]);
+
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
@@ -304,7 +336,7 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
   }, []);
 
   return (
-    <div className="relative w-full min-w-[280px] max-w-xs z-10">
+    <div className="relative w-full min-w-[260px] max-w-[280px] z-10">
 
       {/* The main styled card (Acts as the peer for hover syncing) */}
       <div className="peer audio-player-container border-4 border-black p-3 flex items-center justify-between gap-6 bg-white text-black w-full shadow-[8px_8px_0px_0px_#000000] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all relative z-10">
@@ -315,7 +347,24 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
             style={{ animationDuration: '3s' }}
           />
           <div className="flex flex-col items-start text-start w-full min-w-0 justify-center pt-1">
-            <span className={`text-sm font-black uppercase tracking-widest leading-tight mb-0.5 ${mallory.className}`}>med!cine</span>
+            <div className="flex items-center justify-between w-full pr-1">
+              <div className="w-[110px] overflow-hidden">
+                <span 
+                  ref={titleRef}
+                  className={`inline-block text-sm font-black uppercase tracking-widest leading-tight mb-0.5 whitespace-nowrap ${(isTitleLong && isPlaying) ? 'animate-slide-x' : ''} ${mallory.className}`}
+                >
+                  {tracks[currentTrackIndex].title}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                <button onClick={prevTrack} className="hover:opacity-50 transition-opacity cursor-pointer" aria-label="Previous Track">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21l-12-18h24z"/></svg>
+                </button>
+                <button onClick={nextTrack} className="hover:opacity-50 transition-opacity cursor-pointer" aria-label="Next Track">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l12 18h-24z"/></svg>
+                </button>
+              </div>
+            </div>
             <span className="text-[10px] font-bold text-zinc-500 uppercase leading-none mb-1.5">{dict?.pressToPlay || "Press to Play"}</span>
             <div className="audio-progress-track relative w-full h-1 bg-zinc-200 cursor-pointer">
               <div 
@@ -336,7 +385,7 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
 
         <button
           onClick={togglePlay}
-          className="bg-black text-white w-10 h-10 flex items-center justify-center shrink-0 hover:bg-white hover:text-black border-2 border-black transition-colors rtl:rotate-180"
+          className="bg-black text-white w-10 h-10 flex items-center justify-center shrink-0 hover:bg-white hover:text-black border-2 border-black transition-colors rtl:rotate-180 cursor-pointer"
           aria-label={isPlaying ? "Pause" : "Play"}
         >
           {isPlaying ? <Pause size={20} className="rtl:rotate-180" /> : <Play size={20} className="ml-0.5 rtl:ml-0 rtl:mr-0.5 rtl:rotate-180" />}
@@ -354,8 +403,8 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
             }
           }}
         >
-          <source src="/track.opus" type="audio/ogg; codecs=opus" />
-          <source src="/track.mp3" type="audio/mpeg" />
+          <source src={tracks[currentTrackIndex].opus} type="audio/ogg; codecs=opus" />
+          <source src={tracks[currentTrackIndex].mp3} type="audio/mpeg" />
         </audio>
       </div>
 

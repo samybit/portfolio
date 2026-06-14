@@ -133,6 +133,18 @@
   will-change: transform;
 }
 
+/* Audio Player Marquee (Ping-Pong) */
+@keyframes slideX {
+  0%, 15% { transform: translateX(0); }
+  45%, 55% { transform: translateX(calc(-100% + 100px)); }
+  85%, 100% { transform: translateX(0); }
+}
+
+.animate-slide-x {
+  animation: slideX 6s ease-in-out infinite;
+  will-change: transform;
+}
+
 
 /* --- CUSTOM BRUTALIST HARDWARE CURSOR --- */
 /* Native OS shape, perfectly straight vertical left edge. Zero JS lag. */
