@@ -50,7 +50,7 @@
       {
         "id": "3d",
         "title": "3D Web",
-        "description": "A vertical storytelling experience exploring 7 distinct approaches to 3D browser rendering. Serves as a technical reference for WebGL pipelines, Spline, Globe.gl, and native CSS trigonometry.",
+        "description": "A vertical storytelling experience exploring 7 approaches to 3D rendering. Serves as a technical reference for WebGL pipelines, Spline, Globe.gl, and CSS trigonometry.",
         "tech": ["Next.js", "Three.js", "Spline", "Framer Motion"],
         "github": "https://github.com/samybit/3d-showcase",
         "demo": "https://3d-showcase-samy.vercel.app/",
@@ -68,7 +68,7 @@
       {
         "id": "scraper",
         "title": "Lead Scraper",
-        "description": "An automated n8n workflow orchestrating a Python/Flask microservice. It scrapes daily job postings, leverages an LLM to summarize key requirements, and delivers professional insights via email.",
+        "description": "An automated n8n workflow orchestrating a Python/Flask microservice. It scrapes daily job postings, leverages an LLM to summarize requirements, and delivers insights via email.",
         "tech": ["n8n", "Python", "LLM API", "Docker"],
         "github": "https://github.com/samybit/freelance-lead-scraper",
         "demo": "#",

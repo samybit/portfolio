@@ -50,7 +50,7 @@
       {
         "id": "3d",
         "title": "3D Web",
-        "description": "تجربة سردية تستكشف 7 أساليب لتجسيد البعد الثالث في المتصفح. تعتبر مرجعاً تقنياً لمكتبات مثل Three.js و Spline و Globe.gl والرياضيات المدمجة في CSS.",
+        "description": "تجربة سردية تستكشف 7 أساليب لتجسيد البعد الثالث. تعتبر مرجعاً تقنياً لمكتبات مثل Three.js و Spline و Globe.gl والرياضيات في CSS.",
         "tech": ["Next.js", "Three.js", "Spline", "Framer Motion"],
         "github": "https://github.com/samybit/3d-showcase",
         "demo": "https://3d-showcase-samy.vercel.app/",
@@ -68,7 +68,7 @@
       {
         "id": "scraper",
         "title": "Lead Scraper",
-        "description": "سير عمل مؤتمت بـ n8n لتنظيم خدمة Python/Flask. تستخرج إعلانات الوظائف يومياً، وتستخدم نموذج ذكاء اصطناعي (LLM) لتلخيص المتطلبات، وترسل النتائج مباشرة عبر البريد.",
+        "description": "سير عمل بـ n8n لتنظيم خدمة Python/Flask. تستخرج إعلانات الوظائف يومياً، وتستخدم نموذج ذكاء اصطناعي (LLM) لتلخيص المتطلبات، وترسل النتائج عبر البريد.",
         "tech": ["n8n", "Python", "LLM API", "Docker"],
         "github": "https://github.com/samybit/freelance-lead-scraper",
         "demo": "#",
