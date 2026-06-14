@@ -40,12 +40,12 @@ export const metadata: Metadata = {
   }
 };
 
+import { notFound } from "next/navigation";
 import { getDictionary, Locale } from "@/dictionaries/getDictionary";
 
 export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'ar' }];
 }
-
 
 export default async function RootLayout({
   children,
@@ -57,7 +57,7 @@ export default async function RootLayout({
   const { locale } = await params;
   
   if (!['en', 'ar'].includes(locale)) {
-    import('next/navigation').then(m => m.notFound());
+    notFound();
   }
 
   const dict = await getDictionary(locale as Locale);

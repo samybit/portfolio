@@ -3,6 +3,24 @@
 import { useEffect, useState } from 'react';
 import { AlertOctagon, RefreshCw, Home } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+const translations = {
+  en: {
+    system: "SYSTEM",
+    error: "ERROR",
+    desc: "An unexpected exception has occurred in the application layer.",
+    tryAgain: "Try Again",
+    returnHome: "Return Home"
+  },
+  ar: {
+    system: "نظام",
+    error: "خطأ",
+    desc: "حدث استثناء غير متوقع في طبقة التطبيق.",
+    tryAgain: "حاول مرة أخرى",
+    returnHome: "العودة للرئيسية"
+  }
+};
 
 export default function Error({
   error,
@@ -12,6 +30,9 @@ export default function Error({
   unstable_retry: () => void;
 }) {
   const [isNeumorphic, setIsNeumorphic] = useState(false);
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] === 'ar' ? 'ar' : 'en';
+  const t = translations[locale];
 
   useEffect(() => {
     // Log the error to console
@@ -41,11 +62,11 @@ export default function Error({
 
         {/* Title */}
         <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tight leading-none mb-4">
-          SYSTEM <br />
+          {t.system} <br />
           <span className={`px-2 inline-block transform -skew-x-2 mt-1 ${
             isNeumorphic ? "bg-red-500/10 text-red-500" : "bg-black text-white"
           }`}>
-            ERROR
+            {t.error}
           </span>
         </h1>
 
@@ -53,7 +74,7 @@ export default function Error({
         <p className={`text-lg md:text-xl font-bold uppercase mb-8 transition-colors ${
           isNeumorphic ? "text-zinc-600" : "text-zinc-500"
         }`}>
-          An unexpected exception has occurred in the application layer.
+          {t.desc}
         </p>
 
         {/* Buttons */}
@@ -66,18 +87,18 @@ export default function Error({
                 : "bg-black text-white border-4 border-black hover:bg-white hover:text-black"
             }`}
           >
-            <RefreshCw size={20} /> Try Again
+            <RefreshCw size={20} /> {t.tryAgain}
           </button>
           
           <Link
-            href="/"
+            href={`/${locale}`}
             className={`flex items-center justify-center gap-2 px-6 py-4 text-lg font-black uppercase transition-all duration-300 ${
               isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:shadow-[6px_6px_12px_rgba(163,177,198,0.7),_-6px_-6px_12px_rgba(255,255,255,0.6)] active:shadow-[inset_3px_3px_6px_rgba(163,177,198,0.6),_inset_-3px_-3px_6px_rgba(255,255,255,0.5)] active:translate-y-[2px]"
                 : "bg-white text-black border-4 border-black hover:bg-black hover:text-white"
             }`}
           >
-            <Home size={20} /> Return Home
+            <Home size={20} /> {t.returnHome}
           </Link>
         </div>
       </div>
