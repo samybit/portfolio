@@ -19,8 +19,10 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
   const animationRef = useRef<number>(null);
   const keysRef = useRef<{ [key: string]: boolean }>({});
   const laserRef = useRef<{ active: boolean; endTime: number }>({ active: false, endTime: 0 });
+  const shieldRef = useRef<{ active: boolean; endTime: number }>({ active: false, endTime: 0 });
   const bossIntroRef = useRef<{ endTime: number; active: boolean }>({ endTime: 0, active: false });
   const shownBossesRef = useRef({ zigzag: false, homing: false, phantom: false, juggernaut: false, pulsar: false });
+  const spawnedShieldsRef = useRef<Set<number>>(new Set());
 
   const t = {
     en: { score: "Score", high: "High", start: "Play Survival", over: "System Failure", reboot: "Reboot", hint: "Left/Right: Move | Up: Shoot", bossZigzag: "ANOMALY: ZIGZAG", bossZigzagSub: "EVADE UNPREDICTABLE PATHS", bossHoming: "ANOMALY: HUNTER", bossHomingSub: "IT KNOWS WHERE YOU ARE", bossPhantom: "THREAT: PHANTOM", bossPhantomSub: "NOW YOU SEE ME", bossJuggernaut: "THREAT: JUGGERNAUT", bossJuggernautSub: "BRUTE FORCE DETECTED", bossPulsar: "THREAT: PULSAR", bossPulsarSub: "UNSTABLE GEOMETRY" },
@@ -46,7 +48,9 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
     setBossUI(null);
     bossIntroRef.current = { endTime: 0, active: false };
     laserRef.current = { active: false, endTime: 0 };
+    shieldRef.current = { active: false, endTime: 0 };
     shownBossesRef.current = { zigzag: false, homing: false, phantom: false, juggernaut: false, pulsar: false };
+    spawnedShieldsRef.current.clear();
     if (canvasRef.current) {
       canvasRef.current.focus();
     }
@@ -128,6 +132,11 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
         p.lastShoot = time; // reset cooldown
       }
 
+      // Shield End Check
+      if (shieldRef.current.active && time > shieldRef.current.endTime) {
+        shieldRef.current.active = false;
+      }
+
       if (isShooting) {
         if (!laserRef.current.active && time - p.lastShoot >= 2000) {
           // Fire Laser!
@@ -153,7 +162,7 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
         let hit = false;
         for (let j = enemiesRef.current.length - 1; j >= 0; j--) {
           const e = enemiesRef.current[j];
-          if (b.x < e.x + e.width && b.x + b.width > e.x &&
+          if (e.type !== 'powerup_shield' && b.x < e.x + e.width && b.x + b.width > e.x &&
               b.y < e.y + e.height && b.y + b.height > e.y) {
             
             e.hp -= 1;
@@ -175,6 +184,22 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
       spawnTimer += deltaTime;
       const spawnRate = Math.max(100, 700 - (scoreRef.current * 1.5));
       if (spawnTimer > spawnRate) {
+        // Powerup Spawning (Every 50 points until 600)
+        const currentScoreBracket = Math.floor(scoreRef.current / 50) * 50;
+        if (currentScoreBracket > 0 && currentScoreBracket <= 600 && !spawnedShieldsRef.current.has(currentScoreBracket)) {
+          spawnedShieldsRef.current.add(currentScoreBracket);
+          enemiesRef.current.push({
+            x: Math.random() * (100 - 8),
+            y: -15,
+            width: 8,
+            height: 8,
+            speed: 0.5 * (deltaTime * 0.04),
+            type: 'powerup_shield',
+            offset: 0,
+            hp: 1
+          });
+        }
+
         const typeRoll = Math.random();
         let type = 'normal';
         let hp = 1;
@@ -281,7 +306,7 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
           const laserWidth = 4;
           const laserX = p.x + p.width / 2 - laserWidth / 2;
           // If enemy overlaps the X range of the laser
-          if (e.x < laserX + laserWidth && e.x + e.width > laserX && e.y < p.y) {
+          if (e.type !== 'powerup_shield' && e.x < laserX + laserWidth && e.x + e.width > laserX && e.y < p.y) {
             e.hp -= deltaTime * 0.01; // Continuous damage (10 HP per second)
             if (e.hp <= 0) {
               enemiesRef.current.splice(i, 1);
@@ -302,13 +327,19 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
           p.y + 1 < e.y + e.height - 1 &&
           p.y + p.height - 1 > e.y + 1
         ) {
-          setGameOver(true);
-          setIsPlaying(false);
-          if (scoreRef.current > highScore) {
-            setHighScore(Math.floor(scoreRef.current));
-            localStorage.setItem("404_highscore", Math.floor(scoreRef.current).toString());
+          if (e.type === 'powerup_shield') {
+            shieldRef.current = { active: true, endTime: time + 6000 };
+            enemiesRef.current.splice(i, 1);
+            continue;
+          } else if (!shieldRef.current.active) {
+            setGameOver(true);
+            setIsPlaying(false);
+            if (scoreRef.current > highScore) {
+              setHighScore(Math.floor(scoreRef.current));
+              localStorage.setItem("404_highscore", Math.floor(scoreRef.current).toString());
+            }
+            return;
           }
-          return;
         }
 
         if (e.y > 100) {
@@ -349,10 +380,36 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
       // Player
       ctx.fillStyle = isEmber ? "#FF4F00" : (isNeumorphic ? "#1e293b" : "#000000");
       ctx.fillRect(p.x * scaleX, p.y * scaleY, p.width * scaleX, p.height * scaleY);
+      
+      // Shield Aura
+      if (shieldRef.current.active) {
+        if (time > shieldRef.current.endTime) {
+          shieldRef.current = { active: false, endTime: 0 };
+        } else {
+          ctx.strokeStyle = isEmber ? "#facc15" : "#3b82f6";
+          ctx.lineWidth = 3;
+          const pulse = Math.sin(time * 0.01) * 2;
+          ctx.strokeRect((p.x - 2 - pulse/2) * scaleX, (p.y - 2 - pulse/2) * scaleY, (p.width + 4 + pulse) * scaleX, (p.height + 4 + pulse) * scaleY);
+        }
+      }
 
       // Enemies (Glitches)
       enemiesRef.current.forEach(e => {
-        if (e.type === 'homing') {
+        if (e.type === 'powerup_shield') {
+          ctx.fillStyle = isEmber ? "#22c55e" : "#4ade80"; // Bright Green
+          if (Math.floor(time / 200) % 2 === 0) ctx.fillStyle = "#ffffff";
+          
+          const cx = e.x * scaleX;
+          const cy = e.y * scaleY;
+          const w = e.width * scaleX;
+          const h = e.height * scaleY;
+          
+          // Draw a friendly Plus sign [+]
+          ctx.fillRect(cx + w/3, cy, w/3, h); // Vertical bar
+          ctx.fillRect(cx, cy + h/3, w, h/3); // Horizontal bar
+          
+          return; // Skip standard square fillRect
+        } else if (e.type === 'homing') {
           ctx.fillStyle = isEmber ? "#7f1d1d" : "#7f1d1d"; // Dark Red
         } else if (e.type === 'zigzag') {
           ctx.fillStyle = isEmber ? "#ea580c" : "#f97316"; // Orange
