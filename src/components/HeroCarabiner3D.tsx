@@ -232,6 +232,164 @@ const getRopeEndTexture = () => {
   return tex;
 };
 
+const ROPE_THICKNESS = 0.3;
+
+const Rope = ({ 
+  position, 
+  barQuaternion, 
+  pullRotation, 
+  isYellow = false,
+  knotType = 'clove',
+  removeFirstTail = false,
+  hasCoil = false
+}: { 
+  position: THREE.Vector3, 
+  barQuaternion: THREE.Quaternion, 
+  pullRotation: [number, number, number], 
+  isYellow?: boolean,
+  knotType?: 'clove' | 'wrap' | 'messy',
+  removeFirstTail?: boolean,
+  hasCoil?: boolean
+}) => {
+  const ropeColorTexture = getRopeColorTexture();
+  const knotColorTexture = getKnotColorTexture();
+  const ropeEndTexture = getRopeEndTexture();
+
+  const knotCurve = useMemo(() => {
+    const r = ROPE_THICKNESS * 1.25;
+    const points = [
+      new THREE.Vector3(0, -0.1, r * 1.5),
+      new THREE.Vector3(0, 0.05, r * 1.05),
+      new THREE.Vector3(-r, 0.15, 0),
+      new THREE.Vector3(0, 0.2, -r),
+      new THREE.Vector3(r, 0.2, 0),
+      new THREE.Vector3(0, 0.15, r),
+      new THREE.Vector3(-r * 0.8, 0.05, r * 1.4),
+      new THREE.Vector3(0, -0.05, r),
+      new THREE.Vector3(r, -0.15, 0),
+      new THREE.Vector3(0, -0.2, -r),
+      new THREE.Vector3(-r * 1.5, -0.1, 0),
+    ];
+    return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
+  }, []);
+
+  const cloveNoTailCurve = useMemo(() => {
+    const r = ROPE_THICKNESS * 1.25; 
+    const points = [
+      new THREE.Vector3(0, 0.05, r * 1.05),
+      new THREE.Vector3(-r, 0.15, 0),
+      new THREE.Vector3(0, 0.2, -r),
+      new THREE.Vector3(r, 0.2, 0),
+      new THREE.Vector3(0, 0.15, r),
+      new THREE.Vector3(-r * 0.8, 0.05, r * 1.4),
+      new THREE.Vector3(0, -0.05, r),
+      new THREE.Vector3(r, -0.15, 0),
+      new THREE.Vector3(0, -0.2, -r),
+      new THREE.Vector3(-r * 1.5, -0.1, 0),
+    ];
+    return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
+  }, []);
+
+  const simpleWrapCurve = useMemo(() => {
+    const r = ROPE_THICKNESS * 1.25;
+    const points = [
+      new THREE.Vector3(0, 0, r * 1.5),
+      new THREE.Vector3(0, 0, r),
+      new THREE.Vector3(-r, 0.1, 0),
+      new THREE.Vector3(0, 0.1, -r),
+      new THREE.Vector3(r, 0.1, 0),
+      new THREE.Vector3(0, 0, r * 1.2),
+      new THREE.Vector3(-r * 1.5, -0.1, 0),
+    ];
+    return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
+  }, []);
+
+  const messyKnotCurve = useMemo(() => {
+    const r = ROPE_THICKNESS * 1.25;
+    const points = [
+      new THREE.Vector3(0, -0.2, r * 1.5),
+      new THREE.Vector3(0, -0.25, r),
+      new THREE.Vector3(r, -0.2, 0),
+      new THREE.Vector3(0, -0.15, -r),
+      new THREE.Vector3(-r, -0.1, 0),
+      new THREE.Vector3(0, 0, r * 1.1),
+      new THREE.Vector3(r, 0.1, 0),
+      new THREE.Vector3(0, 0.2, -r),
+      new THREE.Vector3(-r, 0.25, 0),
+      new THREE.Vector3(0, 0.15, r * 1.2),
+      new THREE.Vector3(r, 0.05, 0),
+      new THREE.Vector3(0, -0.05, -r),
+      new THREE.Vector3(-r, -0.1, 0),
+      new THREE.Vector3(-r * 1.5, -0.1, 0),
+    ];
+    return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
+  }, []);
+
+  const yellowRopeMaterial = <meshStandardMaterial color="#facc15" roughness={1} map={ropeColorTexture || undefined} bumpMap={ropeColorTexture || undefined} bumpScale={0.02} />;
+  const silverRopeMaterial = <meshStandardMaterial color="#e5e7eb" roughness={1} map={ropeColorTexture || undefined} bumpMap={ropeColorTexture || undefined} bumpScale={0.02} />;
+  const yellowKnotMaterial = <meshStandardMaterial color="#facc15" roughness={1} map={knotColorTexture || undefined} bumpMap={knotColorTexture || undefined} bumpScale={0.02} />;
+  const silverKnotMaterial = <meshStandardMaterial color="#e5e7eb" roughness={1} map={knotColorTexture || undefined} bumpMap={knotColorTexture || undefined} bumpScale={0.02} />;
+  const yellowRopeEndMaterial = <meshStandardMaterial color="#facc15" roughness={1} map={ropeEndTexture || undefined} bumpMap={ropeEndTexture || undefined} bumpScale={0.1} side={THREE.DoubleSide} />;
+  const silverRopeEndMaterial = <meshStandardMaterial color="#e5e7eb" roughness={1} map={ropeEndTexture || undefined} bumpMap={ropeEndTexture || undefined} bumpScale={0.1} side={THREE.DoubleSide} />;
+
+  const ropeLength = 20;
+  let activeKnotCurve = knotCurve;
+  if (knotType === 'wrap') activeKnotCurve = simpleWrapCurve;
+  if (knotType === 'messy') activeKnotCurve = messyKnotCurve;
+  if (removeFirstTail && knotType === 'clove') activeKnotCurve = cloveNoTailCurve;
+
+  return (
+    <group position={position}>
+      <group quaternion={barQuaternion}>
+        <mesh>
+          <tubeGeometry args={[activeKnotCurve, 64, 0.08, 16, false]} />
+          {isYellow ? yellowKnotMaterial : silverKnotMaterial}
+        </mesh>
+        {!removeFirstTail && (
+          <mesh 
+            position={activeKnotCurve.getPoint(0)} 
+            quaternion={new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), activeKnotCurve.getTangent(0).normalize())}
+          >
+            <circleGeometry args={[0.08, 32]} />
+            {isYellow ? yellowRopeEndMaterial : silverRopeEndMaterial}
+          </mesh>
+        )}
+        <mesh 
+          position={activeKnotCurve.getPoint(1)} 
+          quaternion={new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), activeKnotCurve.getTangent(1).normalize())}
+        >
+          <circleGeometry args={[0.08, 32]} />
+          {isYellow ? yellowRopeEndMaterial : silverRopeEndMaterial}
+        </mesh>
+      </group>
+      
+      <group rotation={pullRotation}>
+        <mesh position={[0, ropeLength / 2, 0]}>
+          <cylinderGeometry args={[0.08, 0.08, ropeLength, 16]} />
+          {isYellow ? yellowRopeMaterial : silverRopeMaterial}
+        </mesh>
+        
+        {hasCoil && (
+          <group position={[0, 0.8, 0]}>
+            <mesh rotation={[Math.PI / 2 + 0.1, 0, 0]} position={[0, -0.05, 0]}>
+              <torusGeometry args={[0.12, 0.07, 16, 32]} />
+              {isYellow ? yellowKnotMaterial : silverKnotMaterial}
+            </mesh>
+            <mesh rotation={[Math.PI / 2 - 0.1, 0, 0]} position={[0, 0.05, 0]}>
+              <torusGeometry args={[0.12, 0.07, 16, 32]} />
+              {isYellow ? yellowKnotMaterial : silverKnotMaterial}
+            </mesh>
+            <mesh rotation={[Math.PI / 2.5, 0, Math.PI / 4]} position={[0, 0, 0]}>
+              <torusGeometry args={[0.13, 0.05, 16, 32]} />
+              {isYellow ? yellowKnotMaterial : silverKnotMaterial}
+            </mesh>
+          </group>
+        )}
+      </group>
+    </group>
+  );
+};
+
 // --- THE TACTICAL CARABINER COMPONENT ---
 function CarabinerModel() {
   const groupRef = useRef<THREE.Group>(null);
@@ -376,188 +534,7 @@ function CarabinerModel() {
     />
   );
 
-  // Mathematically define a realistic 3D wrapped knot (like a Clove Hitch or Barrel Knot)
-  const knotCurve = useMemo(() => {
-    const r = thickness * 1.25; // Loop radius (wrapping tightly around the carabiner bar)
-    const points = [
-      // Entering rope tucking under the loops
-      new THREE.Vector3(0, -0.1, r * 1.5),
-      new THREE.Vector3(0, 0.05, r * 1.05),
-      
-      // Loop 1 (top wrap)
-      new THREE.Vector3(-r, 0.15, 0),
-      new THREE.Vector3(0, 0.2, -r),
-      new THREE.Vector3(r, 0.2, 0),
-      new THREE.Vector3(0, 0.15, r),
-      
-      // Crossing over the front diagonally
-      new THREE.Vector3(-r * 0.8, 0.05, r * 1.4),
-      
-      // Loop 2 (bottom wrap)
-      new THREE.Vector3(0, -0.05, r),
-      new THREE.Vector3(r, -0.15, 0),
-      new THREE.Vector3(0, -0.2, -r),
-      
-      // Exiting
-      new THREE.Vector3(-r * 1.5, -0.1, 0),
-    ];
-    // Create a smooth 3D spline through these points
-    return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
-  }, []);
 
-  // Modified curve specifically for removing the extra tail on a targeted rope
-  const cloveNoTailCurve = useMemo(() => {
-    const r = thickness * 1.25; 
-    const points = [
-      new THREE.Vector3(0, 0.05, r * 1.05), // Starts inside the wrap
-      new THREE.Vector3(-r, 0.15, 0),
-      new THREE.Vector3(0, 0.2, -r),
-      new THREE.Vector3(r, 0.2, 0),
-      new THREE.Vector3(0, 0.15, r),
-      new THREE.Vector3(-r * 0.8, 0.05, r * 1.4),
-      new THREE.Vector3(0, -0.05, r),
-      new THREE.Vector3(r, -0.15, 0),
-      new THREE.Vector3(0, -0.2, -r),
-      new THREE.Vector3(-r * 1.5, -0.1, 0),
-    ];
-    return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
-  }, []);
-
-  // A simpler single-wrap knot curve
-  const simpleWrapCurve = useMemo(() => {
-    const r = thickness * 1.25;
-    const points = [
-      new THREE.Vector3(0, 0, r * 1.5), // enter
-      new THREE.Vector3(0, 0, r), // front
-      new THREE.Vector3(-r, 0.1, 0), // left
-      new THREE.Vector3(0, 0.1, -r), // back
-      new THREE.Vector3(r, 0.1, 0), // right
-      new THREE.Vector3(0, 0, r * 1.2), // crossing over front
-      new THREE.Vector3(-r * 1.5, -0.1, 0), // exit
-    ];
-    return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
-  }, []);
-
-  // A chaotic, messy tangled knot curve
-  const messyKnotCurve = useMemo(() => {
-    const r = thickness * 1.25;
-    const points = [
-      new THREE.Vector3(0, -0.2, r * 1.5), // enter
-      
-      new THREE.Vector3(0, -0.25, r), // front
-      new THREE.Vector3(r, -0.2, 0), // right
-      new THREE.Vector3(0, -0.15, -r), // back
-      new THREE.Vector3(-r, -0.1, 0), // left
-      
-      new THREE.Vector3(0, 0, r * 1.1), // cross over front
-      new THREE.Vector3(r, 0.1, 0), // right
-      new THREE.Vector3(0, 0.2, -r), // back
-      new THREE.Vector3(-r, 0.25, 0), // left
-      
-      new THREE.Vector3(0, 0.15, r * 1.2), // cross over front again
-      new THREE.Vector3(r, 0.05, 0), // right
-      new THREE.Vector3(0, -0.05, -r), // back
-      new THREE.Vector3(-r, -0.1, 0), // left
-      
-      new THREE.Vector3(-r * 1.5, -0.1, 0), // exit
-    ];
-    return new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.5);
-  }, []);
-
-  // Fabric Rope Materials (Standard material with a spiraling twisted fiber texture map + bump mapping)
-  const yellowRopeMaterial = <meshStandardMaterial color="#facc15" roughness={1} map={ropeColorTexture || undefined} bumpMap={ropeColorTexture || undefined} bumpScale={0.02} />;
-  const silverRopeMaterial = <meshStandardMaterial color="#e5e7eb" roughness={1} map={ropeColorTexture || undefined} bumpMap={ropeColorTexture || undefined} bumpScale={0.02} />;
-
-  const yellowKnotMaterial = <meshStandardMaterial color="#facc15" roughness={1} map={knotColorTexture || undefined} bumpMap={knotColorTexture || undefined} bumpScale={0.02} />;
-  const silverKnotMaterial = <meshStandardMaterial color="#e5e7eb" roughness={1} map={knotColorTexture || undefined} bumpMap={knotColorTexture || undefined} bumpScale={0.02} />;
-
-  // Rope End Materials (DoubleSide so it caps perfectly regardless of curve tangent direction)
-  const yellowRopeEndMaterial = <meshStandardMaterial color="#facc15" roughness={1} map={ropeEndTexture || undefined} bumpMap={ropeEndTexture || undefined} bumpScale={0.1} side={THREE.DoubleSide} />;
-  const silverRopeEndMaterial = <meshStandardMaterial color="#e5e7eb" roughness={1} map={ropeEndTexture || undefined} bumpMap={ropeEndTexture || undefined} bumpScale={0.1} side={THREE.DoubleSide} />;
-
-  // Rope Helper
-  const Rope = ({ 
-    position, 
-    barQuaternion, 
-    pullRotation, 
-    isYellow = false,
-    knotType = 'clove',
-    removeFirstTail = false,
-    hasCoil = false
-  }: { 
-    position: THREE.Vector3, 
-    barQuaternion: THREE.Quaternion, 
-    pullRotation: [number, number, number], 
-    isYellow?: boolean,
-    knotType?: 'clove' | 'wrap' | 'messy',
-    removeFirstTail?: boolean,
-    hasCoil?: boolean
-  }) => {
-    // We create a very long cylinder so it always stretches off-screen
-    const ropeLength = 20;
-    
-    let activeKnotCurve = knotCurve;
-    if (knotType === 'wrap') activeKnotCurve = simpleWrapCurve;
-    if (knotType === 'messy') activeKnotCurve = messyKnotCurve;
-    if (removeFirstTail && knotType === 'clove') activeKnotCurve = cloveNoTailCurve;
-
-    return (
-      <group position={position}>
-        {/* The realistic 3D woven knot around the carabiner bar */}
-        <group quaternion={barQuaternion}>
-          <mesh>
-            <tubeGeometry args={[activeKnotCurve, 64, 0.08, 16, false]} />
-            {isYellow ? yellowKnotMaterial : silverKnotMaterial}
-          </mesh>
-          {/* Flat circular cross-section caps showing the frayed cut fibers of the rope */}
-          {!removeFirstTail && (
-            <mesh 
-              position={activeKnotCurve.getPoint(0)} 
-              quaternion={new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), activeKnotCurve.getTangent(0).normalize())}
-            >
-              <circleGeometry args={[0.08, 32]} />
-              {isYellow ? yellowRopeEndMaterial : silverRopeEndMaterial}
-            </mesh>
-          )}
-          <mesh 
-            position={activeKnotCurve.getPoint(1)} 
-            quaternion={new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), activeKnotCurve.getTangent(1).normalize())}
-          >
-            <circleGeometry args={[0.08, 32]} />
-            {isYellow ? yellowRopeEndMaterial : silverRopeEndMaterial}
-          </mesh>
-        </group>
-        
-        {/* The main rope stretching outward in its specific pull direction */}
-        {/* We position it by half its length so the origin is exactly at the tie-off point! */}
-        <group rotation={pullRotation}>
-          <mesh position={[0, ropeLength / 2, 0]}>
-            <cylinderGeometry args={[0.08, 0.08, ropeLength, 16]} />
-            {isYellow ? yellowRopeMaterial : silverRopeMaterial}
-          </mesh>
-          
-          {/* Optional coiled/tied section on the straight rope */}
-          {hasCoil && (
-            <group position={[0, 0.8, 0]}>
-              {/* Stacked toruses to simulate a tightly wrapped coil/knot around the rope */}
-              <mesh rotation={[Math.PI / 2 + 0.1, 0, 0]} position={[0, -0.05, 0]}>
-                <torusGeometry args={[0.12, 0.07, 16, 32]} />
-                {isYellow ? yellowKnotMaterial : silverKnotMaterial}
-              </mesh>
-              <mesh rotation={[Math.PI / 2 - 0.1, 0, 0]} position={[0, 0.05, 0]}>
-                <torusGeometry args={[0.12, 0.07, 16, 32]} />
-                {isYellow ? yellowKnotMaterial : silverKnotMaterial}
-              </mesh>
-              <mesh rotation={[Math.PI / 2.5, 0, Math.PI / 4]} position={[0, 0, 0]}>
-                <torusGeometry args={[0.13, 0.05, 16, 32]} />
-                {isYellow ? yellowKnotMaterial : silverKnotMaterial}
-              </mesh>
-            </group>
-          )}
-        </group>
-      </group>
-    );
-  };
 
   const getPointOnLine = (v1: THREE.Vector3, v2: THREE.Vector3, t: number) => v1.clone().lerp(v2, t);
 
