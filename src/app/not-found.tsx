@@ -5,11 +5,17 @@ import { Space_Grotesk } from "next/font/google";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://samyb.vercel.app'),
+  title: '404 - Not Found',
+};
+
 export default function RootNotFound() {
   return (
     <html lang="en">
       <head>
-        <title>404 - Not Found</title>
       </head>
       <body className={`${spaceGrotesk.className} text-black antialiased selection:bg-black selection:text-white bg-white`}>
         <section className="h-[100dvh] flex flex-col items-center justify-center px-6">

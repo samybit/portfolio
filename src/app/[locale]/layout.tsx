@@ -10,6 +10,14 @@ import GhostInTheMachine from "@/components/GhostInTheMachine";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
+import type { Viewport } from "next";
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://samyb.vercel.app'),
   title: "Samy | Full-Stack Developer",
@@ -22,17 +30,30 @@ export const metadata: Metadata = {
       'ar': '/ar',
     },
   },
+  icons: {
+    icon: '/icon.png',
+    apple: '/apple-icon.png',
+  },
   openGraph: {
     title: "Samy | Full-Stack Developer",
     description: "Building brutal, effective web applications.",
     type: "website",
     url: 'https://samyb.vercel.app',
     siteName: 'Samy | Developer Portfolio',
+    images: [
+      {
+        url: '/opengraph-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Samy | Developer Portfolio',
+      }
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: "Samy | Full-Stack Developer",
     description: "Building brutal, effective web applications.",
+    images: ['/twitter-image.png'],
   },
   robots: {
     index: true,
