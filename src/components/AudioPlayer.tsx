@@ -38,19 +38,32 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      // Prevent memory leaks and Zombie AudioContexts when navigating away
+      if (audioCtxRef.current && audioCtxRef.current.state !== "closed") {
+        audioCtxRef.current.close().catch(console.error);
+        audioCtxRef.current = null;
+      }
+    };
+  }, []);
+
   const drawVisualizer = () => {
     if (!analyserRef.current || !canvasRef.current) return;
     
-    animationRef.current = requestAnimationFrame(drawVisualizer);
-    
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
+    
     // Retina-sharp and dynamic resizing
     const dpr = window.devicePixelRatio || 1;
     const cssWidth = canvas.clientWidth;
     const cssHeight = canvas.clientHeight;
+    
+    if (cssWidth === 0 || cssHeight === 0) return; // Prevent negative math errors if hidden
+
+    animationRef.current = requestAnimationFrame(drawVisualizer);
+    
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
     
     if (canvas.width !== Math.floor(cssWidth * dpr) || canvas.height !== Math.floor(cssHeight * dpr)) {
       canvas.width = Math.floor(cssWidth * dpr);
