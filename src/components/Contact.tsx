@@ -19,7 +19,7 @@ export default function Contact({ dict }: { dict: any }) {
   const isNameFilled = values.name.trim().length > 0;
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email);
   const isEmailFilled = values.email.trim().length > 0;
-  const isMessageValid = values.message.trim().length > 0;
+  const isMessageValid = values.message.trim().length >= 13;
 
   // Show live red error if the user has typed something in email but it's not valid yet, OR if the form was submitted with errors
   const showEmailError = !!errors.email || (isEmailFilled && !isEmailValid);
@@ -32,7 +32,7 @@ export default function Contact({ dict }: { dict: any }) {
     if (errors[name as keyof typeof errors]) {
       let isValid = false;
       if (name === "email") isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-      if (name === "message") isValid = value.trim().length > 0;
+      if (name === "message") isValid = value.trim().length >= 13;
 
       if (isValid) {
         setErrors(prev => ({ ...prev, [name]: undefined }));

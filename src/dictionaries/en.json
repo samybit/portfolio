@@ -123,7 +123,7 @@
     "btnSending": "Sending...",
     "btnSend": "Send Message",
     "errEmail": "VALID EMAIL IS REQUIRED.",
-    "errMessage": "MESSAGE IS REQUIRED.",
+    "errMessage": "MESSAGE MUST BE AT LEAST 13 CHARACTERS.",
     "errSend": "FAILED TO SEND. PLEASE TRY AGAIN.",
     "success": "Message Received. I'll be in touch."
   },

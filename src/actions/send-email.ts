@@ -14,6 +14,9 @@ export async function sendEmail(formData: FormData) {
   if (!email || !message) {
     return { error: "Email and message are required." };
   }
+  if (message.length < 13) {
+    return { error: "Message must be at least 13 characters." };
+  }
 
   try {
     await resend.emails.send({
