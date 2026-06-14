@@ -10,6 +10,7 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [showHint, setShowHint] = useState(true);
+  const [bossUI, setBossUI] = useState<{ title: string; subtitle: string } | null>(null);
 
   const playerRef = useRef({ x: 50, y: 90, width: 6, height: 6, speed: 1.5, lastShoot: 0 });
   const enemiesRef = useRef<{ x: number; y: number; width: number; height: number; speed: number; type: string; offset: number; hp: number }[]>([]);
@@ -17,10 +18,12 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
   const scoreRef = useRef(0);
   const animationRef = useRef<number>(null);
   const keysRef = useRef<{ [key: string]: boolean }>({});
+  const bossIntroRef = useRef<{ endTime: number; active: boolean }>({ endTime: 0, active: false });
+  const shownBossesRef = useRef({ zigzag: false, homing: false });
 
   const t = {
-    en: { score: "Score", high: "High", start: "Play Survival", over: "System Failure", reboot: "Reboot", hint: "Left/Right: Move | Up: Shoot" },
-    ar: { score: "النقاط", high: "أعلى", start: "إلعب البقاء", over: "فشل النظام", reboot: "إعادة التشغيل", hint: "يمين/يسار: حركة | لأعلى: إطلاق" }
+    en: { score: "Score", high: "High", start: "Play Survival", over: "System Failure", reboot: "Reboot", hint: "Left/Right: Move | Up: Shoot", bossZigzag: "ANOMALY: ZIGZAG", bossZigzagSub: "EVADE UNPREDICTABLE PATHS", bossHoming: "ANOMALY: HUNTER", bossHomingSub: "IT KNOWS WHERE YOU ARE" },
+    ar: { score: "النقاط", high: "أعلى", start: "إلعب البقاء", over: "فشل النظام", reboot: "إعادة التشغيل", hint: "يمين/يسار: حركة | لأعلى: إطلاق", bossZigzag: "تهديد: مسار متعرج", bossZigzagSub: "تفادى المسارات العشوائية", bossHoming: "تهديد: صياد", bossHomingSub: "إنه يعرف مكانك" }
   }[locale];
 
   useEffect(() => {
@@ -39,6 +42,9 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
     enemiesRef.current = [];
     bulletsRef.current = [];
     keysRef.current = {};
+    setBossUI(null);
+    bossIntroRef.current = { endTime: 0, active: false };
+    shownBossesRef.current = { zigzag: false, homing: false };
     if (canvasRef.current) {
       canvasRef.current.focus();
     }
@@ -85,8 +91,20 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
     let spawnTimer = 0;
 
     const update = (time: number) => {
-      const deltaTime = Math.min(time - lastTime, 50); // cap delta time
+      let deltaTime = Math.min(time - lastTime, 50); // cap delta time
       lastTime = time;
+
+      // Time Dilation Boss Intro Logic
+      if (bossIntroRef.current.active) {
+        if (time < bossIntroRef.current.endTime) {
+          // Pause all game logic and physics
+          animationRef.current = requestAnimationFrame(update);
+          return;
+        } else {
+          bossIntroRef.current.active = false;
+          setBossUI(null); // Clear UI
+        }
+      }
 
       // Update Player
       const p = playerRef.current;
@@ -151,10 +169,20 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
         if (scoreRef.current > 50 && typeRoll > 0.6) {
            type = 'zigzag';
            hp = 2;
+           if (!shownBossesRef.current.zigzag) {
+             shownBossesRef.current.zigzag = true;
+             bossIntroRef.current = { endTime: time + 3000, active: true };
+             setBossUI({ title: t.bossZigzag, subtitle: t.bossZigzagSub });
+           }
         }
         if (scoreRef.current > 150 && typeRoll > 0.85) {
            type = 'homing';
            hp = 3;
+           if (!shownBossesRef.current.homing) {
+             shownBossesRef.current.homing = true;
+             bossIntroRef.current = { endTime: time + 3000, active: true };
+             setBossUI({ title: t.bossHoming, subtitle: t.bossHomingSub });
+           }
         }
 
         enemiesRef.current.push({
@@ -303,6 +331,17 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
           className="w-full h-full cursor-none touch-none opacity-80"
           tabIndex={0}
         />
+        
+        {bossUI && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-md z-20 animate-fade-in pointer-events-none">
+            <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter drop-shadow-[6px_6px_0px_#ff0000] skew-x-[10deg] animate-pulse">
+              {bossUI.title}
+            </h2>
+            <p className="mt-6 text-xl md:text-2xl font-black text-black bg-white px-4 py-2 uppercase tracking-widest skew-x-[-5deg] shadow-[4px_4px_0px_0px_#000000]">
+              {bossUI.subtitle}
+            </p>
+          </div>
+        )}
         
         {isPlaying && showHint && (
           <div className="absolute bottom-4 left-0 w-full text-center text-xs md:text-sm font-black text-zinc-500 uppercase opacity-50 pointer-events-none tracking-widest animate-fade-in transition-opacity duration-500">
