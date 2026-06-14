@@ -349,25 +349,25 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
                 href="https://my-portfolio-seven-beta-98.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`px-6 py-4 flex items-center justify-center gap-3 text-xl font-black uppercase transition-all duration-300 group ${
+                className={`px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-xl font-black uppercase whitespace-nowrap transition-all duration-300 group ${
                   isNeumorphic
                     ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                     : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
                 }`}
               >
-                {dict?.v1 || "Version 1.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                {dict?.v1 || "Version 1.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform w-5 h-5 sm:w-6 sm:h-6" />
               </a>
               <a
                 href="https://samybit.github.io/brutalist-portfolio/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`px-6 py-4 flex items-center justify-center gap-3 text-xl font-black uppercase transition-all duration-300 group ${
+                className={`px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-xl font-black uppercase whitespace-nowrap transition-all duration-300 group ${
                   isNeumorphic
                     ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                     : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
                 }`}
               >
-                {dict?.v2 || "Version 2.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                {dict?.v2 || "Version 2.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform w-5 h-5 sm:w-6 sm:h-6" />
               </a>
             </div>
           </div>

@@ -547,7 +547,7 @@ export default function CTA({ dict }: { dict: any }) {
             <div className="h-2 w-8 sm:w-16 md:w-24 bg-black shrink-0"></div>
 
             {/* Attribution */}
-            <span className="text-sm sm:text-base md:text-lg font-bold tracking-widest uppercase text-zinc-600 whitespace-nowrap pe-1">
+            <span className="text-[10px] sm:text-sm md:text-lg font-bold tracking-widest uppercase text-zinc-600 whitespace-nowrap pe-1">
               {dict?.attribution || "[ Alice in Wonderland / Lewis Carroll ]"}
             </span>
           </motion.div>
