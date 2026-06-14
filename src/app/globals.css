@@ -145,36 +145,84 @@
   will-change: transform;
 }
 
-/* Contact Form Fly Out Animation */
+/* Contact Form Fly Out Animation (Crash Edition) */
 @keyframes flyOut {
     0% {
-        transform: translate(0, 0) scale(1);
+        transform: translate(0, 0) rotate(0deg) scale(1);
         opacity: 1;
     }
+    45% {
+        /* Impact point */
+        transform: translate(120px, -80px) rotate(-45deg) scale(1);
+        opacity: 1;
+    }
+    55% {
+        /* SQUASH against the wall */
+        transform: translate(125px, -80px) rotate(-45deg) scaleX(0.2) scaleY(1.4);
+        opacity: 1;
+    }
+    75% {
+        /* Bounce back and tumble */
+        transform: translate(90px, -40px) rotate(-120deg) scale(0.8);
+        opacity: 0.8;
+    }
     100% {
-        transform: translate(150px, -150px) rotate(-45deg) scale(0.5);
+        /* Fall down and disappear */
+        transform: translate(80px, 40px) rotate(-180deg) scale(0);
         opacity: 0;
     }
 }
 
 .animate-fly-out {
-    animation: flyOut 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+    /* Using linear/ease-in for the flight so the crash feels abrupt */
+    animation: flyOut 0.6s linear forwards;
     pointer-events: none;
 }
 
 html[dir="rtl"] .animate-fly-out {
-    animation: flyOutRtl 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+    animation: flyOutRtl 0.6s linear forwards;
     pointer-events: none;
 }
 
 @keyframes flyOutRtl {
     0% {
-        transform: translate(0, 0) scaleX(-1) scale(1);
+        transform: translate(0, 0) scaleX(-1) rotate(0deg) scale(1);
         opacity: 1;
     }
+    45% {
+        transform: translate(-120px, -80px) scaleX(-1) rotate(-45deg) scale(1);
+        opacity: 1;
+    }
+    55% {
+        transform: translate(-125px, -80px) scaleX(-1) rotate(-45deg) scaleX(0.2) scaleY(1.4);
+        opacity: 1;
+    }
+    75% {
+        transform: translate(-90px, -40px) scaleX(-1) rotate(-120deg) scale(0.8);
+        opacity: 0.8;
+    }
     100% {
-        transform: translate(-150px, -150px) scaleX(-1) rotate(-45deg) scale(0.5);
+        transform: translate(-80px, 40px) scaleX(-1) rotate(-180deg) scale(0);
         opacity: 0;
+    }
+}
+
+/* Mobile Responsive Crash Trajectory */
+@media (max-width: 768px) {
+    @keyframes flyOut {
+        0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+        45% { transform: translate(60px, -40px) rotate(-45deg) scale(1); opacity: 1; }
+        55% { transform: translate(65px, -40px) rotate(-45deg) scaleX(0.2) scaleY(1.4); opacity: 1; }
+        75% { transform: translate(40px, -20px) rotate(-120deg) scale(0.8); opacity: 0.8; }
+        100% { transform: translate(30px, 20px) rotate(-180deg) scale(0); opacity: 0; }
+    }
+
+    @keyframes flyOutRtl {
+        0% { transform: translate(0, 0) scaleX(-1) rotate(0deg) scale(1); opacity: 1; }
+        45% { transform: translate(-60px, -40px) scaleX(-1) rotate(-45deg) scale(1); opacity: 1; }
+        55% { transform: translate(-65px, -40px) scaleX(-1) rotate(-45deg) scaleX(0.2) scaleY(1.4); opacity: 1; }
+        75% { transform: translate(-40px, -20px) scaleX(-1) rotate(-120deg) scale(0.8); opacity: 0.8; }
+        100% { transform: translate(-30px, 20px) scaleX(-1) rotate(-180deg) scale(0); opacity: 0; }
     }
 }
 
