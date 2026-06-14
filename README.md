@@ -17,6 +17,8 @@ The source code for my personal web development portfolio. Designed with a modul
 ## Key Features
 
 - **Multi-Theme Architecture:** A dynamic theme engine featuring strict Default Brutalism, frosted-glass Neumorphism, and the vibrant Ember (Warm Charcoal & Fiery Orange) styles.
+- **Interactive Easter Eggs:** A custom 404 error page featuring two fully playable HTML5 canvas mini-games.
+- **Custom Audio Player:** A music player integrated natively into the UI.
 - **Optimized 3D Integration:** Interactive WebGL components with custom hardware killswitches (0% GPU usage when scrolled out of view).
 - **Magnetic Scroll Physics:** Custom, debounced scroll listeners for fluid, perfectly aligned full-screen section transitions without layout thrashing.
 - **Parallax Inversion Effect:** A seamless, single-DOM scroll mask that elegantly inverts layout colors and typography using backdrop filters.
