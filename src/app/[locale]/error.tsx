@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { AlertOctagon, RefreshCw, Home } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useNeumorphicTheme } from '@/hooks/useNeumorphicTheme';
 
 const translations = {
   en: {
@@ -29,7 +30,7 @@ export default function Error({
   error: Error & { digest?: string };
   unstable_retry: () => void;
 }) {
-  const [isNeumorphic, setIsNeumorphic] = useState(false);
+  const isNeumorphic = useNeumorphicTheme();
   const pathname = usePathname();
   const locale = pathname.split('/')[1] === 'ar' ? 'ar' : 'en';
   const t = translations[locale];
@@ -37,9 +38,6 @@ export default function Error({
   useEffect(() => {
     // Log the error to console
     console.error(error);
-    
-    // Detect theme class on HTML element
-    setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
   }, [error]);
 
   return (

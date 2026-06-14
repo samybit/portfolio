@@ -7,10 +7,11 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import AudioPlayer from "@/components/AudioPlayer";
 import DecryptText from "@/components/DecryptText";
 import MedievalCorner from "@/components/MedievalCorner";
+import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
 export default function AboutClient({ dict, tabTitles, locale }: { dict: any, tabTitles: any, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [isNeumorphic, setIsNeumorphic] = useState(false);
+  const isNeumorphic = useNeumorphicTheme();
 
   // --- FRAMER MOTION CLIP-PATH SETUP ---
   const { scrollY } = useScroll();
@@ -40,15 +41,6 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
-
-    // Detect and observe theme class on HTML element
-    setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
-    const observer = new MutationObserver(() => {
-      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-
-    return () => observer.disconnect();
   }, [tabTitles]);
 
   useEffect(() => {

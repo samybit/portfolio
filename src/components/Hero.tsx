@@ -2,23 +2,15 @@
 
 import { ArrowDownRight, Download } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import SproutingFlowers from "@/components/SproutingFlowers";
 import GlitchText from "@/components/GlitchText";
 import HeroCarabiner3D from "@/components/HeroCarabiner3D";
+import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
 export default function Hero({ dict }: { dict: any }) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isNeumorphic, setIsNeumorphic] = useState(false);
-
-  useEffect(() => {
-    setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
-    const observer = new MutationObserver(() => {
-      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
+  const isNeumorphic = useNeumorphicTheme();
 
   return (
     // Added 'relative' to contain the absolute background

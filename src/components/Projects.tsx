@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { playTick } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";
+import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
 // Custom inline SVG for Github
 const GithubIcon = ({ size = 20 }: { size?: number }) => (
@@ -156,22 +157,12 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
 export default function Projects({ dict }: { dict: any }) {
   const [page, setPage] = useState(0);
   const [showAllMobile, setShowAllMobile] = useState(false);
-  const [isNeumorphic, setIsNeumorphic] = useState(false);
+  const isNeumorphic = useNeumorphicTheme();
   const [mobileScrollProgress, setMobileScrollProgress] = useState(0);
   const isDraggingSlider = useRef(false);
   const mobileSwipeRef = useRef<HTMLDivElement>(null);
 
   const projects = dict?.list || [];
-
-  useEffect(() => {
-    setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
-    const observer = new MutationObserver(() => {
-      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-
-    return () => observer.disconnect();
-  }, []);
 
   const itemsPerPage = 4;
   const totalPages = Math.ceil(projects.length / itemsPerPage) || 1;

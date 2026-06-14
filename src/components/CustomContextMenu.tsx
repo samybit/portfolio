@@ -32,7 +32,9 @@ export default function CustomContextMenu({ dict }: { dict?: any }) {
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    setCurrentLocale(window.location.pathname.split('/')[1] || "en");
+    requestAnimationFrame(() => {
+      setCurrentLocale(window.location.pathname.split('/')[1] || "en");
+    });
 
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();

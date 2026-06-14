@@ -5,23 +5,14 @@ import { useState, useRef, useEffect } from "react";
 import { sendEmail } from "@/actions/send-email";
 import { playPowerUp } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";
+import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
 export default function Contact({ dict }: { dict: any }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errors, setErrors] = useState<{ email?: string; message?: string }>({});
   const [values, setValues] = useState({ name: "", email: "", message: "" });
-  const [isNeumorphic, setIsNeumorphic] = useState(false);
+  const isNeumorphic = useNeumorphicTheme();
   const [isFlying, setIsFlying] = useState(false);
-
-  useEffect(() => {
-    setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
-    const observer = new MutationObserver(() => {
-      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-
-    return () => observer.disconnect();
-  }, []);
 
   const isSubmitting = useRef(false);
 
