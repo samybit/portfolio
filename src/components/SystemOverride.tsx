@@ -5,15 +5,11 @@ import { playMechanicalClick } from "@/utils/audio";
 
 export default function SystemOverride() {
   const [isActive, setIsActive] = useState(false);
+  const [startPos, setStartPos] = useState({ x: 0, y: 0 });
   const cursorRef = useRef<HTMLDivElement>(null);
-
-  // We track the mouse position even before the click so the circle spawns exactly on target
-  const mousePos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      mousePos.current = { x: e.clientX, y: e.clientY };
-
       // If active, update the physical DOM element instantly for zero-lag tracking
       if (cursorRef.current) {
         // -16px offsets it so the dead-center of the 32x32 SVG is exactly on your pointer
@@ -23,6 +19,7 @@ export default function SystemOverride() {
 
     const handleMouseDown = (e: MouseEvent) => {
       if (e.button === 1) { // Middle click
+        setStartPos({ x: e.clientX, y: e.clientY });
         document.documentElement.classList.add("system-override");
         setIsActive(true);
         // PLAY SNAP (true = press down)
@@ -59,7 +56,7 @@ export default function SystemOverride() {
           // z-[9999] forces it to render above literally everything on the site
           className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999]"
           style={{
-            transform: `translate(${mousePos.current.x - 16}px, ${mousePos.current.y - 16}px)`,
+            transform: `translate(${startPos.x - 16}px, ${startPos.y - 16}px)`,
             willChange: "transform",
           }}
         >
