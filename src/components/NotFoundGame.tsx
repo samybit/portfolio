@@ -13,17 +13,18 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
   const [bossUI, setBossUI] = useState<{ title: string; subtitle: string } | null>(null);
 
   const playerRef = useRef({ x: 50, y: 90, width: 6, height: 6, speed: 1.5, lastShoot: 0 });
-  const enemiesRef = useRef<{ x: number; y: number; width: number; height: number; speed: number; type: string; offset: number; hp: number }[]>([]);
+  const enemiesRef = useRef<{ x: number; y: number; width: number; height: number; speed: number; type: string; offset: number; hp: number; baseWidth?: number; lastTeleport?: number }[]>([]);
   const bulletsRef = useRef<{ x: number; y: number; width: number; height: number; speed: number }[]>([]);
   const scoreRef = useRef(0);
   const animationRef = useRef<number>(null);
   const keysRef = useRef<{ [key: string]: boolean }>({});
+  const laserRef = useRef<{ active: boolean; endTime: number }>({ active: false, endTime: 0 });
   const bossIntroRef = useRef<{ endTime: number; active: boolean }>({ endTime: 0, active: false });
-  const shownBossesRef = useRef({ zigzag: false, homing: false });
+  const shownBossesRef = useRef({ zigzag: false, homing: false, phantom: false, juggernaut: false, pulsar: false });
 
   const t = {
-    en: { score: "Score", high: "High", start: "Play Survival", over: "System Failure", reboot: "Reboot", hint: "Left/Right: Move | Up: Shoot", bossZigzag: "ANOMALY: ZIGZAG", bossZigzagSub: "EVADE UNPREDICTABLE PATHS", bossHoming: "ANOMALY: HUNTER", bossHomingSub: "IT KNOWS WHERE YOU ARE" },
-    ar: { score: "النقاط", high: "أعلى", start: "إلعب البقاء", over: "فشل النظام", reboot: "إعادة التشغيل", hint: "يمين/يسار: حركة | لأعلى: إطلاق", bossZigzag: "تهديد: مسار متعرج", bossZigzagSub: "تفادى المسارات العشوائية", bossHoming: "تهديد: صياد", bossHomingSub: "إنه يعرف مكانك" }
+    en: { score: "Score", high: "High", start: "Play Survival", over: "System Failure", reboot: "Reboot", hint: "Left/Right: Move | Up: Shoot", bossZigzag: "ANOMALY: ZIGZAG", bossZigzagSub: "EVADE UNPREDICTABLE PATHS", bossHoming: "ANOMALY: HUNTER", bossHomingSub: "IT KNOWS WHERE YOU ARE", bossPhantom: "THREAT: PHANTOM", bossPhantomSub: "NOW YOU SEE ME", bossJuggernaut: "THREAT: JUGGERNAUT", bossJuggernautSub: "BRUTE FORCE DETECTED", bossPulsar: "THREAT: PULSAR", bossPulsarSub: "UNSTABLE GEOMETRY" },
+    ar: { score: "النقاط", high: "أعلى", start: "إلعب البقاء", over: "فشل النظام", reboot: "إعادة التشغيل", hint: "يمين/يسار: حركة | لأعلى: إطلاق", bossZigzag: "تهديد: مسار متعرج", bossZigzagSub: "تفادى المسارات العشوائية", bossHoming: "تهديد: صياد", bossHomingSub: "إنه يعرف مكانك", bossPhantom: "تهديد: شبح", bossPhantomSub: "الآن تراني", bossJuggernaut: "تهديد: طاحونة", bossJuggernautSub: "تم اكتشاف قوة غاشمة", bossPulsar: "تهديد: نابض", bossPulsarSub: "هندسة غير مستقرة" }
   }[locale];
 
   useEffect(() => {
@@ -44,7 +45,8 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
     keysRef.current = {};
     setBossUI(null);
     bossIntroRef.current = { endTime: 0, active: false };
-    shownBossesRef.current = { zigzag: false, homing: false };
+    laserRef.current = { active: false, endTime: 0 };
+    shownBossesRef.current = { zigzag: false, homing: false, phantom: false, juggernaut: false, pulsar: false };
     if (canvasRef.current) {
       canvasRef.current.focus();
     }
@@ -118,8 +120,20 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
       }
 
       // Shooting
-      if (keysRef.current['ArrowUp'] || keysRef.current['w'] || keysRef.current['W'] || keysRef.current[' ']) {
-        if (time - p.lastShoot > 200) { // 200ms fire rate
+      const isShooting = keysRef.current['ArrowUp'] || keysRef.current['w'] || keysRef.current['W'] || keysRef.current[' '];
+      
+      // Laser End Check
+      if (laserRef.current.active && time > laserRef.current.endTime) {
+        laserRef.current.active = false;
+        p.lastShoot = time; // reset cooldown
+      }
+
+      if (isShooting) {
+        if (!laserRef.current.active && time - p.lastShoot >= 2000) {
+          // Fire Laser!
+          laserRef.current = { active: true, endTime: time + 4000 };
+        } else if (!laserRef.current.active && time - p.lastShoot > 200) {
+          // Fire Normal Bullet
           bulletsRef.current.push({
             x: p.x + p.width / 2 - 0.5,
             y: p.y,
@@ -165,6 +179,12 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
         let type = 'normal';
         let hp = 1;
         
+        // Remove normal easy bricks if score > 300
+        if (scoreRef.current > 300) {
+           type = Math.random() > 0.5 ? 'zigzag' : 'homing';
+           hp = type === 'zigzag' ? 2 : 3;
+        }
+
         // Introduce tricky patterns as score goes up
         if (scoreRef.current > 50 && typeRoll > 0.6) {
            type = 'zigzag';
@@ -175,7 +195,7 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
              setBossUI({ title: t.bossZigzag, subtitle: t.bossZigzagSub });
            }
         }
-        if (scoreRef.current > 150 && typeRoll > 0.85) {
+        if (scoreRef.current > 150 && typeRoll > 0.8) {
            type = 'homing';
            hp = 3;
            if (!shownBossesRef.current.homing) {
@@ -184,16 +204,53 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
              setBossUI({ title: t.bossHoming, subtitle: t.bossHomingSub });
            }
         }
+        if (scoreRef.current > 200 && typeRoll > 0.9) {
+           type = 'phantom';
+           hp = 4;
+           if (!shownBossesRef.current.phantom) {
+             shownBossesRef.current.phantom = true;
+             bossIntroRef.current = { endTime: time + 3000, active: true };
+             setBossUI({ title: t.bossPhantom, subtitle: t.bossPhantomSub });
+           }
+        }
+        if (scoreRef.current > 250 && typeRoll > 0.95) {
+           type = 'juggernaut';
+           hp = 10;
+           if (!shownBossesRef.current.juggernaut) {
+             shownBossesRef.current.juggernaut = true;
+             bossIntroRef.current = { endTime: time + 3000, active: true };
+             setBossUI({ title: t.bossJuggernaut, subtitle: t.bossJuggernautSub });
+           }
+        }
+        if (scoreRef.current > 300 && typeRoll > 0.96) {
+           type = 'pulsar';
+           hp = 8;
+           if (!shownBossesRef.current.pulsar) {
+             shownBossesRef.current.pulsar = true;
+             bossIntroRef.current = { endTime: time + 3000, active: true };
+             setBossUI({ title: t.bossPulsar, subtitle: t.bossPulsarSub });
+           }
+        }
+
+        let width = type === 'normal' ? 5 + Math.random() * 10 : (type === 'homing' ? 8 : 6);
+        let height = type === 'normal' ? 5 + Math.random() * 5 : 6;
+        let enemySpeed = (1 + Math.random() * 1.5 + (scoreRef.current * 0.005)) * (deltaTime * 0.04);
+
+        if (type === 'phantom') { width = 6; height = 6; enemySpeed *= 0.8; }
+        if (type === 'juggernaut') { width = 45; height = 15; enemySpeed *= 0.3; }
+        if (type === 'pulsar') { width = 10; height = 8; enemySpeed *= 0.6; }
 
         enemiesRef.current.push({
-          x: Math.random() * (100 - 8),
-          y: -10,
-          width: type === 'normal' ? 5 + Math.random() * 10 : (type === 'homing' ? 8 : 6),
-          height: type === 'normal' ? 5 + Math.random() * 5 : 6,
-          speed: (1 + Math.random() * 1.5 + (scoreRef.current * 0.005)) * (deltaTime * 0.04),
+          x: Math.random() * (100 - width),
+          y: -15,
+          width,
+          height,
+          speed: enemySpeed,
           type,
           offset: Math.random() * Math.PI * 2,
-          hp
+          hp,
+          baseWidth: width,
+          lastTeleport: time
         });
         spawnTimer = 0;
       }
@@ -209,6 +266,29 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
         } else if (e.type === 'homing') {
           if (p.x + p.width/2 > e.x + e.width/2) e.x += 0.15;
           if (p.x + p.width/2 < e.x + e.width/2) e.x -= 0.15;
+        } else if (e.type === 'phantom') {
+          if (time - (e.lastTeleport || 0) > 800) {
+            e.x += (Math.random() > 0.5 ? 20 : -20);
+            e.lastTeleport = time;
+          }
+        } else if (e.type === 'pulsar') {
+          e.width = (e.baseWidth || 10) + Math.sin(time * 0.01 + e.offset) * 15;
+          if (e.width < 4) e.width = 4; // prevent collapsing completely
+        }
+
+        // Laser Collision Check
+        if (laserRef.current.active) {
+          const laserWidth = 4;
+          const laserX = p.x + p.width / 2 - laserWidth / 2;
+          // If enemy overlaps the X range of the laser
+          if (e.x < laserX + laserWidth && e.x + e.width > laserX && e.y < p.y) {
+            e.hp -= deltaTime * 0.01; // Continuous damage (10 HP per second)
+            if (e.hp <= 0) {
+              enemiesRef.current.splice(i, 1);
+              scoreRef.current += e.type === 'homing' ? 15 : (e.type === 'zigzag' ? 10 : 5);
+              continue; // Enemy destroyed, skip further logic for this enemy
+            }
+          }
         }
 
         // Keep in bounds
@@ -247,6 +327,19 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
       const isEmber = document.documentElement.classList.contains("theme-color");
       const isNeumorphic = document.documentElement.classList.contains("theme-neumorphic");
       
+      // Draw Laser or Charge Aura
+      if (laserRef.current.active) {
+        const laserWidth = 4;
+        ctx.fillStyle = isEmber ? "#FF4F00" : (isNeumorphic ? "#1e293b" : "#000000");
+        // Flicker effect
+        const flickerWidth = laserWidth + (Math.random() * 2 - 1);
+        ctx.fillRect((p.x + p.width / 2 - flickerWidth / 2) * scaleX, 0, flickerWidth * scaleX, p.y * scaleY);
+      } else if (time - p.lastShoot >= 2000) {
+        // Charging Aura
+        ctx.fillStyle = isEmber ? "rgba(255, 79, 0, 0.4)" : "rgba(0, 0, 0, 0.2)";
+        ctx.fillRect((p.x - 2) * scaleX, (p.y - 2) * scaleY, (p.width + 4) * scaleX, (p.height + 4) * scaleY);
+      }
+
       // Bullets
       ctx.fillStyle = isEmber ? "#ffb703" : "#3b82f6";
       bulletsRef.current.forEach(b => {
@@ -263,6 +356,12 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
           ctx.fillStyle = isEmber ? "#7f1d1d" : "#7f1d1d"; // Dark Red
         } else if (e.type === 'zigzag') {
           ctx.fillStyle = isEmber ? "#ea580c" : "#f97316"; // Orange
+        } else if (e.type === 'phantom') {
+          ctx.fillStyle = isEmber ? "#701a75" : "#9333ea"; // Purple
+        } else if (e.type === 'juggernaut') {
+          ctx.fillStyle = isEmber ? "#451a03" : "#374151"; // Dark Slate
+        } else if (e.type === 'pulsar') {
+          ctx.fillStyle = isEmber ? "#14532d" : "#06b6d4"; // Cyan/Green
         } else {
           ctx.fillStyle = isEmber ? "#000000" : (isNeumorphic ? "#ef4444" : "#ff0000"); // Standard Red/Black
         }
