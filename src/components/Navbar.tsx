@@ -1,6 +1,6 @@
 "use client";
 
-import { playClack, playTick } from "@/utils/audio";
+import { playClack, playTick, prewarmAudio } from "@/utils/audio";
 import { TerminalSquare, ArrowUpRight, Menu, X, Palette, Languages } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -44,7 +44,7 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
 
   useEffect(() => {
     if (!isHome) {
-      setActiveHash("");
+      requestAnimationFrame(() => setActiveHash(""));
       return;
     }
 
@@ -169,7 +169,7 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
 
   return (
     <nav ref={navRef} className={`animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
-      <div className="flex justify-between items-start w-full">
+      <div className="flex justify-between items-start w-full relative z-10">
 
         {/* --- Left Column: Logo & Tools (Total height exactly 64px / h-16) --- */}
         <div className="pointer-events-auto flex brutalist-shadow-static h-16">
@@ -184,6 +184,8 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
 
           <button
             onClick={cycleTheme}
+            onMouseEnter={prewarmAudio}
+            onTouchStart={prewarmAudio}
             aria-label="Cycle System Theme"
             title="Cycle Theme"
             className="bg-black text-white border-4 border-s-0 border-black px-3.5 flex items-center justify-center hover:bg-white hover:text-black transition-colors h-full"
@@ -193,6 +195,8 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
           
           <button
             onClick={toggleLanguage}
+            onMouseEnter={prewarmAudio}
+            onTouchStart={prewarmAudio}
             aria-label="Toggle Language"
             title="Toggle Language"
             className="bg-white text-black border-4 border-s-0 border-black px-3.5 flex items-center justify-center gap-1 hover:bg-black hover:text-white font-bold transition-colors h-full"
@@ -255,6 +259,8 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
         {/* Mobile Toggle Button */}
         <button
           onClick={toggleMobileMenu}
+          onMouseEnter={prewarmAudio}
+          onTouchStart={prewarmAudio}
           className="pointer-events-auto md:hidden bg-white border-4 border-black p-3 brutalist-shadow-static"
           aria-label="Toggle menu"
         >
@@ -264,7 +270,7 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
 
       {/* --- Mobile Menu Dropdown --- */}
       {isOpen && (
-        <div className="pointer-events-auto md:hidden w-full mt-4 bg-white border-4 border-black p-6 flex flex-col gap-2 brutalist-shadow-static">
+        <div className="pointer-events-auto md:hidden w-full mt-4 bg-white border-4 border-black p-6 flex flex-col gap-2 brutalist-shadow-static animate-expand-tr">
           <Link
             href={`/${currentLocale}/about`}
             onClick={handleAboutClick}

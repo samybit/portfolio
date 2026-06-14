@@ -133,6 +133,24 @@
   will-change: transform;
 }
 
+/* Dropdown Expand from Top Right (Hamburger Button) */
+@keyframes expandTR {
+  0% {
+    transform: scale(0.8) translateY(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-expand-tr {
+  transform-origin: top right !important;
+  animation: expandTR 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  will-change: transform, opacity;
+}
+
 /* Audio Player Marquee (Ping-Pong) */
 @keyframes slideX {
   0%, 15% { transform: translateX(0); }
