@@ -14,6 +14,14 @@ const initAudio = () => {
   return audioCtx;
 };
 
+export const prewarmAudio = () => {
+  try {
+    initAudio();
+  } catch (e) {
+    // silently fail
+  }
+};
+
 // --- 1. HEAVY THUD (Right-click) ---
 export const playThud = () => {
   try {

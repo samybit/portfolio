@@ -3,7 +3,7 @@
 import { Send, Check, ArrowUpRight, Loader2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { sendEmail } from "@/actions/send-email";
-import { playPowerUp } from "@/utils/audio";
+import { playPowerUp, prewarmAudio } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
@@ -214,6 +214,8 @@ export default function Contact({ dict }: { dict: any }) {
 
                 <button
                   type="submit"
+                  onMouseEnter={prewarmAudio}
+                  onTouchStart={prewarmAudio}
                   onClick={() => {
                     // Added gate to prevent audio from spamming on multiple clicks
                     if (status !== "loading" && !isSubmitting.current) playPowerUp();
