@@ -234,12 +234,12 @@ export default function Contact({ dict }: { dict: any }) {
 
                   <div className={`overflow-hidden flex items-center transition-all duration-300 ease-out ${status === "loading"
                     ? "w-6 md:w-8 ms-3 opacity-100"
-                    : "w-0 opacity-0 group-hover:w-6 md:group-hover:w-8 group-hover:ms-3 group-hover:opacity-100"
+                    : "w-0 opacity-0 group-hover:w-6 group-active:w-6 md:group-hover:w-8 group-hover:ms-2 group-active:ms-2 md:group-hover:ms-3 group-hover:opacity-100 group-active:opacity-100"
                     }`}>
                     {status === "loading" ? (
                       <Loader2 className="w-5 h-5 md:w-6 md:h-6 shrink-0 animate-spin" />
                     ) : (
-                      <Send className="w-5 h-5 md:w-6 md:h-6 shrink-0 rtl:translate-x-full -translate-x-full rtl:group-hover:-translate-x-0 group-hover:translate-x-0 transition-transform duration-300 ease-out rtl:-scale-x-100" />
+                      <Send className="w-5 h-5 md:w-6 md:h-6 shrink-0 rtl:translate-x-full -translate-x-full rtl:group-hover:-translate-x-0 group-hover:translate-x-0 rtl:group-active:-translate-x-0 group-active:translate-x-0 transition-transform duration-300 ease-out rtl:-scale-x-100" />
                     )}
                   </div>
                 </button>
