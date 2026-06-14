@@ -140,10 +140,31 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
 
     if (isHome) {
       e.preventDefault();
-      window.history.pushState(null, '', `/${currentLocale}`);
+      router.replace(`/${currentLocale}`, { scroll: false });
       setActiveHash("");
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  };
+
+  const handleHashClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+    if (isHome) {
+      e.preventDefault();
+      const element = document.getElementById(hash.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        router.replace(`/${currentLocale}${hash}`, { scroll: false });
+      }
+    }
+    setActiveHash(hash);
+    setIsOpen(false);
+  };
+
+  const handleAboutClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (pathname === `/${currentLocale}/about`) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    setIsOpen(false);
   };
 
   return (
@@ -186,6 +207,7 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
 
           <Link
             href={`/${currentLocale}/about`}
+            onClick={handleAboutClick}
             className={`relative group overflow-hidden isolate text-lg font-bold uppercase px-4 flex items-center border-2 transition-all ${pathname === `/${currentLocale}/about`
               ? 'bg-black text-white border-black'
               : 'border-transparent hover:border-black hover:bg-black hover:text-white'
@@ -197,7 +219,7 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
 
           <Link
             href={`/${currentLocale}#projects`}
-            onClick={() => setActiveHash('#projects')}
+            onClick={(e) => handleHashClick(e, '#projects')}
             className={`relative group overflow-hidden isolate text-lg font-bold uppercase px-4 flex items-center border-2 transition-all ${isHome && activeHash === '#projects'
               ? 'bg-black text-white border-black'
               : 'border-transparent hover:border-black hover:bg-black hover:text-white'
@@ -219,7 +241,7 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
 
           <Link
             href={`/${currentLocale}#contact`}
-            onClick={() => setActiveHash('#contact')}
+            onClick={(e) => handleHashClick(e, '#contact')}
             className={`relative group overflow-hidden isolate px-5 flex items-center text-lg font-bold uppercase border-2 transition-all ms-1 ${isHome && activeHash === '#contact'
               ? 'bg-white text-black border-black'
               : 'bg-black text-white border-black hover:bg-white hover:text-black'
@@ -245,7 +267,7 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
         <div className="pointer-events-auto md:hidden w-full mt-4 bg-white border-4 border-black p-6 flex flex-col gap-2 brutalist-shadow-static">
           <Link
             href={`/${currentLocale}/about`}
-            onClick={() => setIsOpen(false)}
+            onClick={handleAboutClick}
             className={`relative group overflow-hidden isolate text-3xl font-black uppercase p-4 border-b-4 border-black transition-colors ${pathname === `/${currentLocale}/about`
               ? 'bg-black text-white'
               : 'hover:bg-black hover:text-white'
@@ -257,10 +279,7 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
 
           <Link
             href={`/${currentLocale}#projects`}
-            onClick={() => {
-              setIsOpen(false);
-              setActiveHash('#projects');
-            }}
+            onClick={(e) => handleHashClick(e, '#projects')}
             className={`relative group overflow-hidden isolate text-3xl font-black uppercase p-4 border-b-4 border-black transition-colors ${isHome && activeHash === '#projects'
               ? 'bg-black text-white'
               : 'hover:bg-black hover:text-white'
@@ -282,10 +301,7 @@ export default function Navbar({ dict, currentLocale }: { dict: any, currentLoca
 
           <Link
             href={`/${currentLocale}#contact`}
-            onClick={() => {
-              setIsOpen(false);
-              setActiveHash('#contact');
-            }}
+            onClick={(e) => handleHashClick(e, '#contact')}
             className={`relative group overflow-hidden isolate mt-4 text-center p-5 text-3xl font-black uppercase border-4 border-black transition-colors ${isHome && activeHash === '#contact'
               ? 'bg-white text-black'
               : 'bg-black text-white hover:bg-white hover:text-black'
