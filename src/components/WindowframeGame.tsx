@@ -59,6 +59,23 @@ const LEVELS = [
       en: "Careful not to get crushed between the moving frame and static platforms.",
       ar: "احذر من الانسحاق بين الإطار المتحرك والمنصات الثابتة."
     }
+  },
+  {
+    // Level 5: The Labyrinth
+    start: { x: 50, y: 50 },
+    exit: { x: 700, y: 160, w: 40, h: 40 },
+    platforms: [
+      { x: 0, y: 150, w: 100, h: 20 },   // Start Ledge (Moved down so you aren't stuck at y=50 if jumping)
+      { x: 140, y: 0, w: 50, h: 400 },   // Wall 1 (Gap at 100 to 140, fall down)
+      { x: 270, y: 450, w: 50, h: 150 }, // Wall 2 (Pull floor up to cross)
+      { x: 400, y: 0, w: 50, h: 500 },   // Wall 3 (Drop floor to cross under)
+      { x: 600, y: 200, w: 100, h: 400 },// Wall 4 (Gap is 150px. Pull right wall left, wall jump up, recall)
+      { x: 700, y: 200, w: 100, h: 60 }, // Exit Ledge
+    ],
+    hint: {
+      en: "The Final Test: Combine everything. Pull walls, drop floors, and recall mid-air.",
+      ar: "الاختبار الأخير: اجمع كل شيء. اسحب الحوائط، أسقط الأرضيات واسترجع الأوتاد في الهواء."
+    }
   }
 ];
 
