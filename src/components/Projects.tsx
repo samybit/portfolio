@@ -157,6 +157,9 @@ export default function Projects({ dict }: { dict: any }) {
   const [page, setPage] = useState(0);
   const [showAllMobile, setShowAllMobile] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
+  const [mobileScrollProgress, setMobileScrollProgress] = useState(0);
+  const isDraggingSlider = useRef(false);
+  const mobileSwipeRef = useRef<HTMLDivElement>(null);
 
   const projects = dict?.list || [];
 
@@ -184,6 +187,23 @@ export default function Projects({ dict }: { dict: any }) {
   };
 
   const currentProjects = projects.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
+
+  const handleMobileScroll = () => {
+    if (!mobileSwipeRef.current || isDraggingSlider.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = mobileSwipeRef.current;
+    if (scrollWidth <= clientWidth) return;
+    const progress = (scrollLeft / (scrollWidth - clientWidth)) * 100;
+    setMobileScrollProgress(progress);
+  };
+
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const progress = parseFloat(e.target.value);
+    setMobileScrollProgress(progress);
+    if (!mobileSwipeRef.current) return;
+    const { scrollWidth, clientWidth } = mobileSwipeRef.current;
+    const maxScroll = scrollWidth - clientWidth;
+    mobileSwipeRef.current.scrollLeft = (progress / 100) * maxScroll;
+  };
 
   // --- MOBILE SCROLL HOVER EFFECTS ---
   useEffect(() => {
@@ -351,17 +371,44 @@ export default function Projects({ dict }: { dict: any }) {
           ))}
         </div>
       ) : (
-        <div
-          aria-hidden="true"
-          className="flex lg:hidden overflow-x-auto gap-4 pt-5 pb-6 snap-x snap-mandatory -mx-6 px-6 flex-1 min-h-[320px] hide-scrollbar"
-          style={{ WebkitOverflowScrolling: 'touch' }}
-        >
-          {projects.map((project: Project, index: number) => (
-            <div key={`mobile-swipe-${index}`} className="w-[85vw] sm:w-[60vw] shrink-0 snap-center h-full">
-              <ProjectCard project={project} dict={dict} animate={false} disableObserver={true} isNeumorphic={isNeumorphic} asHeading={false} />
-            </div>
-          ))}
-          <div className="w-[1px] shrink-0"></div>
+        <div className="flex flex-col lg:hidden flex-1 w-full relative">
+          <div
+            aria-hidden="true"
+            ref={mobileSwipeRef}
+            onScroll={handleMobileScroll}
+            className="flex overflow-x-auto gap-4 pt-5 pb-6 snap-x snap-mandatory -mx-6 px-6 w-[calc(100%+3rem)] min-h-[320px] hide-scrollbar"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {projects.map((project: Project, index: number) => (
+              <div key={`mobile-swipe-${index}`} className="w-[85vw] sm:w-[60vw] shrink-0 snap-center h-full">
+                <ProjectCard project={project} dict={dict} animate={false} disableObserver={true} isNeumorphic={isNeumorphic} asHeading={false} />
+              </div>
+            ))}
+            <div className="w-[1px] shrink-0"></div>
+          </div>
+          
+          {/* Brutalist Mobile Slider */}
+          <div className="mt-2 w-full flex items-center justify-center px-4 max-w-[85vw] mx-auto">
+            <input 
+              type="range" 
+              min="0" 
+              max="100" 
+              step="any"
+              value={mobileScrollProgress}
+              onChange={handleSliderChange}
+              onPointerDown={() => isDraggingSlider.current = true}
+              onPointerUp={() => isDraggingSlider.current = false}
+              onTouchStart={() => isDraggingSlider.current = true}
+              onTouchEnd={() => isDraggingSlider.current = false}
+              className={`w-full appearance-none h-3 border-2 border-black outline-none transition-all duration-300
+                [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-8 [&::-webkit-slider-thumb]:h-8 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:transition-transform
+                ${isNeumorphic 
+                  ? "bg-[#e0e5ec] shadow-[inset_2px_2px_4px_rgba(163,177,198,0.5),_inset_-2px_-2px_4px_rgba(255,255,255,0.7)] [&::-webkit-slider-thumb]:bg-[#e0e5ec] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)] [&::-webkit-slider-thumb]:border-none" 
+                  : "bg-white [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:rounded-none [&::-webkit-slider-thumb]:shadow-[4px_4px_0px_#000]"
+                }
+              `}
+            />
+          </div>
         </div>
       )}
 
