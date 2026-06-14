@@ -20,13 +20,23 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
   const analyserRef = useRef<AnalyserNode | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const animationRef = useRef<number | null>(null);
+  const peaksRef = useRef<number[]>([]);
+  const visualizerTypeRef = useRef(0);
 
   const initAudio = () => {
     if (!audioCtxRef.current && audioRef.current) {
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
       audioCtxRef.current = new AudioContext();
       analyserRef.current = audioCtxRef.current.createAnalyser();
-      analyserRef.current.fftSize = 64; 
+      
+      switch(visualizerTypeRef.current) {
+        case 0: analyserRef.current.fftSize = 64; analyserRef.current.smoothingTimeConstant = 0.8; break;
+        case 1: analyserRef.current.fftSize = 128; analyserRef.current.smoothingTimeConstant = 0.85; break;
+        case 2: analyserRef.current.fftSize = 256; analyserRef.current.smoothingTimeConstant = 0.5; break;
+        case 3: analyserRef.current.fftSize = 256; analyserRef.current.smoothingTimeConstant = 0.7; break;
+      }
+      analyserRef.current.minDecibels = -90; // High dynamic range for pro audio
+      analyserRef.current.maxDecibels = -10;
 
       try {
         sourceRef.current = audioCtxRef.current.createMediaElementSource(audioRef.current);
@@ -94,25 +104,137 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
       ctx.fillStyle = "black";
     }
     
-    const barCount = 14; 
-    const gap = 4 * dpr;
-    const w = (canvas.width - (barCount - 1) * gap) / barCount;
-    
-    for (let i = 0; i < barCount; i++) {
-      const dataIndex = Math.floor(i * (bufferLength / 2.5) / barCount);
-      const value = dataArray[dataIndex] || 0;
-      const barHeight = Math.max(2 * dpr, Math.floor((value / 255) * canvas.height));
-      
-      const x = i * (w + gap);
-      
-      if (isNeumorphic && ctx.roundRect) {
+    switch (visualizerTypeRef.current) {
+      case 0: {
+        // Blocky
+        const barCount = 14; 
+        const gap = 4 * dpr;
+        const w = (canvas.width - (barCount - 1) * gap) / barCount;
+        
+        for (let i = 0; i < barCount; i++) {
+          const dataIndex = Math.floor(i * (bufferLength / 2.5) / barCount);
+          const value = dataArray[dataIndex] || 0;
+          const barHeight = Math.max(2 * dpr, Math.floor((value / 255) * canvas.height));
+          
+          const x = i * (w + gap);
+          
+          if (isNeumorphic && ctx.roundRect) {
+            ctx.beginPath();
+            const radius = Math.min(w / 2, barHeight);
+            ctx.roundRect(x, canvas.height - barHeight, w, barHeight, [radius, radius, 0, 0]);
+            ctx.fill();
+          } else {
+            ctx.fillRect(x, canvas.height - barHeight, w, barHeight);
+          }
+        }
+        break;
+      }
+      case 1: {
+        // Fluid Waveform
+        const pointsCount = 40; 
+        const sliceWidth = canvas.width / (pointsCount - 1);
+        
         ctx.beginPath();
-        const radius = Math.min(w / 2, barHeight);
-        ctx.roundRect(x, canvas.height - barHeight, w, barHeight, [radius, radius, 0, 0]);
+        ctx.moveTo(0, canvas.height);
+        
+        const points = [];
+        for (let i = 0; i < pointsCount; i++) {
+          const value = dataArray[i] || 0;
+          const h = (value / 255) * canvas.height * 0.9;
+          points.push({ x: i * sliceWidth, y: canvas.height - h });
+        }
+
+        ctx.lineTo(points[0].x, points[0].y);
+
+        for (let i = 0; i < pointsCount - 1; i++) {
+          const midX = (points[i].x + points[i + 1].x) / 2;
+          const midY = (points[i].y + points[i + 1].y) / 2;
+          ctx.quadraticCurveTo(points[i].x, points[i].y, midX, midY);
+        }
+        
+        ctx.lineTo(points[pointsCount - 1].x, points[pointsCount - 1].y);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.closePath();
         ctx.fill();
-      } else {
-        // Brutalist / Ember / Fallback
-        ctx.fillRect(x, canvas.height - barHeight, w, barHeight);
+        break;
+      }
+      case 2: {
+        // Mirrored Spectrum
+        const barCount = 80; 
+        const gap = Math.max(1, 1 * dpr);
+        const w = (canvas.width - (barCount - 1) * gap) / barCount;
+        
+        for (let i = 0; i < barCount; i++) {
+          const dataIndex = Math.floor(i * (100 / barCount));
+          const value = dataArray[dataIndex] || 0;
+          
+          const normalized = value / 255;
+          const h = Math.max(2 * dpr, normalized * canvas.height * 0.95);
+          
+          const y = (canvas.height - h) / 2;
+          const x = i * (w + gap);
+          
+          if (isNeumorphic && ctx.roundRect) {
+            ctx.beginPath();
+            const radius = Math.min(w / 2, h / 2);
+            ctx.roundRect(x, y, w, h, [radius]);
+            ctx.fill();
+          } else {
+            ctx.fillRect(x, y, w, h);
+          }
+        }
+        break;
+      }
+      case 3: {
+        // Peak Hold Analyzer
+        const barCount = 42; 
+        const gap = 2 * dpr;
+        const w = (canvas.width - (barCount - 1) * gap) / barCount;
+        
+        if (peaksRef.current.length !== barCount) {
+          peaksRef.current = new Array(barCount).fill(0);
+        }
+        
+        const maxBarHeight = canvas.height - (4 * dpr);
+        
+        for (let i = 0; i < barCount; i++) {
+          const dataIndex = Math.floor(i * (100 / barCount));
+          const value = dataArray[dataIndex] || 0;
+          
+          const normalized = value / 255;
+          const h = Math.max(2 * dpr, normalized * maxBarHeight);
+          
+          let peak = peaksRef.current[i];
+          if (normalized >= peak) {
+            peak = normalized; 
+          } else {
+            peak -= 0.008; 
+            if (peak < normalized) peak = normalized;
+          }
+          peaksRef.current[i] = peak;
+
+          const x = i * (w + gap);
+          const y = canvas.height - h;
+          
+          if (isNeumorphic && ctx.roundRect) {
+            ctx.beginPath();
+            const radius = Math.min(w / 2, h);
+            ctx.roundRect(x, y, w, h, [radius, radius, 0, 0]);
+            ctx.fill();
+          } else {
+            ctx.fillRect(x, y, w, h);
+          }
+          
+          const peakY = canvas.height - (peak * maxBarHeight);
+          if (isNeumorphic && ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(x, peakY - (3 * dpr), w, 2 * dpr, [1 * dpr]);
+            ctx.fill();
+          } else {
+            ctx.fillRect(x, peakY - (3 * dpr), w, 2 * dpr);
+          }
+        }
+        break;
       }
     }
   };
@@ -143,6 +265,19 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
 
       if (isPlaying) {
         audioRef.current.pause();
+        
+        // Easter Egg: Cycle visualizer style on pause!
+        visualizerTypeRef.current = (visualizerTypeRef.current + 1) % 4;
+        
+        // Update hardware analyser ballistics for the new style immediately
+        if (analyserRef.current) {
+          switch(visualizerTypeRef.current) {
+            case 0: analyserRef.current.fftSize = 64; analyserRef.current.smoothingTimeConstant = 0.8; break;
+            case 1: analyserRef.current.fftSize = 128; analyserRef.current.smoothingTimeConstant = 0.85; break;
+            case 2: analyserRef.current.fftSize = 256; analyserRef.current.smoothingTimeConstant = 0.5; break;
+            case 3: analyserRef.current.fftSize = 256; analyserRef.current.smoothingTimeConstant = 0.7; break;
+          }
+        }
       } else {
         audioRef.current.play();
       }
