@@ -30,9 +30,9 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
       
       // Hide if scrolling down and past 80px, show if scrolling up
       if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
-        setIsVisible(false);
+        setIsVisible(prev => prev ? false : prev);
       } else if (currentScrollY < lastScrollY.current) {
-        setIsVisible(true);
+        setIsVisible(prev => !prev ? true : prev);
       }
       
       lastScrollY.current = currentScrollY;
