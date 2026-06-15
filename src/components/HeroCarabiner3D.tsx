@@ -241,7 +241,7 @@ const Rope = ({
   isYellow = false,
   knotType = 'clove',
   removeFirstTail = false,
-  hasCoil = false
+  // hasCoil = false
 }: { 
   position: THREE.Vector3, 
   barQuaternion: THREE.Quaternion, 
@@ -249,7 +249,7 @@ const Rope = ({
   isYellow?: boolean,
   knotType?: 'clove' | 'wrap' | 'messy',
   removeFirstTail?: boolean,
-  hasCoil?: boolean
+  // hasCoil?: boolean
 }) => {
   const ropeColorTexture = getRopeColorTexture();
   const knotColorTexture = getKnotColorTexture();
@@ -369,7 +369,7 @@ const Rope = ({
           {isYellow ? yellowRopeMaterial : silverRopeMaterial}
         </mesh>
         
-        {hasCoil && (
+        {/* {hasCoil && (
           <group position={[0, 0.8, 0]}>
             <mesh rotation={[Math.PI / 2 + 0.1, 0, 0]} position={[0, -0.05, 0]}>
               <torusGeometry args={[0.12, 0.07, 16, 32]} />
@@ -384,7 +384,7 @@ const Rope = ({
               {isYellow ? yellowKnotMaterial : silverKnotMaterial}
             </mesh>
           </group>
-        )}
+        )} */}
       </group>
     </group>
   );
@@ -578,15 +578,15 @@ function CarabinerModel() {
         {/* Because these are inside the group, they automatically pivot when the carabiner rotates! */}
         
         {/* Right Side Ropes */}
-        <Rope position={getPointOnLine(p1, p2, 0.26)} barQuaternion={side1.quaternion} pullRotation={[0, 0, -Math.PI / 3.5]} isYellow knotType="clove" hasCoil />
+        <Rope position={getPointOnLine(p1, p2, 0.26)} barQuaternion={side1.quaternion} pullRotation={[0, 0, -Math.PI / 3.5]} isYellow knotType="clove" />
         <Rope position={getPointOnLine(p1, p2, 0.8)} barQuaternion={side1.quaternion} pullRotation={[0, 0, -Math.PI / 1.7]} knotType="messy" />
 
         {/* Bottom Side Ropes */}
-        <Rope position={getPointOnLine(p2, p3, 0.2)} barQuaternion={side2.quaternion} pullRotation={[0, 0, -Math.PI * 0.85]} isYellow knotType="wrap" hasCoil />
+        <Rope position={getPointOnLine(p2, p3, 0.2)} barQuaternion={side2.quaternion} pullRotation={[0, 0, -Math.PI * 0.85]} isYellow knotType="wrap" />
         <Rope position={getPointOnLine(p2, p3, 0.75)} barQuaternion={side2.quaternion} pullRotation={[0, 0, Math.PI * 0.85]} knotType="clove" removeFirstTail />
 
         {/* Left Side Ropes */}
-        <Rope position={getPointOnLine(p3, p1, 0.35)} barQuaternion={side3.quaternion} pullRotation={[0, 0, Math.PI / 1.8]} knotType="messy" hasCoil />
+        <Rope position={getPointOnLine(p3, p1, 0.35)} barQuaternion={side3.quaternion} pullRotation={[0, 0, Math.PI / 1.8]} knotType="messy" />
         <Rope position={getPointOnLine(p3, p1, 0.8)} barQuaternion={side3.quaternion} pullRotation={[0, 0, Math.PI / 3.5]} isYellow knotType="wrap" />
 
       </group>
