@@ -356,7 +356,7 @@ export default function Projects({ dict }: { dict: any }) {
 
       {/* --- MOBILE VIEW --- */}
       {showAllMobile ? (
-        <div aria-hidden="true" className="flex lg:hidden flex-col gap-6 pb-8 flex-1">
+        <div className="flex lg:hidden flex-col gap-6 pb-8 flex-1">
           {projects.map((project: Project, index: number) => (
             <div key={`mobile-list-${index}`} className="w-full">
               <ProjectCard project={project} dict={dict} animate={true} isNeumorphic={isNeumorphic} asHeading={false} />
@@ -366,7 +366,6 @@ export default function Projects({ dict }: { dict: any }) {
       ) : (
         <div className="flex flex-col lg:hidden flex-1 w-full relative">
           <div
-            aria-hidden="true"
             ref={mobileSwipeRef}
             onScroll={handleMobileScroll}
             className="flex overflow-x-auto gap-4 pt-5 pb-6 snap-x snap-mandatory -mx-6 px-6 w-[calc(100%+3rem)] min-h-[320px] hide-scrollbar"
@@ -383,6 +382,7 @@ export default function Projects({ dict }: { dict: any }) {
           {/* Brutalist Mobile Slider */}
           <div className="mt-2 w-full flex items-center justify-center px-4 max-w-[85vw] mx-auto">
             <input 
+              aria-label={dict?.swipeHint || "Scroll projects"}
               type="range" 
               min="0" 
               max="100" 
