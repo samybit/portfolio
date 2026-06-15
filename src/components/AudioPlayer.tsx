@@ -347,8 +347,8 @@ export default function AudioPlayer({ dict }: { dict?: Record<string, string> })
             style={{ animationDuration: '3s' }}
           />
           <div className="flex flex-col items-start text-start w-full min-w-0 justify-center pt-1">
-            <div className="flex items-center justify-between w-full pr-1">
-              <div className="w-[110px] overflow-hidden">
+            <div className="flex items-center justify-between w-full pe-1">
+              <div className="w-[110px] overflow-hidden" dir="ltr">
                 <span 
                   ref={titleRef}
                   className={`inline-block text-sm font-black uppercase tracking-widest leading-tight mb-0.5 whitespace-nowrap ${(isTitleLong && isPlaying) ? 'animate-slide-x' : ''} ${mallory.className}`}
@@ -356,7 +356,7 @@ export default function AudioPlayer({ dict }: { dict?: Record<string, string> })
                   {tracks[currentTrackIndex].title}
                 </span>
               </div>
-              <div className="flex items-center gap-1.5 shrink-0 ml-2">
+              <div className="flex items-center gap-1.5 shrink-0 ms-2">
                 <button onClick={prevTrack} className="hover:opacity-50 transition-opacity cursor-pointer" aria-label="Previous Track">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21l-12-18h24z"/></svg>
                 </button>
