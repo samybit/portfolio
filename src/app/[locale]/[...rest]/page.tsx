@@ -1,8 +1,14 @@
-import NotFound from "../not-found";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: '404 - Page Not Found',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function CatchAllPage() {
-  // Directly rendering the NotFound component bypasses the Next.js notFound() exception router.
-  // This completely eliminates the React 19 Turbopack Profiler "negative timestamp" crash
-  // while guaranteeing the user sees the beautifully styled, localized 404 page!
-  return <NotFound />;
+  notFound();
 }

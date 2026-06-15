@@ -8,8 +8,11 @@ const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://samyb.vercel.app'),
   title: '404 - Not Found',
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootNotFound() {

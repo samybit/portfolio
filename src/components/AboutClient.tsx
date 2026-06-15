@@ -33,15 +33,13 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
     setToastMessage(message);
   };
 
-  // Enforce the tab title on mount and fix the refresh scroll-creep
+  // Fix the refresh scroll-creep
   useEffect(() => {
-    document.title = tabTitles?.about || "About | Samy Barsoum";
-
     // Tell the browser to turn off its automatic scroll memory
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
-  }, [tabTitles]);
+  }, []);
 
   useEffect(() => {
     if (toastMessage) {

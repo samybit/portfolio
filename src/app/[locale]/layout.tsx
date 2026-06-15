@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
@@ -6,11 +6,10 @@ import Footer from "@/components/Footer";
 import SystemOverride from "@/components/SystemOverride";
 import CustomContextMenu from "@/components/CustomContextMenu";
 import GhostInTheMachine from "@/components/GhostInTheMachine";
-
+import { notFound } from "next/navigation";
+import { getDictionary, Locale } from "@/dictionaries/getDictionary";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
-
-import type { Viewport } from "next";
 
 export const viewport: Viewport = {
   themeColor: "#000000",
@@ -18,51 +17,63 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://samyb.vercel.app'),
-  title: "Samy | Full-Stack Developer",
-  description: "Full-Stack Developer specializing. Available for freelance, remote work, or full-time roles.",
-  keywords: ["Full-Stack Developer", "Next.js", "React", "MERN", "TypeScript", "Web Development"],
-  alternates: {
-    canonical: '/',
-    languages: {
-      'en': '/en',
-      'ar': '/ar',
-    },
-  },
-  icons: {
-    icon: '/icon.png',
-    apple: '/apple-icon.png',
-  },
-  openGraph: {
-    title: "Samy | Full-Stack Developer",
-    description: "Building brutal, effective web applications.",
-    type: "website",
-    url: 'https://samyb.vercel.app',
-    siteName: 'Samy | Developer Portfolio',
-    images: [
-      {
-        url: '/opengraph-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Samy | Developer Portfolio',
-      }
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: "Samy | Full-Stack Developer",
-    description: "Building brutal, effective web applications.",
-    images: ['/twitter-image.png'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-  }
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const isArabic = locale === 'ar';
 
-import { notFound } from "next/navigation";
-import { getDictionary, Locale } from "@/dictionaries/getDictionary";
+  return {
+    title: {
+      template: isArabic ? '%s | سامي برسوم' : '%s | Samy Barsoum',
+      default: isArabic ? 'سامي | مطور Full-Stack' : 'Samy | Full-Stack Developer',
+    },
+    description: isArabic
+      ? 'مطور Full-Stack متخصص في Next.js و React و MERN Stack. مقيم في مصر. متاح للعمل الحر أو العمل عن بعد أو الوظائف بدوام كامل.'
+      : 'Full-Stack Developer specializing in Next.js, React, and the MERN stack. Based in Egypt. Available for freelance, remote work, or full-time roles.',
+    keywords: isArabic
+      ? ['مطور Full-Stack', 'Next.js', 'React', 'MERN', 'TypeScript', 'تطوير ويب']
+      : ['Full-Stack Developer', 'Next.js', 'React', 'MERN', 'TypeScript', 'Web Development'],
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        'en': '/en',
+        'ar': '/ar',
+      },
+    },
+    openGraph: {
+      title: isArabic ? 'سامي | مطور Full-Stack' : 'Samy | Full-Stack Developer',
+      description: isArabic
+        ? 'بناء تطبيقات ويب قوية وفعالة.'
+        : 'Building brutal, effective web applications.',
+      type: 'website',
+      url: `https://samyb.vercel.app/${locale}`,
+      siteName: isArabic ? 'سامي | معرض أعمال المطور' : 'Samy | Developer Portfolio',
+      locale: isArabic ? 'ar_EG' : 'en_US',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: isArabic ? 'سامي | مطور Full-Stack' : 'Samy | Full-Stack Developer',
+      description: isArabic
+        ? 'بناء تطبيقات ويب قوية وفعالة.'
+        : 'Building brutal, effective web applications.',
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+        'max-video-preview': -1,
+      },
+    },
+    manifest: '/manifest.json',
+  };
+}
 
 export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'ar' }];

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-export default function TabTitleUpdater({ dict }: { dict: any }) {
+export default function TabTitleUpdater({ dict }: { dict: Record<string, string> }) {
   useEffect(() => {
     // Set up the radar (Intersection Observer)
     const observer = new IntersectionObserver(
