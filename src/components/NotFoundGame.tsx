@@ -31,7 +31,9 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("404_highscore");
-    if (saved) setHighScore(parseInt(saved));
+    if (saved) {
+      setTimeout(() => setHighScore(parseInt(saved)), 0);
+    }
   }, []);
 
   const startGame = () => {
@@ -97,7 +99,7 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
     let spawnTimer = 0;
 
     const update = (time: number) => {
-      let deltaTime = Math.min(time - lastTime, 50); // cap delta time
+      const deltaTime = Math.min(time - lastTime, 50); // cap delta time
       lastTime = time;
 
       // Time Dilation Boss Intro Logic

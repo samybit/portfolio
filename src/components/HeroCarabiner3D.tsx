@@ -596,7 +596,7 @@ export default function HeroCarabiner3D() {
   const [shouldRenderWebGL, setShouldRenderWebGL] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    setTimeout(() => setMounted(true), 0);
     // Delay WebGL initialization so CSS animations get absolute priority and run at 60FPS
     const timer = setTimeout(() => {
       setShouldRenderWebGL(true);
