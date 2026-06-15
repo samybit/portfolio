@@ -28,6 +28,9 @@ export async function generateMetadata({
         ? 'تعرف على سامي برسوم — مطور Full-Stack متخصص في MERN Stack.'
         : 'Learn about Samy Barsoum — a Full-Stack Developer specializing in the MERN stack.',
       url: `https://samyb.vercel.app/${locale}/about`,
+      type: 'website',
+      siteName: isArabic ? 'سامي | معرض أعمال المطور' : 'Samy | Developer Portfolio',
+      locale: isArabic ? 'ar_EG' : 'en_US',
     },
   };
 }
