@@ -23,7 +23,7 @@ const GithubIcon = ({ size = 16 }: { size?: number }) => (
   </svg>
 );
 
-export default function CustomContextMenu({ dict }: { dict?: any }) {
+export default function CustomContextMenu({ dict }: { dict?: Record<string, string> }) {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [currentLocale, setCurrentLocale] = useState("en");

@@ -9,7 +9,7 @@ import DecryptText from "@/components/DecryptText";
 import MedievalCorner from "@/components/MedievalCorner";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
-export default function AboutClient({ dict, tabTitles, locale }: { dict: any, tabTitles: any, locale: string }) {
+export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<string, string>, tabTitles: Record<string, string>, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const isNeumorphic = useNeumorphicTheme();
 

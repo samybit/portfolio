@@ -421,7 +421,7 @@ function WireframeMonolith({ isCanvasInView }: { isCanvasInView: boolean }) {
   );
 }
 
-export default function CTA({ dict }: { dict: any }) {
+export default function CTA({ dict }: { dict: Record<string, string> }) {
   const [isEmber, setIsEmber] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
 

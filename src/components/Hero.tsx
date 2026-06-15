@@ -8,7 +8,7 @@ import GlitchText from "@/components/GlitchText";
 import HeroCarabiner3D from "@/components/HeroCarabiner3D";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
-export default function Hero({ dict }: { dict: any }) {
+export default function Hero({ dict }: { dict: Record<string, string> }) {
   const [isHovered, setIsHovered] = useState(false);
   const isNeumorphic = useNeumorphicTheme();
 

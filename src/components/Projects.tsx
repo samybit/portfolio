@@ -36,6 +36,7 @@ interface Project {
 
 interface ProjectCardProps {
   project: Project;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dict: any;
   animate?: boolean;
   disableObserver?: boolean;
@@ -154,6 +155,7 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function Projects({ dict }: { dict: any }) {
   const [page, setPage] = useState(0);
   const [showAllMobile, setShowAllMobile] = useState(false);

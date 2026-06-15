@@ -7,7 +7,7 @@ import { playPowerUp, prewarmAudio } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
-export default function Contact({ dict }: { dict: any }) {
+export default function Contact({ dict }: { dict: Record<string, string> }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errors, setErrors] = useState<{ email?: string; message?: string }>({});
   const [values, setValues] = useState({ name: "", email: "", message: "" });

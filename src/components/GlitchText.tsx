@@ -24,7 +24,7 @@ export default function GlitchText({ text }: { text: string }) {
 
 function HoverChar({ char }: { char: string }) {
   const [color, setColor] = useState<string | undefined>(undefined);
-  const timeoutRef = useRef<any>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) {

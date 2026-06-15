@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 
 const Footer3D = dynamic(() => import("@/components/Footer3D"), { ssr: false });
 
-export default function Footer({ dict }: { dict: any }) {
+export default function Footer({ dict }: { dict: Record<string, string> }) {
   // 1. Hardware Observer: Tracks if the footer is anywhere near the viewport
   const footerRef = useRef<HTMLElement>(null);
   // The margin ensures it wakes up slightly before the user actually sees it

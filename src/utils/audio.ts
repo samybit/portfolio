@@ -6,7 +6,7 @@ const initAudio = () => {
   // Browsers require a user interaction before allowing audio. 
   // Since these are triggered by clicks, this will always succeed.
   if (!audioCtx) {
-    audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    audioCtx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof window.AudioContext }).webkitAudioContext)();
   }
   if (audioCtx.state === 'suspended') {
     audioCtx.resume();

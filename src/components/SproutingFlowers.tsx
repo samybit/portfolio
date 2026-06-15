@@ -10,7 +10,7 @@ export default function SproutingFlowers({ isHovered }: { isHovered: boolean }) 
   const [isNeumorphic, setIsNeumorphic] = useState(false);
   const [isEmber, setIsEmber] = useState(false);
   const id = useId().replace(/:/g, "");
-  const particlesContainer = useRef<any>(null);
+  const particlesContainer = useRef<unknown>(null);
 
   useEffect(() => {
     // Track if the Neumorphic or Ember theme is active
@@ -38,21 +38,21 @@ export default function SproutingFlowers({ isHovered }: { isHovered: boolean }) 
   useEffect(() => {
     if (particlesContainer.current) {
       if (isHovered) {
-        particlesContainer.current.play();
+        (particlesContainer.current as { play: () => void }).play();
       } else {
         // Delay pausing slightly to allow the fade-out animation to complete smoothly
         const timeout = setTimeout(() => {
-          particlesContainer.current?.pause();
+          (particlesContainer.current as { pause: () => void })?.pause();
         }, 500);
         return () => clearTimeout(timeout);
       }
     }
   }, [isHovered]);
 
-  const particlesLoaded = async (container: any) => {
+  const particlesLoaded = async (container: unknown) => {
     particlesContainer.current = container;
     if (!isHovered) {
-      container.pause();
+      (container as { pause: () => void }).pause();
     }
   };
 

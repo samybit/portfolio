@@ -14,7 +14,7 @@ const tracks = [
   { title: "Eternal Flame", opus: "/track2.opus", mp3: "/track2.mp3" }
 ];
 
-export default function AudioPlayer({ dict }: { dict?: any }) {
+export default function AudioPlayer({ dict }: { dict?: Record<string, string> }) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const titleRef = useRef<HTMLSpanElement>(null);
@@ -57,7 +57,7 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
 
   const initAudio = () => {
     if (!audioCtxRef.current && audioRef.current) {
-      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      const AudioContext = window.AudioContext || (window as unknown as { webkitAudioContext: typeof window.AudioContext }).webkitAudioContext;
       audioCtxRef.current = new AudioContext();
       analyserRef.current = audioCtxRef.current.createAnalyser();
       

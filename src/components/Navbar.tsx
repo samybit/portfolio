@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Smoke from "@/components/Smoke";
 
-export default function Navbar({ dict, currentLocale }: { dict: any, currentLocale: string }) {
+export default function Navbar({ dict, currentLocale }: { dict: Record<string, string>, currentLocale: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
