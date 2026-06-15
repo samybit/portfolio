@@ -9,17 +9,26 @@ const mallory = localFont({
   display: "swap",
 });
 
+const tracks = [
+  { title: "med!cine", opus: "/track.opus", mp3: "/track.mp3" },
+  { title: "Eternal Flame", opus: "/track2.opus", mp3: "/track2.mp3" }
+];
+
 export default function AudioPlayer({ dict }: { dict?: any }) {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const titleRef = useRef<HTMLSpanElement>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
+  const animationRef = useRef<number | null>(null);
+  const peaksRef = useRef<number[]>([]);
+  const visualizerTypeRef = useRef(0);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  
-  const tracks = [
-    { title: "med!cine", opus: "/track.opus", mp3: "/track.mp3" },
-    { title: "Eternal Flame", opus: "/track2.opus", mp3: "/track2.mp3" }
-  ];
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isTitleLong, setIsTitleLong] = useState(false);
-  const titleRef = useRef<HTMLSpanElement>(null);
 
   const switchTrack = (index: number) => {
     setCurrentTrackIndex(index);
@@ -43,17 +52,8 @@ export default function AudioPlayer({ dict }: { dict?: any }) {
       // The container is 110px. If the text's natural width is bigger, it's too long.
       setIsTitleLong(titleRef.current.scrollWidth > 110);
     }
-  }, [currentTrackIndex, tracks]);
+  }, [currentTrackIndex]);
 
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
-  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
-  const animationRef = useRef<number | null>(null);
-  const peaksRef = useRef<number[]>([]);
-  const visualizerTypeRef = useRef(0);
 
   const initAudio = () => {
     if (!audioCtxRef.current && audioRef.current) {

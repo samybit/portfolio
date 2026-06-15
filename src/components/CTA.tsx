@@ -52,7 +52,7 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
     };
   }, [boxMat]);
 
-  const dropsData = useMemo(() => {
+  const [dropsData] = useState(() => {
     return Array.from({ length: 25 }, () => ({
       offsetX: (Math.random() - 0.5) * 1.5,
       offsetY: (Math.random() - 0.5) * 1.5,
@@ -61,7 +61,7 @@ function SystemLeak({ isCanvasInView }: { isCanvasInView: boolean }) {
       rotSpeedX: Math.random() * 0.05,
       rotSpeedY: Math.random() * 0.05,
     }));
-  }, []);
+  });
 
   useEffect(() => {
     if (!isCanvasInView) return;
@@ -525,7 +525,7 @@ export default function CTA({ dict }: { dict: any }) {
         {/* LEFT SIDE: The Quote */}
         <div className="flex-1 flex flex-col relative w-full">
           <div className="absolute -top-8 -left-2 md:-top-16 md:-left-8 text-black font-black text-[10rem] md:text-[18rem] leading-none opacity-5 pointer-events-none select-none rtl:-left-auto rtl:-right-2 rtl:md:-right-8">
-            "
+            &quot;
           </div>
           <motion.blockquote
             initial={{ opacity: 0, y: 20 }}
@@ -533,7 +533,7 @@ export default function CTA({ dict }: { dict: any }) {
             viewport={{ once: true }}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-7xl font-black uppercase tracking-tighter leading-none relative z-10 bg-white/70 backdrop-blur-sm p-4 -ms-4 quote-backdrop"
           >
-            "{dict?.quote || "It's no use going back to yesterday, because I was a different person then."}"
+            &quot;{dict?.quote || "It's no use going back to yesterday, because I was a different person then."}&quot;
           </motion.blockquote>
 
           <motion.div

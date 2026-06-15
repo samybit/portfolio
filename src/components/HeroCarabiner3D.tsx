@@ -437,9 +437,13 @@ function CarabinerModel() {
   const R = 2.5; // Radius of the triangle
   const thickness = 0.3; // Tube thickness
   
-  const p1 = new THREE.Vector3(0, R, 0); // Top
-  const p2 = new THREE.Vector3(R * Math.cos(-Math.PI / 6), R * Math.sin(-Math.PI / 6), 0); // Bottom Right
-  const p3 = new THREE.Vector3(-R * Math.cos(-Math.PI / 6), R * Math.sin(-Math.PI / 6), 0); // Bottom Left
+  const { p1, p2, p3 } = useMemo(() => {
+    return {
+      p1: new THREE.Vector3(0, R, 0), // Top
+      p2: new THREE.Vector3(R * Math.cos(-Math.PI / 6), R * Math.sin(-Math.PI / 6), 0), // Bottom Right
+      p3: new THREE.Vector3(-R * Math.cos(-Math.PI / 6), R * Math.sin(-Math.PI / 6), 0), // Bottom Left
+    };
+  }, [R]);
 
   // Helper to calculate cylinder position and rotation between two points
   const getCylinderProps = (v1: THREE.Vector3, v2: THREE.Vector3) => {
@@ -489,7 +493,7 @@ function CarabinerModel() {
     path.add(new THREE.LineCurve3(p2Out, bottomMidpoint));
 
     return path;
-  }, []);
+  }, [p1, p2, p3]);
 
   const scratchedTexture = getScratchedTexture();
   const ropeColorTexture = getRopeColorTexture();

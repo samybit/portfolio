@@ -153,7 +153,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
                       <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none whitespace-nowrap">ITI (MCIT)</p>
                       {/* Brutalist Year Tag */}
                       <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none whitespace-nowrap">
-                        // 2026
+                        {"// 2026"}
                       </span>
                     </div>
                   </div>
@@ -177,7 +177,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
                     <div className="flex items-center gap-3 mt-1">
                       <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none whitespace-nowrap">edX (Harvard)</p>
                       <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none whitespace-nowrap">
-                        // 2025
+                        {"// 2025"}
                       </span>
                     </div>
                   </div>
@@ -202,7 +202,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: any, ta
                     <div className="flex items-center gap-3 mt-1">
                       <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none whitespace-nowrap">Egypt FWD (MCIT)</p>
                       <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none whitespace-nowrap">
-                        // 2021
+                        {"// 2021"}
                       </span>
                     </div>
                   </div>
