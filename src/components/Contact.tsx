@@ -10,6 +10,7 @@ import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 export default function Contact({ dict }: { dict: Record<string, string> }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errors, setErrors] = useState<{ email?: string; message?: string }>({});
+  const [touched, setTouched] = useState<{ email?: boolean; message?: boolean }>({});
   const [values, setValues] = useState({ name: "", email: "", message: "" });
   const isNeumorphic = useNeumorphicTheme();
   const [isFlying, setIsFlying] = useState(false);
@@ -18,26 +19,41 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
 
   const isNameFilled = values.name.trim().length > 0;
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email);
-  const isEmailFilled = values.email.trim().length > 0;
   const isMessageValid = values.message.trim().length >= 13;
 
-  // Show live red error if the user has typed something in email but it's not valid yet, OR if the form was submitted with errors
-  const showEmailError = !!errors.email || (isEmailFilled && !isEmailValid);
+  const showEmailError = !!errors.email;
   const showMessageError = !!errors.message;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setValues(prev => ({ ...prev, [name]: value }));
 
-    if (errors[name as keyof typeof errors]) {
+    if (touched[name as keyof typeof touched]) {
       let isValid = false;
       if (name === "email") isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
       if (name === "message") isValid = value.trim().length >= 13;
 
-      if (isValid) {
-        setErrors(prev => ({ ...prev, [name]: undefined }));
-      }
+      setErrors(prev => ({
+        ...prev,
+        [name]: isValid ? undefined : (name === "email" ? (dict?.errEmail || "VALID EMAIL IS REQUIRED.") : (dict?.errMessage || "MESSAGE IS REQUIRED."))
+      }));
     }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    if (name !== "email" && name !== "message") return;
+
+    setTouched(prev => ({ ...prev, [name]: true }));
+
+    let isValid = false;
+    if (name === "email") isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    if (name === "message") isValid = value.trim().length >= 13;
+
+    setErrors(prev => ({
+      ...prev,
+      [name]: isValid ? undefined : (name === "email" ? (dict?.errEmail || "VALID EMAIL IS REQUIRED.") : (dict?.errMessage || "MESSAGE IS REQUIRED."))
+    }));
   };
 
   // Replaced clientAction with a synchronous DOM event handler
@@ -55,6 +71,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      setTouched({ email: true, message: true });
       isSubmitting.current = false; // Unlock the gate so they can fix their errors
       return;
     }
@@ -172,6 +189,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                     name="email"
                     value={values.email}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     className={`${getInputStyle(isEmailValid, showEmailError)} text-left`}
                     placeholder={dict?.emailPlaceholder || "...@example.com"}
                     aria-invalid={showEmailError ? "true" : "false"}
@@ -198,6 +216,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                     rows={3}
                     value={values.message}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     className={getInputStyle(isMessageValid, showMessageError)}
                     placeholder={dict?.messagePlaceholder || "Describe your project, an open role, or how we can collaborate..."}
                     aria-invalid={showMessageError ? "true" : "false"}
