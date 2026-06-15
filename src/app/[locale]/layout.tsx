@@ -71,7 +71,6 @@ export async function generateMetadata({
         'max-video-preview': -1,
       },
     },
-    manifest: '/manifest.json',
   };
 }
 
