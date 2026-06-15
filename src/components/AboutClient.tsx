@@ -126,7 +126,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
           </section>
 
           <section className="brutalist-container flex flex-col">
-            <div className={`flex items-center gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
+            <div className={`flex items-center gap-4 border-b-4 pb-3 mb-4 transition-all duration-300 ${
               isNeumorphic ? "border-[#a3b1c6]" : "border-black"
             }`}>
               <Award size={40} />
@@ -140,7 +140,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
                   e.preventDefault();
                   showToast(dict?.notOnline || "MERN Stack certificate is not online yet.");
                 }}
-                className={`group block border-s-8 ps-4 py-2 transition-all cursor-pointer ${
+                className={`group block border-s-8 ps-4 py-1.5 transition-all cursor-pointer ${
                   isNeumorphic
                     ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
                     : "border-black hover:bg-black hover:text-white"
@@ -165,7 +165,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
                 href="https://cs50.harvard.edu/certificates/09d4b4ad-f9dd-4cf3-a1dc-7385742119f9"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group block border-s-8 ps-4 py-2 transition-all cursor-pointer ${
+                className={`group block border-s-8 ps-4 py-1.5 transition-all cursor-pointer ${
                   isNeumorphic
                     ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
                     : "border-black hover:bg-black hover:text-white"
@@ -190,7 +190,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
                 href="https://i.ibb.co/ynPJ6szk/FWD-data-Certificate.png"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group block border-s-8 ps-4 py-2 transition-all cursor-pointer ${
+                className={`group block border-s-8 ps-4 py-1.5 transition-all cursor-pointer ${
                   isNeumorphic
                     ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
                     : "border-black hover:bg-black hover:text-white"
@@ -246,7 +246,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
         </motion.div>
 
         {/* LAYER 1: THE SINGLE-SOURCE CONTENT (Normal text) */}
-        <div className="relative z-10 px-6 md:px-12 lg:px-24 pt-28 md:pt-26 pb-6">
+        <div className="relative z-10 px-6 md:px-12 lg:px-24 pt-36 md:pt-30 pb-6">
           {topContent}
         </div>
 

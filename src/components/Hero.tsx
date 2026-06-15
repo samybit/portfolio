@@ -36,7 +36,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
           {/* --- DESKTOP DESCRIPTION (Hidden on mobile) --- */}
           <p className="hidden md:block text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ms-2 hero-subtitle-backdrop mb-6" dangerouslySetInnerHTML={{ __html: dict?.description || "Full-Stack Developer. <br /> MERN Stack Specialist. <br /> Based in Egypt. <br /> Building fast, and effective apps." }} />
 
-          <h1 className="text-[18vw] sm:text-7xl md:text-9xl lg:text-[8rem] xl:text-[10rem] font-black uppercase tracking-tighter leading-[0.85]">
+          <h1 className="text-[18vw] sm:text-6xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem] font-black uppercase tracking-tighter leading-[0.85]">
             {/* --- WRAP 'SAMY' IN A TRIGGER SPAN --- */}
             <span
               className="relative inline-block cursor-crosshair z-10"
