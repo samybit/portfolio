@@ -24,8 +24,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isArabic = locale === 'ar';
+  const baseUrl = 'https://samyb.vercel.app';
 
   return {
+    metadataBase: new URL(baseUrl),
+    verification: {
+      google: "hV4rtyXu1OU2PEsZ2C9GnyTFakNpjmGILQvVWWV1Agc",
+    },
     title: {
       template: isArabic ? '%s | سامي برسوم' : '%s | Samy Barsoum',
       default: isArabic ? 'سامي | مطور Full-Stack' : 'Samy | Full-Stack Developer',
@@ -49,9 +54,17 @@ export async function generateMetadata({
         ? 'بناء تطبيقات ويب قوية وفعالة.'
         : 'Building brutal, effective web applications.',
       type: 'website',
-      url: `https://samyb.vercel.app/${locale}`,
+      url: `${baseUrl}/${locale}`,
       siteName: isArabic ? 'سامي | معرض أعمال المطور' : 'Samy | Developer Portfolio',
       locale: isArabic ? 'ar_EG' : 'en_US',
+      images: [
+        {
+          url: `${baseUrl}/og-image.png`,
+          width: 1200,
+          height: 630,
+          alt: isArabic ? 'معرض أعمال سامي برسوم' : 'Samy Barsoum Portfolio',
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
@@ -59,6 +72,7 @@ export async function generateMetadata({
       description: isArabic
         ? 'بناء تطبيقات ويب قوية وفعالة.'
         : 'Building brutal, effective web applications.',
+      images: [`${baseUrl}/og-image.png`],
     },
     robots: {
       index: true,
@@ -86,7 +100,7 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }>) {
   const { locale } = await params;
-  
+
   if (!['en', 'ar'].includes(locale)) {
     notFound();
   }
