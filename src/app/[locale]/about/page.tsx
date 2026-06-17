@@ -9,6 +9,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isArabic = locale === 'ar';
+  const baseUrl = 'https://samyb.vercel.app';
 
   return {
     title: isArabic ? 'عني' : 'About',
@@ -27,10 +28,26 @@ export async function generateMetadata({
       description: isArabic
         ? 'تعرف على سامي برسوم — مطور Full-Stack متخصص في MERN Stack.'
         : 'Learn about Samy Barsoum — a Full-Stack Developer specializing in the MERN stack.',
-      url: `https://samyb.vercel.app/${locale}/about`,
+      url: `${baseUrl}/${locale}/about`,
       type: 'website',
       siteName: isArabic ? 'سامي | معرض أعمال المطور' : 'Samy | Developer Portfolio',
       locale: isArabic ? 'ar_EG' : 'en_US',
+      images: [
+        {
+          url: `${baseUrl}/og-about.png`,
+          width: 1200,
+          height: 630,
+          alt: isArabic ? 'عني | سامي برسوم' : 'About Samy Barsoum',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: isArabic ? 'عني | سامي برسوم' : 'About | Samy Barsoum',
+      description: isArabic
+        ? 'تعرف على سامي برسوم — مطور Full-Stack متخصص في MERN Stack.'
+        : 'Learn about Samy Barsoum — a Full-Stack Developer specializing in the MERN stack.',
+      images: [`${baseUrl}/og-about.png`],
     },
   };
 }
