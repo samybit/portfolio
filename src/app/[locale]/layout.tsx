@@ -59,7 +59,8 @@ export async function generateMetadata({
       locale: isArabic ? 'ar_EG' : 'en_US',
       images: [
         {
-          url: `${baseUrl}/og-image.png`,
+          // Switches the image based on the locale
+          url: `${baseUrl}/${isArabic ? 'og-image-ar.png' : 'og-image.png'}`,
           width: 1200,
           height: 630,
           alt: isArabic ? 'معرض أعمال سامي برسوم' : 'Samy Barsoum Portfolio',
@@ -72,7 +73,8 @@ export async function generateMetadata({
       description: isArabic
         ? 'بناء تطبيقات ويب قوية وفعالة.'
         : 'Building brutal, effective web applications.',
-      images: [`${baseUrl}/og-image.png`],
+      // Switches the image based on the locale
+      images: [`${baseUrl}/${isArabic ? 'og-image-ar.png' : 'og-image.png'}`],
     },
     robots: {
       index: true,

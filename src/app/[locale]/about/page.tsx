@@ -34,7 +34,8 @@ export async function generateMetadata({
       locale: isArabic ? 'ar_EG' : 'en_US',
       images: [
         {
-          url: `${baseUrl}/og-about.png`,
+          // Switches the image based on the locale
+          url: `${baseUrl}/${isArabic ? 'og-about-ar.png' : 'og-about.png'}`,
           width: 1200,
           height: 630,
           alt: isArabic ? 'عني | سامي برسوم' : 'About Samy Barsoum',
@@ -47,7 +48,8 @@ export async function generateMetadata({
       description: isArabic
         ? 'تعرف على سامي برسوم — مطور Full-Stack متخصص في MERN Stack.'
         : 'Learn about Samy Barsoum — a Full-Stack Developer specializing in the MERN stack.',
-      images: [`${baseUrl}/og-about.png`],
+      // Switches the image based on the locale
+      images: [`${baseUrl}/${isArabic ? 'og-about-ar.png' : 'og-about.png'}`],
     },
   };
 }
