@@ -58,6 +58,6 @@ export function proxy(request: NextRequest) {
 }
  
 export const config = {
-  // Matcher ignoring `/_next/` and `/api/`
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  // Matcher ignoring internal paths, API, metadata files and static files
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|sitemap\\.xml|robots\\.txt).*)'],
 };
