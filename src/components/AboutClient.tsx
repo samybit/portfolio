@@ -271,7 +271,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
           </div>
 
           <div className={`brutalist-container p-8 md:p-10 transition-all duration-300 ${
-            isNeumorphic ? "" : "bg-white text-black"
+            isNeumorphic ? "" : "bg-white text-black hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
           }`}>
             <div className="flex flex-col gap-6 text-lg md:text-xl font-medium leading-relaxed">
               <p>
@@ -300,7 +300,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
                 className={`brutalist-container group transition-all duration-300 flex flex-col ${
                   isNeumorphic
                     ? "hover:!bg-[#d1d9e6] hover:!text-[#1e293b]"
-                    : "hover:!bg-black hover:!text-white"
+                    : "hover:!bg-black hover:!text-white hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
                 }`}
               >
                 <div className={`flex flex-col items-start gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
