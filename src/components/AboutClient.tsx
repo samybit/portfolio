@@ -300,16 +300,16 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
                 className={`brutalist-container group transition-all duration-300 flex flex-col ${
                   isNeumorphic
                     ? "hover:!bg-[#d1d9e6] hover:!text-[#1e293b]"
-                    : "hover:!bg-black hover:!text-white hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
+                    : "hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
                 }`}
               >
                 <div className={`flex flex-col items-start gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
-                  isNeumorphic ? "border-[#a3b1c6]" : "border-black group-hover:border-white"
+                  isNeumorphic ? "border-[#a3b1c6]" : "border-black"
                 }`}>
                   <div className={`p-3 border-4 text-black transition-all duration-300 ${
                     isNeumorphic
                       ? "border-transparent rounded-xl shadow-[inset_2px_2px_5px_rgba(163,177,198,0.5),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
-                      : "border-black group-hover:border-white group-hover:bg-white group-hover:!text-black"
+                      : "border-black"
                   }`}>
                     {category.icon}
                   </div>
@@ -322,7 +322,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
                       <span className={`w-2 h-2 inline-block transition-all duration-300 shrink-0 ${
                         isNeumorphic
                           ? "bg-[#4b5563] group-hover:bg-[#1e293b]"
-                          : "bg-black group-hover:bg-white"
+                          : "bg-black"
                       }`}></span>
                       {item}
                     </li>
