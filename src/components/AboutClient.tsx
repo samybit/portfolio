@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import AudioPlayer from "@/components/AudioPlayer";
 import DecryptText from "@/components/DecryptText";
-import MedievalCorner from "@/components/MedievalCorner";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
 export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<string, string>, tabTitles: Record<string, string>, locale: string }) {
@@ -335,24 +334,13 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
         </section>
 
         {/* --- ARCHIVES / OLD PORTFOLIOS --- */}
-        <section className={`animate-slide-up-delay-2 relative p-8 md:p-10 my-10 mx-6 md:mx-10 transition-all duration-300 ${
+        <section className={`animate-slide-up-delay-2 p-8 md:p-10 transition-all duration-300 ${
           isNeumorphic
             ? "brutalist-container"
-            : "bg-white border-4 border-black med-border"
+            : "bg-white text-black border-4 border-black"
         }`}>
 
-          {/* Corner ornaments – only rendered in default / non-neumorphic themes */}
-          {!isNeumorphic && (
-            <>
-              <MedievalCorner pos="tl" />
-              <MedievalCorner pos="tr" />
-              <MedievalCorner pos="bl" />
-              <MedievalCorner pos="br" />
-            </>
-          )}
-
-          {/* Content Wrapper (z-20 so it renders OVER the corner SVGs) */}
-          <div className="relative z-20 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="flex flex-col text-center md:text-left rtl:md:text-right">
               <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight">{dict?.legacySys || "Legacy Systems"}</h2>
               <p className="text-lg md:text-xl font-bold text-zinc-500 uppercase mt-1">{dict?.legacyDesc || "Explore previous portfolio iterations"}</p>
