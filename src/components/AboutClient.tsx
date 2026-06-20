@@ -265,6 +265,29 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
       {/* WE START A NEW CONTAINER FOR THE REST OF THE PAGE */}
       <div className="max-w-7xl mx-auto flex flex-col gap-16 mt-8 px-6 md:px-12 lg:px-24 relative z-10">
 
+        {/* --- BIOGRAPHY / WHO I AM --- */}
+        <section className="animate-slide-up-delay-2">
+          <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
+            <h2 className="text-4xl font-black uppercase tracking-widest">{dict?.whoIAm || "Who I Am"}</h2>
+          </div>
+
+          <div className={`brutalist-container p-8 md:p-10 transition-all duration-300 ${
+            isNeumorphic ? "" : "bg-white text-black"
+          }`}>
+            <div className="flex flex-col gap-6 text-lg md:text-xl font-medium leading-relaxed">
+              <p>
+                {dict?.bioP1 || "My journey began with Python automation and scripting, building tools to scrape data and automate tasks. I then expanded into full-stack development, mastering the MERN stack to engineer dynamic applications."}
+              </p>
+              <p>
+                {dict?.bioP2 || "Today, I focus on building complete, containerized applications using Docker, ensuring that what runs on my machine runs everywhere."}
+              </p>
+              <p>
+                {dict?.bioP3 || "When I'm not coding, you can find me exploring retro tech, playing classic games, or experimenting with 3D web graphics."}
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* --- TECHNICAL ARSENAL --- */}
         <section className="animate-slide-up-delay-2">
           <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
