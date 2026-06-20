@@ -341,7 +341,7 @@ export default function Projects({ dict }: { dict: any }) {
         <div className={`flex flex-col border-4 border-black bg-white h-full w-full transition-all duration-200 ease-in-out ${
           isNeumorphic
             ? "brutalist-shadow-static"
-            : "shadow-[8px_8px_0px_#000] hover:-translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_#000] active:-translate-x-2 active:translate-y-2 active:shadow-none rtl:shadow-[-8px_8px_0px_#000] rtl:hover:translate-x-1 rtl:hover:shadow-[-4px_4px_0px_#000] rtl:active:translate-x-2"
+            : "shadow-[8px_8px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_#000] active:translate-x-2 active:translate-y-2 active:shadow-none rtl:shadow-[-8px_8px_0px_#000] rtl:hover:-translate-x-1 rtl:hover:shadow-[-4px_4px_0px_#000] rtl:active:-translate-x-2"
         }`}>
           <button onClick={prevSlide} className="flex-1 flex flex-col items-center justify-center gap-2 border-b-4 border-black hover:bg-black hover:text-white transition-colors group">
             <ArrowUp size={32} className="group-hover:-translate-y-2 transition-transform" />
