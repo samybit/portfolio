@@ -139,7 +139,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
       role={clickable ? "button" : undefined}
       tabIndex={clickable ? 0 : undefined}
     >
-      <div className="relative mr-4 flex flex-col items-center pt-3">
+      <div className="hidden md:flex relative mr-4 flex-col items-center pt-3">
         <div
           className={cn("absolute w-1", isLast ? "hidden" : "block")}
           style={{ 
