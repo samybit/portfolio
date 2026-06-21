@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Smoke from "@/components/Smoke";
 import { CustomTooltip } from "@/components/ui/tooltip";
 import { useScrollMode } from "@/context/ScrollModeContext";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 
 export default function Navbar({ dict, currentLocale }: { dict: Record<string, string>, currentLocale: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -105,8 +106,6 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
     playClack();
     const html = document.documentElement;
 
-    html.classList.add("theme-transitioning");
-
     if (html.classList.contains("invert-theme")) {
       html.classList.remove("invert-theme");
       html.classList.add("theme-color");
@@ -118,10 +117,6 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
     } else {
       html.classList.add("invert-theme");
     }
-
-    setTimeout(() => {
-      html.classList.remove("theme-transitioning");
-    }, 50);
   };
 
   const toggleLanguage = () => {
@@ -197,15 +192,16 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
           </Link>
 
           <CustomTooltip content={dict?.cycleTheme || "Cycle Theme"} side="bottom">
-            <button
-              onClick={cycleTheme}
+            <AnimatedThemeToggler
+              variant="square"
+              onToggle={cycleTheme}
               onMouseEnter={prewarmAudio}
               onTouchStart={prewarmAudio}
               aria-label="Cycle System Theme"
               className="group bg-black text-white border-4 border-s-0 border-black px-3.5 flex items-center justify-center hover:bg-white hover:text-black transition-colors h-full"
             >
               <Palette size={18} className="theme-icon-creative" />
-            </button>
+            </AnimatedThemeToggler>
           </CustomTooltip>
           
           <CustomTooltip content={dict?.toggleLanguage || "Toggle Language"} side="bottom">

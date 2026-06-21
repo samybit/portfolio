@@ -309,7 +309,6 @@ html[dir="rtl"] .group:hover .fly-spin-arrow {
   animation: themeFlip 1s ease-in-out forwards;
 }
 
-
 /* --- CUSTOM BRUTALIST HARDWARE CURSOR --- */
 /* Native OS shape, perfectly straight vertical left edge. Zero JS lag. */
 
@@ -333,7 +332,6 @@ textarea {
   /* Size 24x24, White fill, Black stroke, Blocky 'I' shape. Hotspot dead center (12 12). */
   cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49Im1pdGVyIj48cGF0aCBkPSJNIDYgMiBMIDE4IDIgTCAxOCA2IEwgMTQgNiBMIDE0IDE4IEwgMTggMTggTCAxOCAyMiBMIDYgMjIgTCA2IDE4IEwgMTAgMTggTCAxMCA2IEwgNiA2IFoiLz48L3N2Zz4=') 12 12, text !important;
 }
-
 
 /* --- SYSTEM OVERRIDE (MIDDLE CLICK EASTER EGG) --- */
 html.system-override {
@@ -372,7 +370,6 @@ html.invert-theme {
 html.invert-theme img {
   filter: invert(1) hue-rotate(180deg);
 }
-
 
 /* --- THEME 3: THE EMBER (WARM CHARCOAL & FIERY ORANGE) --- */
 
@@ -1117,7 +1114,6 @@ html.theme-transitioning * {
   scrollbar-width: none;
 }
 
-
 /* ================================================================
    MEDIEVAL DRAWN FRAME — "Legacy Systems" card
    Three concentric border lines (matching illuminated manuscripts):
@@ -1222,4 +1218,17 @@ html.theme-neumorphic .tooltip-popup {
   border: none !important;
   border-radius: 8px !important;
   box-shadow: 3px 3px 6px rgba(163, 177, 198, 0.6), -3px -3px 6px rgba(255, 255, 255, 0.5) !important;
+}
+::view-transition-old(root), ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+html[data-magicui-theme-vt="active"]::view-transition-old(root) {
+  animation: none;
+}
+
+html[data-magicui-theme-vt="active"]::view-transition-new(root) {
+  animation: none;
+  clip-path: var(--magicui-theme-vt-clip-from);
 }
