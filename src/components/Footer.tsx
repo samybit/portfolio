@@ -69,6 +69,12 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
 
         <a
           href="#"
+          onClick={(e) => {
+            if (isCurtainMode) {
+              e.preventDefault();
+              window.dispatchEvent(new CustomEvent('curtainNavigate', { detail: 0 }));
+            }
+          }}
           className="text-lg font-bold uppercase border-b-4 border-black pb-1 hover:bg-black hover:text-white transition-colors pointer-events-auto"
         >
           {dict?.backToTop || "↑ Back to top"}

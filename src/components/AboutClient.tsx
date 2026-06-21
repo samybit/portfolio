@@ -7,10 +7,14 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import AudioPlayer from "@/components/AudioPlayer";
 import DecryptText from "@/components/DecryptText";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
+import { useScrollMode } from "@/context/ScrollModeContext";
+import CurtainScroller from "@/components/CurtainScroller";
+import Footer from "@/components/Footer";
 
-export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<string, string>, tabTitles: Record<string, string>, locale: string }) {
+export default function AboutClient({ dict, footerDict, tabTitles, locale }: { dict: Record<string, string>, footerDict: Record<string, string>, tabTitles: Record<string, string>, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const isNeumorphic = useNeumorphicTheme();
+  const { isCurtainMode } = useScrollMode();
 
   // --- FRAMER MOTION CLIP-PATH SETUP ---
   const { scrollY } = useScroll();
@@ -218,40 +222,25 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
     </>
   );
 
-  return (
-    <main className="min-h-screen pb-24 overflow-x-hidden" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-
-      {/* --- TEXT & PARALLAX BACKGROUND BLOCK --- */}
-      {/* 
-        This wrapper uses a single DOM tree! 
-        1. Base background color is defined here so backdrop-filter has something solid to invert.
-        2. Parallax image placed at Z-0 (behind content).
-        3. Content placed at Z-10. Native CSS hovers work perfectly!
-        4. Backdrop filter placed at Z-20, exactly mathematically inverse to the image. 
-      */}
-      <div className={`relative w-full ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}`}>
-
-        {/* LAYER 0: THE BACKGROUND IMAGE (clipped from bottom up) */}
+  const section1 = (
+      <div className={`relative w-full ${isCurtainMode ? 'min-h-[100svh]' : ''} ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}`}>
         <motion.div
           style={{ clipPath: clipPathImage }}
           className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none"
         >
           <motion.img
-            style={{ y: imageY }}
+            style={isCurtainMode ? {} : { y: imageY }}
             src="/about.jpg"
             alt=""
-            className="absolute -top-[25%] left-0 w-full h-[150%] object-cover object-center"
+            className={`absolute ${isCurtainMode ? 'top-0 h-full' : '-top-[25%] h-[150%]'} left-0 w-full object-cover object-center`}
           />
-          {/* Dark overlay to make the image darker as requested */}
-          <div className="absolute -top-[25%] left-0 bg-black/30 w-full h-[150%]"></div>
+          <div className={`absolute ${isCurtainMode ? 'top-0 h-full' : '-top-[25%] h-[150%]'} left-0 bg-black/30 w-full`}></div>
         </motion.div>
 
-        {/* LAYER 1: THE SINGLE-SOURCE CONTENT (Normal text) */}
         <div className="relative z-10 px-6 md:px-12 lg:px-24 pt-36 md:pt-30 pb-6">
           {topContent}
         </div>
 
-        {/* LAYER 2: THE INVERT FILTER (covers the exact opposite of the image!) */}
         <motion.div
           style={{ 
             clipPath: clipPathFilter,
@@ -260,142 +249,177 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
           className="absolute top-0 left-0 w-full h-full z-20 pointer-events-none"
           aria-hidden="true"
         />
-
       </div>
+  );
 
-      {/* WE START A NEW CONTAINER FOR THE REST OF THE PAGE */}
-      <div className="max-w-7xl mx-auto flex flex-col gap-16 mt-8 px-6 md:px-12 lg:px-24 relative z-10">
-
-        {/* --- BIOGRAPHY / WHO I AM --- */}
-        <section className="animate-slide-up-delay-2">
-          <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
-            <h2 className="text-4xl font-black uppercase tracking-widest">{dict?.whoIAm || "Who I Am"}</h2>
-          </div>
-
-          <div className={`brutalist-container p-8 md:p-10 transition-all duration-300 ${
-            isNeumorphic ? "" : "bg-white text-black hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
-          }`}>
-            <div className="flex flex-col gap-6 text-lg md:text-xl font-medium leading-relaxed">
-              <p>
-                {dict?.bioP1 || "My journey began with Python automation and scripting, building tools to scrape data and automate tasks. I then expanded into full-stack development, mastering the MERN stack to engineer dynamic applications."}
-              </p>
-              <p>
-                {dict?.bioP2 || "Today, I focus on building complete, containerized applications using Docker, ensuring that what runs on my machine runs everywhere."}
-              </p>
-              <p>
-                {dict?.bioP3 || "When I'm not coding, you can find me exploring retro tech, playing classic games, or experimenting with 3D web graphics."}
-              </p>
+  const section2 = (
+      <div className={`w-full ${isCurtainMode ? `min-h-[100svh] flex items-center ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}` : ''}`}>
+        <div className={`w-full ${isCurtainMode ? 'max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10' : ''}`}>
+          <section className="animate-slide-up-delay-2">
+            <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
+              <h2 className="text-4xl font-black uppercase tracking-widest">{dict?.whoIAm || "Who I Am"}</h2>
             </div>
-          </div>
-        </section>
 
-        {/* --- TECHNICAL ARSENAL --- */}
-        <section className="animate-slide-up-delay-2">
-          <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
-            <h2 className="text-4xl font-black uppercase tracking-widest">{dict?.techArsenal || "Technical Arsenal"}</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-            {stack.map((category, index) => (
-              <div
-                key={index}
-                className={`brutalist-container group transition-all duration-300 flex flex-col ${
-                  isNeumorphic
-                    ? "hover:!bg-[#d1d9e6] hover:!text-[#1e293b]"
-                    : "hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
-                }`}
-              >
-                <div className={`flex flex-col items-start gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
-                  isNeumorphic ? "border-[#a3b1c6]" : "border-black"
-                }`}>
-                  <div className={`p-3 border-4 text-black transition-all duration-300 ${
-                    isNeumorphic
-                      ? "border-transparent rounded-xl shadow-[inset_2px_2px_5px_rgba(163,177,198,0.5),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
-                      : "border-black"
-                  }`}>
-                    {category.icon}
-                  </div>
-                  <h3 className="text-2xl font-black uppercase leading-none text-left rtl:text-right">{category.category}</h3>
-                </div>
-
-                <ul className="flex flex-col gap-3">
-                  {category.tech.map((item, i) => (
-                    <li key={i} className="text-lg font-bold uppercase flex items-center gap-2">
-                      <span className={`w-2 h-2 inline-block transition-all duration-300 shrink-0 ${
-                        isNeumorphic
-                          ? "bg-[#4b5563] group-hover:bg-[#1e293b]"
-                          : "bg-black"
-                      }`}></span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+            <div className={`brutalist-container p-8 md:p-10 transition-all duration-300 ${
+              isNeumorphic ? "" : "bg-white text-black hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
+            }`}>
+              <div className="flex flex-col gap-6 text-lg md:text-xl font-medium leading-relaxed">
+                <p>
+                  {dict?.bioP1 || "My journey began with Python automation and scripting, building tools to scrape data and automate tasks. I then expanded into full-stack development, mastering the MERN stack to engineer dynamic applications."}
+                </p>
+                <p>
+                  {dict?.bioP2 || "Today, I focus on building complete, containerized applications using Docker, ensuring that what runs on my machine runs everywhere."}
+                </p>
+                <p>
+                  {dict?.bioP3 || "When I'm not coding, you can find me exploring retro tech, playing classic games, or experimenting with 3D web graphics."}
+                </p>
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* --- ARCHIVES / OLD PORTFOLIOS --- */}
-        <section className={`animate-slide-up-delay-2 p-8 md:p-10 transition-all duration-300 ${
-          isNeumorphic
-            ? "brutalist-container"
-            : "bg-white text-black border-4 border-black"
-        }`}>
-
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="flex flex-col text-center md:text-left rtl:md:text-right">
-              <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight">{dict?.legacySys || "Legacy Systems"}</h2>
-              <p className="text-lg md:text-xl font-bold text-zinc-500 uppercase mt-1">{dict?.legacyDesc || "Explore previous portfolio iterations"}</p>
             </div>
-            <div className="flex flex-col sm:flex-row w-full md:w-auto gap-6 shrink-0">
-              <a
-                href="https://my-portfolio-seven-beta-98.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-xl font-black uppercase whitespace-nowrap transition-all duration-300 group ${
-                  isNeumorphic
-                    ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                    : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
-                }`}
-              >
-                {dict?.v1 || "Version 1.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform w-5 h-5 sm:w-6 sm:h-6" />
-                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
-              </a>
-              <a
-                href="https://samybit.github.io/brutalist-portfolio/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-xl font-black uppercase whitespace-nowrap transition-all duration-300 group ${
-                  isNeumorphic
-                    ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                    : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
-                }`}
-              >
-                {dict?.v2 || "Version 2.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform w-5 h-5 sm:w-6 sm:h-6" />
-                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
-              </a>
-            </div>
-          </div>
-        </section>
-
-      </div>
-
-      {/* Floating Snackbar/Toast Overlay */}
-      {toastMessage && (
-        <div
-          id="toast-notification"
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 p-4 border-4 border-black bg-white text-black font-black uppercase text-sm flex items-center justify-between shadow-[8px_8px_0px_0px_#000000] animate-slide-up min-w-[280px] sm:min-w-[350px]"
-        >
-          <span>{toastMessage}</span>
-          <button
-            onClick={() => setToastMessage(null)}
-            className="font-black text-xl hover:text-zinc-600 transition-colors mx-6 cursor-pointer"
-          >
-            ×
-          </button>
+          </section>
         </div>
-      )}
+      </div>
+  );
 
+  const section3 = (
+      <div className={`w-full ${isCurtainMode ? `min-h-[100svh] flex items-center ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}` : ''}`}>
+        <div className={`w-full ${isCurtainMode ? 'max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10 py-12' : ''}`}>
+          <section className="animate-slide-up-delay-2">
+            <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
+              <h2 className="text-4xl font-black uppercase tracking-widest">{dict?.techArsenal || "Technical Arsenal"}</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+              {stack.map((category, index) => (
+                <div
+                  key={index}
+                  className={`brutalist-container group transition-all duration-300 flex flex-col ${
+                    isNeumorphic
+                      ? "hover:!bg-[#d1d9e6] hover:!text-[#1e293b]"
+                      : "hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
+                  }`}
+                >
+                  <div className={`flex flex-col items-start gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
+                    isNeumorphic ? "border-[#a3b1c6]" : "border-black"
+                  }`}>
+                    <div className={`p-3 border-4 text-black transition-all duration-300 ${
+                      isNeumorphic
+                        ? "border-transparent rounded-xl shadow-[inset_2px_2px_5px_rgba(163,177,198,0.5),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
+                        : "border-black"
+                    }`}>
+                      {category.icon}
+                    </div>
+                    <h3 className="text-2xl font-black uppercase leading-none text-left rtl:text-right">{category.category}</h3>
+                  </div>
+
+                  <ul className="flex flex-col gap-3">
+                    {category.tech.map((item, i) => (
+                      <li key={i} className="text-lg font-bold uppercase flex items-center gap-2">
+                        <span className={`w-2 h-2 inline-block transition-all duration-300 shrink-0 ${
+                          isNeumorphic
+                            ? "bg-[#4b5563] group-hover:bg-[#1e293b]"
+                            : "bg-black"
+                        }`}></span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+  );
+
+  const section4 = (
+      <div className={`w-full ${isCurtainMode ? `flex flex-col justify-between min-h-[100svh] ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}` : ''}`}>
+        <div className={`w-full ${isCurtainMode ? 'max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10 flex-grow flex flex-col justify-center py-12' : ''}`}>
+          <section className={`animate-slide-up-delay-2 p-8 md:p-10 transition-all duration-300 ${
+            isNeumorphic
+              ? "brutalist-container"
+              : "bg-white text-black border-4 border-black"
+          }`}>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="flex flex-col text-center md:text-left rtl:md:text-right">
+                <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight">{dict?.legacySys || "Legacy Systems"}</h2>
+                <p className="text-lg md:text-xl font-bold text-zinc-500 uppercase mt-1">{dict?.legacyDesc || "Explore previous portfolio iterations"}</p>
+              </div>
+              <div className="flex flex-col sm:flex-row w-full md:w-auto gap-6 shrink-0">
+                <a
+                  href="https://my-portfolio-seven-beta-98.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-xl font-black uppercase whitespace-nowrap transition-all duration-300 group ${
+                    isNeumorphic
+                      ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                      : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                  }`}
+                >
+                  {dict?.v1 || "Version 1.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform w-5 h-5 sm:w-6 sm:h-6" />
+                  <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
+                </a>
+                <a
+                  href="https://samybit.github.io/brutalist-portfolio/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-xl font-black uppercase whitespace-nowrap transition-all duration-300 group ${
+                    isNeumorphic
+                      ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                      : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                  }`}
+                >
+                  {dict?.v2 || "Version 2.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform w-5 h-5 sm:w-6 sm:h-6" />
+                  <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
+                </a>
+              </div>
+            </div>
+          </section>
+        </div>
+        {isCurtainMode && <Footer dict={footerDict} />}
+      </div>
+  );
+
+  const toastOverlay = toastMessage ? (
+    <div
+      id="toast-notification"
+      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 p-4 border-4 border-black bg-white text-black font-black uppercase text-sm flex items-center justify-between shadow-[8px_8px_0px_0px_#000000] animate-slide-up min-w-[280px] sm:min-w-[350px]"
+    >
+      <span>{toastMessage}</span>
+      <button
+        onClick={() => setToastMessage(null)}
+        className="font-black text-xl hover:text-zinc-600 transition-colors mx-6 cursor-pointer"
+      >
+        ×
+      </button>
+    </div>
+  ) : null;
+
+  if (isCurtainMode) {
+    return (
+      <main className="h-[100svh] w-full overflow-hidden flex flex-col bg-black" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+        <CurtainScroller>
+          {section1}
+          {section2}
+          {section3}
+          {section4}
+        </CurtainScroller>
+        {toastOverlay}
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen flex flex-col overflow-x-hidden" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+      <div className="flex-grow flex flex-col">
+        {section1}
+        <div className="w-full max-w-7xl mx-auto flex flex-col gap-16 mt-8 mb-24 px-6 md:px-12 lg:px-24 relative z-10">
+          {section2}
+          {section3}
+          {section4}
+        </div>
+      </div>
+      <Footer dict={footerDict} />
+      {toastOverlay}
     </main>
   );
 }

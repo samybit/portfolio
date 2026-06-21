@@ -62,5 +62,5 @@ export default async function AboutPage({
   const { locale } = await params;
   const dict = await getDictionary(locale as Locale);
 
-  return <AboutClient dict={dict.about} tabTitles={dict.tabTitles} locale={locale} />;
+  return <AboutClient dict={dict.about} footerDict={dict.footer} tabTitles={dict.tabTitles} locale={locale} />;
 }
