@@ -11,6 +11,7 @@ import { useScrollMode } from "@/context/ScrollModeContext";
 import CurtainScroller from "@/components/CurtainScroller";
 import Footer from "@/components/Footer";
 import { AnimatedTimeline } from "@/components/animata/progress/animatedtimeline";
+import { MorphingText } from "@/components/ui/morphing-text";
 
 export default function AboutClient({ dict, footerDict, tabTitles, locale }: { dict: Record<string, string>, footerDict: Record<string, string>, tabTitles: Record<string, string>, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -311,7 +312,10 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
         <div className={`w-full ${isCurtainMode ? 'max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10 py-12' : ''}`}>
           <section className="animate-slide-up-delay-2">
             <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
-              <h2 className="text-4xl font-black uppercase tracking-widest">{dict?.techArsenal || "Technical Arsenal"}</h2>
+              <MorphingText 
+                texts={[dict?.techArsenal || "Technical Arsenal", dict?.skills || "Skills"]}
+                className="text-4xl font-black uppercase tracking-widest text-white m-0 p-0"
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
