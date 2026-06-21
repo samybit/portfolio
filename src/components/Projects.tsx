@@ -138,7 +138,11 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-1.5 text-sm md:text-base font-bold uppercase hover:bg-white hover:text-black px-3 py-1.5 transition-all border-2 border-black shrink-0"
+            className={`group flex items-center gap-1.5 text-sm md:text-base font-bold uppercase px-3 py-1.5 transition-all duration-300 ease-in-out shrink-0 ${
+              isNeumorphic
+                ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                : "border-2 border-black hover:bg-white hover:text-black"
+            }`}
           >
             <GithubIcon size={20} /> {dict?.repo || "Repo"}
             <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
@@ -150,7 +154,11 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
             href={project.demo}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-1.5 text-sm md:text-base font-bold uppercase hover:bg-white hover:text-black px-3 py-1.5 transition-all border-2 border-black shrink-0"
+            className={`group flex items-center gap-1.5 text-sm md:text-base font-bold uppercase px-3 py-1.5 transition-all duration-300 ease-in-out shrink-0 ${
+              isNeumorphic
+                ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                : "border-2 border-black hover:bg-white hover:text-black"
+            }`}
           >
             <span className="relative flex h-2.5 w-2.5 me-1" aria-hidden="true">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
