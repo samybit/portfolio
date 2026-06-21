@@ -253,61 +253,13 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
     return () => scrollObserver.disconnect();
   }, [page, showAllMobile]);
 
-  // --- DESKTOP MAGNETIC SCROLL LOCK ---
-  const gridContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    let hasSnapped = false;
-
-    const handleScroll = () => {
-      // Evaluate layout only when user stops scrolling to prevent lag
-      clearTimeout(timeoutId);
-
-      timeoutId = setTimeout(() => {
-        if (!gridContainerRef.current) return;
-        
-        // This lock only applies to the desktop grid view
-        if (window.innerWidth < 1024) return;
-
-        const rect = gridContainerRef.current.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-
-        const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
-        const ratio = visibleHeight / windowHeight;
-
-        if (ratio < 0.2) {
-          hasSnapped = false;
-        }
-
-        // Magnetic zone: mostly visible but not perfectly centered
-        if (ratio >= 0.55 && ratio < 0.98) {
-          if (!hasSnapped) {
-            gridContainerRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-            hasSnapped = true;
-          }
-        } else if (ratio >= 0.98) {
-          // Manual perfect centering locks it so they can easily leave
-          hasSnapped = true;
-        }
-      }, 150);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(timeoutId);
-    };
-  }, []);
-
   // Handle title splitting dynamically for languages (first word on top, rest on bottom)
   const titleWords = (dict?.title || "Selected Works").split(" ");
   const titleFirst = titleWords[0];
   const titleRest = titleWords.slice(1).join(" ");
 
   return (
-    <section id="projects" className="snap-start relative w-full min-h-[80vh] flex flex-col pt-24 pb-8 px-6 md:px-12 lg:px-24 border-b-8 border-black overflow-hidden">
+    <section id="projects" className="snap-start relative w-full min-h-[100svh] flex flex-col pt-24 pb-8 px-6 md:px-12 lg:px-24 border-b-8 border-black overflow-hidden">
       {/* --- HEADER --- */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 lg:mb-12 gap-6 flex-none">
         <div className="w-full md:w-auto">
@@ -354,7 +306,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
       </div>
 
       {/* --- DESKTOP VIEW: Paginated Grid & Controls --- */}
-      <div ref={gridContainerRef} className="hidden lg:grid grid-cols-[1fr_5rem] gap-6 xl:gap-8 flex-1 min-h-0">
+      <div className="hidden lg:grid grid-cols-[1fr_5rem] gap-6 xl:gap-8 flex-1 min-h-0">
 
         {/* The 2x2 Grid container */}
         <div className="grid grid-cols-2 grid-rows-2 gap-6 xl:gap-8 h-full w-full">

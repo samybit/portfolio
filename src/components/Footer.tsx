@@ -3,6 +3,9 @@
 import { useRef, useState, useEffect } from "react";
 import { useInView } from "framer-motion";
 import dynamic from "next/dynamic";
+import { useScrollMode } from "@/context/ScrollModeContext";
+import FallingLayersIcon from "./FallingLayersIcon";
+import { CustomTooltip } from "@/components/ui/tooltip";
 
 const Footer3D = dynamic(() => import("@/components/Footer3D"), { ssr: false });
 
@@ -14,6 +17,7 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
 
   const [isEmber, setIsEmber] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
+  const { isCurtainMode, toggleScrollMode } = useScrollMode();
 
   useEffect(() => {
     const checkTheme = () => {
@@ -44,6 +48,25 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
         <p className="text-[clamp(0.75rem,3.5vw,1.25rem)] whitespace-nowrap font-bold uppercase text-black bg-white px-3 py-1" suppressHydrationWarning>
           {copyrightText}
         </p>
+
+        {/* SCROLL MODE TOGGLE */}
+        <CustomTooltip content={isCurtainMode ? "Switch to Normal Scroll" : "Switch to Curtain Scroll"} side="top">
+          <button
+            onClick={toggleScrollMode}
+            aria-label="Toggle Scroll Mode"
+            className={`group pointer-events-auto flex items-center justify-center gap-2 border-4 px-6 py-3 transition-colors ${
+              isNeumorphic 
+                ? "bg-[#e0e5ec] text-[#4b5563] border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
+                : "bg-white text-black border-black brutalist-shadow-static hover:bg-black hover:text-white"
+            }`}
+          >
+            <FallingLayersIcon isCurtainMode={isCurtainMode} />
+            <span className="font-bold uppercase tracking-wider text-sm md:text-base">
+              {isCurtainMode ? "Normal Scroll" : "Curtain Scroll"}
+            </span>
+          </button>
+        </CustomTooltip>
+
         <a
           href="#"
           className="text-lg font-bold uppercase border-b-4 border-black pb-1 hover:bg-black hover:text-white transition-colors pointer-events-auto"

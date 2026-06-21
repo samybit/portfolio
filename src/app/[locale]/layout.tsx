@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import SystemOverride from "@/components/SystemOverride";
+import { ScrollModeProvider } from "@/context/ScrollModeContext";
 import CustomContextMenu from "@/components/CustomContextMenu";
 import GhostInTheMachine from "@/components/GhostInTheMachine";
 import { notFound } from "next/navigation";
@@ -115,9 +115,10 @@ export default async function RootLayout({
         <SystemOverride />
         <CustomContextMenu dict={dict.menu} />
         <GhostInTheMachine />
-        <Navbar dict={dict.nav} currentLocale={locale as Locale} />
-        {children}
-        <Footer dict={dict.footer} />
+        <ScrollModeProvider>
+          <Navbar dict={dict.nav} currentLocale={locale as Locale} />
+          {children}
+        </ScrollModeProvider>
       </body>
     </html>
   );

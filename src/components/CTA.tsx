@@ -457,51 +457,6 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
   // 1. Hardware Observer: GPU Killswitch to prevent massive lag when offscreen
   const isCanvasInView = useInView(ctaRef, { margin: "0px 0px 0px 0px" });
 
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    let hasSnapped = false;
-
-    const handleScroll = () => {
-      // We only want to evaluate the layout and trigger the snap when the user STOPS scrolling.
-      // This completely eliminates layout thrashing and scroll lag.
-      clearTimeout(timeoutId);
-
-      timeoutId = setTimeout(() => {
-        if (!ctaRef.current) return;
-
-        const rect = ctaRef.current.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-
-        // Calculate how much of the element is visible
-        const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
-        const ratio = visibleHeight / windowHeight;
-
-        // Reset the lock if they completely scroll away
-        if (ratio < 0.2) {
-          hasSnapped = false;
-        }
-
-        // If they are in the magnetic zone (mostly visible but not perfectly centered)
-        if (ratio >= 0.55 && ratio < 0.98) {
-          if (!hasSnapped) {
-            ctaRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-            hasSnapped = true;
-          }
-        } else if (ratio >= 0.98) {
-          // If they perfectly center it manually, lock it so they don't get trapped leaving
-          hasSnapped = true;
-        }
-      }, 150); // Evaluate 150ms after they stop scrolling
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(timeoutId);
-    };
-  }, []);
-
   return (
     // Swapped min-h-screen for min-h-[100dvh] and added py-16 so it never touches the screen edges
     <section

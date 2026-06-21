@@ -7,10 +7,12 @@ import SproutingFlowers from "@/components/SproutingFlowers";
 import GlitchText from "@/components/GlitchText";
 import HeroCarabiner3D from "@/components/HeroCarabiner3D";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
+import { useScrollMode } from "@/context/ScrollModeContext";
 
 export default function Hero({ dict }: { dict: Record<string, string> }) {
   const [isHovered, setIsHovered] = useState(false);
   const isNeumorphic = useNeumorphicTheme();
+  const { isCurtainMode } = useScrollMode();
 
   return (
     // Added 'relative' to contain the absolute background
@@ -69,6 +71,15 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
 
           <Link
             href="#projects"
+            onClick={(e) => {
+              e.preventDefault();
+              if (isCurtainMode) {
+                window.dispatchEvent(new CustomEvent('curtainNavigate', { detail: 1 }));
+              } else {
+                document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+              }
+              window.history.pushState(null, '', '#projects');
+            }}
             className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
               isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
@@ -81,6 +92,15 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
 
           <Link
             href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              if (isCurtainMode) {
+                window.dispatchEvent(new CustomEvent('curtainNavigate', { detail: 3 }));
+              } else {
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              }
+              window.history.pushState(null, '', '#contact');
+            }}
             className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
               isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
