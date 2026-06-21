@@ -776,8 +776,8 @@ html.theme-neumorphic textarea:focus {
 }
 
 /* Valid Inputs (strong success tint/inset shadow) */
-html.theme-neumorphic input.bg-black,
-html.theme-neumorphic textarea.bg-black {
+html.theme-neumorphic input.border-green-600,
+html.theme-neumorphic textarea.border-green-600 {
   background-color: #dcfce7 !important;
   color: #15803d !important;
   border: 1px solid rgba(22, 163, 74, 0.4) !important;
@@ -901,9 +901,9 @@ html.theme-neumorphic textarea:hover:not(:focus) {
   box-shadow: inset 5px 5px 10px rgba(163, 177, 198, 0.7), inset -5px -5px 10px rgba(255, 255, 255, 0.55) !important;
 }
 
-html.theme-neumorphic input[type='text'].bg-black:focus,
-html.theme-neumorphic input[type='email'].bg-black:focus,
-html.theme-neumorphic textarea.bg-black:focus {
+html.theme-neumorphic input[type='text'].border-green-600:focus,
+html.theme-neumorphic input[type='email'].border-green-600:focus,
+html.theme-neumorphic textarea.border-green-600:focus {
   box-shadow: inset 6px 6px 12px rgba(22, 163, 74, 0.2), inset -6px -6px 12px rgba(255, 255, 255, 0.6) !important;
   transform: none !important;
 }

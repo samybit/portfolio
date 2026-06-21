@@ -102,7 +102,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
 
   const getInputStyle = (isValid: boolean, isError: boolean) => {
     if (isError) return `${inputBaseStyle} border-red-600 bg-red-50 text-black`;
-    if (isValid) return `${inputBaseStyle} border-black bg-black text-white focus:ring-4 focus:ring-black/20`;
+    if (isValid) return `${inputBaseStyle} border-green-600 bg-white text-black focus:ring-4 focus:ring-green-600/20`;
     return `${inputBaseStyle} border-black bg-white text-black focus:ring-4 focus:ring-black/20`;
   };
 
