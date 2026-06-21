@@ -244,7 +244,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
           >
             <Smoke />
             <span className="relative z-10 flex items-center gap-1">
-              {dict?.github || "GitHub"} <ArrowUpRight size={20} className="ms-1 rtl:-scale-x-100" />
+              {dict?.github || "GitHub"} <ArrowUpRight size={20} className="ms-1 fly-spin-arrow rtl:-scale-x-100" />
               <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
             </span>
           </a>
@@ -309,7 +309,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
           >
             <Smoke />
             <span className="relative z-10 flex justify-between items-center w-full">
-              {dict?.github || "GitHub"} <ArrowUpRight size={32} className="rtl:-scale-x-100" />
+              {dict?.github || "GitHub"} <ArrowUpRight size={32} className="fly-spin-arrow rtl:-scale-x-100" />
               <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
             </span>
           </a>
