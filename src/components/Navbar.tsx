@@ -240,7 +240,10 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
             className="relative group overflow-hidden isolate flex items-center gap-1 text-lg font-bold uppercase px-4 border-2 border-transparent hover:border-black hover:bg-black hover:text-white transition-all"
           >
             <Smoke />
-            <span className="relative z-10 flex items-center gap-1">{dict?.github || "GitHub"} <ArrowUpRight size={20} className="ms-1 rtl:-scale-x-100" /></span>
+            <span className="relative z-10 flex items-center gap-1">
+              {dict?.github || "GitHub"} <ArrowUpRight size={20} className="ms-1 rtl:-scale-x-100" />
+              <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
+            </span>
           </a>
 
           <Link
@@ -302,7 +305,10 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
             className="relative group overflow-hidden isolate flex justify-between items-center text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white transition-colors"
           >
             <Smoke />
-            <span className="relative z-10 flex justify-between items-center w-full">{dict?.github || "GitHub"} <ArrowUpRight size={32} className="rtl:-scale-x-100" /></span>
+            <span className="relative z-10 flex justify-between items-center w-full">
+              {dict?.github || "GitHub"} <ArrowUpRight size={32} className="rtl:-scale-x-100" />
+              <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
+            </span>
           </a>
 
           <Link

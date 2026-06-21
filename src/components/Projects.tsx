@@ -34,10 +34,25 @@ interface Project {
   image: string;
 }
 
+interface ProjectsDictionary {
+  title: string;
+  swipeHint: string;
+  viewAll: string;
+  hide: string;
+  repo: string;
+  demo: string;
+  offline: string;
+  viewGithub: string;
+  prev: string;
+  next: string;
+  pageFormat: string;
+  newTab: string;
+  list: Project[];
+}
+
 interface ProjectCardProps {
   project: Project;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dict: any;
+  dict: ProjectsDictionary;
   animate?: boolean;
   disableObserver?: boolean;
   isNeumorphic?: boolean;
@@ -126,6 +141,7 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
             className="group flex items-center gap-1.5 text-sm md:text-base font-bold uppercase hover:bg-white hover:text-black px-3 py-1.5 transition-all border-2 border-black shrink-0"
           >
             <GithubIcon size={20} /> {dict?.repo || "Repo"}
+            <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
           </a>
         )}
 
@@ -136,11 +152,13 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
             rel="noopener noreferrer"
             className="group flex items-center gap-1.5 text-sm md:text-base font-bold uppercase hover:bg-white hover:text-black px-3 py-1.5 transition-all border-2 border-black shrink-0"
           >
-            <span className="relative flex h-2.5 w-2.5 me-1">
+            <span className="relative flex h-2.5 w-2.5 me-1" aria-hidden="true">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-black"></span>
             </span>
+            <span className="sr-only">Active live demo indicator: </span>
             {dict?.demo || "Live Demo"} <ExternalLink size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" />
+            <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
           </a>
         )}
 
@@ -155,8 +173,7 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function Projects({ dict }: { dict: any }) {
+export default function Projects({ dict }: { dict: ProjectsDictionary }) {
   const [page, setPage] = useState(0);
   const [showAllMobile, setShowAllMobile] = useState(false);
   const isNeumorphic = useNeumorphicTheme();
@@ -324,6 +341,7 @@ export default function Projects({ dict }: { dict: any }) {
           className="hidden md:block text-xl font-bold uppercase border-b-4 border-black pb-1 hover:bg-black hover:text-white transition-colors"
         >
           {dict?.viewGithub || "View full GitHub →"}
+          <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
         </a>
       </div>
 
@@ -418,6 +436,7 @@ export default function Projects({ dict }: { dict: any }) {
           }`}
         >
           {dict?.viewGithub || "View Full GitHub →"}
+          <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
         </a>
       </div>
 

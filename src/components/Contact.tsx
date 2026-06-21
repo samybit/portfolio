@@ -130,18 +130,22 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
               <a href="https://linkedin.com/in/samybit/" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors">
                 <span>LinkedIn</span>
                 <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
+                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
               </a>
               <a href="https://www.upwork.com/freelancers/~015e572ae8edee2be8" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors">
                 <span>Upwork</span>
                 <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
+                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
               </a>
               <a href="https://contra.com/samy_barsoum_akavah3d" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors">
                 <span>Contra</span>
                 <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
+                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
               </a>
               <a href="https://mostaql.com/u/Samy_01" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors">
                 <span>mostaql</span>
                 <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
+                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
               </a>
             </div>
           </div>

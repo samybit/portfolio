@@ -181,6 +181,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
                     </div>
                   </div>
                   <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 rtl:translate-x-4 ltr:-translate-x-4 group-hover:translate-x-0 transition-all duration-300 mx-4 shrink-0" />
+                  <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
                 </div>
               </a>
 
@@ -206,6 +207,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
                     </div>
                   </div>
                   <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 rtl:translate-x-4 ltr:-translate-x-4 group-hover:translate-x-0 transition-all duration-300 mx-4 shrink-0" />
+                  <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
                 </div>
               </a>
             </div>
@@ -357,6 +359,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
                 }`}
               >
                 {dict?.v1 || "Version 1.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform w-5 h-5 sm:w-6 sm:h-6" />
+                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
               </a>
               <a
                 href="https://samybit.github.io/brutalist-portfolio/"
@@ -369,6 +372,7 @@ export default function AboutClient({ dict, tabTitles, locale }: { dict: Record<
                 }`}
               >
                 {dict?.v2 || "Version 2.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform w-5 h-5 sm:w-6 sm:h-6" />
+                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
               </a>
             </div>
           </div>

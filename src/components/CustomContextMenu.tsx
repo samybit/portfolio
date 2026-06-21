@@ -160,6 +160,7 @@ export default function CustomContextMenu({ dict }: { dict?: Record<string, stri
       >
         {/* Replaced Lucide Github with custom inline SVG */}
         <GithubIcon size={16} /> {dict?.source || "Source"}
+        <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
       </a>
 
       <Link

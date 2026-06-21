@@ -4,7 +4,8 @@
     "work": "Work",
     "github": "GitHub",
     "contact": "Contact",
-    "toggleLang": "AR"
+    "toggleLang": "AR",
+    "newTab": " (opens in a new tab)"
   },
   "hero": {
     "availability": "Available for Full-Time Roles",
@@ -28,6 +29,7 @@
     "prev": "Prev",
     "next": "Next",
     "pageFormat": "[ PAGE {current} / {total} ]",
+    "newTab": " (opens in a new tab)",
     "list": [
       {
         "id": "bento",
@@ -125,7 +127,8 @@
     "errEmail": "VALID EMAIL IS REQUIRED.",
     "errMessage": "MESSAGE MUST BE AT LEAST 13 CHARACTERS.",
     "errSend": "FAILED TO SEND. PLEASE TRY AGAIN.",
-    "success": "Message Received. I'll be in touch."
+    "success": "Message Received. I'll be in touch.",
+    "newTab": " (opens in a new tab)"
   },
   "footer": {
     "samy": "Samy Barsoum",
@@ -139,7 +142,8 @@
     "copyUrl": "Copy URL",
     "specs": "Specs",
     "source": "Source",
-    "contact": "Contact"
+    "contact": "Contact",
+    "newTab": " (opens in a new tab)"
   },
   "tabTitles": {
     "hero": "Samy | Full-Stack Developer",
@@ -169,6 +173,7 @@
     "whoIAm": "Who I Am",
     "bioP1": "My journey began with Python automation and scripting, building tools to scrape data and automate tasks. I then expanded into full-stack development, mastering the MERN stack to engineer dynamic applications.",
     "bioP2": "Today, I focus on building complete, containerized applications using Docker, ensuring that what runs on my machine runs everywhere.",
-    "bioP3": "When I'm not coding, you can find me exploring retro tech, playing classic games, or experimenting with 3D web graphics."
+    "bioP3": "When I'm not coding, you can find me exploring retro tech, playing classic games, or experimenting with 3D web graphics.",
+    "newTab": " (opens in a new tab)"
   }
 }
