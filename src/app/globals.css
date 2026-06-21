@@ -931,40 +931,48 @@ html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static {
   display: flex !important;
 }
 
-html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > a {
+/* Base resets: flatten all children corners to prevent pill-like overlapping */
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static a,
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static button {
   box-shadow: none !important;
   background-color: #e0e5ec !important;
+  border-radius: 0 !important;
+  border-color: transparent !important;
+  transform: none !important;
+  transition: all 0.3s ease !important;
+}
+
+/* LTR Specific corner roundings */
+html.theme-neumorphic:not([dir="rtl"]) nav > div > div:first-child.brutalist-shadow-static a:first-child {
   border-top-left-radius: 1.5rem !important;
   border-bottom-left-radius: 1.5rem !important;
-  border-top-right-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
-  border-color: transparent !important;
-  transform: none !important;
-  transition: all 0.3s ease !important;
 }
-
-html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > button {
-  box-shadow: none !important;
-  background-color: #e0e5ec !important;
-  border-top-left-radius: 0 !important;
-  border-bottom-left-radius: 0 !important;
+html.theme-neumorphic:not([dir="rtl"]) nav > div > div:first-child.brutalist-shadow-static button:last-child {
   border-top-right-radius: 1.5rem !important;
   border-bottom-right-radius: 1.5rem !important;
-  border-color: transparent !important;
-  transform: none !important;
-  transition: all 0.3s ease !important;
 }
 
-html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > a:hover,
-html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > button:hover {
+/* RTL (Arabic) Specific corner roundings */
+html.theme-neumorphic[dir="rtl"] nav > div > div:first-child.brutalist-shadow-static a:first-child {
+  border-top-right-radius: 1.5rem !important;
+  border-bottom-right-radius: 1.5rem !important;
+}
+html.theme-neumorphic[dir="rtl"] nav > div > div:first-child.brutalist-shadow-static button:last-child {
+  border-top-left-radius: 1.5rem !important;
+  border-bottom-left-radius: 1.5rem !important;
+}
+
+/* Hover and active states for inset shadows */
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static a:hover,
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static button:hover {
   box-shadow: inset 6px 6px 10px 0 rgba(163,177,198,0.7), inset -6px -6px 10px 0 rgba(255,255,255,0.5) !important;
   background-color: #e0e5ec !important;
   border-color: transparent !important;
   transform: none !important;
 }
 
-html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > a:active,
-html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static > button:active {
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static a:active,
+html.theme-neumorphic nav > div > div:first-child.brutalist-shadow-static button:active {
   box-shadow: inset 8px 8px 14px 0 rgba(163, 177, 198, 0.8), inset -8px -8px 14px 0 rgba(255, 255, 255, 0.6) !important;
   border-color: transparent !important;
   transform: none !important;
