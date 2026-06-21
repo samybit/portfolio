@@ -1,7 +1,7 @@
 "use client";
 
 import { playClack, playTick, prewarmAudio } from "@/utils/audio";
-import { TerminalSquare, ArrowUpRight, Menu, X, Palette, Languages } from "lucide-react";
+import { TerminalSquare, ArrowUpRight, Menu, X, Palette, Globe } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -189,9 +189,9 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
               onMouseEnter={prewarmAudio}
               onTouchStart={prewarmAudio}
               aria-label="Cycle System Theme"
-              className="bg-black text-white border-4 border-s-0 border-black px-3.5 flex items-center justify-center hover:bg-white hover:text-black transition-colors h-full"
+              className="group bg-black text-white border-4 border-s-0 border-black px-3.5 flex items-center justify-center hover:bg-white hover:text-black transition-colors h-full"
             >
-              <Palette size={18} />
+              <Palette size={18} className="theme-icon-creative" />
             </button>
           </CustomTooltip>
           
@@ -201,10 +201,16 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
               onMouseEnter={prewarmAudio}
               onTouchStart={prewarmAudio}
               aria-label="Toggle Language"
-              className="bg-white text-black border-4 border-s-0 border-black px-3.5 flex items-center justify-center gap-1 hover:bg-black hover:text-white font-bold transition-colors h-full"
+              className="group bg-white text-black border-4 border-s-0 border-black px-3.5 flex items-center justify-center gap-1 hover:bg-black hover:text-white font-bold transition-colors h-full"
             >
-              <Languages size={18} />
-              <span>{dict?.toggleLang || (currentLocale === 'en' ? 'AR' : 'EN')}</span>
+              <Globe size={18} />
+              <div className="h-[1.2em] overflow-hidden leading-[1.2em] flex flex-col justify-start text-center min-w-[2ch]">
+                <div className="flex flex-col slot-machine-text">
+                  <span>{dict?.toggleLang || (currentLocale === 'en' ? 'AR' : 'EN')}</span>
+                  <span>{currentLocale === 'en' ? 'EN' : 'AR'}</span>
+                  <span>{dict?.toggleLang || (currentLocale === 'en' ? 'AR' : 'EN')}</span>
+                </div>
+              </div>
             </button>
           </CustomTooltip>
         </div>

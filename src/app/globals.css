@@ -273,6 +273,42 @@ html[dir="rtl"] .group:hover .fly-spin-arrow {
   animation: flySpinReturnRtl 0.7s ease-in-out forwards;
 }
 
+/* --- LANGUAGE SLOT MACHINE HOVER --- */
+@keyframes slotMachine {
+  0% { transform: translateY(0); }
+  15% { transform: translateY(10%); } /* wind up */
+  45% { transform: translateY(-33.33%); } /* snap to middle */
+  60% { transform: translateY(-33.33%); } /* hold */
+  75% { transform: translateY(-25%); } /* wind up again */
+  100% { transform: translateY(-66.66%); } /* snap to end */
+}
+
+.slot-machine-text {
+  will-change: transform;
+}
+
+.group:hover .slot-machine-text {
+  animation: slotMachine 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* --- THEME CREATIVE FLIP --- */
+@keyframes themeFlip {
+  0% { transform: perspective(400px) rotateY(0deg); color: inherit; }
+  25% { transform: perspective(400px) rotateY(180deg) scale(1.2); color: #ff007f; }
+  50% { transform: perspective(400px) rotateY(360deg) scale(1.2); color: #00f0ff; }
+  75% { transform: perspective(400px) rotateY(540deg) scale(1.1); color: #ffea00; }
+  100% { transform: perspective(400px) rotateY(720deg) scale(1); color: inherit; }
+}
+
+.theme-icon-creative {
+  will-change: transform, color;
+  display: inline-block;
+}
+
+.group:hover .theme-icon-creative {
+  animation: themeFlip 1s ease-in-out forwards;
+}
+
 
 /* --- CUSTOM BRUTALIST HARDWARE CURSOR --- */
 /* Native OS shape, perfectly straight vertical left edge. Zero JS lag. */
