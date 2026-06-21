@@ -29,51 +29,7 @@ export default function CurtainScroller({ children }: CurtainScrollerProps) {
     }
   };
 
-  const handleWheel = (e: React.WheelEvent) => {
-    if (isScrolling.current) return;
-    
-    // Ignore if it's more horizontal than vertical (e.g., swiping a slider inside Projects)
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
 
-    isScrolling.current = true;
-    if (e.deltaY > 50) {
-      goToNext();
-    } else if (e.deltaY < -50) {
-      goToPrev();
-    }
-    
-    // Throttle to prevent rapid skipping
-    setTimeout(() => {
-      isScrolling.current = false;
-    }, 1000); 
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartY.current = e.touches[0].clientY;
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (isScrolling.current) return;
-
-    const touchEndY = e.touches[0].clientY;
-    const touchEndX = e.touches[0].clientX;
-    const deltaY = touchStartY.current - touchEndY;
-    const deltaX = touchStartX.current - touchEndX;
-
-    // Ignore horizontal swipes
-    if (Math.abs(deltaX) > Math.abs(deltaY)) return;
-
-    if (deltaY > 50) { // Swipe up -> next
-      goToNext();
-      isScrolling.current = true;
-      setTimeout(() => isScrolling.current = false, 1000);
-    } else if (deltaY < -50) { // Swipe down -> prev
-      goToPrev();
-      isScrolling.current = true;
-      setTimeout(() => isScrolling.current = false, 1000);
-    }
-  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -107,12 +63,7 @@ export default function CurtainScroller({ children }: CurtainScrollerProps) {
   }, []);
 
   return (
-    <div 
-      className="fixed inset-0 w-full h-[100svh] overflow-hidden bg-black"
-      onWheel={handleWheel}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-    >
+    <div className="fixed inset-0 w-full h-[100svh] overflow-hidden bg-black">
       <AnimatePresence>
         {sections.map((section, index) => {
           // Sections are stacked. 
@@ -137,8 +88,62 @@ export default function CurtainScroller({ children }: CurtainScrollerProps) {
                 ease: [0.76, 0, 0.24, 1] // Super smooth Apple-like bezier curve
               }}
             >
-              {/* Added h-full and overflow-y-auto so content inside the section can still scroll if it's taller than 100svh */}
-              <div className="w-full h-full overflow-y-auto hide-scrollbar pr-4 md:pr-6 lg:pr-8">
+              <div 
+                className="w-full h-full overflow-y-auto hide-scrollbar pr-4 md:pr-6 lg:pr-8"
+                onWheel={(e) => {
+                  const target = e.currentTarget;
+                  const isAtTop = target.scrollTop <= 0;
+                  const isAtBottom = Math.abs(target.scrollHeight - target.clientHeight - target.scrollTop) <= 2;
+
+                  if (Math.abs(e.deltaY) < 5) return; // ignore tiny inertial trackpad ticks
+
+                  if (e.deltaY < 0 && isAtTop) {
+                    if (!isScrolling.current && currentIndex > 0) {
+                      isScrolling.current = true;
+                      goToPrev();
+                      setTimeout(() => isScrolling.current = false, 1000);
+                    }
+                  } else if (e.deltaY > 0 && isAtBottom) {
+                    if (!isScrolling.current && currentIndex < totalSections - 1) {
+                      isScrolling.current = true;
+                      goToNext();
+                      setTimeout(() => isScrolling.current = false, 1000);
+                    }
+                  }
+                }}
+                onTouchStart={(e) => {
+                  touchStartY.current = e.touches[0].clientY;
+                  touchStartX.current = e.touches[0].clientX;
+                }}
+                onTouchMove={(e) => {
+                  const target = e.currentTarget;
+                  const isAtTop = target.scrollTop <= 0;
+                  const isAtBottom = Math.abs(target.scrollHeight - target.clientHeight - target.scrollTop) <= 2;
+
+                  const touchEndY = e.touches[0].clientY;
+                  const touchEndX = e.touches[0].clientX;
+                  const deltaY = touchStartY.current - touchEndY;
+                  const deltaX = touchStartX.current - touchEndX;
+
+                  if (Math.abs(deltaX) > Math.abs(deltaY)) return; // horizontal swipe
+
+                  if (deltaY < -30 && isAtTop) {
+                    // Swipe down at the top -> previous section
+                    if (!isScrolling.current && currentIndex > 0) {
+                      isScrolling.current = true;
+                      goToPrev();
+                      setTimeout(() => isScrolling.current = false, 1000);
+                    }
+                  } else if (deltaY > 30 && isAtBottom) {
+                    // Swipe up at the bottom -> next section
+                    if (!isScrolling.current && currentIndex < totalSections - 1) {
+                      isScrolling.current = true;
+                      goToNext();
+                      setTimeout(() => isScrolling.current = false, 1000);
+                    }
+                  }
+                }}
+              >
                 {section}
               </div>
             </motion.div>
