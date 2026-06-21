@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Smoke from "@/components/Smoke";
+import { CustomTooltip } from "@/components/ui/tooltip";
 
 export default function Navbar({ dict, currentLocale }: { dict: Record<string, string>, currentLocale: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -168,7 +169,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
   };
 
   return (
-    <nav ref={navRef} className={`animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+    <nav id="navbar-container" ref={navRef} className={`animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
       <div className="flex justify-between items-start w-full relative z-10">
 
         {/* --- Left Column: Logo & Tools (Total height exactly 64px / h-16) --- */}
@@ -182,28 +183,30 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
             <span className="text-2xl font-black uppercase tracking-tighter">SB.</span>
           </Link>
 
-          <button
-            onClick={cycleTheme}
-            onMouseEnter={prewarmAudio}
-            onTouchStart={prewarmAudio}
-            aria-label="Cycle System Theme"
-            title="Cycle Theme"
-            className="bg-black text-white border-4 border-s-0 border-black px-3.5 flex items-center justify-center hover:bg-white hover:text-black transition-colors h-full"
-          >
-            <Palette size={18} />
-          </button>
+          <CustomTooltip content={dict?.cycleTheme || "Cycle Theme"} side="bottom">
+            <button
+              onClick={cycleTheme}
+              onMouseEnter={prewarmAudio}
+              onTouchStart={prewarmAudio}
+              aria-label="Cycle System Theme"
+              className="bg-black text-white border-4 border-s-0 border-black px-3.5 flex items-center justify-center hover:bg-white hover:text-black transition-colors h-full"
+            >
+              <Palette size={18} />
+            </button>
+          </CustomTooltip>
           
-          <button
-            onClick={toggleLanguage}
-            onMouseEnter={prewarmAudio}
-            onTouchStart={prewarmAudio}
-            aria-label="Toggle Language"
-            title="Toggle Language"
-            className="bg-white text-black border-4 border-s-0 border-black px-3.5 flex items-center justify-center gap-1 hover:bg-black hover:text-white font-bold transition-colors h-full"
-          >
-            <Languages size={18} />
-            <span>{dict?.toggleLang || (currentLocale === 'en' ? 'AR' : 'EN')}</span>
-          </button>
+          <CustomTooltip content={dict?.toggleLanguage || "Toggle Language"} side="bottom">
+            <button
+              onClick={toggleLanguage}
+              onMouseEnter={prewarmAudio}
+              onTouchStart={prewarmAudio}
+              aria-label="Toggle Language"
+              className="bg-white text-black border-4 border-s-0 border-black px-3.5 flex items-center justify-center gap-1 hover:bg-black hover:text-white font-bold transition-colors h-full"
+            >
+              <Languages size={18} />
+              <span>{dict?.toggleLang || (currentLocale === 'en' ? 'AR' : 'EN')}</span>
+            </button>
+          </CustomTooltip>
         </div>
 
         {/* --- Desktop Nav Links Block (Locked to exactly 64px / h-16 height) --- */}

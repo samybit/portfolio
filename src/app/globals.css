@@ -1111,3 +1111,37 @@ html.theme-color .audio-progress-track {
 html.theme-color .audio-progress-fill {
   background-color: #FF4F00 !important;
 }
+
+/* ── Tooltip Custom Theme Styling ────────────────────────── */
+.tooltip-popup {
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000;
+  padding: 4px 10px;
+  font-family: inherit;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  z-index: 99999 !important;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Ember Theme */
+html.theme-color .tooltip-popup {
+  background-color: #1A1716 !important;
+  color: #FF4F00 !important;
+  border-color: #FF4F00 !important;
+  box-shadow: 4px 4px 0px 0px #FF4F00 !important;
+}
+
+/* Neumorphic Theme */
+html.theme-neumorphic .tooltip-popup {
+  background-color: #e0e5ec !important;
+  color: #4b5563 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 3px 3px 6px rgba(163, 177, 198, 0.6), -3px -3px 6px rgba(255, 255, 255, 0.5) !important;
+}
