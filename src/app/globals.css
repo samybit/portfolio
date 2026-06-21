@@ -1003,8 +1003,13 @@ html.theme-neumorphic nav button.brutalist-shadow-static.md\:hidden:active {
 
 /* --- Hero Vertical Divider in Neumorphic --- */
 @media (min-width: 1024px) {
-  html.theme-neumorphic #hero div.border-black {
+  html.theme-neumorphic:not([dir="rtl"]) #hero div.border-black {
     border-left: 8px solid #a3b1c6 !important;
+    border-right: none !important;
+  }
+  html.theme-neumorphic[dir="rtl"] #hero div.border-black {
+    border-right: 8px solid #a3b1c6 !important;
+    border-left: none !important;
   }
 }
 
