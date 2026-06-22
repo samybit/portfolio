@@ -6,6 +6,7 @@ import { sendEmail } from "@/actions/send-email";
 import { playPowerUp, prewarmAudio } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 
 export default function Contact({ dict }: { dict: Record<string, string> }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -127,26 +128,38 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
             </h3>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-              <a href="https://linkedin.com/in/samybit/" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors">
-                <span>LinkedIn</span>
-                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
-                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
-              </a>
-              <a href="https://www.upwork.com/freelancers/~015e572ae8edee2be8" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors">
-                <span>Upwork</span>
-                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
-                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
-              </a>
-              <a href="https://contra.com/samy_barsoum_akavah3d" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors">
-                <span>Contra</span>
-                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
-                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
-              </a>
-              <a href="https://mostaql.com/u/Samy_01" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between gap-4 border-4 border-white px-6 py-4 text-xl font-black uppercase hover:bg-white hover:text-black transition-colors">
-                <span>mostaql</span>
-                <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
-                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
-              </a>
+              <InteractiveHoverButton
+                href="https://linkedin.com/in/samybit/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`LinkedIn${dict?.newTab || " (opens in a new tab)"}`}
+              >
+                LinkedIn
+              </InteractiveHoverButton>
+              <InteractiveHoverButton
+                href="https://www.upwork.com/freelancers/~015e572ae8edee2be8"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Upwork${dict?.newTab || " (opens in a new tab)"}`}
+              >
+                Upwork
+              </InteractiveHoverButton>
+              <InteractiveHoverButton
+                href="https://contra.com/samy_barsoum_akavah3d"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Contra${dict?.newTab || " (opens in a new tab)"}`}
+              >
+                Contra
+              </InteractiveHoverButton>
+              <InteractiveHoverButton
+                href="https://mostaql.com/u/Samy_01"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`mostaql${dict?.newTab || " (opens in a new tab)"}`}
+              >
+                mostaql
+              </InteractiveHoverButton>
             </div>
           </div>
         </div>

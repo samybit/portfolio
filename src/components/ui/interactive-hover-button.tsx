@@ -1,0 +1,138 @@
+import { ArrowUpRight } from "lucide-react";
+import React, { useSyncExternalStore } from "react";
+import { cn } from "@/lib/utils";
+
+interface InteractiveHoverButtonProps {
+  children?: React.ReactNode;
+  text?: string;
+  className?: string;
+  href?: string;
+  target?: string;
+  rel?: string;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+}
+
+const subscribe = (callback: () => void) => {
+  if (typeof document === "undefined") return () => {};
+  const observer = new MutationObserver(callback);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  return () => observer.disconnect();
+};
+
+const getSnapshot = () => {
+  if (typeof document === "undefined") return "brutalist";
+  const cl = document.documentElement.classList;
+  if (cl.contains("theme-neumorphic")) return "neumorphic";
+  if (cl.contains("theme-color")) return "ember";
+  return "brutalist";
+};
+
+const getServerSnapshot = () => "brutalist";
+
+export function InteractiveHoverButton({
+  children,
+  className,
+  text,
+  href,
+  target,
+  rel,
+  ...props
+}: InteractiveHoverButtonProps & Omit<React.ComponentPropsWithoutRef<"button">, keyof InteractiveHoverButtonProps> & Omit<React.ComponentPropsWithoutRef<"a">, keyof InteractiveHoverButtonProps>) {
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const content = text || children;
+
+  let baseClass = "";
+  let dotClass = "";
+  let textClass = "";
+  let arrowClass = "";
+  let borderRadiusClass = "";
+  let dotRoundingClass = "";
+
+  if (theme === "neumorphic") {
+    baseClass = "group bg-[#e0e5ec] text-[#4b5563] border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]";
+    dotClass = "bg-[#4b5563]";
+    textClass = "text-[#4b5563] group-hover:text-[#e0e5ec]";
+    arrowClass = "text-[#e0e5ec]";
+    borderRadiusClass = "rounded-full";
+    dotRoundingClass = "rounded-full";
+  } else if (theme === "ember") {
+    // Ember theme (brutalist base, colors are charcoal #1A1716 and orange #FF4F00)
+    // Avoid using classes like 'text-white' or 'text-black' to prevent '!important' overrides in globals.css
+    baseClass = "group bg-transparent text-[#1A1716] border-4 border-[#1A1716] hover:bg-[#1A1716] hover:text-[#FF4F00] hover:border-[#1A1716]";
+    dotClass = "bg-[#1A1716]";
+    textClass = "text-[#1A1716] group-hover:text-[#FF4F00]";
+    arrowClass = "text-[#FF4F00]";
+    borderRadiusClass = "rounded-none";
+    dotRoundingClass = "rounded-none";
+  } else {
+    // Default Brutalist theme
+    baseClass = "group bg-transparent text-white border-4 border-white hover:bg-white hover:text-black hover:border-white";
+    dotClass = "bg-white";
+    textClass = "text-white group-hover:text-black";
+    arrowClass = "text-black";
+    borderRadiusClass = "rounded-none";
+    dotRoundingClass = "rounded-none";
+  }
+
+  // Set uniform width by default (w-full on mobile, sm:w-48 on desktop)
+  const commonClass = cn(
+    "relative w-full sm:w-48 cursor-pointer overflow-hidden p-3 px-6 text-center text-xl font-black uppercase transition-all duration-300 ease-in-out",
+    borderRadiusClass,
+    baseClass,
+    className
+  );
+
+  const innerContent = (
+    <div className="relative z-10 flex items-center justify-center gap-2 w-full h-full">
+      {/* The Inline Dot (Scales up on hover, shrinks back smoothly on unhover, square in brutalist/ember) */}
+      <div 
+        className={cn(
+          "relative z-0 h-2.5 w-2.5 rounded-full transition-transform duration-300 ease-in-out group-hover:scale-[100.8] group-hover:duration-700 group-hover:ease-out origin-center shrink-0", 
+          dotRoundingClass,
+          dotClass
+        )}
+      ></div>
+
+      {/* The Text (Only one instance, smooth color change, smooth fallback on unhover) */}
+      <span className={cn("relative z-10 transition-colors duration-300 ease-in-out group-hover:duration-450 select-none", textClass)}>
+        {content}
+      </span>
+
+      {/* Arrow (Grows/Fades on hover, snaps back smoothly on unhover) */}
+      <div 
+        className={cn(
+          "relative z-10 flex items-center transition-all duration-300 ease-in-out group-hover:duration-450 group-hover:ease-out overflow-hidden w-0 opacity-0 group-hover:w-6 group-hover:opacity-100 shrink-0",
+          arrowClass
+        )}
+      >
+        <ArrowUpRight className="w-6 h-6 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      </div>
+    </div>
+  );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target={target}
+        rel={rel}
+        className={cn("inline-block", commonClass)}
+        {...(props as any)}
+      >
+        {innerContent}
+      </a>
+    );
+  }
+
+  return (
+    <button className={commonClass} {...(props as any)}>
+      {innerContent}
+    </button>
+  );
+}
+
+
+
+
+
+
