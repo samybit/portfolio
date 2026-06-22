@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowDownRight } from "lucide-react";
 import Link from "next/link";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { MeshDistortMaterial } from "@react-three/drei";
@@ -424,6 +424,7 @@ function WireframeMonolith({ isCanvasInView }: { isCanvasInView: boolean }) {
 export default function CTA({ dict }: { dict: Record<string, string> }) {
   const [isEmber, setIsEmber] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const anomalies = ['arrow', 'cross', 'wireframe', 'leak'] as const;
   const [anomalyIndex, setAnomalyIndex] = useState(1);
@@ -525,10 +526,16 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
             <Link
               href="#contact"
               onClick={handleScroll}
-              className="group/btn relative inline-flex items-center justify-center bg-black text-white px-8 py-4 text-lg md:text-xl font-black uppercase tracking-widest border-4 border-black hover:bg-white hover:text-black transition-colors duration-200 mt-4"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onTouchStart={() => setIsHovered(true)}
+              onTouchEnd={() => setIsHovered(false)}
+              className={`relative inline-flex items-center justify-center px-8 py-4 text-lg md:text-xl font-black uppercase tracking-widest border-4 border-black transition-colors duration-200 mt-4 ${
+                isHovered ? "bg-white text-black" : "bg-black text-white"
+              }`}
             >
               <span>{dict?.button || "Get in touch"}</span>
-              <ArrowUpRight className="ms-3 w-6 h-6 group-hover/btn:rotate-90 transition-transform duration-200 rtl:-scale-x-100 rtl:group-hover/btn:-rotate-90" />
+              <ArrowDownRight className={`ms-3 w-6 h-6 transition-transform rtl:-scale-x-100 ${isHovered ? "[animation:arrow-snap-sequence_0.8s_ease-in-out_forwards]" : ""}`} />
             </Link>
           </div>
         </motion.div>
