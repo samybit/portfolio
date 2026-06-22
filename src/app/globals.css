@@ -1232,3 +1232,29 @@ html[data-magicui-theme-vt="active"]::view-transition-new(root) {
   animation: none;
   clip-path: var(--magicui-theme-vt-clip-from);
 }
+
+/* =========================================
+   --- EGYPT MAP TOOLTIP THEME OVERRIDES ---
+========================================= */
+
+/* Ember theme: orange borders, dark bg */
+html.theme-color .egypt-map-tooltip {
+  background-color: #1A1716 !important;
+  border-color: #FF4F00 !important;
+  box-shadow: 6px 6px 0px #FF4F00 !important;
+  color: #FF4F00 !important;
+}
+html.theme-color .egypt-map-tooltip span.border-b-4 {
+  border-color: #FF4F00 !important;
+}
+
+/* Neumorphic theme: soft shadows, no hard borders */
+html.theme-neumorphic .egypt-map-tooltip {
+  background-color: #e0e5ec !important;
+  border-color: transparent !important;
+  box-shadow: 6px 6px 12px rgba(163,177,198,0.6), -6px -6px 12px rgba(255,255,255,0.5) !important;
+  color: #4b5563 !important;
+}
+html.theme-neumorphic .egypt-map-tooltip span.border-b-4 {
+  border-color: #a3b1c6 !important;
+}

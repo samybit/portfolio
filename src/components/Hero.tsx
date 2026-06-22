@@ -6,8 +6,46 @@ import { useState } from "react";
 import SproutingFlowers from "@/components/SproutingFlowers";
 import GlitchText from "@/components/GlitchText";
 import HeroCarabiner3D from "@/components/HeroCarabiner3D";
+import EgyptMapTooltip from "@/components/EgyptMapTooltip";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 import { useScrollMode } from "@/context/ScrollModeContext";
+
+// --- HERO DESCRIPTION RENDERER ---
+// Parses the description string (which may contain <br/> tags) and wraps
+// the word "Egypt" or "مصر" with the interactive EgyptMapTooltip.
+function HeroDescription({ html, className }: { html: string; className: string }) {
+  // Split on <br/> (any casing / spacing), keep the rest as a flat string per line
+  const lines = html.split(/<br\s*\/?>/);
+
+  const EGYPT_REGEX = /(Egypt|مصر)/g;
+
+  const renderLine = (line: string, lineIdx: number) => {
+    const parts = line.split(EGYPT_REGEX);
+    return parts.map((part, partIdx) => {
+      if (part === "Egypt" || part === "مصر") {
+        return (
+          <EgyptMapTooltip key={`${lineIdx}-${partIdx}`}>
+            <span className="underline decoration-4 decoration-black underline-offset-2 cursor-help">
+              {part}
+            </span>
+          </EgyptMapTooltip>
+        );
+      }
+      return <span key={`${lineIdx}-${partIdx}`}>{part}</span>;
+    });
+  };
+
+  return (
+    <p className={className}>
+      {lines.map((line, idx) => (
+        <span key={idx}>
+          {renderLine(line, idx)}
+          {idx < lines.length - 1 && <br />}
+        </span>
+      ))}
+    </p>
+  );
+}
 
 export default function Hero({ dict }: { dict: Record<string, string> }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -25,7 +63,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
       <div className="relative z-10 w-full max-w-[90rem] mx-auto flex flex-col min-[1300px]:flex-row min-[1300px]:items-center justify-between gap-12 min-[1300px]:gap-16">
 
         {/* --- LEFT COLUMN: TYPOGRAPHY --- */}
-        <div className="flex-1 animate-slide-up">
+        <div className="flex-1 animate-slide-up relative z-10">
 
           <div className="flex items-center gap-4 mb-6">
             <span className={`text-[clamp(0.75rem,4.5vw,1.25rem)] whitespace-nowrap font-bold uppercase tracking-widest border-b-4 pb-1 bg-white ${
@@ -36,7 +74,10 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
           </div>
 
           {/* --- DESKTOP DESCRIPTION (Hidden on mobile) --- */}
-          <p className="hidden md:block text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ms-2 ps-2 hero-subtitle-backdrop mb-6" dangerouslySetInnerHTML={{ __html: dict?.description || "Full-Stack Developer. <br /> MERN Stack Specialist. <br /> Based in Egypt. <br /> Building fast, and effective apps." }} />
+          <HeroDescription
+            html={dict?.description || "Full-Stack Developer. <br/> MERN Stack Specialist. <br/> Based in Egypt. <br/> Building fast, and effective apps."}
+            className="hidden md:block text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ms-2 ps-2 hero-subtitle-backdrop mb-6"
+          />
 
           <h1 className="text-[18vw] sm:text-6xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem] font-black uppercase tracking-tighter leading-[0.85]">
             {/* --- WRAP 'SAMY' IN A TRIGGER SPAN --- */}
@@ -63,11 +104,14 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
           </h1>
 
           {/* --- MOBILE DESCRIPTION (Hidden on desktop) --- */}
-          <p className="block md:hidden text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ms-2 ps-2 hero-subtitle-backdrop mt-6" dangerouslySetInnerHTML={{ __html: dict?.description || "Full-Stack Developer. <br /> MERN Stack Specialist. <br /> Based in Egypt. <br /> Building fast, and effective apps." }} />
+          <HeroDescription
+            html={dict?.description || "Full-Stack Developer. <br/> MERN Stack Specialist. <br/> Based in Egypt. <br/> Building fast, and effective apps."}
+            className="block md:hidden text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ms-2 ps-2 hero-subtitle-backdrop mt-6"
+          />
         </div>
 
         {/* --- RIGHT COLUMN: ACTIONS --- */}
-        <div className="flex flex-col w-full min-[1300px]:w-[450px] gap-4 md:gap-6 border-black border-t-0 border-s-0 min-[1300px]:border-s-8 min-[1300px]:ps-12 min-[1300px]:py-8 shrink-0 animate-slide-up-delay-1">
+        <div className="flex flex-col w-full min-[1300px]:w-[450px] gap-4 md:gap-6 border-black border-t-0 border-s-0 min-[1300px]:border-s-8 min-[1300px]:ps-12 min-[1300px]:py-8 shrink-0 animate-slide-up-delay-1 relative z-0">
 
           <Link
             href="#projects"
