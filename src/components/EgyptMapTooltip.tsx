@@ -1,7 +1,21 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
-import { DottedMap } from "@/components/ui/dotted-map";
+import { useState, useRef, useCallback, useEffect } from "react";
+import dynamic from "next/dynamic";
+
+const DottedMap = dynamic(
+  () => import("@/components/ui/dotted-map").then((mod) => mod.DottedMap),
+  {
+    ssr: false,
+    loading: () => (
+      <span className="flex w-full h-full items-center justify-center bg-white border-2 border-black">
+        <span className="text-xs font-black uppercase tracking-wider animate-pulse">
+          Loading Map...
+        </span>
+      </span>
+    ),
+  }
+);
 
 // Cairo, Egypt coordinates
 const EGYPT_MARKERS = [
@@ -15,7 +29,14 @@ const EGYPT_MARKERS = [
 
 export default function EgyptMapTooltip({ children }: { children: React.ReactNode }) {
   const [visible, setVisible] = useState(false);
+  const [hasBeenShown, setHasBeenShown] = useState(false);
   const hideTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (visible) {
+      setHasBeenShown(true);
+    }
+  }, [visible]);
 
   const show = useCallback(() => {
     if (hideTimeout.current) {
@@ -65,14 +86,16 @@ export default function EgyptMapTooltip({ children }: { children: React.ReactNod
       >
         {/* Map */}
         <span className="block p-2" style={{ height: 150 }}>
-          <DottedMap
-            markers={EGYPT_MARKERS}
-            dotColor="#000"
-            markerColor="#000"
-            dotRadius={0.3}
-            pulse
-            mapSamples={4000}
-          />
+          {hasBeenShown && (
+            <DottedMap
+              markers={EGYPT_MARKERS}
+              dotColor="#000"
+              markerColor="#000"
+              dotRadius={0.3}
+              pulse
+              mapSamples={4000}
+            />
+          )}
         </span>
 
         {/* Arrow notch — points UP on mobile (tooltip below word), DOWN on sm+ (tooltip above word) */}
