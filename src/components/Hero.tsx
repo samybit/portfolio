@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDownRight, Download } from "lucide-react";
+import { ArrowDownRight, Download, FileText } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import Text3DFlip from "@/components/ui/text-3d-flip";
@@ -127,7 +127,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             <Text3DFlip as="span" isHovered={isWorkHovered} rotateDirection="top">
               {dict?.work || "Work"}
             </Text3DFlip>
-            <ArrowDownRight className="w-6 h-6 md:w-10 md:h-10 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-2" />
+            <ArrowDownRight className="w-6 h-6 md:w-10 md:h-10 group-hover:[animation:arrow-snap-sequence_0.8s_ease-in-out_forwards] transition-transform rtl:-scale-x-100" />
           </Link>
 
           <Link
@@ -152,7 +152,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             <Text3DFlip as="span" isHovered={isContactHovered} rotateDirection="top">
               {dict?.contact || "Contact"}
             </Text3DFlip>
-            <ArrowDownRight className="w-6 h-6 md:w-10 md:h-10 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-2" />
+            <ArrowDownRight className="w-6 h-6 md:w-10 md:h-10 group-hover:[animation:arrow-snap-sequence_0.8s_ease-in-out_forwards] transition-transform rtl:-scale-x-100" />
           </Link>
 
           {/* CV Button */}
@@ -170,7 +170,10 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             <Text3DFlip as="span" isHovered={isCvHovered} rotateDirection="top">
               {dict?.getCV || "Get CV"}
             </Text3DFlip>
-            <Download className="w-6 h-6 md:w-10 md:h-10 group-hover:translate-y-2 transition-transform" />
+            <div className="relative w-6 h-6 md:w-10 md:h-10 overflow-hidden">
+              <Download className="absolute inset-0 w-full h-full transition-all duration-500 group-hover:opacity-0 group-hover:scale-50 group-hover:translate-y-4" />
+              <FileText className="absolute inset-0 w-full h-full opacity-0 scale-50 -translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0" />
+            </div>
           </a>
 
         </div>
