@@ -89,9 +89,21 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             <br />
 
             {/* Added cursor-crosshair to match the 'Samy' interaction */}
-            <span className="bg-black text-white px-2 sm:px-4 inline-block mt-4 md:mt-4 transform -skew-x-6 z-20 relative cursor-crosshair">
-              {/* Wrapped the text in the new engine */}
-              <GlitchText text={dict?.barsoum || "Barsoum"} />
+            <span className="inline-flex mt-4 md:mt-4 transform -skew-x-6 z-20 relative cursor-crosshair">
+              {/* Bottom Layer: Solid black text, unclipped, overflows naturally */}
+              <span className="absolute inset-0 text-black px-2 sm:px-4 z-0 pointer-events-none flex items-center" aria-hidden="true">
+                <GlitchText text={dict?.barsoum || "Barsoum"} />
+              </span>
+              
+              {/* Top Layer: Black bg, white text, clipped to padding box */}
+              <span className="absolute inset-0 bg-black text-white px-2 sm:px-4 z-10 overflow-hidden flex items-center">
+                <GlitchText text={dict?.barsoum || "Barsoum"} />
+              </span>
+              
+              {/* Structural Layer: Invisible, sets wrapper dimensions */}
+              <span className="relative invisible px-2 sm:px-4 z-[-1] pointer-events-none flex items-center" aria-hidden="true">
+                <GlitchText text={dict?.barsoum || "Barsoum"} />
+              </span>
             </span>
           </h1>
 

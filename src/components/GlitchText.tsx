@@ -13,9 +13,11 @@ const COLORS = [
 ];
 
 export default function GlitchText({ text }: { text: string }) {
+  const isArabic = /[\u0600-\u06FF]/.test(text);
+  const parts = isArabic ? text.split(/(\s+)/) : text.split("");
   return (
     <>
-      {text.split("").map((char, index) => (
+      {parts.map((char, index) => (
         <HoverChar key={index} char={char} />
       ))}
     </>
