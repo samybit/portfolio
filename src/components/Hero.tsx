@@ -3,7 +3,7 @@
 import { ArrowDownRight, Download } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import SproutingFlowers from "@/components/SproutingFlowers";
+import SplitText from "@/components/animata/text/split-text";
 import GlitchText from "@/components/GlitchText";
 import HeroCarabiner3D from "@/components/HeroCarabiner3D";
 import EgyptMapTooltip from "@/components/EgyptMapTooltip";
@@ -48,7 +48,6 @@ function HeroDescription({ html, className }: { html: string; className: string 
 }
 
 export default function Hero({ dict }: { dict: Record<string, string> }) {
-  const [isHovered, setIsHovered] = useState(false);
   const isNeumorphic = useNeumorphicTheme();
   const { isCurtainMode } = useScrollMode();
 
@@ -80,19 +79,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
           />
 
           <h1 className="text-[18vw] sm:text-6xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem] font-black uppercase tracking-tighter leading-[0.85]">
-            {/* --- WRAP 'SAMY' IN A TRIGGER SPAN --- */}
-            <span
-              className="relative inline-block cursor-crosshair z-10"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              onClick={() => setIsHovered(!isHovered)}
-            >
-              <span className={`relative z-20 inline-block hero-samy-text ${isHovered ? "text-white" : "text-black"
-                }`}>
-                {dict?.samy || "Samy"}
-              </span>
-              <SproutingFlowers isHovered={isHovered} />
-            </span>
+            <SplitText text={dict?.samy || "Samy"} className="text-black hero-samy-text cursor-pointer z-10" />
 
             <br />
 
