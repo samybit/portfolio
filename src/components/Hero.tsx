@@ -26,7 +26,7 @@ function HeroDescription({ html, className }: { html: string; className: string 
       if (part === "Egypt" || part === "مصر") {
         return (
           <EgyptMapTooltip key={`${lineIdx}-${partIdx}`}>
-            <span className="underline decoration-4 decoration-black underline-offset-2 cursor-help">
+            <span className="underline decoration-4 decoration-zinc-800 underline-offset-2 cursor-help">
               {part}
             </span>
           </EgyptMapTooltip>
@@ -79,8 +79,8 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
 
           {/* --- DESKTOP DESCRIPTION (Hidden on mobile) --- */}
           <HeroDescription
-            html={dict?.description || "Full-Stack Developer. <br/> MERN Stack Specialist. <br/> Based in Egypt. <br/> Building fast, and effective apps."}
-            className="hidden md:block text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ms-2 ps-2 hero-subtitle-backdrop mb-6"
+            html={dict?.description || "Full-Stack Developer. <br/> MERN Stack Specialist. <br/> Based in Egypt. <br/> Building fast effective apps."}
+            className="hidden md:block text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 -ms-2 ps-2 hero-subtitle-backdrop mb-6"
           />
 
           <h1 className="text-[18vw] sm:text-6xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem] font-black uppercase tracking-tighter leading-[0.85]">
@@ -109,8 +109,8 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
 
           {/* --- MOBILE DESCRIPTION (Hidden on desktop) --- */}
           <HeroDescription
-            html={dict?.description || "Full-Stack Developer. <br/> MERN Stack Specialist. <br/> Based in Egypt. <br/> Building fast, and effective apps."}
-            className="block md:hidden text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 backdrop-blur-sm -ms-2 ps-2 hero-subtitle-backdrop mt-6"
+            html={dict?.description || "Full-Stack Developer. <br/> MERN Stack Specialist. <br/> Based in Egypt. <br/> Building fast effective apps."}
+            className="block md:hidden text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 -ms-2 ps-2 hero-subtitle-backdrop mt-6"
           />
         </div>
 

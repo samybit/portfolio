@@ -488,7 +488,7 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-7xl font-black uppercase tracking-tighter leading-none relative z-10 bg-white/70 backdrop-blur-sm p-4 -ms-4 quote-backdrop"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-7xl font-black uppercase tracking-tighter leading-none relative z-10 bg-white/90 p-4 -ms-4 quote-backdrop"
           >
             &quot;{dict?.quote || "It's no use going back to yesterday, because I was a different person then."}&quot;
           </motion.blockquote>
@@ -498,7 +498,7 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="flex items-center gap-4 mt-8 relative z-10 bg-white/70 backdrop-blur-sm p-4 -ms-4 max-w-max quote-backdrop"
+            className="flex items-center gap-4 mt-8 relative z-10 bg-white/90 p-4 -ms-4 max-w-max quote-backdrop"
           >
             {/* Brutalist Divider */}
             <div className="h-2 w-8 sm:w-16 md:w-24 bg-black shrink-0"></div>
