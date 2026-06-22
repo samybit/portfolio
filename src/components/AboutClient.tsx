@@ -284,7 +284,10 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
         <div className={`w-full ${isCurtainMode ? 'max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10' : ''}`}>
           <section className="animate-slide-up-delay-2">
             <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
-              <h2 className="text-4xl font-black uppercase tracking-widest">{dict?.whoIAm || "Who I Am"}</h2>
+              <MorphingText 
+                texts={[dict?.whoIAm || "Who I Am", dict?.summary || "Summary"]}
+                className="text-4xl font-black uppercase tracking-widest text-white m-0 p-0"
+              />
             </div>
 
             <div className={`brutalist-container p-8 md:p-10 transition-all duration-300 ${
