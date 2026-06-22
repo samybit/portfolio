@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { ArrowDownRight } from "lucide-react";
 import Link from "next/link";
+import RippleButton from "./animata/button/ripple-button";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { MeshDistortMaterial } from "@react-three/drei";
 import { useRef, useEffect, useMemo, useState } from "react";
@@ -523,20 +524,16 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
             <p className="text-base md:text-lg lg:text-xl font-bold uppercase text-zinc-600">
               {dict?.description || "Currently open for freelance projects and full-time roles. Let's make something impactful."}
             </p>
-            <Link
+            <RippleButton
+              as={Link}
               href="#contact"
               onClick={handleScroll}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              onTouchStart={() => setIsHovered(true)}
-              onTouchEnd={() => setIsHovered(false)}
-              className={`relative inline-flex items-center justify-center px-8 py-4 text-lg md:text-xl font-black uppercase tracking-widest border-4 border-black transition-colors duration-200 mt-4 ${
-                isHovered ? "bg-white text-black" : "bg-black text-white"
-              }`}
+              onHoverChange={setIsHovered}
+              className="group/btn relative inline-flex items-center justify-center px-8 py-4 text-lg md:text-xl font-black uppercase tracking-widest border-4 border-black mt-4 bg-black text-white"
             >
               <span>{dict?.button || "Get in touch"}</span>
               <ArrowDownRight className={`ms-3 w-6 h-6 transition-transform rtl:-scale-x-100 ${isHovered ? "[animation:arrow-snap-sequence_0.8s_ease-in-out_forwards]" : ""}`} />
-            </Link>
+            </RippleButton>
           </div>
         </motion.div>
 
