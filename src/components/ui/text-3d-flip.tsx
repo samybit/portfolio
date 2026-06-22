@@ -122,9 +122,10 @@ const Text3DFlip = ({
   }, [children])
 
   const characters = useMemo(() => {
+    const isArabic = /[\u0600-\u06FF]/.test(text)
     const words = text.split(" ")
     return words.map((word, i) => ({
-      characters: splitIntoCharacters(word),
+      characters: isArabic ? [word] : splitIntoCharacters(word),
       needsSpace: i !== words.length - 1,
     }))
   }, [text])

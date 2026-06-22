@@ -20,8 +20,8 @@ export default function SplitText({
     };
   }, []);
 
-  const letterClassName =
-    "block h-1/2 select-none [clip-path:inset(0_-100%)] leading-none transition-transform duration-300 ease-out whitespace-pre";
+  const baseLetterClassName =
+    "block h-1/2 select-none leading-none transition-transform duration-300 ease-out whitespace-pre";
 
   return (
     <span
@@ -33,7 +33,7 @@ export default function SplitText({
       {/** add hidden text so that we maintain the size for any text */}
       <span className="invisible leading-none block">{text}</span>
       <span className="absolute top-0 flex h-full">
-        {text.split("").map((letter, index) => {
+        {(/[\u0600-\u06FF]/.test(text) ? text.split(/(\s+)/) : text.split("")).map((letter, index) => {
           const distance = activeIndex !== undefined ? Math.abs(index - activeIndex) : null;
           const topTranslate = distance === 0 ? " -translate-y-5" : distance === 1 ? " -translate-y-3" : distance === 2 ? " -translate-y-1" : "";
           const bottomTranslate = distance === 0 ? " translate-y-5" : distance === 1 ? " translate-y-3" : distance === 2 ? " translate-y-1" : "";
@@ -56,12 +56,18 @@ export default function SplitText({
               aria-hidden
             >
               {/** top half */}
-              <span className={letterClassName + topTranslate}>
+              <span 
+                className={`${baseLetterClassName}${topTranslate}`}
+                style={{ clipPath: "inset(-100% -100% 0% -100%)" }}
+              >
                 {letter}
               </span>
 
               {/** bottom half */}
-              <span className={letterClassName + bottomTranslate}>
+              <span 
+                className={`${baseLetterClassName}${bottomTranslate}`}
+                style={{ clipPath: "inset(0% -100% -100% -100%)" }}
+              >
                 <span className="absolute -translate-y-1/2 leading-none">{letter}</span>
               </span>
             </span>
