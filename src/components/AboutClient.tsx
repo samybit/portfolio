@@ -321,7 +321,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" dir="ltr">
               {stack.map((category, index) => (
                 <div
                   key={index}
@@ -341,7 +341,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                     }`}>
                       {category.icon}
                     </div>
-                    <h3 className="text-2xl font-black uppercase leading-none text-left rtl:text-right">{category.category}</h3>
+                    <h3 className="text-2xl font-black uppercase leading-none text-left">{category.category}</h3>
                   </div>
 
                   <ul className="flex flex-col gap-3">
