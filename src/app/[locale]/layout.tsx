@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Space_Grotesk, Noto_Kufi_Arabic } from "next/font/google";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
 import SystemOverride from "@/components/SystemOverride";
@@ -10,6 +10,7 @@ import { notFound } from "next/navigation";
 import { getDictionary, Locale } from "@/dictionaries/getDictionary";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
+const notoKufiArabic = Noto_Kufi_Arabic({ subsets: ["arabic"] });
 
 export const viewport: Viewport = {
   themeColor: "#000000",
@@ -109,9 +110,11 @@ export default async function RootLayout({
 
   const dict = await getDictionary(locale as Locale);
 
+  const fontClassName = locale === 'ar' ? notoKufiArabic.className : spaceGrotesk.className;
+
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="scroll-smooth snap-y snap-mandatory" data-scroll-behavior="smooth">
-      <body className={`${spaceGrotesk.className} text-black antialiased selection:bg-black selection:text-white`}>
+      <body className={`${fontClassName} text-black antialiased selection:bg-black selection:text-white`}>
         <SystemOverride />
         <CustomContextMenu dict={dict.menu} />
         <GhostInTheMachine />
