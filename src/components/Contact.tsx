@@ -16,6 +16,10 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
   const isNeumorphic = useNeumorphicTheme();
   const [isFlying, setIsFlying] = useState(false);
 
+  const emailErrorText = dict?.errEmail || "VALID EMAIL IS REQUIRED.";
+  const messageErrorText = dict?.errMessage || "MESSAGE IS REQUIRED.";
+  const useSmallErrorFont = emailErrorText.length > 25 || messageErrorText.length > 25;
+
   const isSubmitting = useRef(false);
 
   const isNameFilled = values.name.trim().length > 0;
@@ -216,7 +220,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                   />
                   <span
                     id="email-error"
-                    className={`absolute bottom-0 left-0 rtl:left-auto rtl:right-0 text-red-600 text-[clamp(10px,3.2vw,14px)] md:text-base font-black uppercase tracking-wide whitespace-nowrap border-s-4 border-red-600 ps-2 transition-all duration-300 ease-out ${errors.email ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
+                    className={`absolute bottom-0 left-0 rtl:left-auto rtl:right-0 text-red-600 ${useSmallErrorFont ? "text-[clamp(9.2px,2.4vw,13px)]" : "text-[clamp(10px,3.2vw,14px)]"} md:text-base font-black uppercase tracking-wide whitespace-nowrap border-s-4 border-red-600 ps-2 transition-all duration-300 ease-out ${errors.email ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
                       }`}
                   >
                     {errors.email}
@@ -241,7 +245,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                   />
                   <span
                     id="message-error"
-                    className={`absolute bottom-0 left-0 rtl:left-auto rtl:right-0 text-red-600 text-[clamp(10px,3.2vw,14px)] md:text-base font-black uppercase tracking-wide whitespace-nowrap border-s-4 border-red-600 ps-2 transition-all duration-300 ease-out ${errors.message ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
+                    className={`absolute bottom-0 left-0 rtl:left-auto rtl:right-0 text-red-600 ${useSmallErrorFont ? "text-[clamp(9.2px,2.4vw,13px)]" : "text-[clamp(10px,3.2vw,14px)]"} md:text-base font-black uppercase tracking-wide whitespace-nowrap border-s-4 border-red-600 ps-2 transition-all duration-300 ease-out ${errors.message ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
                       }`}
                   >
                     {errors.message}
