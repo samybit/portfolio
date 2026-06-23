@@ -1,92 +1,86 @@
 "use client"
 
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 import { cn } from "@/lib/utils"
 
-const morphTime = 1.5
-const cooldownTime = 0.5
-
-const useMorphingText = (texts: string[]) => {
-  const textIndexRef = useRef(0)
-  const morphRef = useRef(0)
-  const cooldownRef = useRef(0)
-  const timeRef = useRef(new Date())
-
+const useMorphingText = (texts: string[], isHovered: boolean, setIsMorphing: (val: boolean) => void) => {
   const text1Ref = useRef<HTMLSpanElement>(null)
   const text2Ref = useRef<HTMLSpanElement>(null)
+  const fractionRef = useRef(0)
 
   const setStyles = useCallback(
     (fraction: number) => {
       const [current1, current2] = [text1Ref.current, text2Ref.current]
       if (!current1 || !current2) return
 
-      current2.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`
-      current2.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`
+      // Target text (texts[1])
+      if (fraction === 0) {
+        current2.style.filter = "blur(100px)"
+        current2.style.opacity = "0%"
+      } else {
+        current2.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`
+        current2.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`
+      }
 
+      // Source text (texts[0])
       const invertedFraction = 1 - fraction
-      current1.style.filter = `blur(${Math.min(
-        8 / invertedFraction - 8,
-        100
-      )}px)`
-      current1.style.opacity = `${Math.pow(invertedFraction, 0.4) * 100}%`
+      if (invertedFraction === 0) {
+        current1.style.filter = "blur(100px)"
+        current1.style.opacity = "0%"
+      } else {
+        current1.style.filter = `blur(${Math.min(
+          8 / invertedFraction - 8,
+          100
+        )}px)`
+        current1.style.opacity = `${Math.pow(invertedFraction, 0.4) * 100}%`
+      }
 
-      current1.textContent = texts[textIndexRef.current % texts.length]
-      current2.textContent = texts[(textIndexRef.current + 1) % texts.length]
+      current1.textContent = texts[0]
+      current2.textContent = texts[1 % texts.length]
     },
     [texts]
   )
 
-  const doMorph = useCallback(() => {
-    morphRef.current -= cooldownRef.current
-    cooldownRef.current = 0
-
-    let fraction = morphRef.current / morphTime
-
-    if (fraction > 1) {
-      cooldownRef.current = cooldownTime
-      fraction = 1
-    }
-
-    setStyles(fraction)
-
-    if (fraction === 1) {
-      textIndexRef.current++
-    }
+  useEffect(() => {
+    // Initial setup
+    setStyles(fractionRef.current)
   }, [setStyles])
-
-  const doCooldown = useCallback(() => {
-    morphRef.current = 0
-    const [current1, current2] = [text1Ref.current, text2Ref.current]
-    if (current1 && current2) {
-      current2.style.filter = "none"
-      current2.style.opacity = "100%"
-      current1.style.filter = "none"
-      current1.style.opacity = "0%"
-    }
-  }, [])
 
   useEffect(() => {
     let animationFrameId: number
+    let lastTime = performance.now()
+    const speed = 0.5 // Morph duration in seconds
 
-    const animate = () => {
+    const animate = (time: number) => {
       animationFrameId = requestAnimationFrame(animate)
+      const dt = (time - lastTime) / 1000
+      lastTime = time
 
-      const newTime = new Date()
-      const dt = (newTime.getTime() - timeRef.current.getTime()) / 1000
-      timeRef.current = newTime
+      const targetFraction = isHovered ? 1 : 0
 
-      cooldownRef.current -= dt
+      if (fractionRef.current !== targetFraction) {
+        setIsMorphing(true)
+        
+        if (targetFraction === 1) {
+          fractionRef.current = Math.min(1, fractionRef.current + dt / speed)
+        } else {
+          fractionRef.current = Math.max(0, fractionRef.current - dt / speed)
+        }
+        
+        setStyles(fractionRef.current)
 
-      if (cooldownRef.current <= 0) doMorph()
-      else doCooldown()
+        if (fractionRef.current === targetFraction) {
+          setIsMorphing(false)
+        }
+      }
     }
 
-    animate()
+    animationFrameId = requestAnimationFrame(animate)
     return () => {
       cancelAnimationFrame(animationFrameId)
     }
-  }, [doMorph, doCooldown])
+  }, [isHovered, setStyles, setIsMorphing])
 
   return { text1Ref, text2Ref }
 }
@@ -96,20 +90,20 @@ interface MorphingTextProps {
   texts: string[]
 }
 
-const Texts: React.FC<Pick<MorphingTextProps, "texts">> = ({ texts }) => {
-  const { text1Ref, text2Ref } = useMorphingText(texts)
+const Texts: React.FC<Pick<MorphingTextProps, "texts"> & { isHovered: boolean, setIsMorphing: (val: boolean) => void }> = ({ texts, isHovered, setIsMorphing }) => {
+  const { text1Ref, text2Ref } = useMorphingText(texts, isHovered, setIsMorphing)
   return (
     <>
-      {/* Invisible placeholder to establish dimensions */}
+      {/* Invisible placeholder to establish dimensions based on the longest text */}
       <span className="invisible block">
         {texts.reduce((a, b) => a.length > b.length ? a : b)}
       </span>
       <span
-        className="absolute inset-0 m-auto inline-block"
+        className="absolute inset-0 m-auto inline-flex items-center justify-center text-center"
         ref={text1Ref}
       />
       <span
-        className="absolute inset-0 m-auto inline-block"
+        className="absolute inset-0 m-auto inline-flex items-center justify-center text-center"
         ref={text2Ref}
       />
     </>
@@ -140,14 +134,24 @@ const SvgFilters: React.FC = () => (
 export const MorphingText: React.FC<MorphingTextProps> = ({
   texts,
   className,
-}) => (
-  <div
-    className={cn(
-      "relative inline-block filter-[url(#threshold)_blur(0.6px)]",
-      className
-    )}
-  >
-    <Texts texts={texts} />
-    <SvgFilters />
-  </div>
-)
+}) => {
+  const [isHovered, setIsHovered] = useState(false)
+  const [isMorphing, setIsMorphing] = useState(false)
+
+  return (
+    <div
+      className={cn(
+        "relative inline-block transition-all",
+        isMorphing ? "filter-[url(#threshold)_blur(0.6px)]" : "filter-none",
+        className
+      )}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={() => setIsHovered(true)}
+      onTouchEnd={() => setIsHovered(false)}
+    >
+      <Texts texts={texts} isHovered={isHovered} setIsMorphing={setIsMorphing} />
+      <SvgFilters />
+    </div>
+  )
+}
