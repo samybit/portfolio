@@ -16,22 +16,22 @@ const useMorphingText = (texts: string[], isHovered: boolean, setIsMorphing: (va
 
       // Target text (texts[1])
       if (fraction === 0) {
-        current2.style.filter = "blur(100px)"
+        current2.style.filter = "blur(32px)"
         current2.style.opacity = "0%"
       } else {
-        current2.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`
+        current2.style.filter = `blur(${Math.min(8 / fraction - 8, 32)}px)`
         current2.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`
       }
 
       // Source text (texts[0])
       const invertedFraction = 1 - fraction
       if (invertedFraction === 0) {
-        current1.style.filter = "blur(100px)"
+        current1.style.filter = "blur(32px)"
         current1.style.opacity = "0%"
       } else {
         current1.style.filter = `blur(${Math.min(
           8 / invertedFraction - 8,
-          100
+          32
         )}px)`
         current1.style.opacity = `${Math.pow(invertedFraction, 0.4) * 100}%`
       }
@@ -141,7 +141,7 @@ export const MorphingText: React.FC<MorphingTextProps> = ({
   return (
     <div
       className={cn(
-        "relative inline-block transition-all",
+        "relative inline-block transition-all transform-gpu will-change-[filter]",
         isMorphing ? "filter-[url(#threshold)_blur(0.6px)]" : "filter-none",
         className
       )}
