@@ -7,6 +7,9 @@ import dynamic from "next/dynamic";
 import { useScrollMode } from "@/context/ScrollModeContext";
 import FallingLayersIcon from "./FallingLayersIcon";
 import { CustomTooltip } from "@/components/ui/tooltip";
+import { Palette, ArrowUp } from "lucide-react";
+import SpeedDial from "@/components/animata/fabs/speed-dial";
+import { playClack, playTick } from "@/utils/audio";
 
 const Footer3D = dynamic(() => import("@/components/Footer3D"), { ssr: false });
 
@@ -39,25 +42,70 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
   const currentYear = new Date().getFullYear();
   const copyrightText = (dict?.copyright || "© {year} SAMYBIT // WITH NEXT.JS & BRUTALISM.").replace('{year}', currentYear.toString());
 
+  const cycleTheme = () => {
+    playClack();
+    const html = document.documentElement;
+
+    if (html.classList.contains("invert-theme")) {
+      html.classList.remove("invert-theme");
+      html.classList.add("theme-color");
+    } else if (html.classList.contains("theme-color")) {
+      html.classList.remove("theme-color");
+      html.classList.add("theme-neumorphic");
+    } else if (html.classList.contains("theme-neumorphic")) {
+      html.classList.remove("theme-neumorphic");
+    } else {
+      html.classList.add("invert-theme");
+    }
+    
+    setIsEmber(html.classList.contains("theme-color"));
+    setIsNeumorphic(html.classList.contains("theme-neumorphic"));
+  };
+
+  const scrollToTop = () => {
+    playTick();
+    if (isCurtainMode) {
+      window.dispatchEvent(new CustomEvent('curtainNavigate', { detail: 0 }));
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   const fab = isFooterVisible && (
     <div className={`fixed z-50 pointer-events-auto transition-all duration-300 ${
-      isCurtainMode ? 'bottom-6 right-16 md:right-18 lg:right-20' : 'bottom-6 right-6'
+      isCurtainMode ? 'bottom-8 right-16 md:bottom-10 md:right-20' : 'bottom-8 right-8 md:bottom-10 md:right-10'
     }`}>
-      <CustomTooltip content={isCurtainMode ? "Switch to Normal Scroll" : "Switch to Curtain Scroll"} side="left">
-        <button
-          onClick={toggleScrollMode}
-          aria-label="Toggle Scroll Mode"
-          className={`group flex items-center justify-center p-4 rounded-none border-4 transition-all duration-300 ${
-            isNeumorphic 
-              ? "bg-[#e0e5ec] text-[#4b5563] border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
-              : isEmber
-                ? "bg-[#1A1716] text-[#FF4F00] border-[#1A1716] shadow-[4px_4px_0px_#FF4F00] hover:bg-[#FF4F00] hover:text-[#1A1716] hover:shadow-[2px_2px_0px_#FF4F00] hover:translate-x-[2px] hover:translate-y-[2px]"
-                : "bg-white text-black border-black brutalist-shadow hover:bg-black hover:text-white"
-          }`}
-        >
-          <FallingLayersIcon isCurtainMode={isCurtainMode} />
-        </button>
-      </CustomTooltip>
+      <SpeedDial
+        direction="up"
+        triggerLabel="Open Actions"
+        className={
+          isNeumorphic 
+            ? "[&>button]:bg-[#e0e5ec] [&>button]:text-[#4b5563] [&>button]:border-transparent [&>button]:shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] [&>ul>li>button]:bg-[#e0e5ec] [&>ul>li>button]:text-[#4b5563] [&>ul>li>button]:border-transparent [&>ul>li>button]:shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+            : isEmber
+              ? "[&>button]:bg-[#1A1716] [&>button]:text-[#FF4F00] [&>button]:border-[#FF4F00] [&>button]:shadow-[4px_4px_0px_#FF4F00] [&>ul>li>button]:bg-[#1A1716] [&>ul>li>button]:text-[#FF4F00] [&>ul>li>button]:border-[#FF4F00] [&>ul>li>button]:shadow-[2px_2px_0px_#FF4F00]"
+              : "[&>button]:bg-white [&>button]:text-black [&>button]:border-2 [&>button]:border-black [&>button]:shadow-[4px_4px_0px_#000] [&>ul>li>button]:bg-white [&>ul>li>button]:text-black [&>ul>li>button]:border-2 [&>ul>li>button]:border-black [&>ul>li>button]:shadow-[2px_2px_0px_#000]"
+        }
+        actionButtons={[
+          {
+            key: "scrollMode",
+            label: isCurtainMode ? "Normal Scroll" : "Curtain Scroll",
+            icon: <FallingLayersIcon isCurtainMode={isCurtainMode} />,
+            action: toggleScrollMode,
+          },
+          {
+            key: "theme",
+            label: "Cycle Theme",
+            icon: <Palette size={20} />,
+            action: cycleTheme,
+          },
+          {
+            key: "top",
+            label: "Back to Top",
+            icon: <ArrowUp size={20} />,
+            action: scrollToTop,
+          }
+        ]}
+      />
     </div>
   );
 
