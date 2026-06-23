@@ -16,6 +16,7 @@ interface RippleButtonProps {
 export default function RippleButton({ children, as: Component = "button", href, className, onClick, onHoverChange, ...props }: RippleButtonProps) {
   const buttonRef = useRef<any>(null);
   const rippleRef = useRef<HTMLSpanElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   const setHoverState = (hovered: boolean) => {
@@ -38,6 +39,7 @@ export default function RippleButton({ children, as: Component = "button", href,
       const button = buttonRef.current;
       const ripple = rippleRef.current;
       const rect = button.getBoundingClientRect();
+      rectRef.current = rect;
       const size = Math.max(rect.width, rect.height) * 2.5; // Made slightly larger to ensure full coverage
       const { clientX, clientY } = getCoordinates(event);
       const x = clientX - rect.left - size / 2;
@@ -60,7 +62,7 @@ export default function RippleButton({ children, as: Component = "button", href,
 
     const button = buttonRef.current;
     const ripple = rippleRef.current;
-    const rect = button.getBoundingClientRect();
+    const rect = rectRef.current || button.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height) * 2.5;
     
     let clientX, clientY;
@@ -100,7 +102,8 @@ export default function RippleButton({ children, as: Component = "button", href,
 
       const button = buttonRef.current;
       const ripple = rippleRef.current;
-      const rect = button.getBoundingClientRect();
+      const rect = rectRef.current;
+      if (!rect) return;
       const size = Math.max(rect.width, rect.height) * 2.5;
       const { clientX, clientY } = getCoordinates(event);
       const x = clientX - rect.left - size / 2;

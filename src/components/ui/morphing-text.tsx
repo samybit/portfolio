@@ -53,7 +53,6 @@ const useMorphingText = (texts: string[], isHovered: boolean, setIsMorphing: (va
     const speed = 0.5 // Morph duration in seconds
 
     const animate = (time: number) => {
-      animationFrameId = requestAnimationFrame(animate)
       const dt = (time - lastTime) / 1000
       lastTime = time
 
@@ -72,13 +71,25 @@ const useMorphingText = (texts: string[], isHovered: boolean, setIsMorphing: (va
 
         if (fractionRef.current === targetFraction) {
           setIsMorphing(false)
+        } else {
+          animationFrameId = requestAnimationFrame(animate)
         }
+      } else {
+        setIsMorphing(false)
       }
     }
 
-    animationFrameId = requestAnimationFrame(animate)
+    const targetFraction = isHovered ? 1 : 0
+    if (fractionRef.current !== targetFraction) {
+      animationFrameId = requestAnimationFrame(animate)
+    } else {
+      setIsMorphing(false)
+    }
+
     return () => {
-      cancelAnimationFrame(animationFrameId)
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId)
+      }
     }
   }, [isHovered, setStyles, setIsMorphing])
 
