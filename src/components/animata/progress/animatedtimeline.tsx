@@ -125,6 +125,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
       className="flex last:mb-0"
       onMouseEnter={onEnter}
       onFocus={onEnter}
+      onTouchStart={onEnter}
       onClick={onClick}
       onKeyDown={
         clickable

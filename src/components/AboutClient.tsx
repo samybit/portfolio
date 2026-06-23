@@ -165,16 +165,16 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                       }}
                       className={`group block border-s-8 ps-4 py-1.5 transition-all cursor-pointer w-full text-left rtl:text-right ${
                         isNeumorphic
-                          ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
-                          : "border-black hover:bg-black hover:text-white"
+                          ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:bg-[#d1d9e6] active:text-[#1e293b]"
+                          : "border-black hover:bg-black hover:text-white active:bg-black active:text-white"
                       }`}
                     >
                       <div className="flex justify-between items-center w-full">
                         <div>
                           <h3 className="text-2xl font-black uppercase leading-tight">{dict?.mernStack || "MERN Stack & Gen AI"}</h3>
                           <div className="flex items-center gap-3 mt-1">
-                            <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none whitespace-nowrap">ITI (MCIT)</p>
-                            <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none whitespace-nowrap">
+                            <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 group-active:text-zinc-300 uppercase leading-none whitespace-nowrap">ITI (MCIT)</p>
+                            <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 group-active:text-zinc-400 transition-colors leading-none whitespace-nowrap">
                               {"// 2026"}
                             </span>
                           </div>
@@ -191,21 +191,21 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                       rel="noopener noreferrer"
                       className={`group block border-s-8 ps-4 py-1.5 transition-all cursor-pointer w-full text-left rtl:text-right ${
                         isNeumorphic
-                          ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
-                          : "border-black hover:bg-black hover:text-white"
+                          ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:bg-[#d1d9e6] active:text-[#1e293b]"
+                          : "border-black hover:bg-black hover:text-white active:bg-black active:text-white"
                       }`}
                     >
                       <div className="flex justify-between items-center w-full">
                         <div>
                           <h3 className="text-2xl font-black uppercase leading-tight">{dict?.cs50 || "CS50x"}</h3>
                           <div className="flex items-center gap-3 mt-1">
-                            <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none whitespace-nowrap">edX (Harvard)</p>
-                            <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none whitespace-nowrap">
+                            <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 group-active:text-zinc-300 uppercase leading-none whitespace-nowrap">edX (Harvard)</p>
+                            <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 group-active:text-zinc-400 transition-colors leading-none whitespace-nowrap">
                               {"// 2025"}
                             </span>
                           </div>
                         </div>
-                        <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 rtl:translate-x-4 ltr:-translate-x-4 group-hover:translate-x-0 transition-all duration-300 mx-4 shrink-0" />
+                        <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 group-active:opacity-100 rtl:translate-x-4 ltr:-translate-x-4 group-hover:translate-x-0 group-active:translate-x-0 transition-all duration-300 mx-4 shrink-0" />
                         <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
                       </div>
                     </a>
@@ -219,21 +219,21 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                       rel="noopener noreferrer"
                       className={`group block border-s-8 ps-4 py-1.5 transition-all cursor-pointer w-full text-left rtl:text-right ${
                         isNeumorphic
-                          ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b]"
-                          : "border-black hover:bg-black hover:text-white"
+                          ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:bg-[#d1d9e6] active:text-[#1e293b]"
+                          : "border-black hover:bg-black hover:text-white active:bg-black active:text-white"
                       }`}
                     >
                       <div className="flex justify-between items-center w-full">
                         <div>
                           <h3 className="text-2xl font-black uppercase leading-tight">{dict?.dataAnalysis || "Data Analysis"}</h3>
                           <div className="flex items-center gap-3 mt-1">
-                            <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 uppercase leading-none whitespace-nowrap">Egypt FWD (MCIT)</p>
-                            <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 transition-colors leading-none whitespace-nowrap">
+                            <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 group-active:text-zinc-300 uppercase leading-none whitespace-nowrap">Egypt FWD (MCIT)</p>
+                            <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 group-active:text-zinc-400 transition-colors leading-none whitespace-nowrap">
                               {"// 2021"}
                             </span>
                           </div>
                         </div>
-                        <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 rtl:translate-x-4 ltr:-translate-x-4 group-hover:translate-x-0 transition-all duration-300 mx-4 shrink-0" />
+                        <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 group-active:opacity-100 rtl:translate-x-4 ltr:-translate-x-4 group-hover:translate-x-0 group-active:translate-x-0 transition-all duration-300 mx-4 shrink-0" />
                         <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
                       </div>
                     </a>
