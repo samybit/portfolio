@@ -251,6 +251,18 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
 
   const section1 = (
       <div className={`relative w-full ${isCurtainMode ? 'min-h-[100svh]' : ''} ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}`}>
+
+        {/* Inline SVG filter defs for the glass overlay */}
+        <svg className="absolute w-0 h-0 overflow-hidden" aria-hidden="true">
+          <defs>
+            <filter id="about-glass-filter">
+              <feTurbulence type="fractalNoise" baseFrequency="0.12 0.12" numOctaves="1" result="warp" />
+              <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="15" in="SourceGraphic" in2="warp" />
+            </filter>
+          </defs>
+        </svg>
+
+        {/* Layer 1: Parallax image with clip-path */}
         <motion.div
           style={{ clipPath: clipPathImage }}
           className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none"
@@ -264,20 +276,24 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
           <div className={`absolute ${isCurtainMode ? 'top-0 h-full' : '-top-[25%] h-[150%]'} left-0 bg-black/30 w-full`}></div>
         </motion.div>
 
+        {/* Layer 2: Content */}
         <div className="relative z-10 px-6 md:px-12 lg:px-24 pt-36 md:pt-30 pb-6">
           {topContent}
         </div>
 
+        {/* Layer 3: Inverted color filter overlay + Full-height glass distortion.
+             It uses clipPathFilter to grow from the bottom as you scroll. */}
         <motion.div
           style={{ 
             clipPath: clipPathFilter,
             backdropFilter: 'invert(1) hue-rotate(180deg)'
           }}
-          className="absolute top-0 left-0 w-full h-full z-20 pointer-events-none"
+          className="absolute top-0 left-0 w-full h-full z-20 pointer-events-none about-glass-overlay"
           aria-hidden="true"
         />
       </div>
   );
+
 
   const section2 = (
       <div className={`w-full ${isCurtainMode ? `min-h-[100svh] flex items-center ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}` : ''}`}>

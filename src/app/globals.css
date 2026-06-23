@@ -12,6 +12,18 @@
   .animate-arrow-snap {
     animation: arrow-snap-sequence 0.8s ease-in-out forwards;
   }
+
+  /* Full-height frosted glass overlay for the About page revealed area */
+  .about-glass-overlay {
+    background: repeating-radial-gradient(
+      circle at 50% 50%,
+      rgb(255 255 255 / 0),
+      rgba(255, 255, 255, 0.15) 10px,
+      rgba(255, 255, 255, 0.35) 31px
+    );
+    filter: url(#about-glass-filter);
+    background-size: 6px 6px;
+  }
 }
 
 @layer base {
