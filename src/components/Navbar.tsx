@@ -1,7 +1,7 @@
 "use client";
 
 import { playClack, playTick, prewarmAudio } from "@/utils/audio";
-import { TerminalSquare, ArrowUpRight, Menu, X, Palette, Globe, Layers, List } from "lucide-react";
+import { TerminalSquare, ArrowUpRight, ArrowUpLeft, Menu, X, Palette, Globe, Layers, List } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -259,7 +259,12 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
           >
             <Smoke />
             <span className="relative z-10 flex items-center gap-1">
-              {dict?.github || "GitHub"} <ArrowUpRight size={20} className="ms-1 fly-spin-arrow rtl:-scale-x-100" />
+              {dict?.github || "GitHub"} 
+              {currentLocale === 'ar' ? (
+                <ArrowUpLeft size={20} className="ms-1 fly-spin-arrow-rtl" />
+              ) : (
+                <ArrowUpRight size={20} className="ms-1 fly-spin-arrow" />
+              )}
               <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
             </span>
           </a>
@@ -324,7 +329,12 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
           >
             <Smoke />
             <span className="relative z-10 flex justify-between items-center w-full">
-              {dict?.github || "GitHub"} <ArrowUpRight size={32} className="fly-spin-arrow rtl:-scale-x-100" />
+              {dict?.github || "GitHub"} 
+              {currentLocale === 'ar' ? (
+                <ArrowUpLeft size={32} className="fly-spin-arrow-rtl" />
+              ) : (
+                <ArrowUpRight size={32} className="fly-spin-arrow" />
+              )}
               <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
             </span>
           </a>

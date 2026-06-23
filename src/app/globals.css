@@ -259,7 +259,7 @@ html[dir="rtl"] .animate-fly-out {
 }
 
 /* --- GITHUB ARROW HOVER (FLY & SPIN) --- */
-.fly-spin-arrow {
+.fly-spin-arrow, .fly-spin-arrow-rtl {
   transform-origin: center;
   will-change: transform;
   display: inline-block;
@@ -273,17 +273,17 @@ html[dir="rtl"] .animate-fly-out {
 }
 
 @keyframes flySpinReturnRtl {
-  0% { transform: scaleX(-1) translate(0, 0) rotate(0deg); }
-  30% { transform: scaleX(-1) translate(4px, -4px) rotate(0deg); }
-  70% { transform: scaleX(-1) translate(4px, -4px) rotate(-360deg); }
-  100% { transform: scaleX(-1) translate(0, 0) rotate(-360deg); }
+  0% { transform: translate(0, 0) rotate(0deg); }
+  30% { transform: translate(-4px, -4px) rotate(0deg); }
+  70% { transform: translate(-4px, -4px) rotate(-360deg); }
+  100% { transform: translate(0, 0) rotate(-360deg); }
 }
 
 .group:hover .fly-spin-arrow {
   animation: flySpinReturn 0.7s ease-in-out forwards;
 }
 
-html[dir="rtl"] .group:hover .fly-spin-arrow {
+.group:hover .fly-spin-arrow-rtl {
   animation: flySpinReturnRtl 0.7s ease-in-out forwards;
 }
 
