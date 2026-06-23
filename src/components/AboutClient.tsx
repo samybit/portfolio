@@ -3,7 +3,7 @@
 import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import AudioPlayer from "@/components/AudioPlayer";
 import DecryptText from "@/components/DecryptText";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
@@ -21,18 +21,57 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   // --- FRAMER MOTION CLIP-PATH SETUP ---
   const { scrollY } = useScroll();
 
+  // Dynamic values to adjust scroll speed on mobile vs desktop
+  const clipStartScroll = useMotionValue(0);
+  const clipEndScroll = useMotionValue(315);
+  const parallaxEndScroll = useMotionValue(600);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        // Mobile: Delay the start of the reveal until the user scrolls down,
+        // so it happens on the last part of the area
+        clipStartScroll.set(700); 
+        clipEndScroll.set(1200);
+        parallaxEndScroll.set(1200);
+      } else {
+        // Desktop: Start immediately, fast effect
+        clipStartScroll.set(0);
+        clipEndScroll.set(315);
+        parallaxEndScroll.set(600);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [clipStartScroll, clipEndScroll, parallaxEndScroll]);
+
+  // Helper to calculate progress between start and end
+  const getProgress = (y: number, start: number, end: number) => {
+    const range = end - start;
+    if (range <= 0) return 0;
+    return Math.min(Math.max((y - start) / range, 0), 1);
+  };
+
   // 1. Animates the parallax clipping mask for the image (from bottom up).
-  // Reduced to 315px so the effect completes faster on smaller laptop viewports
-  const imageBottomInset = useTransform(scrollY, [0, 315], [0, 115]);
+  const imageBottomInset = useTransform(scrollY, (y) => {
+    return getProgress(y, clipStartScroll.get(), clipEndScroll.get()) * 115;
+  });
   const clipPathImage = useTransform(imageBottomInset, (val) => `inset(0% 0% ${val}% 0%)`);
 
   // 2. Animates the exact inverse clipping mask for the backdrop-filter!
-  // It covers exactly what the image reveals, creating a perfect seamless boundary.
-  const filterTopInset = useTransform(scrollY, [0, 315], [100, -15]);
+  const filterTopInset = useTransform(scrollY, (y) => {
+    const progress = getProgress(y, clipStartScroll.get(), clipEndScroll.get());
+    return 100 - (progress * 115);
+  });
   const clipPathFilter = useTransform(filterTopInset, (val) => `inset(${val}% 0% 0% 0%)`);
 
   // 3. Parallax effect specifically for the background image inside the mask.
-  const imageY = useTransform(scrollY, [0, 600], [0, -150]);
+  const imageY = useTransform(scrollY, (y) => {
+    // Parallax can start from 0 for a continuous smooth background scroll
+    const progress = getProgress(y, 0, parallaxEndScroll.get());
+    return progress * -150;
+  });
 
   const showToast = (message: string) => {
     setToastMessage(message);
