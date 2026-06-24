@@ -3,12 +3,13 @@
 import { ArrowDownRight, Download, FileText } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import Text3DFlip from "@/components/ui/text-3d-flip";
+import { Highlighter } from "@/components/ui/highlighter";
 import SplitText from "@/components/animata/text/split-text";
 import GlitchText from "@/components/GlitchText";
 import HeroCarabiner3D from "@/components/HeroCarabiner3D";
 import EgyptMapTooltip from "@/components/EgyptMapTooltip";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
+import { useEmberTheme } from "@/hooks/useEmberTheme";
 import { useScrollMode } from "@/context/ScrollModeContext";
 
 // --- HERO DESCRIPTION RENDERER ---
@@ -50,7 +51,14 @@ function HeroDescription({ html, className }: { html: string; className: string 
 
 export default function Hero({ dict }: { dict: Record<string, string> }) {
   const isNeumorphic = useNeumorphicTheme();
+  const isEmber = useEmberTheme();
   const { isCurtainMode } = useScrollMode();
+
+  const getHighlightColor = (isDarkButton: boolean) => {
+    if (isEmber) return "#facc15"; // Fiery Yellow to contrast with Orange/Charcoal
+    if (isNeumorphic) return "#94a3b8";
+    return isDarkButton ? "#facc15" : "#ef4444";
+  };
 
   const [isWorkHovered, setIsWorkHovered] = useState(false);
   const [isContactHovered, setIsContactHovered] = useState(false);
@@ -131,9 +139,9 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
                 : "bg-black text-white border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
-            <Text3DFlip as="span" isHovered={isCvHovered} rotateDirection="top">
+            <Highlighter show={isCvHovered} action="highlight" color={getHighlightColor(true)}>
               {dict?.getCV || "Get CV"}
-            </Text3DFlip>
+            </Highlighter>
             <div className="relative w-6 h-6 md:w-10 md:h-10 overflow-hidden">
               <Download className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-0 scale-50 translate-y-4" : ""}`} />
               <FileText className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 -translate-y-4"}`} />
@@ -162,9 +170,9 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
                 : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
-            <Text3DFlip as="span" isHovered={isWorkHovered} rotateDirection="top">
+            <Highlighter show={isWorkHovered} action="highlight" color={getHighlightColor(false)}>
               {dict?.work || "Work"}
-            </Text3DFlip>
+            </Highlighter>
             <ArrowDownRight className={`w-6 h-6 md:w-10 md:h-10 transition-transform rtl:-scale-x-100 ${isWorkHovered ? "[animation:arrow-snap-sequence_0.8s_ease-in-out_forwards]" : ""}`} />
           </Link>
 
@@ -190,9 +198,9 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
                 : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
-            <Text3DFlip as="span" isHovered={isContactHovered} rotateDirection="top">
+            <Highlighter show={isContactHovered} action="highlight" color={getHighlightColor(false)}>
               {dict?.contact || "Contact"}
-            </Text3DFlip>
+            </Highlighter>
             <ArrowDownRight className={`w-6 h-6 md:w-10 md:h-10 transition-transform rtl:-scale-x-100 ${isContactHovered ? "[animation:arrow-snap-sequence_0.8s_ease-in-out_forwards]" : ""}`} />
           </Link>
 
