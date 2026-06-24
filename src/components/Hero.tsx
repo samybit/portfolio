@@ -117,6 +117,30 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
         {/* --- RIGHT COLUMN: ACTIONS --- */}
         <div className="flex flex-col w-full min-[1300px]:w-[450px] gap-4 md:gap-6 border-black border-t-0 border-s-0 min-[1300px]:border-s-8 min-[1300px]:ps-12 min-[1300px]:py-8 shrink-0 animate-slide-up-delay-1 relative z-0">
 
+          {/* CV Button */}
+          <a
+            href="/Samy_Barsoum_CV.pdf"
+            download="Samy_Barsoum_CV.pdf"
+            onMouseEnter={() => setIsCvHovered(true)}
+            onMouseLeave={() => setIsCvHovered(false)}
+            onTouchStart={() => setIsCvHovered(true)}
+            onTouchEnd={() => setIsCvHovered(false)}
+            className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
+              isNeumorphic
+                ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                : "bg-black text-white border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+            }`}
+          >
+            <Text3DFlip as="span" isHovered={isCvHovered} rotateDirection="top">
+              {dict?.getCV || "Get CV"}
+            </Text3DFlip>
+            <div className="relative w-6 h-6 md:w-10 md:h-10 overflow-hidden">
+              <Download className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-0 scale-50 translate-y-4" : ""}`} />
+              <FileText className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 -translate-y-4"}`} />
+            </div>
+          </a>
+
+          {/* Work Button */}
           <Link
             href="#projects"
             onMouseEnter={() => setIsWorkHovered(true)}
@@ -135,7 +159,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
               isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                : "bg-black text-white border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
             <Text3DFlip as="span" isHovered={isWorkHovered} rotateDirection="top">
@@ -144,6 +168,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             <ArrowDownRight className={`w-6 h-6 md:w-10 md:h-10 transition-transform rtl:-scale-x-100 ${isWorkHovered ? "[animation:arrow-snap-sequence_0.8s_ease-in-out_forwards]" : ""}`} />
           </Link>
 
+          {/* Contact Button */}
           <Link
             href="#contact"
             onMouseEnter={() => setIsContactHovered(true)}
@@ -170,29 +195,6 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             </Text3DFlip>
             <ArrowDownRight className={`w-6 h-6 md:w-10 md:h-10 transition-transform rtl:-scale-x-100 ${isContactHovered ? "[animation:arrow-snap-sequence_0.8s_ease-in-out_forwards]" : ""}`} />
           </Link>
-
-          {/* CV Button */}
-          <a
-            href="/Samy_Barsoum_CV.pdf"
-            download="Samy_Barsoum_CV.pdf"
-            onMouseEnter={() => setIsCvHovered(true)}
-            onMouseLeave={() => setIsCvHovered(false)}
-            onTouchStart={() => setIsCvHovered(true)}
-            onTouchEnd={() => setIsCvHovered(false)}
-            className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
-              isNeumorphic
-                ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
-            }`}
-          >
-            <Text3DFlip as="span" isHovered={isCvHovered} rotateDirection="top">
-              {dict?.getCV || "Get CV"}
-            </Text3DFlip>
-            <div className="relative w-6 h-6 md:w-10 md:h-10 overflow-hidden">
-              <Download className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-0 scale-50 translate-y-4" : ""}`} />
-              <FileText className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 -translate-y-4"}`} />
-            </div>
-          </a>
 
         </div>
       </div>
