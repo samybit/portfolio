@@ -121,7 +121,6 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
               alt={project.title}
               fill
               className="w-full h-full object-cover border-4 border-black"
-              unoptimized
             />
           ) : (
             <div className="w-full h-full border-4 border-black bg-zinc-100 flex items-center justify-center">

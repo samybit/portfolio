@@ -9,14 +9,6 @@ export default function SystemOverride() {
   const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      // If active, update the physical DOM element instantly for zero-lag tracking
-      if (cursorRef.current) {
-        // -16px offsets it so the dead-center of the 32x32 SVG is exactly on your pointer
-        cursorRef.current.style.transform = `translate(${e.clientX - 16}px, ${e.clientY - 16}px)`;
-      }
-    };
-
     const handleMouseDown = (e: MouseEvent) => {
       if (e.button === 1) { // Middle click
         setStartPos({ x: e.clientX, y: e.clientY });
@@ -36,16 +28,32 @@ export default function SystemOverride() {
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
+
+  useEffect(() => {
+    if (!isActive) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // If active, update the physical DOM element instantly for zero-lag tracking
+      if (cursorRef.current) {
+        // -16px offsets it so the dead-center of the 32x32 SVG is exactly on your pointer
+        cursorRef.current.style.transform = `translate(${e.clientX - 16}px, ${e.clientY - 16}px)`;
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [isActive]);
 
   return (
     <>
