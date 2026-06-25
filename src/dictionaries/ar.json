@@ -48,7 +48,7 @@
         "description": "منصة سينمائية تتميز بمصادقة Firebase وإدارة الحالة العالمية وخوارزمية تقييم متقدمة بأسلوب IMDB.",
         "tech": ["React", "Firebase", "Redux", "TailwindCSS"],
         "github": "https://github.com/samybit/iti-movie-app",
-        "demo": "https://iti-movie-app-samy.vercel.app/",
+        "demo": "https://iti-movie-app.pages.dev/",
         "image": "/moviedb.png"
       },
       {
@@ -57,7 +57,7 @@
         "description": "تجربة سردية تستكشف 7 أساليب لتجسيد البعد الثالث. تعتبر مرجعاً تقنياً لمكتبات مثل Three.js و Spline و Globe.gl والرياضيات في CSS.",
         "tech": ["Next.js", "Three.js", "Spline", "Framer Motion"],
         "github": "https://github.com/samybit/3d-showcase",
-        "demo": "https://3d-showcase-samy.vercel.app/",
+        "demo": "https://3d-showcase-pi.vercel.app/",
         "image": "/3dweb.png"
       },
       {

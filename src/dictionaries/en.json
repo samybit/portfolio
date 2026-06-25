@@ -48,7 +48,7 @@
         "description": "Cinematic platform featuring Firebase authentication, global state management, and an advanced IMDB-style rating algorithm.",
         "tech": ["React", "Firebase", "Redux", "TailwindCSS"],
         "github": "https://github.com/samybit/iti-movie-app",
-        "demo": "https://iti-movie-app-samy.vercel.app/",
+        "demo": "https://iti-movie-app.pages.dev/",
         "image": "/moviedb.png"
       },
       {
@@ -57,7 +57,7 @@
         "description": "A vertical storytelling experience exploring 7 approaches to 3D rendering. Serves as a technical reference for WebGL pipelines, Spline, Globe.gl, and CSS trigonometry.",
         "tech": ["Next.js", "Three.js", "Spline", "Framer Motion"],
         "github": "https://github.com/samybit/3d-showcase",
-        "demo": "https://3d-showcase-samy.vercel.app/",
+        "demo": "https://3d-showcase-pi.vercel.app/",
         "image": "/3dweb.png"
       },
       {
