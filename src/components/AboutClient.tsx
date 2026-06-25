@@ -16,6 +16,7 @@ import { MorphingText } from "@/components/ui/morphing-text";
 export default function AboutClient({ dict, footerDict, tabTitles, locale }: { dict: Record<string, string>, footerDict: Record<string, string>, tabTitles: Record<string, string>, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isSummaryCardHovered, setIsSummaryCardHovered] = useState(false);
+  const [isSkillsCardHovered, setIsSkillsCardHovered] = useState(false);
   const isNeumorphic = useNeumorphicTheme();
   const { isCurtainMode } = useScrollMode();
 
@@ -378,6 +379,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
               <MorphingText 
                 texts={[dict?.techArsenal || "Technical Arsenal", dict?.skills || "Skills"]}
                 className="text-4xl font-black uppercase tracking-widest text-white m-0 p-0"
+                forceHover={isSkillsCardHovered}
               />
             </div>
 
@@ -385,6 +387,8 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
               {stack.map((category, index) => (
                 <div
                   key={index}
+                  onMouseEnter={() => setIsSkillsCardHovered(true)}
+                  onMouseLeave={() => setIsSkillsCardHovered(false)}
                   className={`brutalist-container group transition-all duration-300 flex flex-col ${
                     isNeumorphic
                       ? "hover:!bg-[#d1d9e6] hover:!text-[#1e293b]"
