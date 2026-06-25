@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal } from "lucide-react";
+import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
@@ -12,6 +12,7 @@ import CurtainScroller from "@/components/CurtainScroller";
 import Footer from "@/components/Footer";
 import { AnimatedTimeline } from "@/components/animata/progress/animatedtimeline";
 import { MorphingText } from "@/components/ui/morphing-text";
+import RippleButton from "@/components/lightswind/ripple-button";
 
 export default function AboutClient({ dict, footerDict, tabTitles, locale }: { dict: Record<string, string>, footerDict: Record<string, string>, tabTitles: Record<string, string>, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -442,32 +443,40 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                 <p className="text-lg md:text-xl font-bold text-zinc-500 uppercase mt-1">{dict?.legacyDesc || "Explore previous portfolio iterations"}</p>
               </div>
               <div className="flex flex-col sm:flex-row w-full md:w-auto gap-6 shrink-0">
-                <a
+                <RippleButton
                   href="https://my-portfolio-seven-beta-98.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-xl font-black uppercase whitespace-nowrap transition-all duration-300 group ${
                     isNeumorphic
-                      ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                      : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                      ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                      : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
                   }`}
                 >
-                  {dict?.v1 || "Version 1.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform w-5 h-5 sm:w-6 sm:h-6" />
+                  {dict?.v1 || "Version 1.0"}
+                  <span className="relative overflow-hidden inline-block w-5 h-5 sm:w-6 sm:h-6 shrink-0">
+                    <ArrowUpRight className="w-full h-full transition-transform duration-300 group-hover:translate-x-full group-hover:-translate-y-full" />
+                    <ArrowUpRight className="absolute top-0 left-0 w-full h-full transition-transform duration-300 -translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0" />
+                  </span>
                   <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
-                </a>
-                <a
+                </RippleButton>
+                <RippleButton
                   href="https://samybit.github.io/brutalist-portfolio/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-xl font-black uppercase whitespace-nowrap transition-all duration-300 group ${
                     isNeumorphic
-                      ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                      : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                      ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                      : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
                   }`}
                 >
-                  {dict?.v2 || "Version 2.0"} <ExternalLink size={24} className="rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform w-5 h-5 sm:w-6 sm:h-6" />
+                  {dict?.v2 || "Version 2.0"}
+                  <span className="relative overflow-hidden inline-block w-5 h-5 sm:w-6 sm:h-6 shrink-0">
+                    <ArrowUpRight className="w-full h-full transition-transform duration-300 group-hover:translate-x-full group-hover:-translate-y-full" />
+                    <ArrowUpRight className="absolute top-0 left-0 w-full h-full transition-transform duration-300 -translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0" />
+                  </span>
                   <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
-                </a>
+                </RippleButton>
               </div>
             </div>
           </section>
