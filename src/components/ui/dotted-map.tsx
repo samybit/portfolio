@@ -38,6 +38,9 @@ export interface DottedMapProps<
   }) => React.ReactNode
 }
 
+// Global cache for precomputed map points to prevent CPU-intensive recalculations
+const mapCache = new Map<string, { points: any[]; addMarkers: any }>();
+
 export function DottedMap<M extends Marker = Marker>({
   width = 150,
   height = 75,
@@ -54,11 +57,11 @@ export function DottedMap<M extends Marker = Marker>({
   ...svgProps
 }: DottedMapProps<M>) {
   const { points, addMarkers } = React.useMemo(() => {
-    return createMap({
-      width,
-      height,
-      mapSamples,
-    })
+    const key = `${width}-${height}-${mapSamples}`;
+    if (!mapCache.has(key)) {
+      mapCache.set(key, createMap({ width, height, mapSamples }));
+    }
+    return mapCache.get(key)!;
   }, [width, height, mapSamples])
 
   const processedMarkers = React.useMemo(() => {
@@ -111,7 +114,7 @@ export function DottedMap<M extends Marker = Marker>({
         )
       })}
 
-      {processedMarkers.map((marker, index) => {
+      {processedMarkers.map((marker: MapMarker<M>, index: number) => {
         const rowIndex = yToRowIndex.get(marker.y) ?? 0
         const offsetX = stagger && rowIndex % 2 === 1 ? xStep / 2 : 0
 
@@ -136,7 +139,7 @@ export function DottedMap<M extends Marker = Marker>({
                   fill="none"
                   stroke={markerColor}
                   strokeOpacity={1}
-                  strokeWidth={0.35}
+                  strokeWidth={r * 0.175}
                 >
                   <animate
                     attributeName="r"
@@ -158,7 +161,7 @@ export function DottedMap<M extends Marker = Marker>({
                   fill="none"
                   stroke={markerColor}
                   strokeOpacity={0.9}
-                  strokeWidth={0.3}
+                  strokeWidth={r * 0.15}
                 >
                   <animate
                     attributeName="r"

@@ -38,6 +38,14 @@ export default function EgyptMapTooltip({ children }: { children: React.ReactNod
     }
   }, [visible]);
 
+  // Pre-render the map in the background once the page is idle to prevent freeze on hover
+  useEffect(() => {
+    const idleTimeout = setTimeout(() => {
+      setHasBeenShown(true);
+    }, 1500);
+    return () => clearTimeout(idleTimeout);
+  }, []);
+
   const show = useCallback(() => {
     if (hideTimeout.current) {
       clearTimeout(hideTimeout.current);
@@ -91,9 +99,9 @@ export default function EgyptMapTooltip({ children }: { children: React.ReactNod
               markers={EGYPT_MARKERS}
               dotColor="#000"
               markerColor="#000"
-              dotRadius={0.3}
+              dotRadius={0.35}
               pulse
-              mapSamples={4000}
+              mapSamples={3000}
             />
           )}
         </span>
