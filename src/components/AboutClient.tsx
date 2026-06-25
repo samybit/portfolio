@@ -401,7 +401,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                     }`}>
                       {category.icon}
                     </div>
-                    <h3 className="text-2xl font-black uppercase leading-none text-left">{category.category}</h3>
+                    <h3 className="text-xl sm:text-2xl xl:text-[1.35rem] 2xl:text-2xl tracking-tighter font-black uppercase leading-none text-left">{category.category}</h3>
                   </div>
 
                   <ul className="flex flex-col gap-3">
