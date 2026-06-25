@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal, Compass } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
@@ -454,10 +454,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                   }`}
                 >
                   {dict?.v1 || "Version 1.0"}
-                  <span className="relative overflow-hidden inline-block w-5 h-5 sm:w-6 sm:h-6 shrink-0">
-                    <ArrowUpRight className="w-full h-full transition-transform duration-300 group-hover:translate-x-full group-hover:-translate-y-full" />
-                    <ArrowUpRight className="absolute top-0 left-0 w-full h-full transition-transform duration-300 -translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0" />
-                  </span>
+                  <Compass className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:rotate-[360deg] shrink-0" />
                   <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
                 </RippleButton>
                 <RippleButton
@@ -471,10 +468,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                   }`}
                 >
                   {dict?.v2 || "Version 2.0"}
-                  <span className="relative overflow-hidden inline-block w-5 h-5 sm:w-6 sm:h-6 shrink-0">
-                    <ArrowUpRight className="w-full h-full transition-transform duration-300 group-hover:translate-x-full group-hover:-translate-y-full" />
-                    <ArrowUpRight className="absolute top-0 left-0 w-full h-full transition-transform duration-300 -translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0" />
-                  </span>
+                  <Compass className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:rotate-[360deg] shrink-0" />
                   <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
                 </RippleButton>
               </div>
