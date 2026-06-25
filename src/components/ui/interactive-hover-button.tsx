@@ -9,6 +9,7 @@ interface InteractiveHoverButtonProps {
   href?: string;
   target?: string;
   rel?: string;
+  icon?: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLElement>;
 }
 
@@ -36,6 +37,7 @@ export function InteractiveHoverButton({
   href,
   target,
   rel,
+  icon,
   ...props
 }: InteractiveHoverButtonProps & Omit<React.ComponentPropsWithoutRef<"button">, keyof InteractiveHoverButtonProps> & Omit<React.ComponentPropsWithoutRef<"a">, keyof InteractiveHoverButtonProps>) {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
@@ -83,15 +85,32 @@ export function InteractiveHoverButton({
   const innerContent = (
     <div className="relative z-10 flex items-center justify-center w-full h-full">
       {/* Wrapper that smoothly slides left to make room for the arrow without layout thrashing */}
-      <div className="flex items-center gap-2 relative transition-transform duration-300 ease-in-out group-data-[hover=true]:-translate-x-3">
-        {/* The Inline Dot (Scales up on hover/touch, shrinks back smoothly on unhover/untouch) */}
-        <div 
-          className={cn(
-            "relative z-0 h-2.5 w-2.5 rounded-full transition-transform duration-300 ease-in-out group-data-[hover=true]:scale-[100.8] group-data-[hover=true]:duration-700 group-data-[hover=true]:ease-out origin-center shrink-0", 
-            dotRoundingClass,
-            dotClass
-          )}
-        ></div>
+      <div className="flex items-center gap-2.5 relative transition-transform duration-300 ease-in-out group-data-[hover=true]:-translate-x-3">
+        {/* The Inline Dot or Icon */}
+        {icon ? (
+          <div className="relative flex items-center justify-center shrink-0 z-10">
+            {/* Invisible expanding dot behind the icon */}
+            <div 
+              className={cn(
+                "absolute inset-0 m-auto h-2.5 w-2.5 transition-transform duration-300 ease-in-out scale-0 group-data-[hover=true]:scale-[100.8] group-data-[hover=true]:duration-700 group-data-[hover=true]:ease-out origin-center shrink-0 z-[-1]", 
+                dotRoundingClass,
+                dotClass
+              )}
+            ></div>
+            {/* The Static Icon */}
+            <span className={cn("relative z-10 flex items-center justify-center w-5 h-5 transition-colors duration-300", textClass)}>
+              {icon}
+            </span>
+          </div>
+        ) : (
+          <div 
+            className={cn(
+              "relative z-0 h-2.5 w-2.5 transition-transform duration-300 ease-in-out group-data-[hover=true]:scale-[100.8] group-data-[hover=true]:duration-700 group-data-[hover=true]:ease-out origin-center shrink-0", 
+              dotRoundingClass,
+              dotClass
+            )}
+          ></div>
+        )}
 
         {/* The Text (Only one instance, smooth color change, smooth fallback on unhover/untouch) */}
         <span className={cn("relative z-10 transition-colors duration-300 ease-in-out group-data-[hover=true]:duration-450 select-none whitespace-nowrap", textClass)}>

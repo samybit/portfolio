@@ -1,6 +1,6 @@
 "use client";
 
-import { Send, Check, ArrowUpRight, Loader2 } from "lucide-react";
+import { Send, Check, ArrowUpRight, Loader2, Linkedin } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { sendEmail } from "@/actions/send-email";
 import { playPowerUp, prewarmAudio } from "@/utils/audio";
@@ -136,6 +136,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                 href="https://linkedin.com/in/samybit/"
                 target="_blank"
                 rel="noopener noreferrer"
+                icon={<Linkedin className="w-full h-full" fill="currentColor" />}
                 aria-label={`LinkedIn${dict?.newTab || " (opens in a new tab)"}`}
               >
                 LinkedIn
@@ -144,6 +145,11 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                 href="https://www.upwork.com/freelancers/~015e572ae8edee2be8"
                 target="_blank"
                 rel="noopener noreferrer"
+                icon={
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="0.6" strokeLinejoin="round" overflow="visible" className="w-full h-full scale-[1.15]">
+                    <path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539 0-4.51 1.649-5.31 4.366-1.22-1.834-2.148-4.036-2.687-5.892H7.828v7.112c-.002 1.406-1.141 2.546-2.547 2.548-1.405-.002-2.543-1.143-2.545-2.548V3.492H0v7.112c0 2.914 2.37 5.303 5.281 5.303 2.913 0 5.283-2.389 5.283-5.303v-1.19c.529 1.107 1.182 2.229 1.974 3.221l-1.673 7.873h2.797l1.213-5.71c1.063.679 2.285 1.109 3.686 1.109 3 0 5.439-2.452 5.439-5.45 0-3-2.439-5.439-5.439-5.439z" />
+                  </svg>
+                }
                 aria-label={`Upwork${dict?.newTab || " (opens in a new tab)"}`}
               >
                 Upwork
@@ -152,6 +158,11 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                 href="https://contra.com/samy_barsoum_akavah3d"
                 target="_blank"
                 rel="noopener noreferrer"
+                icon={
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full scale-[1.3]">
+                    <path d="M12 2C12 7.5 16.5 12 22 12C16.5 12 12 16.5 12 22C12 16.5 7.5 12 2 12C7.5 12 12 7.5 12 2Z" />
+                  </svg>
+                }
                 aria-label={`Contra${dict?.newTab || " (opens in a new tab)"}`}
               >
                 Contra
@@ -160,6 +171,11 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                 href="https://mostaql.com/u/Samy_01"
                 target="_blank"
                 rel="noopener noreferrer"
+                icon={
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="7" className="w-full h-full scale-90">
+                    <circle cx="12" cy="12" r="7" />
+                  </svg>
+                }
                 aria-label={`mostaql${dict?.newTab || " (opens in a new tab)"}`}
               >
                 mostaql
