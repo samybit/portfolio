@@ -198,7 +198,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
               onMouseEnter={prewarmAudio}
               onTouchStart={prewarmAudio}
               aria-label="Cycle System Theme"
-              className="group bg-black text-white border-4 border-s-0 border-black px-3.5 flex items-center justify-center hover:bg-white hover:text-black transition-colors h-full"
+              className="group bg-black text-white border-4 border-s-0 border-black px-3.5 flex items-center justify-center hover:bg-white hover:text-black active:bg-white active:text-black transition-colors h-full"
             >
               <Palette size={18} className="theme-icon-creative" />
             </AnimatedThemeToggler>
@@ -210,7 +210,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
               onMouseEnter={prewarmAudio}
               onTouchStart={prewarmAudio}
               aria-label="Toggle Language"
-              className="group bg-white text-black border-4 border-s-0 border-black px-3.5 flex items-center justify-center gap-1 hover:bg-black hover:text-white font-bold transition-colors h-full"
+              className="group bg-white text-black border-4 border-s-0 border-black px-3.5 flex items-center justify-center gap-1 hover:bg-black hover:text-white active:bg-black active:text-white font-bold transition-colors h-full"
             >
               <Globe size={18} />
               <div className="h-[1.2em] overflow-hidden leading-[1.2em] flex flex-col justify-start text-center min-w-[2ch]">
@@ -232,7 +232,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
             onClick={handleAboutClick}
             className={`relative group overflow-hidden isolate text-lg font-bold uppercase px-4 flex items-center border-2 transition-all ${pathname === `/${currentLocale}/about`
               ? 'bg-black text-white border-black'
-              : 'border-transparent hover:border-black hover:bg-black hover:text-white'
+              : 'border-transparent hover:border-black hover:bg-black hover:text-white active:border-black active:bg-black active:text-white'
               }`}
           >
             <Smoke isActive={pathname === `/${currentLocale}/about`} />
@@ -244,7 +244,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
             onClick={(e) => handleHashClick(e, '#projects')}
             className={`relative group overflow-hidden isolate text-lg font-bold uppercase px-4 flex items-center border-2 transition-all ${isHome && activeHash === '#projects'
               ? 'bg-black text-white border-black'
-              : 'border-transparent hover:border-black hover:bg-black hover:text-white'
+              : 'border-transparent hover:border-black hover:bg-black hover:text-white active:border-black active:bg-black active:text-white'
               }`}
           >
             <Smoke isActive={isHome && activeHash === '#projects'} />
@@ -255,7 +255,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
             href="https://github.com/samybit"
             target="_blank"
             rel="noopener noreferrer"
-            className="relative group overflow-hidden isolate flex items-center gap-1 text-lg font-bold uppercase px-4 border-2 border-transparent hover:border-black hover:bg-black hover:text-white transition-all"
+            className="relative group overflow-hidden isolate flex items-center gap-1 text-lg font-bold uppercase px-4 border-2 border-transparent hover:border-black hover:bg-black hover:text-white active:border-black active:bg-black active:text-white transition-all"
           >
             <Smoke />
             <span className="relative z-10 flex items-center gap-1">
@@ -274,7 +274,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
             onClick={(e) => handleHashClick(e, '#contact')}
             className={`relative group overflow-hidden isolate px-5 flex items-center text-lg font-bold uppercase border-2 transition-all ms-1 ${isHome && activeHash === '#contact'
               ? 'bg-white text-black border-black'
-              : 'bg-black text-white border-black hover:bg-white hover:text-black'
+              : 'bg-black text-white border-black hover:bg-white hover:text-black active:bg-white active:text-black'
               }`}
           >
             <Smoke inverse={true} isActive={isHome && activeHash === '#contact'} />
@@ -287,7 +287,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
           onClick={toggleMobileMenu}
           onMouseEnter={prewarmAudio}
           onTouchStart={prewarmAudio}
-          className="pointer-events-auto md:hidden bg-white border-4 border-black p-3 brutalist-shadow-static"
+          className="pointer-events-auto md:hidden bg-white border-4 border-black p-3 brutalist-shadow-static active:translate-x-1 active:translate-y-1 active:shadow-[4px_4px_0px_0px_#000000] transition-all"
           aria-label="Toggle menu"
         >
           {isOpen ? <X size={32} className="text-black" /> : <Menu size={32} className="text-black" />}
@@ -302,7 +302,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
             onClick={handleAboutClick}
             className={`relative group overflow-hidden isolate text-3xl font-black uppercase p-4 border-b-4 border-black transition-colors ${pathname === `/${currentLocale}/about`
               ? 'bg-black text-white'
-              : 'hover:bg-black hover:text-white'
+              : 'hover:bg-black hover:text-white active:bg-black active:text-white'
               }`}
           >
             <Smoke isActive={pathname === `/${currentLocale}/about`} />
@@ -314,7 +314,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
             onClick={(e) => handleHashClick(e, '#projects')}
             className={`relative group overflow-hidden isolate text-3xl font-black uppercase p-4 border-b-4 border-black transition-colors ${isHome && activeHash === '#projects'
               ? 'bg-black text-white'
-              : 'hover:bg-black hover:text-white'
+              : 'hover:bg-black hover:text-white active:bg-black active:text-white'
               }`}
           >
             <Smoke isActive={isHome && activeHash === '#projects'} />
@@ -325,7 +325,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
             href="https://github.com/samybit"
             target="_blank"
             rel="noopener noreferrer"
-            className="relative group overflow-hidden isolate flex justify-between items-center text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white transition-colors"
+            className="relative group overflow-hidden isolate flex justify-between items-center text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white active:bg-black active:text-white transition-colors"
           >
             <Smoke />
             <span className="relative z-10 flex justify-between items-center w-full">
@@ -344,7 +344,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
             onClick={(e) => handleHashClick(e, '#contact')}
             className={`relative group overflow-hidden isolate mt-4 text-center p-5 text-3xl font-black uppercase border-4 border-black transition-colors ${isHome && activeHash === '#contact'
               ? 'bg-white text-black'
-              : 'bg-black text-white hover:bg-white hover:text-black'
+              : 'bg-black text-white hover:bg-white hover:text-black active:bg-white active:text-black'
               }`}
           >
             <Smoke inverse={true} isActive={isHome && activeHash === '#contact'} />
