@@ -54,21 +54,21 @@ export function InteractiveHoverButton({
   if (theme === "neumorphic") {
     baseClass = "group bg-[#e0e5ec] text-[#4b5563] border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] data-[hover=true]:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]";
     dotClass = "bg-[#4b5563]";
-    textClass = "text-[#4b5563] group-data-[hover=true]:text-[#e0e5ec]";
+    textClass = "text-[#4b5563] group-data-[hover=true]:text-[#e0e5ec] group-active:text-[#e0e5ec] group-active:transition-none";
     arrowClass = "text-[#e0e5ec]";
     borderRadiusClass = "rounded-full";
     dotRoundingClass = "rounded-full";
   } else if (theme === "ember") {
     baseClass = "group bg-transparent text-[#1A1716] border-4 border-[#1A1716] data-[hover=true]:bg-[#1A1716] data-[hover=true]:text-[#FF4F00] data-[hover=true]:border-[#1A1716] active:bg-[#1A1716] active:text-[#FF4F00] active:border-[#1A1716]";
     dotClass = "bg-[#1A1716]";
-    textClass = "text-[#1A1716] group-data-[hover=true]:text-[#FF4F00]";
+    textClass = "text-[#1A1716] group-data-[hover=true]:text-[#FF4F00] group-active:text-[#FF4F00] group-active:transition-none";
     arrowClass = "text-[#FF4F00]";
     borderRadiusClass = "rounded-none";
     dotRoundingClass = "rounded-none";
   } else {
     baseClass = "group bg-transparent text-white border-4 border-white data-[hover=true]:bg-white data-[hover=true]:text-black data-[hover=true]:border-white active:bg-white active:text-black active:border-white";
     dotClass = "bg-white";
-    textClass = "text-white group-data-[hover=true]:text-black";
+    textClass = "text-white group-data-[hover=true]:text-black group-active:text-black group-active:transition-none";
     arrowClass = "text-black";
     borderRadiusClass = "rounded-none";
     dotRoundingClass = "rounded-none";
@@ -76,7 +76,7 @@ export function InteractiveHoverButton({
 
   // Set uniform width by default (w-full on mobile, sm:w-48 on desktop)
   const commonClass = cn(
-    "relative w-full sm:w-48 cursor-pointer overflow-hidden p-3 px-6 text-center text-xl font-black uppercase transition-all duration-300 ease-in-out",
+    "relative w-full sm:w-48 cursor-pointer overflow-hidden p-3 px-6 text-center text-xl font-black uppercase transition-all duration-300 ease-in-out active:scale-[0.98]",
     borderRadiusClass,
     baseClass,
     className
@@ -142,6 +142,7 @@ export function InteractiveHoverButton({
         onMouseLeave={() => setIsHovered(false)}
         onTouchStart={() => setIsHovered(true)}
         onTouchEnd={() => setIsHovered(false)}
+        onTouchCancel={() => setIsHovered(false)}
         {...(props as any)}
       >
         {innerContent}
@@ -157,6 +158,7 @@ export function InteractiveHoverButton({
       onMouseLeave={() => setIsHovered(false)}
       onTouchStart={() => setIsHovered(true)}
       onTouchEnd={() => setIsHovered(false)}
+      onTouchCancel={() => setIsHovered(false)}
       {...(props as any)}
     >
       {innerContent}
