@@ -1284,3 +1284,39 @@ html.theme-neumorphic .egypt-map-tooltip {
 html.theme-neumorphic .egypt-map-tooltip span.border-b-4 {
   border-color: #a3b1c6 !important;
 }
+
+/* Logo Origami Icon Hover Animation: Dissolve & Scatter into Broken Lines */
+.origami-icon {
+  overflow: visible !important;
+  transition: transform 0.5s ease;
+}
+
+.origami-icon path {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  transition: transform 0.7s cubic-bezier(0.25, 1.25, 0.5, 1), 
+              stroke-dasharray 0.7s ease, 
+              stroke-dashoffset 0.7s ease, 
+              opacity 0.6s ease;
+}
+
+/* Wing/top-right fold: falls to the right, rotates flat, and breaks into dashes */
+.logo-link:hover .origami-icon path:nth-child(1) {
+  transform: translate(14px, 16px) rotate(85deg);
+  stroke-dasharray: 4 8;
+  opacity: 0.85;
+}
+
+/* Main body/lower-left fold: falls to the left, rotates flat, and breaks into dashes */
+.logo-link:hover .origami-icon path:nth-child(2) {
+  transform: translate(-14px, 17px) rotate(-85deg);
+  stroke-dasharray: 6 12;
+  opacity: 0.9;
+}
+
+/* Base/backing folds: collapses in center, breaks into dashes, and fades significantly */
+.logo-link:hover .origami-icon path:nth-child(3) {
+  transform: translate(0px, 15px) rotate(20deg);
+  stroke-dasharray: 2 6;
+  opacity: 0.5;
+}

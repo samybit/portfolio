@@ -1,7 +1,7 @@
 "use client";
 
 import { playClack, playTick, prewarmAudio } from "@/utils/audio";
-import { TerminalSquare, ArrowUpRight, ArrowUpLeft, Menu, X, Palette, Globe, Layers, List } from "lucide-react";
+import { Origami, ArrowUpRight, ArrowUpLeft, Menu, X, Palette, Globe, Layers, List } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -185,9 +185,9 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
           <Link
             href={`/${currentLocale}`}
             onClick={handleLogoClick}
-            className="bg-white border-4 border-black px-4 flex items-center gap-3 h-full"
+            className="group logo-link bg-white border-4 border-black px-4 flex items-center gap-3 h-full"
           >
-            <TerminalSquare size={32} className="text-black" />
+            <Origami size={32} className="origami-icon text-black" />
             <span className="text-2xl font-black uppercase tracking-tighter">SB.</span>
           </Link>
 
