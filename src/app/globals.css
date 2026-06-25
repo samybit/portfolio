@@ -1295,53 +1295,59 @@ html.theme-neumorphic .egypt-map-tooltip span.border-b-4 {
   border-color: #a3b1c6 !important;
 }
 
-/* Logo Origami Icon Hover Animation: Dissolve & Scatter into Broken Lines */
+/* Logo Origami Icon Hover Animation: Flap Big Wing & Fly Up Then Down */
 .origami-icon {
   overflow: visible !important;
-  transition: transform 0.5s ease;
+  transition: transform 0.4s ease;
 }
 
 .origami-icon path {
   transform-box: fill-box;
-  transform-origin: center bottom;
-  transition: transform 0.7s cubic-bezier(0.25, 1.25, 0.5, 1), 
-              stroke-dasharray 0.7s ease, 
-              stroke-dashoffset 0.7s ease, 
-              opacity 0.6s ease;
+  transition: transform 0.3s ease;
 }
 
-/* Apply hover states ONLY on devices that support hover (desktop mouse) to avoid sticky hover on touch */
+@keyframes fly-up-down {
+  0% { transform: translateY(0); }
+  25% { transform: translateY(-8px); }
+  50% { transform: translateY(-3px); }
+  75% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes flap-left {
+  0%, 100% { transform: perspective(300px) rotateY(0deg) rotateZ(0deg); }
+  50% { transform: perspective(300px) rotateY(55deg) rotateZ(12deg); }
+}
+
+/* Path 1: Head/neck (static) */
+.origami-icon path:nth-child(1) {
+  transform-origin: bottom left;
+}
+
+/* Path 2: Big wing (flaps) */
+.origami-icon path:nth-child(2) {
+  transform-origin: top right;
+}
+
+/* Path 3: Base/backing folds (static) */
+.origami-icon path:nth-child(3) {
+  transform-origin: center;
+}
+
+/* Apply hover states ONLY on devices that support hover */
 @media (hover: hover) {
-  .logo-link:hover .origami-icon path:nth-child(1) {
-    transform: translate(14px, 16px) rotate(85deg);
-    stroke-dasharray: 4 8;
-    opacity: 0.85;
+  .logo-link:hover .origami-icon {
+    animation: fly-up-down 1.2s ease-in-out forwards;
   }
   .logo-link:hover .origami-icon path:nth-child(2) {
-    transform: translate(-14px, 17px) rotate(-85deg);
-    stroke-dasharray: 6 12;
-    opacity: 0.9;
-  }
-  .logo-link:hover .origami-icon path:nth-child(3) {
-    transform: translate(0px, 15px) rotate(20deg);
-    stroke-dasharray: 2 6;
-    opacity: 0.5;
+    animation: flap-left 0.4s ease-in-out 3 forwards;
   }
 }
 
-/* Apply active state (while pressed down) on ALL devices including mobile touch for instant tactile feedback */
-.logo-link:active .origami-icon path:nth-child(1) {
-  transform: translate(14px, 16px) rotate(85deg);
-  stroke-dasharray: 4 8;
-  opacity: 0.85;
+/* Apply active state (while pressed down) on ALL devices */
+.logo-link:active .origami-icon {
+  animation: fly-up-down 0.9s ease-in-out forwards;
 }
 .logo-link:active .origami-icon path:nth-child(2) {
-  transform: translate(-14px, 17px) rotate(-85deg);
-  stroke-dasharray: 6 12;
-  opacity: 0.9;
-}
-.logo-link:active .origami-icon path:nth-child(3) {
-  transform: translate(0px, 15px) rotate(20deg);
-  stroke-dasharray: 2 6;
-  opacity: 0.5;
+  animation: flap-left 0.3s ease-in-out 3 forwards;
 }
