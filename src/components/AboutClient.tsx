@@ -475,15 +475,21 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   const toastOverlay = toastMessage ? (
     <div
       id="toast-notification"
-      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 p-4 border-4 border-black bg-white text-black font-black uppercase text-sm flex items-center justify-between shadow-[8px_8px_0px_0px_#000000] animate-slide-up min-w-[280px] sm:min-w-[350px]"
+      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 p-4 border-4 border-black bg-white text-black font-black uppercase text-sm flex items-center justify-between shadow-[8px_8px_0px_0px_#000000] animate-slide-up min-w-[280px] sm:min-w-[350px] overflow-hidden"
     >
-      <span>{toastMessage}</span>
+      <span className="relative z-10">{toastMessage}</span>
       <button
         onClick={() => setToastMessage(null)}
-        className="font-black text-xl hover:text-zinc-600 transition-colors mx-6 cursor-pointer"
+        className="font-black text-xl hover:text-zinc-600 transition-colors ms-6 cursor-pointer relative z-10"
       >
         ×
       </button>
+      <motion.div 
+        initial={{ width: "100%" }}
+        animate={{ width: "0%" }}
+        transition={{ duration: 4, ease: "linear" }}
+        className={`absolute bottom-0 ${locale === 'ar' ? 'right-0' : 'left-0'} h-[6px] bg-black`}
+      />
     </div>
   ) : null;
 
