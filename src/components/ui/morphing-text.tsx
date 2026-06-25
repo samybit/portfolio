@@ -99,6 +99,7 @@ const useMorphingText = (texts: string[], isHovered: boolean, setIsMorphing: (va
 interface MorphingTextProps {
   className?: string
   texts: string[]
+  forceHover?: boolean
 }
 
 const Texts: React.FC<Pick<MorphingTextProps, "texts"> & { isHovered: boolean, setIsMorphing: (val: boolean) => void }> = ({ texts, isHovered, setIsMorphing }) => {
@@ -145,6 +146,7 @@ const SvgFilters: React.FC = () => (
 export const MorphingText: React.FC<MorphingTextProps> = ({
   texts,
   className,
+  forceHover = false,
 }) => {
   const [isHovered, setIsHovered] = useState(false)
   const [isMorphing, setIsMorphing] = useState(false)
@@ -161,7 +163,7 @@ export const MorphingText: React.FC<MorphingTextProps> = ({
       onTouchStart={() => setIsHovered(true)}
       onTouchEnd={() => setIsHovered(false)}
     >
-      <Texts texts={texts} isHovered={isHovered} setIsMorphing={setIsMorphing} />
+      <Texts texts={texts} isHovered={isHovered || forceHover} setIsMorphing={setIsMorphing} />
       <SvgFilters />
     </div>
   )

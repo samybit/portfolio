@@ -15,6 +15,7 @@ import { MorphingText } from "@/components/ui/morphing-text";
 
 export default function AboutClient({ dict, footerDict, tabTitles, locale }: { dict: Record<string, string>, footerDict: Record<string, string>, tabTitles: Record<string, string>, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isSummaryCardHovered, setIsSummaryCardHovered] = useState(false);
   const isNeumorphic = useNeumorphicTheme();
   const { isCurtainMode } = useScrollMode();
 
@@ -342,10 +343,14 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
               <MorphingText 
                 texts={[dict?.whoIAm || "Who I Am", dict?.summary || "Summary"]}
                 className="text-4xl font-black uppercase tracking-widest text-white m-0 p-0"
+                forceHover={isSummaryCardHovered}
               />
             </div>
 
-            <div className={`brutalist-container p-8 md:p-10 transition-all duration-300 ${
+            <div 
+              onMouseEnter={() => setIsSummaryCardHovered(true)}
+              onMouseLeave={() => setIsSummaryCardHovered(false)}
+              className={`brutalist-container p-8 md:p-10 transition-all duration-300 ${
               isNeumorphic ? "" : "bg-white text-black hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
             }`}>
               <div className="flex flex-col gap-6 text-lg md:text-xl font-medium leading-relaxed">
