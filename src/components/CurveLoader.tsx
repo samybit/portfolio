@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { DiaTextReveal } from "@/components/ui/dia-text-reveal";
 
 
 // Rose-curve flower configuration to shape the constellation
@@ -65,10 +66,6 @@ export default function CurveLoader({ onComplete }: { onComplete?: () => void })
   return (
     <>
       <style>{`
-        @keyframes cl-pulse {
-          0%, 100% { transform: scale(0.15); }
-          50%       { transform: scale(0.22); }
-        }
         @keyframes cl-icon-in {
           from { opacity: 0; transform: translate(calc(var(--ix) * 0.2), calc(var(--iy) * 0.2)) scale(0); }
           to   { opacity: 0.7; transform: translate(var(--ix), var(--iy)) scale(1); }
@@ -80,31 +77,6 @@ export default function CurveLoader({ onComplete }: { onComplete?: () => void })
         @keyframes cl-fadein {
           from { opacity: 0; }
           to   { opacity: 1; }
-        }
-        @keyframes cl-squish-exit {
-          0% {
-            transform: scale(0.15, 0.15);
-            background-color: #ffffff;
-            opacity: 1;
-          }
-          40% {
-            transform: scale(0.3, 0.01); /* Squish flat horizontally */
-            background-color: #000000;  /* Fade/melt into black background */
-            opacity: 0.5;
-          }
-          100% {
-            transform: scale(0, 0);
-            background-color: #000000;
-            opacity: 0;
-          }
-        }
-        .cl-circle {
-          transform: scale(0.15);
-          animation: cl-pulse 1s ease-in-out infinite;
-          will-change: transform;
-        }
-        .cl-circle-exit {
-          animation: cl-squish-exit 0.4s cubic-bezier(0.76, 0, 0.24, 1) forwards;
         }
         .cl-icon {
           position: absolute;
@@ -155,11 +127,18 @@ export default function CurveLoader({ onComplete }: { onComplete?: () => void })
           </div>
         ))}
 
-        {/* Central pulsing circle */}
-        <div
-          className={`rounded-full bg-white absolute${isExiting ? " cl-circle-exit" : " cl-circle"}`}
-          style={{ width: "40vmin", height: "40vmin" }}
-        />
+        {/* Central Welcome Text with DiaTextReveal */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-10">
+          <h1 className="text-4xl md:text-7xl font-black uppercase tracking-[0.2em] text-white">
+            <DiaTextReveal
+              text="Welcome"
+              textColor="#ffffff"
+              colors={["#ffffff", "#888888", "#ffffff", "#aaaaaa", "#ffffff"]} // Brutalist white/gray sweep
+              duration={1.2}
+              delay={0.2}
+            />
+          </h1>
+        </div>
 
         {/* Counter */}
         <div className="cl-ui fixed bottom-8 left-8 font-mono text-white select-none leading-none"
