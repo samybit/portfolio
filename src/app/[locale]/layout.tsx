@@ -6,6 +6,7 @@ import SystemOverride from "@/components/SystemOverride";
 import { ScrollModeProvider } from "@/context/ScrollModeContext";
 import CustomContextMenu from "@/components/CustomContextMenu";
 import GhostInTheMachine from "@/components/GhostInTheMachine";
+import CurveLoader from "@/components/CurveLoader";
 import { notFound } from "next/navigation";
 import { getDictionary, Locale } from "@/dictionaries/getDictionary";
 
@@ -113,8 +114,9 @@ export default async function RootLayout({
   const fontClassName = locale === 'ar' ? notoKufiArabic.className : spaceGrotesk.className;
 
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="scroll-smooth snap-y snap-mandatory" data-scroll-behavior="smooth">
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="scroll-smooth snap-y snap-mandatory" data-scroll-behavior="smooth" style={{ overflow: "hidden" }}>
       <body className={`${fontClassName} text-black antialiased selection:bg-black selection:text-white`}>
+        <CurveLoader />
         <SystemOverride />
         <CustomContextMenu dict={dict.menu} />
         <GhostInTheMachine />

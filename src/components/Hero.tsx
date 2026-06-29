@@ -66,7 +66,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
 
   return (
     // Added 'relative' to contain the absolute background
-    <section id="hero" className="relative min-h-[100svh] flex flex-col justify-center items-start px-6 md:px-12 lg:px-24 border-b-8 border-black pt-30 md:pt-28 pb-11 overflow-hidden">
+    <section id="hero" className="relative min-h-[100svh] flex flex-col justify-center items-start px-6 md:px-12 lg:px-24 border-b-8 border-black pt-30 md:pt-28 pb-11 overflow-hidden bg-black">
 
       {/* --- 3D TACTICAL CARABINER BACKGROUND --- */}
       <HeroCarabiner3D />
@@ -78,8 +78,8 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
         <div className="flex-1 animate-slide-up relative z-10">
 
           <div className="flex items-center gap-4 mb-6">
-            <span className={`text-[clamp(0.75rem,4.5vw,1.25rem)] whitespace-nowrap font-bold uppercase tracking-widest border-b-4 pb-1 bg-white ${
-              isNeumorphic ? "border-[#a3b1c6]" : "border-black"
+            <span className={`text-[clamp(0.75rem,4.5vw,1.25rem)] whitespace-nowrap font-bold uppercase tracking-widest border-b-4 pb-1 ${
+              isNeumorphic ? "bg-[#e0e5ec] border-[#a3b1c6] text-[#4b5563]" : "text-white border-white bg-transparent"
             }`}>
               {dict?.availability || "Available for Full-Time Roles"}
             </span>
@@ -88,11 +88,11 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
           {/* --- DESKTOP DESCRIPTION (Hidden on mobile) --- */}
           <HeroDescription
             html={dict?.description || "Full-Stack Developer. <br/> MERN Stack Specialist. <br/> Based in Egypt. <br/> Building fast effective apps."}
-            className="hidden md:block text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 -ms-2 ps-2 hero-subtitle-backdrop mb-6"
+            className="hidden md:block text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-white/80 -ms-2 ps-2 hero-subtitle-backdrop mb-6"
           />
 
           <h1 className="text-[18vw] sm:text-6xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem] font-black uppercase tracking-tighter leading-[0.85]">
-            <SplitText text={dict?.samy || "Samy"} className="text-black hero-samy-text cursor-pointer z-10" />
+            <SplitText text={dict?.samy || "Samy"} className="text-white hero-samy-text cursor-pointer z-10" />
 
             <br />
 
@@ -118,12 +118,14 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
           {/* --- MOBILE DESCRIPTION (Hidden on desktop) --- */}
           <HeroDescription
             html={dict?.description || "Full-Stack Developer. <br/> MERN Stack Specialist. <br/> Based in Egypt. <br/> Building fast effective apps."}
-            className="block md:hidden text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-zinc-800 bg-white/50 -ms-2 ps-2 hero-subtitle-backdrop mt-6"
+            className="block md:hidden text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-white/80 -ms-2 ps-2 hero-subtitle-backdrop mt-6"
           />
         </div>
 
         {/* --- RIGHT COLUMN: ACTIONS --- */}
-        <div className="flex flex-col w-full min-[1300px]:w-[450px] gap-4 md:gap-6 border-black border-t-0 border-s-0 min-[1300px]:border-s-8 min-[1300px]:ps-12 min-[1300px]:py-8 shrink-0 animate-slide-up-delay-1 relative z-0">
+        <div className={`flex flex-col w-full min-[1300px]:w-[450px] gap-4 md:gap-6 border-t-0 border-s-0 min-[1300px]:border-s-8 min-[1300px]:ps-12 min-[1300px]:py-8 shrink-0 animate-slide-up-delay-1 relative z-0 ${
+          isNeumorphic ? "border-black" : "border-white"
+        }`}>
 
           {/* CV Button */}
           <a
@@ -136,7 +138,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
               isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                : "bg-black text-white border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                : "bg-white text-black border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:bg-black hover:text-white hover:border-white hover:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
             <Highlighter show={isCvHovered} action="highlight" color={getHighlightColor(true)}>
@@ -167,7 +169,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
               isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                : "bg-transparent text-white border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.2)] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_rgba(255,255,255,0.2)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
             <Highlighter show={isWorkHovered} action="highlight" color={getHighlightColor(false)}>
@@ -195,7 +197,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
               isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:bg-black hover:text-white hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                : "bg-transparent text-white border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.2)] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_rgba(255,255,255,0.2)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
             }`}
           >
             <Highlighter show={isContactHovered} action="highlight" color={getHighlightColor(false)}>

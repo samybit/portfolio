@@ -613,10 +613,16 @@ export default function HeroCarabiner3D() {
   return (
     <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
       
+      {/* Dot grid background — white dots on black */}
+      <div
+        className="absolute inset-0 opacity-[0.12]"
+        style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 0)', backgroundSize: '40px 40px' }}
+      />
+
       {/* Topographic 2D Background Pattern */}
       <div 
         className="absolute inset-0 opacity-[0.05]" 
-        style={{ backgroundImage: 'repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 40px, currentColor 40px, currentColor 41px)' }} 
+        style={{ backgroundImage: 'repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 40px, #ffffff 40px, #ffffff 41px)' }} 
       />
 
       {/* 3D Canvas (Delayed to give UI animations priority, then fades in) */}
@@ -639,7 +645,7 @@ export default function HeroCarabiner3D() {
       </div>
 
       {/* 2D Tech/Arknights style UI text floating over the 3D scene */}
-      <div className="absolute inset-0 pointer-events-none text-black opacity-60 font-mono text-[10px] hidden sm:block">
+      <div className="absolute inset-0 pointer-events-none text-white opacity-40 font-mono text-[10px] hidden sm:block">
         <div className="absolute top-[30%] left-[30%]">
           RENEW \ LIMIT 4 AG40<br/>
           UID 00046321840 KTM<br/>

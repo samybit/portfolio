@@ -50,6 +50,12 @@
     --radius: 0rem;
   }
 
+  html {
+    /* Always reserve scrollbar track space — prevents layout shift
+       when scrollbar appears/disappears (e.g. after preloader exits) */
+    scrollbar-gutter: stable;
+  }
+
   * {
     border-color: black;
   }
