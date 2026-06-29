@@ -287,7 +287,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
           onClick={toggleMobileMenu}
           onMouseEnter={prewarmAudio}
           onTouchStart={prewarmAudio}
-          className="pointer-events-auto md:hidden bg-white border-4 border-black p-3 brutalist-shadow-static active:translate-x-1 active:translate-y-1 active:shadow-[4px_4px_0px_0px_#000000] transition-all"
+          className="pointer-events-auto md:hidden bg-white border-4 border-black p-3 brutalist-shadow-static active:translate-x-1 active:translate-y-1 active:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] transition-all"
           aria-label="Toggle menu"
         >
           {isOpen ? <X size={32} className="text-black" /> : <Menu size={32} className="text-black" />}
