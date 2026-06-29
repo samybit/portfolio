@@ -118,6 +118,34 @@
     }
   }
 
+  .brutalist-container-dark {
+    box-shadow: 8px 8px 0px 0px rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease-in-out;
+    background-color: black;
+    border: 4px solid white;
+    padding: 1.5rem;
+    color: white;
+  }
+
+  @media (hover: hover) {
+    .brutalist-container-dark:hover {
+      box-shadow: 4px 4px 0px 0px rgba(255, 255, 255, 0.2);
+      transform: translate(4px, 4px);
+    }
+  }
+
+  .brutalist-container-dark:active {
+    box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.2) !important;
+    transform: translate(6px, 6px) !important;
+    transition: all 0.1s ease-in-out;
+  }
+
+  @media (min-width: 640px) {
+    .brutalist-container-dark {
+      padding: 2rem;
+    }
+  }
+
   /* 5. Mobile Scroll Hover & Tap Effects */
   .project-card.mobile-active .project-image-overlay,
   .mobile-force-hover .project-image-overlay {

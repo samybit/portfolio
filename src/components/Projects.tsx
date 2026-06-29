@@ -68,7 +68,9 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
 
   return (
     <div 
-      className={`group/card brutalist-container bg-white border-black flex flex-col h-full w-full min-h-[320px] lg:min-h-0 ${animate ? 'animate-slide-up' : ''} ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''}`}
+      className={`group/card flex flex-col h-full w-full min-h-[320px] lg:min-h-0 ${animate ? 'animate-slide-up' : ''} ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
+        isNeumorphic ? "brutalist-container bg-white border-black" : "brutalist-container-dark"
+      }`}
     >
 
       <div 
@@ -92,7 +94,9 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
                 {project.title}
               </div>
             )}
-            <p className="text-sm sm:text-base md:text-lg font-medium text-zinc-800 leading-snug">
+            <p className={`text-sm sm:text-base md:text-lg font-medium leading-snug ${
+              isNeumorphic ? "text-zinc-800" : "text-zinc-300"
+            }`}>
               {project.description}
             </p>
           </div>
@@ -104,7 +108,7 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
                 className={`px-2 py-1 md:px-2.5 text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                   isNeumorphic
                     ? "bg-[#d1d9e6]/70 text-[#4b5563] rounded-md"
-                    : "bg-black text-white"
+                    : "bg-white text-black"
                 }`}
               >
                 {tech}
@@ -114,25 +118,35 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
         </div>
 
         {/* INSTANT HOVER IMAGE OVERLAY */}
-        <div className="project-image-overlay hidden lg:group-hover/card:block absolute inset-0 z-10 bg-white">
+        <div className={`project-image-overlay hidden lg:group-hover/card:block absolute inset-0 z-10 ${
+          isNeumorphic ? "bg-white" : "bg-black"
+        }`}>
           {project.image ? (
             <Image
               src={project.image}
               alt={project.title}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="w-full h-full object-cover border-4 border-black"
+              className={`w-full h-full object-cover border-4 ${
+                isNeumorphic ? "border-black" : "border-white"
+              }`}
             />
           ) : (
-            <div className="w-full h-full border-4 border-black bg-zinc-100 flex items-center justify-center">
-              <span className="font-black text-zinc-400 uppercase tracking-widest text-sm text-center px-4">Screenshot Missing</span>
+            <div className={`w-full h-full border-4 flex items-center justify-center ${
+              isNeumorphic ? "border-black bg-zinc-100" : "border-white bg-zinc-900"
+            }`}>
+              <span className={`font-black uppercase tracking-widest text-sm text-center px-4 ${
+                isNeumorphic ? "text-zinc-400" : "text-zinc-600"
+              }`}>Screenshot Missing</span>
             </div>
           )}
         </div>
       </div>
 
       {/* BOTTOM LINKS BLOCK */}
-      <div className="flex flex-wrap gap-4 border-t-4 border-black pt-3 md:pt-4 flex-none relative z-20 min-h-[48px] md:min-h-[52px]">
+      <div className={`flex flex-wrap gap-4 border-t-4 pt-3 md:pt-4 flex-none relative z-20 min-h-[48px] md:min-h-[52px] ${
+        isNeumorphic ? "border-black" : "border-white"
+      }`}>
         {hasGithub && (
           <a
             href={project.github}
@@ -141,7 +155,7 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
             className={`group flex items-center gap-1.5 text-sm md:text-base font-bold uppercase px-3 py-1.5 transition-all duration-300 ease-in-out shrink-0 ${
               isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                : "border-2 border-black hover:bg-white hover:text-black"
+                : "border-2 border-white text-white hover:bg-white hover:text-black"
             }`}
           >
             <GithubIcon size={20} /> {dict?.repo || "Repo"}
@@ -157,12 +171,16 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
             className={`group flex items-center gap-1.5 text-sm md:text-base font-bold uppercase px-3 py-1.5 transition-all duration-300 ease-in-out shrink-0 ${
               isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                : "border-2 border-black hover:bg-white hover:text-black"
+                : "border-2 border-white text-white hover:bg-white hover:text-black"
             }`}
           >
             <span className="relative flex h-2.5 w-2.5 me-1" aria-hidden="true">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-black"></span>
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                isNeumorphic ? "bg-black" : "bg-current"
+              }`}></span>
+              <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
+                isNeumorphic ? "bg-black" : "bg-current"
+              }`}></span>
             </span>
             <span className="sr-only">Active live demo indicator: </span>
             {dict?.demo || "Live Demo"} <ExternalLink size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" />
@@ -259,7 +277,9 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
   const titleRest = titleWords.slice(1).join(" ");
 
   return (
-    <section id="projects" className="snap-start relative w-full min-h-[100svh] flex flex-col pt-24 pb-8 px-6 md:px-12 lg:px-24 border-b-8 border-black overflow-hidden">
+    <section id="projects" className={`snap-start relative w-full min-h-[100svh] flex flex-col pt-24 pb-8 px-6 md:px-12 lg:px-24 border-b-8 border-black overflow-hidden ${
+      isNeumorphic ? "bg-white text-black" : "bg-black text-white"
+    }`}>
       {/* --- HEADER --- */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 lg:mb-12 gap-6 flex-none">
         <div className="w-full md:w-auto">
@@ -269,16 +289,20 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
             {titleRest && <DecryptText text={titleRest} />}
           </h2>
 
-          <p className="hidden lg:block text-lg font-bold uppercase text-zinc-500 mt-4 tracking-widest">
+          <p className={`hidden lg:block text-lg font-bold uppercase mt-4 tracking-widest ${
+            isNeumorphic ? "text-zinc-500" : "text-zinc-400"
+          }`}>
             {dict?.pageFormat ? dict.pageFormat.replace('{current}', `0${page + 1}`).replace('{total}', `0${totalPages}`) : `[ PAGE 0${page + 1} / 0${totalPages} ]`}
           </p>
 
           <div className={`flex lg:hidden items-center justify-between mt-6 p-2 transition-all duration-300 ${
             isNeumorphic
               ? "bg-[#e0e5ec] rounded-2xl shadow-[inset_3px_3px_6px_rgba(163,177,198,0.5),_inset_-3px_-3px_6px_rgba(255,255,255,0.7)]"
-              : "border-2 border-black bg-white"
+              : "border-2 border-white bg-black"
           }`}>
-            <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-zinc-500 ps-2">
+            <span className={`text-xs sm:text-sm font-bold uppercase tracking-widest ps-2 ${
+              isNeumorphic ? "text-zinc-500" : "text-zinc-400"
+            }`}>
               {showAllMobile ? "[ Scroll ↓ ]" : `[ ${dict?.swipeHint || "Swipe to explore"} ]`}
             </span>
             <button
@@ -286,7 +310,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
               className={`px-3 py-2 text-xs sm:text-sm font-black uppercase transition-all duration-300 ${
                 isNeumorphic
                   ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.7),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)] active:translate-y-[2px]"
-                  : "bg-black text-white border-2 border-transparent hover:border-black"
+                  : "bg-white text-black border-2 border-transparent hover:border-white"
               }`}
             >
               {showAllMobile ? (dict?.hide || "Hide Projects") : (dict?.viewAll || "View All Projects")}
@@ -298,7 +322,9 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
           href="https://github.com/samybit"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden md:block text-xl font-bold uppercase border-b-4 border-black pb-1 hover:bg-black hover:text-white transition-colors"
+          className={`hidden md:block text-xl font-bold uppercase border-b-4 pb-1 transition-colors ${
+            isNeumorphic ? "border-black hover:bg-black hover:text-white" : "border-white hover:bg-white hover:text-black"
+          }`}
         >
           {dict?.viewGithub || "View full GitHub →"}
           <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
@@ -316,16 +342,20 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
         </div>
 
         {/* The Sidebar Controls */}
-        <div className={`flex flex-col border-4 border-black bg-white h-full w-full transition-all duration-200 ease-in-out ${
+        <div className={`flex flex-col border-4 h-full w-full transition-all duration-200 ease-in-out ${
           isNeumorphic
-            ? "brutalist-shadow-static"
-            : "shadow-[8px_8px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_#000] active:translate-x-2 active:translate-y-2 active:shadow-none rtl:shadow-[-8px_8px_0px_#000] rtl:hover:-translate-x-1 rtl:hover:shadow-[-4px_4px_0px_#000] rtl:active:-translate-x-2"
+            ? "border-black bg-white brutalist-shadow-static"
+            : "border-white bg-black shadow-[8px_8px_0px_rgba(255,255,255,0.2)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_rgba(255,255,255,0.2)] active:translate-x-2 active:translate-y-2 active:shadow-none rtl:shadow-[-8px_8px_0px_rgba(255,255,255,0.2)] rtl:hover:-translate-x-1 rtl:hover:shadow-[-4px_4px_0px_rgba(255,255,255,0.2)] rtl:active:-translate-x-2"
         }`}>
-          <button onClick={prevSlide} className="flex-1 flex flex-col items-center justify-center gap-2 border-b-4 border-black hover:bg-black hover:text-white transition-colors group">
+          <button onClick={prevSlide} className={`flex-1 flex flex-col items-center justify-center gap-2 border-b-4 transition-colors group ${
+            isNeumorphic ? "border-black hover:bg-black hover:text-white" : "border-white hover:bg-white hover:text-black"
+          }`}>
             <ArrowUp size={32} className="group-hover:-translate-y-2 transition-transform" />
             <span className="font-black uppercase tracking-widest text-xs rotate-180 [writing-mode:vertical-rl] rtl:-rotate-180">{dict?.prev || "Prev"}</span>
           </button>
-          <button onClick={nextSlide} className="flex-1 flex flex-col items-center justify-center gap-2 hover:bg-black hover:text-white transition-colors group">
+          <button onClick={nextSlide} className={`flex-1 flex flex-col items-center justify-center gap-2 transition-colors group ${
+            isNeumorphic ? "hover:bg-black hover:text-white" : "hover:bg-white hover:text-black"
+          }`}>
             <span className="font-black uppercase tracking-widest text-xs [writing-mode:vertical-rl]">{dict?.next || "Next"}</span>
             <ArrowDown size={32} className="group-hover:translate-y-2 transition-transform" />
           </button>
@@ -371,11 +401,11 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
               onPointerUp={() => isDraggingSlider.current = false}
               onTouchStart={() => isDraggingSlider.current = true}
               onTouchEnd={() => isDraggingSlider.current = false}
-              className={`w-full appearance-none h-3 border-2 border-black outline-none transition-all duration-300
+              className={`w-full appearance-none h-3 border-2 outline-none transition-all duration-300
                 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-8 [&::-webkit-slider-thumb]:h-8 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:transition-transform
                 ${isNeumorphic 
-                  ? "bg-[#e0e5ec] shadow-[inset_2px_2px_4px_rgba(163,177,198,0.5),_inset_-2px_-2px_4px_rgba(255,255,255,0.7)] [&::-webkit-slider-thumb]:bg-[#e0e5ec] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)] [&::-webkit-slider-thumb]:border-none" 
-                  : "bg-white [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:rounded-none [&::-webkit-slider-thumb]:shadow-[4px_4px_0px_#000]"
+                  ? "bg-[#e0e5ec] border-black shadow-[inset_2px_2px_4px_rgba(163,177,198,0.5),_inset_-2px_-2px_4px_rgba(255,255,255,0.7)] [&::-webkit-slider-thumb]:bg-[#e0e5ec] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)] [&::-webkit-slider-thumb]:border-none" 
+                  : "bg-black border-white [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-black [&::-webkit-slider-thumb]:rounded-none [&::-webkit-slider-thumb]:shadow-[4px_4px_0px_rgba(255,255,255,0.3)]"
                 }
               `}
             />
@@ -392,7 +422,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
           className={`w-full p-4 text-lg font-black uppercase text-center transition-all duration-300 ${
             isNeumorphic
               ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)] active:translate-y-[2px]"
-              : "bg-black text-white border-4 border-black hover:bg-white hover:text-black"
+              : "bg-white text-black border-4 border-white hover:bg-black hover:text-white"
           }`}
         >
           {dict?.viewGithub || "View Full GitHub →"}
