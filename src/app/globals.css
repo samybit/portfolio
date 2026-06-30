@@ -98,8 +98,7 @@
   }
 
   /* 3.5 Shared Active Physics (Tactile Feedback) */
-  .brutalist-shadow:active,
-  .brutalist-container:active {
+  .brutalist-shadow:active {
     box-shadow: 2px 2px 0px 0px #000000 !important;
     transform: translate(6px, 6px) !important;
     transition: all 0.1s ease-in-out;
@@ -134,11 +133,7 @@
     }
   }
 
-  .brutalist-container-dark:active {
-    box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.3) !important;
-    transform: translate(6px, 6px) !important;
-    transition: all 0.1s ease-in-out;
-  }
+
 
   @media (min-width: 640px) {
     .brutalist-container-dark {
