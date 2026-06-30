@@ -464,14 +464,16 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
     <section
       ref={ctaRef}
       onClick={() => setAnomalyIndex(prev => (prev + 1) % anomalies.length)}
-      className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center py-16 overflow-hidden border-t-8 border-b-8 border-black bg-white text-black"
+      className={`relative w-full min-h-[100dvh] flex flex-col items-center justify-center py-16 overflow-hidden border-t-8 border-b-8 border-black transition-colors duration-300 ${
+        isNeumorphic ? "bg-white text-black" : "bg-black text-white"
+      }`}
     >
 
       {/* --- LAYER 1: MECHANICAL ARROW BACKGROUND (z-0) --- */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg stroke='${isNeumorphic ? "%23a3b1c6" : "%23000000"}' stroke-width='6' fill='none' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cline x1='25' y1='75' x2='72' y2='28' /%3E%3Cpolyline points='50,25 75,25 75,50' /%3E%3Cline x1='65' y1='5' x2='95' y2='35' /%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg stroke='${isNeumorphic ? "%23a3b1c6" : "%23161616"}' stroke-width='6' fill='none' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cline x1='25' y1='75' x2='72' y2='28' /%3E%3Cpolyline points='50,25 75,25 75,50' /%3E%3Cline x1='65' y1='5' x2='95' y2='35' /%3E%3C/g%3E%3C/svg%3E")`,
           backgroundSize: "100px 100px"
         }}
       ></div>
@@ -481,14 +483,16 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
 
         {/* LEFT SIDE: The Quote */}
         <div className="flex-1 flex flex-col relative w-full">
-          <div className="absolute -top-8 -left-2 md:-top-16 md:-left-8 text-black font-black text-[10rem] md:text-[18rem] leading-none opacity-5 pointer-events-none select-none rtl:-left-auto rtl:-right-2 rtl:md:-right-8">
+          <div className="absolute -top-8 -left-2 md:-top-16 md:-left-8 text-current font-black text-[10rem] md:text-[18rem] leading-none opacity-5 pointer-events-none select-none rtl:-left-auto rtl:-right-2 rtl:md:-right-8">
             &quot;
           </div>
           <motion.blockquote
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-7xl font-black uppercase tracking-tighter leading-none relative z-10 bg-white/90 p-4 -ms-4 quote-backdrop"
+            className={`text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-7xl font-black uppercase tracking-tighter leading-none relative z-10 p-4 -ms-4 quote-backdrop ${
+              isNeumorphic ? "bg-white/90 text-black" : "bg-black/90 text-white"
+            }`}
           >
             &quot;{dict?.quote || "It's no use going back to yesterday, because I was a different person then."}&quot;
           </motion.blockquote>
@@ -498,13 +502,17 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="flex items-center gap-4 mt-8 relative z-10 bg-white/90 p-4 -ms-4 max-w-max quote-backdrop"
+            className={`flex items-center gap-4 mt-8 relative z-10 p-4 -ms-4 max-w-max quote-backdrop ${
+              isNeumorphic ? "bg-white/90" : "bg-black/90"
+            }`}
           >
             {/* Brutalist Divider */}
-            <div className="h-2 w-8 sm:w-16 md:w-24 bg-black shrink-0"></div>
+            <div className={`h-2 w-8 sm:w-16 md:w-24 shrink-0 ${isNeumorphic ? "bg-black" : "bg-white"}`}></div>
 
             {/* Attribution */}
-            <span className="text-[10px] sm:text-sm md:text-lg font-bold tracking-widest uppercase text-zinc-600 whitespace-nowrap pe-1">
+            <span className={`text-[10px] sm:text-sm md:text-lg font-bold tracking-widest uppercase whitespace-nowrap pe-1 ${
+              isNeumorphic ? "text-zinc-600" : "text-zinc-400"
+            }`}>
               {dict?.attribution || "[ Alice in Wonderland / Lewis Carroll ]"}
             </span>
           </motion.div>
@@ -517,11 +525,17 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
           viewport={{ once: true }}
           className="w-full xl:w-auto shrink-0"
         >
-          <div className="brutalist-container bg-white text-black border-4 md:border-8 border-black p-8 md:p-12 text-center flex flex-col items-center gap-6 brutalist-shadow pointer-events-auto max-w-lg xl:max-w-xl mx-auto">
+          <div className={`text-center flex flex-col items-center gap-6 pointer-events-auto max-w-lg xl:max-w-xl mx-auto ${
+            isNeumorphic
+              ? "brutalist-container bg-white text-black border-4 md:border-8 border-black brutalist-shadow p-8 md:p-12"
+              : "brutalist-container-dark md:border-8 p-8 md:p-12"
+          }`}>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none">
               {dict?.title || "Ready to build?"}
             </h2>
-            <p className="text-base md:text-lg lg:text-xl font-bold uppercase text-zinc-600">
+            <p className={`text-base md:text-lg lg:text-xl font-bold uppercase ${
+              isNeumorphic ? "text-zinc-600" : "text-zinc-400"
+            }`}>
               {dict?.description || "Currently open for freelance projects and full-time roles. Let's make something impactful."}
             </p>
             <RippleButton
@@ -529,7 +543,11 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
               href="#contact"
               onClick={handleScroll}
               onHoverChange={setIsHovered}
-              className="group/btn relative inline-flex items-center justify-center px-8 py-4 text-lg md:text-xl font-black uppercase tracking-widest border-4 border-black mt-4 bg-black text-white"
+              className={`group/btn relative inline-flex items-center justify-center px-8 py-4 text-lg md:text-xl font-black uppercase tracking-widest border-4 mt-4 ${
+                isNeumorphic
+                  ? "bg-black text-white border-black"
+                  : "bg-white text-black border-white hover:bg-black hover:text-white"
+              }`}
             >
               <span>{dict?.button || "Get in touch"}</span>
               <ArrowDownRight className={`ms-3 w-6 h-6 transition-transform rtl:-scale-x-100 ${isHovered ? "[animation:arrow-snap-sequence_0.8s_ease-in-out_forwards]" : ""}`} />
