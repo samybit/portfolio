@@ -16,8 +16,8 @@ function FooterLandscape({ isEmber, isNeumorphic }: { isEmber: boolean; isNeumor
     meshRef.current.position.y = -2 + Math.sin(t * 0.5) * 0.15;
   });
 
-  let color = "#000000";
-  let opacity = 0.25;
+  let color = "#ffffff";
+  let opacity = 0.12;
 
   if (isEmber) {
     color = "#FF4F00";

@@ -3,6 +3,7 @@
 import { Plus } from "lucide-react";
 import type React from "react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { CustomTooltip } from "@/components/ui/tooltip";
 
 import { cn } from "@/lib/utils";
 
@@ -132,26 +133,28 @@ export default function SpeedDial({
       data-direction={direction}
       {...props}
     >
-      <button
-        ref={triggerRef}
-        type="button"
-        className={cn(shellClass, "relative z-20")}
-        aria-expanded={open}
-        aria-haspopup="menu"
-        aria-controls={menuId}
-        aria-label={open ? "Close actions menu" : triggerLabel}
-        onClick={toggle}
-      >
-        <span
-          aria-hidden="true"
-          className={cn(
-            "speed-dial-trigger-icon flex items-center justify-center transition-transform duration-150 ease-out pointer-events-none",
-            open && "rotate-45",
-          )}
+      <CustomTooltip content={open ? "Close Menu" : triggerLabel} side="left">
+        <button
+          ref={triggerRef}
+          type="button"
+          className={cn(shellClass, "relative z-20")}
+          aria-expanded={open}
+          aria-haspopup="menu"
+          aria-controls={menuId}
+          aria-label={open ? "Close actions menu" : triggerLabel}
+          onClick={toggle}
         >
-          <Plus className="size-5" strokeWidth={2.25} />
-        </span>
-      </button>
+          <span
+            aria-hidden="true"
+            className={cn(
+              "speed-dial-trigger-icon flex items-center justify-center transition-transform duration-150 ease-out pointer-events-none",
+              open && "rotate-45",
+            )}
+          >
+            <Plus className="size-5" strokeWidth={2.25} />
+          </span>
+        </button>
+      </CustomTooltip>
 
       {open ? (
         <ul
@@ -172,27 +175,29 @@ export default function SpeedDial({
               className="speed-dial-item list-none"
               style={{ "--i": index } as React.CSSProperties}
             >
-              <button
-                ref={(node) => {
-                  itemRefs.current[index] = node;
-                }}
-                type="button"
-                role="menuitem"
-                className={shellClass}
-                aria-label={action.label}
-                onClick={() => {
-                  action.action();
-                  close();
-                }}
-              >
-                <span className="sr-only">{action.label}</span>
-                <span
-                  aria-hidden="true"
-                  className="flex size-5 items-center justify-center [&>svg]:size-5 pointer-events-none"
+              <CustomTooltip content={action.label} side="left">
+                <button
+                  ref={(node) => {
+                    itemRefs.current[index] = node;
+                  }}
+                  type="button"
+                  role="menuitem"
+                  className={shellClass}
+                  aria-label={action.label}
+                  onClick={() => {
+                    action.action();
+                    close();
+                  }}
                 >
-                  {action.icon}
-                </span>
-              </button>
+                  <span className="sr-only">{action.label}</span>
+                  <span
+                    aria-hidden="true"
+                    className="flex size-5 items-center justify-center [&>svg]:size-5 pointer-events-none"
+                  >
+                    {action.icon}
+                  </span>
+                </button>
+              </CustomTooltip>
             </li>
           ))}
         </ul>
