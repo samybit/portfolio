@@ -615,13 +615,13 @@ export default function HeroCarabiner3D() {
       
       {/* Dot grid background — white dots on black */}
       <div
-        className="absolute inset-0 opacity-[0.12]"
+        className="absolute inset-0 opacity-[0.25]"
         style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 0)', backgroundSize: '40px 40px' }}
       />
 
       {/* Topographic 2D Background Pattern */}
       <div 
-        className="absolute inset-0 opacity-[0.05]" 
+        className="absolute inset-0 opacity-[0.12]" 
         style={{ backgroundImage: 'repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 40px, #ffffff 40px, #ffffff 41px)' }} 
       />
 
@@ -644,21 +644,7 @@ export default function HeroCarabiner3D() {
         )}
       </div>
 
-      {/* 2D Tech/Arknights style UI text floating over the 3D scene */}
-      <div className="absolute inset-0 pointer-events-none text-white opacity-40 font-mono text-[10px] hidden sm:block">
-        <div className="absolute top-[30%] left-[30%]">
-          RENEW \ LIMIT 4 AG40<br/>
-          UID 00046321840 KTM<br/>
-          UN VER.1.1.6
-        </div>
-        <div className="absolute top-[30%] right-[30%]">
-          20196_146
-        </div>
-        <div className="absolute top-[50%] left-[25%]">
-          ▼ // SYS.OP:<br/>
-          ... /Switch/
-        </div>
-      </div>
+
 
     </div>
   );
