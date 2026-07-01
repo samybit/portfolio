@@ -11,11 +11,11 @@
   }
 
   .ripple-enter {
-    animation: ripple-enter 250ms ease-out forwards;
+    animation: ripple-enter 450ms ease-out forwards;
   }
 
   .ripple-leave {
-    animation: ripple-leave 250ms ease-out forwards;
+    animation: ripple-leave 450ms ease-out forwards;
   }
 
   @keyframes ripple-enter {

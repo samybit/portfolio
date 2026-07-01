@@ -546,7 +546,7 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
               className={`group/btn relative inline-flex items-center justify-center px-8 py-4 text-lg md:text-xl font-black uppercase tracking-widest border-4 mt-4 ${
                 isNeumorphic
                   ? "bg-black text-white border-black"
-                  : "bg-white text-black border-white hover:bg-black hover:text-white"
+                  : "bg-white text-black border-white"
               }`}
             >
               <span>{dict?.button || "Get in touch"}</span>
