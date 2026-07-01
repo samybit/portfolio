@@ -116,7 +116,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="scroll-smooth snap-y snap-mandatory" data-scroll-behavior="smooth" style={{ overflow: "hidden" }}>
       <body className={`${fontClassName} text-black antialiased selection:bg-black selection:text-white`}>
-        <CurveLoader />
+        <CurveLoader locale={locale} />
         <SystemOverride />
         <CustomContextMenu dict={dict.menu} />
         <GhostInTheMachine />

@@ -29,7 +29,7 @@ const RING_ITEMS = Array.from({ length: ICON_COUNT }, (_, i) => {
   };
 });
 
-export default function CurveLoader({ onComplete }: { onComplete?: () => void }) {
+export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?: () => void; locale?: string }) {
   const [isExiting, setIsExiting] = useState(false);
   const countRef = useRef(0);
   const rafRef = useRef<number>(0);
@@ -133,7 +133,7 @@ export default function CurveLoader({ onComplete }: { onComplete?: () => void })
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-10">
           <h1 className="text-4xl md:text-7xl font-black uppercase tracking-[0.2em] text-white">
             <DiaTextReveal
-              text="Welcome"
+              text={locale === 'ar' ? "أهلاً بك" : "Welcome"}
               textColor="#ffffff"
               colors={["#ffffff", "#888888", "#ffffff", "#aaaaaa", "#ffffff"]} // Brutalist white/gray sweep
               duration={1.2}
@@ -153,13 +153,13 @@ export default function CurveLoader({ onComplete }: { onComplete?: () => void })
         {/* Site name */}
         <div className="cl-ui fixed top-8 left-8 text-white font-bold uppercase select-none"
           style={{ letterSpacing: "0.3em", fontSize: "clamp(10px,1.2vw,14px)", animationDelay: "0.2s" }}>
-          SAMY BARSOUM
+          {locale === 'ar' ? "سامي برسوم" : "SAMY BARSOUM"}
         </div>
 
         {/* Status */}
         <div className="cl-ui fixed top-8 right-8 text-white font-mono uppercase select-none"
           style={{ fontSize: "clamp(9px,1vw,12px)", letterSpacing: "0.15em", opacity: 0.5, animationDelay: "0.3s" }}>
-          {isExiting ? "READY" : "LOADING"}
+          {isExiting ? (locale === 'ar' ? "جاهز" : "READY") : (locale === 'ar' ? "جاري التحميل" : "LOADING")}
         </div>
       </motion.div>
     </>
