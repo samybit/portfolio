@@ -479,6 +479,13 @@ html.theme-color [class*="hover:border-black"]:hover {
   border-color: #FF4F00 !important;
 }
 
+/* Specific override for Navbar container border in Ember theme to match button borders (Charcoal) */
+html.theme-color nav > div.border-black,
+html.theme-color nav .logo-link.border-black,
+html.theme-color nav button.border-black {
+  border-color: #1A1716 !important;
+}
+
 /* Intercept all white borders */
 html.theme-color .border-white,
 html.theme-color [class*="hover:border-white"]:hover {
@@ -492,6 +499,11 @@ html.theme-color .brutalist-shadow-static,
 html.theme-color .shadow-\[8px_8px_0px_\#000\],
 html.theme-color .shadow-\[8px_8px_0px_0px_\#000000\] {
   box-shadow: 8px 8px 0px 0px #FF4F00 !important;
+}
+
+/* Specific override for Navbar shadows in Ember theme to match button shadows */
+html.theme-color nav .brutalist-shadow-static {
+  box-shadow: 8px 8px 0px 0px rgba(255, 255, 255, 0.3) !important;
 }
 
 html.theme-color .brutalist-shadow:hover,
