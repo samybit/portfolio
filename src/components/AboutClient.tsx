@@ -146,7 +146,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
           <Link href={`/${locale}`} className="inline-flex items-center gap-2 text-xl font-bold uppercase mb-6 bg-white text-black hover:bg-black hover:text-white px-3 py-1 border-4 border-transparent hover:border-black transition-all">
             {locale === 'ar' ? <ArrowRight size={24} /> : <ArrowLeft size={24} />} {dict?.returnGrid || "Return to Grid"}
           </Link>
-          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none flex flex-wrap items-baseline gap-4">
+          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none flex flex-wrap items-baseline gap-4 text-black">
             <DecryptText text={dict?.about || "About"} />
             <span className="bg-black text-white px-4 inline-block transform -skew-x-2"><DecryptText text={dict?.me || "me"} /></span>
           </h1>
@@ -184,7 +184,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
             </div>
           </section>
 
-          <section className="brutalist-container flex flex-col">
+          <section className="brutalist-container flex flex-col text-black">
             <div className={`flex items-center gap-4 border-b-4 pb-3 mb-4 transition-all duration-300 ${
               isNeumorphic ? "border-[#a3b1c6]" : "border-black"
             }`}>
@@ -338,7 +338,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
 
 
   const section2 = (
-      <div className={`w-full ${isCurtainMode ? `min-h-[100svh] flex items-center ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}` : ''}`}>
+      <div className={`w-full ${isCurtainMode ? `min-h-[100svh] flex items-center transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
         <div className={`w-full ${isCurtainMode ? 'max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10' : ''}`}>
           <section className="animate-slide-up-delay-2">
             <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
@@ -352,9 +352,11 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
             <div 
               onMouseEnter={() => setIsSummaryCardHovered(true)}
               onMouseLeave={() => setIsSummaryCardHovered(false)}
-              className={`brutalist-container p-8 md:p-10 transition-all duration-300 ${
-              isNeumorphic ? "" : "bg-white text-black hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
-            }`}>
+              className={`p-8 md:p-10 transition-all duration-300 ${
+                isNeumorphic 
+                  ? "brutalist-container bg-white text-black hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none" 
+                  : "brutalist-container-dark"
+              }`}>
               <div className="flex flex-col gap-6 text-lg md:text-xl font-medium leading-relaxed">
                 <p>
                   {dict?.bioP1 || "My journey began with Python automation and scripting, building tools to scrape data and automate tasks. I then expanded into full-stack development, mastering the MERN stack to engineer dynamic applications."}
@@ -373,7 +375,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   );
 
   const section3 = (
-      <div className={`w-full ${isCurtainMode ? `min-h-[100svh] flex items-center ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}` : ''}`}>
+      <div className={`w-full ${isCurtainMode ? `min-h-[100svh] flex items-center transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
         <div className={`w-full ${isCurtainMode ? 'max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10 py-12' : ''}`}>
           <section className="animate-slide-up-delay-2">
             <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
@@ -390,19 +392,19 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                   key={index}
                   onMouseEnter={() => setIsSkillsCardHovered(true)}
                   onMouseLeave={() => setIsSkillsCardHovered(false)}
-                  className={`brutalist-container group transition-all duration-300 flex flex-col ${
+                  className={`group transition-all duration-300 flex flex-col ${
                     isNeumorphic
-                      ? "hover:!bg-[#d1d9e6] hover:!text-[#1e293b]"
-                      : "hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
+                      ? "brutalist-container hover:!bg-[#d1d9e6] hover:!text-[#1e293b]"
+                      : "brutalist-container-dark"
                   }`}
                 >
                   <div className={`flex flex-col items-start gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
-                    isNeumorphic ? "border-[#a3b1c6]" : "border-black"
+                    isNeumorphic ? "border-[#a3b1c6]" : "border-white"
                   }`}>
-                    <div className={`p-3 border-4 text-black transition-all duration-300 ${
+                    <div className={`p-3 border-4 transition-all duration-300 ${
                       isNeumorphic
-                        ? "border-transparent rounded-xl shadow-[inset_2px_2px_5px_rgba(163,177,198,0.5),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
-                        : "border-black"
+                        ? "border-transparent text-black rounded-xl shadow-[inset_2px_2px_5px_rgba(163,177,198,0.5),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
+                        : "border-white text-white"
                     }`}>
                       {category.icon}
                     </div>
@@ -415,7 +417,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                         <span className={`w-2 h-2 inline-block transition-all duration-300 shrink-0 ${
                           isNeumorphic
                             ? "bg-[#4b5563] group-hover:bg-[#1e293b]"
-                            : "bg-black"
+                            : "bg-white"
                         }`}></span>
                         {item}
                       </li>
@@ -430,17 +432,17 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   );
 
   const section4 = (
-      <div className={`w-full ${isCurtainMode ? `flex flex-col justify-between min-h-[100svh] ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}` : ''}`}>
+      <div className={`w-full ${isCurtainMode ? `flex flex-col justify-between min-h-[100svh] transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
         <div className={`w-full ${isCurtainMode ? 'max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10 flex-grow flex flex-col justify-center py-12' : ''}`}>
           <section className={`animate-slide-up-delay-2 p-8 md:p-10 transition-all duration-300 ${
             isNeumorphic
               ? "brutalist-container"
-              : "bg-white text-black border-4 border-black"
+              : "brutalist-container-dark"
           }`}>
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="flex flex-col text-center md:text-left rtl:md:text-right">
                 <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight">{dict?.legacySys || "Legacy Systems"}</h2>
-                <p className="text-lg md:text-xl font-bold text-zinc-500 uppercase mt-1">{dict?.legacyDesc || "Explore previous portfolio iterations"}</p>
+                 <p className={`text-lg md:text-xl font-bold uppercase mt-1 ${isNeumorphic ? "text-zinc-500" : "text-zinc-400"}`}>{dict?.legacyDesc || "Explore previous portfolio iterations"}</p>
               </div>
               <div className="flex flex-col sm:flex-row w-full md:w-auto gap-6 shrink-0">
                 <RippleButton
@@ -450,7 +452,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                   className={`px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-xl font-black uppercase whitespace-nowrap transition-all duration-300 group ${
                     isNeumorphic
                       ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                      : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                      : "bg-transparent text-white border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
                   }`}
                 >
                   {dict?.v1 || "Version 1.0"}
@@ -464,7 +466,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                   className={`px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-xl font-black uppercase whitespace-nowrap transition-all duration-300 group ${
                     isNeumorphic
                       ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                      : "bg-white text-black border-4 border-black shadow-[8px_8px_0px_#000] hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                      : "bg-transparent text-white border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
                   }`}
                 >
                   {dict?.v2 || "Version 2.0"}
@@ -482,7 +484,9 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   const toastOverlay = toastMessage ? (
     <div
       id="toast-notification"
-      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 p-4 border-4 border-black bg-white text-black font-black uppercase text-sm flex items-center justify-between shadow-[8px_8px_0px_0px_#000000] animate-slide-up min-w-[280px] sm:min-w-[350px] overflow-hidden"
+      className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-50 p-4 border-4 border-black bg-white text-black font-black uppercase text-sm flex items-center justify-between animate-slide-up min-w-[280px] sm:min-w-[350px] overflow-hidden ${
+        isNeumorphic ? "shadow-[8px_8px_0px_0px_#000000]" : "shadow-[8px_8px_0px_0px_rgba(255,255,255,0.3)]"
+      }`}
     >
       <span className="relative z-10">{toastMessage}</span>
       <button
@@ -515,7 +519,9 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   }
 
   return (
-    <main className="min-h-screen flex flex-col overflow-x-hidden" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <main className={`min-h-screen flex flex-col overflow-x-hidden transition-colors duration-300 ${
+      isNeumorphic ? "bg-[#e0e5ec]" : "bg-black text-white"
+    }`} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <div className="flex-grow flex flex-col">
         {section1}
         <div className="w-full max-w-7xl mx-auto flex flex-col gap-16 mt-8 mb-24 px-6 md:px-12 lg:px-24 relative z-10">

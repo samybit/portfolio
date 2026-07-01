@@ -43,8 +43,9 @@ export function RippleButton({
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const isNeumorphic = theme === "neumorphic";
 
-  // Circle background color: black for brutalist, dark slate for neumorphic
-  const circleColor = isNeumorphic ? "#4b5563" : "#000000";
+  // Circle background color: white for brutalist, dark slate for neumorphic
+  const circleColor = isNeumorphic ? "#4b5563" : "#ffffff";
+  const hoverTextColor = isNeumorphic ? "#ffffff" : "#000000";
 
   const sharedProps = {
     onClick,
@@ -127,7 +128,7 @@ export function RippleButton({
           }
 
           .ripple-btn:hover > .ripple-text {
-            color: #ffffff !important;
+            color: ${hoverTextColor} !important;
           }
         }
 
@@ -139,7 +140,7 @@ export function RippleButton({
             transition: transform 1.2s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease;
           }
           .ripple-btn:active > .ripple-text {
-            color: #ffffff !important;
+            color: ${hoverTextColor} !important;
           }
         }
       `}</style>
