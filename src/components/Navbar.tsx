@@ -9,6 +9,7 @@ import Smoke from "@/components/Smoke";
 import { CustomTooltip } from "@/components/ui/tooltip";
 import { useScrollMode } from "@/context/ScrollModeContext";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import { StaggeredMenu } from "@/components/StaggeredMenu";
 
 export default function Navbar({ dict, currentLocale }: { dict: Record<string, string>, currentLocale: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -86,9 +87,18 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
   // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-      if (navRef.current && !navRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+      // Ignore if clicking inside nav
+      if (navRef.current && navRef.current.contains(event.target as Node)) {
+        return;
       }
+      
+      // Ignore if clicking inside StaggeredMenu panel
+      const panel = document.getElementById('staggered-menu-panel');
+      if (panel && panel.contains(event.target as Node)) {
+        return;
+      }
+
+      setIsOpen(false);
     };
 
     if (isOpen) {
@@ -177,8 +187,9 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
   };
 
   return (
-    <nav id="navbar-container" ref={navRef} className={`animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
-      <div className={`flex justify-between items-start w-full relative z-10 ${isCurtainMode ? 'pr-4 md:pr-6 lg:pr-8' : ''}`}>
+    <>
+      <nav id="navbar-container" ref={navRef} className={`animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+        <div className={`flex justify-between items-start w-full relative z-10 ${isCurtainMode ? 'pr-4 md:pr-6 lg:pr-8' : ''}`}>
 
         {/* --- Left Column: Logo & Tools (Total height exactly 64px / h-16) --- */}
         <div className="pointer-events-auto flex brutalist-shadow-static h-16">
@@ -287,71 +298,58 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
           onClick={toggleMobileMenu}
           onMouseEnter={prewarmAudio}
           onTouchStart={prewarmAudio}
-          className="pointer-events-auto md:hidden bg-white border-4 border-black p-3 brutalist-shadow-static active:translate-x-1 active:translate-y-1 active:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] transition-all"
+          className="relative z-[60] pointer-events-auto md:hidden bg-white border-4 border-black p-3 brutalist-shadow-static active:translate-x-1 active:translate-y-1 active:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] transition-all"
           aria-label="Toggle menu"
         >
           {isOpen ? <X size={32} className="text-black" /> : <Menu size={32} className="text-black" />}
         </button>
       </div>
-
-      {/* --- Mobile Menu Dropdown --- */}
-      {isOpen && (
-        <div className="pointer-events-auto md:hidden w-full mt-4 bg-white border-4 border-black p-6 flex flex-col gap-2 brutalist-shadow-static animate-expand-tr">
-          <Link
-            href={`/${currentLocale}/about`}
-            onClick={handleAboutClick}
-            className={`relative group overflow-hidden isolate text-3xl font-black uppercase p-4 border-b-4 border-black transition-colors ${pathname === `/${currentLocale}/about`
-              ? 'bg-black text-white'
-              : 'hover:bg-black hover:text-white active:bg-black active:text-white'
-              }`}
-          >
-            <Smoke isActive={pathname === `/${currentLocale}/about`} />
-            <span className="relative z-10">{dict?.about || "About"}</span>
-          </Link>
-
-          <Link
-            href={`/${currentLocale}#projects`}
-            onClick={(e) => handleHashClick(e, '#projects')}
-            className={`relative group overflow-hidden isolate text-3xl font-black uppercase p-4 border-b-4 border-black transition-colors ${isHome && activeHash === '#projects'
-              ? 'bg-black text-white'
-              : 'hover:bg-black hover:text-white active:bg-black active:text-white'
-              }`}
-          >
-            <Smoke isActive={isHome && activeHash === '#projects'} />
-            <span className="relative z-10">{dict?.work || "Work"}</span>
-          </Link>
-
-          <a
-            href="https://github.com/samybit"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative group overflow-hidden isolate flex justify-between items-center text-3xl font-black uppercase p-4 border-b-4 border-black hover:bg-black hover:text-white active:bg-black active:text-white transition-colors"
-          >
-            <Smoke />
-            <span className="relative z-10 flex justify-between items-center w-full">
-              {dict?.github || "GitHub"} 
-              {currentLocale === 'ar' ? (
-                <ArrowUpLeft size={32} className="fly-spin-arrow-rtl" />
-              ) : (
-                <ArrowUpRight size={32} className="fly-spin-arrow" />
-              )}
-              <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
-            </span>
-          </a>
-
-          <Link
-            href={`/${currentLocale}#contact`}
-            onClick={(e) => handleHashClick(e, '#contact')}
-            className={`relative group overflow-hidden isolate mt-4 text-center p-5 text-3xl font-black uppercase border-4 border-black transition-colors ${isHome && activeHash === '#contact'
-              ? 'bg-white text-black'
-              : 'bg-black text-white hover:bg-white hover:text-black active:bg-white active:text-black'
-              }`}
-          >
-            <Smoke inverse={true} isActive={isHome && activeHash === '#contact'} />
-            <span className="relative z-10">{dict?.contact || "Contact"}</span>
-          </Link>
-        </div>
-      )}
     </nav>
+
+      {/* --- Mobile Menu Dropdown (StaggeredMenu) --- */}
+      <div className="md:hidden">
+        <StaggeredMenu
+          hideHeader={true}
+          externalOpen={isOpen}
+          onMenuClose={() => setIsOpen(false)}
+          isFixed={true}
+          position="right"
+          colors={['#000000', '#ffffff']}
+          items={[
+            { 
+              label: dict?.about || "About", 
+              link: `/${currentLocale}/about`,
+              onClick: handleAboutClick
+            },
+            { 
+              label: dict?.work || "Work", 
+              link: `/${currentLocale}#projects`,
+              onClick: (e) => handleHashClick(e, '#projects')
+            },
+            { 
+              label: (
+                <span className="flex items-center gap-2">
+                  {dict?.github || "GitHub"}
+                  {currentLocale === 'ar' ? (
+                    <ArrowUpLeft size="1.25em" className="fly-spin-arrow-rtl" />
+                  ) : (
+                    <ArrowUpRight size="1.25em" className="fly-spin-arrow" />
+                  )}
+                </span>
+              ), 
+              link: "https://github.com/samybit",
+              onClick: undefined,
+              external: true
+            },
+            { 
+              label: dict?.contact || "Contact", 
+              link: `/${currentLocale}#contact`,
+              onClick: (e) => handleHashClick(e, '#contact')
+            },
+          ]}
+          displaySocials={false}
+        />
+      </div>
+    </>
   );
 }

@@ -20,9 +20,11 @@ const RING_ITEMS = Array.from({ length: ICON_COUNT }, (_, i) => {
 
   return {
     key: `flower-${i}`,
-    x: Math.cos(angleRad) * modulatedRadius,
-    y: Math.sin(angleRad) * modulatedRadius,
-    delay,
+    // Round to 4 decimal places to prevent React hydration errors 
+    // caused by floating-point differences between Server (Node) and Client (Browser)
+    x: Number((Math.cos(angleRad) * modulatedRadius).toFixed(4)),
+    y: Number((Math.sin(angleRad) * modulatedRadius).toFixed(4)),
+    delay: Number(delay.toFixed(4)),
     size: 10, // Constant clean techy size
   };
 });
