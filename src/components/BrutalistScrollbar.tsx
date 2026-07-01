@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
+import { useInvertTheme } from "@/hooks/useInvertTheme";
 
 interface BrutalistScrollbarProps {
   totalSections: number;
@@ -11,6 +12,7 @@ interface BrutalistScrollbarProps {
 
 export default function BrutalistScrollbar({ totalSections, currentIndex, onSeek }: BrutalistScrollbarProps) {
   const isNeumorphic = useNeumorphicTheme();
+  const isInverted = useInvertTheme();
   const trackRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -73,14 +75,18 @@ export default function BrutalistScrollbar({ totalSections, currentIndex, onSeek
         className={`relative h-full w-full cursor-pointer transition-colors duration-300 ${
           isNeumorphic
             ? "bg-[#e0e5ec] border-l border-white/50 shadow-[inset_4px_0_8px_rgba(163,177,198,0.5)]"
-            : "bg-white border-l-4 border-black brutalist-shadow-static"
+            : isInverted
+              ? "bg-white border-l-4 border-black brutalist-shadow-static"
+              : "bg-black border-l-4 border-white"
         }`}
       >
         <div 
           className={`absolute left-0 right-0 transition-all duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] ${
             isNeumorphic
               ? "bg-[#d1d9e6] border-y border-transparent shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-              : "bg-black"
+              : isInverted
+                ? "bg-black border-y-4 border-white"
+                : "bg-white border-y-4 border-black"
           }`}
           style={{
             top: `${thumbTop}%`,
@@ -89,9 +95,9 @@ export default function BrutalistScrollbar({ totalSections, currentIndex, onSeek
         >
           {/* Thumb decor */}
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
-            <div className={`w-1/2 h-0.5 ${isNeumorphic ? 'bg-zinc-400' : 'bg-white'}`} />
-            <div className={`w-1/2 h-0.5 ${isNeumorphic ? 'bg-zinc-400' : 'bg-white'}`} />
-            <div className={`w-1/2 h-0.5 ${isNeumorphic ? 'bg-zinc-400' : 'bg-white'}`} />
+            <div className={`w-1/2 h-0.5 ${isNeumorphic ? 'bg-zinc-400' : (isInverted ? 'bg-white' : 'bg-black')}`} />
+            <div className={`w-1/2 h-0.5 ${isNeumorphic ? 'bg-zinc-400' : (isInverted ? 'bg-white' : 'bg-black')}`} />
+            <div className={`w-1/2 h-0.5 ${isNeumorphic ? 'bg-zinc-400' : (isInverted ? 'bg-white' : 'bg-black')}`} />
           </div>
         </div>
       </div>
