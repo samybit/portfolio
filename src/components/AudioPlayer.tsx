@@ -133,7 +133,7 @@ export default function AudioPlayer({ dict }: { dict?: Record<string, string> })
       ctx.shadowOffsetX = 2 * dpr;
       ctx.shadowOffsetY = 2 * dpr;
     } else {
-      ctx.fillStyle = "black";
+      ctx.fillStyle = "white";
     }
     
     switch (visualizerTypeRef.current) {

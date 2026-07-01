@@ -146,9 +146,9 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
           <Link href={`/${locale}`} className="inline-flex items-center gap-2 text-xl font-bold uppercase mb-6 bg-white text-black hover:bg-black hover:text-white px-3 py-1 border-4 border-transparent hover:border-black transition-all">
             {locale === 'ar' ? <ArrowRight size={24} /> : <ArrowLeft size={24} />} {dict?.returnGrid || "Return to Grid"}
           </Link>
-          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none flex flex-wrap items-baseline gap-4 text-black">
+          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none flex flex-wrap items-baseline gap-4 text-white">
             <DecryptText text={dict?.about || "About"} />
-            <span className="bg-black text-white px-4 inline-block transform -skew-x-2"><DecryptText text={dict?.me || "me"} /></span>
+            <span className="bg-white text-black px-4 inline-block transform -skew-x-2"><DecryptText text={dict?.me || "me"} /></span>
           </h1>
         </div>
 
