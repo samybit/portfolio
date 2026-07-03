@@ -11,7 +11,7 @@
   },
   "hero": {
     "availability": "متاح للعمل بدوام كامل",
-    "description": "مطور واجهات متكاملة. <br/> متخصص في MERN Stack. <br/> مقره في مصر. <br/> بناء تطبيقات سريعة وفعالة.",
+    "description": "مطور مواقع متكاملة. <br/> متخصص في MERN Stack. <br/> مقره في مصر. <br/> بناء تطبيقات سريعة وفعالة.",
     "samy": "سامي",
     "barsoum": "برسوم",
     "work": "أعمالي",
@@ -37,7 +37,12 @@
         "id": "bento",
         "title": "Nexus Board",
         "description": "لوحة متابعة الألعاب بتصميم Bento. مبنية باستخدام أحدث تقنيات Next.js ومدمجة مع ذكاء Google Gemini لتوليد مسارات ذكية لإنجاز الألعاب.",
-        "tech": ["Next.js", "Gemini AI", "Prisma", "TailwindCSS"],
+        "tech": [
+          "Next.js",
+          "Gemini AI",
+          "Prisma",
+          "TailwindCSS"
+        ],
         "github": "https://github.com/samybit/bento-game-tracker",
         "demo": "https://bento-game-tracker.vercel.app/",
         "image": "/bento.png"
@@ -46,7 +51,12 @@
         "id": "movie",
         "title": "Movie Intelligence App",
         "description": "منصة سينمائية تتميز بمصادقة Firebase وإدارة الحالة العالمية وخوارزمية تقييم متقدمة بأسلوب IMDB.",
-        "tech": ["React", "Firebase", "Redux", "TailwindCSS"],
+        "tech": [
+          "React",
+          "Firebase",
+          "Redux",
+          "TailwindCSS"
+        ],
         "github": "https://github.com/samybit/iti-movie-app",
         "demo": "https://iti-movie-app.pages.dev/",
         "image": "/moviedb.png"
@@ -55,7 +65,12 @@
         "id": "3d",
         "title": "3D Web",
         "description": "تجربة سردية تستكشف 7 أساليب لتجسيد البعد الثالث. تعتبر مرجعاً تقنياً لمكتبات مثل Three.js و Spline و Globe.gl والرياضيات في CSS.",
-        "tech": ["Next.js", "Three.js", "Spline", "Framer Motion"],
+        "tech": [
+          "Next.js",
+          "Three.js",
+          "Spline",
+          "Framer Motion"
+        ],
         "github": "https://github.com/samybit/3d-showcase",
         "demo": "https://3d-showcase-pi.vercel.app/",
         "image": "/3dweb.png"
@@ -64,7 +79,12 @@
         "id": "plants",
         "title": "Verdant Plants Store",
         "description": "متجر إلكتروني متكامل مدعوم بـ WordPress و WooCommerce.",
-        "tech": ["WordPress", "WooCommerce", "Elementor", "PHP"],
+        "tech": [
+          "WordPress",
+          "WooCommerce",
+          "Elementor",
+          "PHP"
+        ],
         "github": "",
         "demo": "",
         "image": "/plantswp.png"
@@ -73,7 +93,12 @@
         "id": "scraper",
         "title": "Lead Scraper",
         "description": "سير عمل بـ n8n لتنظيم خدمة Python/Flask. تستخرج إعلانات الوظائف يومياً، وتستخدم نموذج ذكاء اصطناعي (LLM) لتلخيص المتطلبات، وترسل النتائج عبر البريد.",
-        "tech": ["n8n", "Python", "LLM API", "Docker"],
+        "tech": [
+          "n8n",
+          "Python",
+          "LLM API",
+          "Docker"
+        ],
         "github": "https://github.com/samybit/freelance-lead-scraper",
         "demo": "#",
         "image": "/lead-scraper.png"
@@ -82,7 +107,12 @@
         "id": "ecommerce",
         "title": "Vanilla JS E-Commerce",
         "description": "محرك تجارة إلكترونية باستخدام Vanilla JavaScript نقي مع عربة تسوق متكاملة وتدفق دفع سلس ونوافذ منبثقة مخصصة.",
-        "tech": ["JavaScript", "HTML5", "CSS3", "DOM"],
+        "tech": [
+          "JavaScript",
+          "HTML5",
+          "CSS3",
+          "DOM"
+        ],
         "github": "https://github.com/samybit/vanilla-js-ecommerce",
         "demo": "https://samybit.github.io/vanilla-js-ecommerce/",
         "image": ""
@@ -91,7 +121,12 @@
         "id": "bearbuzz",
         "title": "BearBuzz",
         "description": "محرك Python بواجهتين (CLI و GUI) لتتبع تقلبات الأسهم، وإرسال تنبيهات Twilio SMS تلقائية مع عناوين الأخبار المالية المباشرة.",
-        "tech": ["Python", "Twilio API", "CI/CD", "Tkinter"],
+        "tech": [
+          "Python",
+          "Twilio API",
+          "CI/CD",
+          "Tkinter"
+        ],
         "github": "https://github.com/samybit/bearbuzz",
         "demo": "#",
         "image": "/bearbuzz.png"
@@ -100,7 +135,11 @@
         "id": "cli",
         "title": "CLI Expense Tracker",
         "description": "أداة سطر أوامر آمنة الذاكرة وسريعة جداً تتميز بالتخصيص الديناميكي وإدخال/إخراج الملفات.",
-        "tech": ["C", "CLI", "Data Structures"],
+        "tech": [
+          "C",
+          "CLI",
+          "Data Structures"
+        ],
         "github": "https://github.com/samybit/cli-expense-tracker",
         "demo": "#",
         "image": "/cli.png"
@@ -148,7 +187,7 @@
     "newTab": " (يفتح في علامة تبويب جديدة)"
   },
   "tabTitles": {
-    "hero": "سامي | مطور واجهات متكاملة",
+    "hero": "سامي | مطور مواقع متكاملة",
     "projects": "أعمالي | سامي برسوم",
     "contact": "تواصل | سامي برسوم",
     "about": "عني | سامي برسوم"
