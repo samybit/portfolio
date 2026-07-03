@@ -72,10 +72,10 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
       <HeroCarabiner3D />
 
       {/* Added 'relative z-10' so the content sits above the 3D grid */}
-      <div className="relative z-10 w-full max-w-[90rem] mx-auto flex flex-col min-[1300px]:flex-row min-[1300px]:items-center justify-between gap-12 min-[1300px]:gap-16">
+      <div className="relative z-10 w-full max-w-[90rem] mx-auto grid grid-cols-1 min-[1300px]:grid-cols-[1fr_28rem] min-[1300px]:items-center gap-12 min-[1300px]:gap-16">
 
         {/* --- LEFT COLUMN: TYPOGRAPHY --- */}
-        <div className="flex-1 animate-slide-up relative z-10">
+        <div className="animate-slide-up relative z-10">
 
           <div className="flex items-center gap-4 mb-6">
             <span className={`text-[clamp(0.75rem,4.5vw,1.25rem)] whitespace-nowrap font-bold uppercase tracking-widest border-b-4 pb-1 ${
@@ -123,7 +123,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
         </div>
 
         {/* --- RIGHT COLUMN: ACTIONS --- */}
-        <div className={`flex flex-col w-full min-[1300px]:w-[450px] gap-4 md:gap-6 border-t-0 border-s-0 min-[1300px]:border-s-8 min-[1300px]:ps-12 min-[1300px]:py-8 shrink-0 animate-slide-up-delay-1 relative z-0 ${
+        <div className={`flex flex-col w-full gap-4 md:gap-6 border-t-0 border-s-0 min-[1300px]:border-s-8 min-[1300px]:ps-12 min-[1300px]:py-8 animate-slide-up-delay-1 relative z-0 ${
           isNeumorphic ? "border-black" : "border-white"
         }`}>
 
