@@ -188,8 +188,8 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
 
   return (
     <>
-      <nav id="navbar-container" ref={navRef} className={`animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 py-6 pointer-events-none flex flex-col transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
-        <div className={`flex justify-between items-start w-full relative z-10 ${isCurtainMode ? 'pr-4 md:pr-6 lg:pr-8' : ''}`}>
+    <nav id="navbar-container" ref={navRef} className={`animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 lg:px-24 py-6 pointer-events-none flex flex-col transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+      <div className={`flex justify-between items-start w-full max-w-[90rem] mx-auto relative z-10 ${isCurtainMode ? 'pr-4 md:pr-6 lg:pr-8' : ''}`}>
 
         {/* --- Left Column: Logo & Tools (Total height exactly 64px / h-16) --- */}
         <div className="pointer-events-auto flex brutalist-shadow-static h-16">
