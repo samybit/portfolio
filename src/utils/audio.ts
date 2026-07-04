@@ -22,7 +22,7 @@ export const prewarmAudio = () => {
   }
 };
 
-// --- 1. HEAVY THUD (Right-click) ---
+// --- 1. SOFT ELEGANT THUD (Right-click) - VIP Feeling ---
 export const playThud = () => {
   try {
     const ctx = initAudio();
@@ -30,25 +30,25 @@ export const playThud = () => {
     const osc = ctx.createOscillator();
     const gainNode = ctx.createGain();
 
-    osc.type = 'triangle';
+    osc.type = 'sine';
     osc.connect(gainNode);
     gainNode.connect(ctx.destination);
 
     const now = ctx.currentTime;
-    osc.frequency.setValueAtTime(150, now);
-    osc.frequency.exponentialRampToValueAtTime(20, now + 0.15);
+    // Warm, deep bass note - refined and sophisticated
+    osc.frequency.setValueAtTime(200, now);
 
-    gainNode.gain.setValueAtTime(0.8, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+    gainNode.gain.setValueAtTime(0.08, now);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
 
     osc.start(now);
-    osc.stop(now + 0.15);
+    osc.stop(now + 0.2);
   } catch (error) {
     // Silently fail if blocked
   }
 };
 
-// --- 2. MECHANICAL CLICK (For SystemOverride) ---
+// --- 2. SOFT ELEGANT CLICK (For SystemOverride) - VIP Feeling ---
 export const playMechanicalClick = (isPressDown: boolean) => {
   try {
     const ctx = initAudio();
@@ -56,27 +56,27 @@ export const playMechanicalClick = (isPressDown: boolean) => {
     const osc = ctx.createOscillator();
     const gainNode = ctx.createGain();
 
-    osc.type = 'square';
+    osc.type = 'sine';
     osc.connect(gainNode);
     gainNode.connect(ctx.destination);
 
     const now = ctx.currentTime;
-    const startFreq = isPressDown ? 400 : 600;
+    // Higher freq for press down, lower for release - both refined and subtle
+    const frequency = isPressDown ? 800 : 650;
 
-    osc.frequency.setValueAtTime(startFreq, now);
-    osc.frequency.exponentialRampToValueAtTime(100, now + 0.05);
+    osc.frequency.setValueAtTime(frequency, now);
 
-    gainNode.gain.setValueAtTime(0.3, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+    gainNode.gain.setValueAtTime(0.07, now);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
 
     osc.start(now);
-    osc.stop(now + 0.05);
+    osc.stop(now + 0.08);
   } catch (error) {
     // Silently fail if blocked
   }
 };
 
-// --- 3. SHARP TICK (For Mobile Menus & Pagination) ---
+// --- 3. SOFT ELEGANT TICK (For Mobile Menus & Pagination) - VIP Feeling ---
 export const playTick = () => {
   try {
     const ctx = initAudio();
@@ -84,25 +84,26 @@ export const playTick = () => {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
-    osc.type = "triangle";
+    osc.type = "sine";
     osc.connect(gain);
     gain.connect(ctx.destination);
 
     const now = ctx.currentTime;
-    osc.frequency.setValueAtTime(800, now);
-    osc.frequency.exponentialRampToValueAtTime(100, now + 0.05);
+    // Clean, high frequency - refined and subtle
+    osc.frequency.setValueAtTime(1000, now);
 
-    gain.gain.setValueAtTime(0.5, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+    // Very soft with gentle fade
+    gain.gain.setValueAtTime(0.06, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.07);
 
     osc.start(now);
-    osc.stop(now + 0.05);
+    osc.stop(now + 0.07);
   } catch (error) {
     // Silently fail
   }
 };
 
-// --- 4. HEAVY CLACK (For Theme Switcher) ---
+// --- 4. SOFT ELEGANT CLACK (For Theme Switcher) - VIP Feeling ---
 export const playClack = () => {
   try {
     const ctx = initAudio();
@@ -110,15 +111,16 @@ export const playClack = () => {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
-    osc.type = "square";
+    osc.type = "sine";
     osc.connect(gain);
     gain.connect(ctx.destination);
 
     const now = ctx.currentTime;
-    osc.frequency.setValueAtTime(100, now);
-    osc.frequency.exponentialRampToValueAtTime(20, now + 0.1);
+    // Warm, mid-range frequency - natural and refined
+    osc.frequency.setValueAtTime(550, now);
 
-    gain.gain.setValueAtTime(0.3, now);
+    // Subtle volume with smooth fade
+    gain.gain.setValueAtTime(0.05, now);
     gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
 
     osc.start(now);
@@ -128,27 +130,47 @@ export const playClack = () => {
   }
 };
 
-// --- 5. DIGITAL POWER-UP (For Contact Form Submission) ---
+// --- 5. VIP Confirmation Chime ---
 export const playPowerUp = () => {
   try {
     const ctx = initAudio();
     if (!ctx) return;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = "sawtooth";
-    osc.connect(gain);
-    gain.connect(ctx.destination);
 
     const now = ctx.currentTime;
-    osc.frequency.setValueAtTime(200, now);
-    osc.frequency.linearRampToValueAtTime(800, now + 0.3);
 
-    gain.gain.setValueAtTime(0.2, now);
-    gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+    const createTone = (
+      frequency: number,
+      start: number,
+      duration: number,
+      volume: number
+    ) => {
+      const osc = ctx.createOscillator();
+      const harmonic = ctx.createOscillator();
+      const gain = ctx.createGain();
 
-    osc.start(now);
-    osc.stop(now + 0.3);
+      osc.type = "triangle";
+      harmonic.type = "sine";
+
+      osc.frequency.value = frequency;
+      harmonic.frequency.value = frequency * 2;
+
+      harmonic.connect(gain);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(volume, start + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+      osc.start(start);
+      harmonic.start(start);
+
+      osc.stop(start + duration);
+      harmonic.stop(start + duration);
+    };
+
+    createTone(880, now, 0.18, 0.04);        // A5
+    createTone(1318.51, now + 0.06, 0.22, 0.03); // E6
   } catch (error) {
     // Silently fail
   }
