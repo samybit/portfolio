@@ -85,14 +85,14 @@ export function InteractiveHoverButton({
   const innerContent = (
     <div className="relative z-10 flex items-center justify-center w-full h-full">
       {/* Wrapper that smoothly slides left to make room for the arrow without layout thrashing */}
-      <div className="flex items-center gap-2.5 relative transition-transform duration-300 ease-in-out group-data-[hover=true]:-translate-x-3">
+      <div className="flex items-center gap-2.5 relative transition-transform duration-[450ms] ease-in-out group-data-[hover=true]:-translate-x-3">
         {/* The Inline Dot or Icon */}
         {icon ? (
           <div className="relative flex items-center justify-center shrink-0 z-10">
             {/* Invisible expanding dot behind the icon */}
             <div 
               className={cn(
-                "absolute inset-0 m-auto h-2.5 w-2.5 transition-transform duration-300 ease-in-out scale-0 group-data-[hover=true]:scale-[100.8] group-data-[hover=true]:duration-700 group-data-[hover=true]:ease-out origin-center shrink-0 z-[-1]", 
+                "absolute inset-0 m-auto h-2.5 w-2.5 transition-transform duration-300 ease-in-out scale-0 group-data-[hover=true]:scale-[100.8] group-data-[hover=true]:duration-[900ms] group-data-[hover=true]:ease-out origin-center shrink-0 z-[-1]", 
                 dotRoundingClass,
                 dotClass
               )}
@@ -105,7 +105,7 @@ export function InteractiveHoverButton({
         ) : (
           <div 
             className={cn(
-              "relative z-0 h-2.5 w-2.5 transition-transform duration-300 ease-in-out group-data-[hover=true]:scale-[100.8] group-data-[hover=true]:duration-700 group-data-[hover=true]:ease-out origin-center shrink-0", 
+              "relative z-0 h-2.5 w-2.5 transition-transform duration-300 ease-in-out group-data-[hover=true]:scale-[100.8] group-data-[hover=true]:duration-[900ms] group-data-[hover=true]:ease-out origin-center shrink-0", 
               dotRoundingClass,
               dotClass
             )}
@@ -113,14 +113,14 @@ export function InteractiveHoverButton({
         )}
 
         {/* The Text (Only one instance, smooth color change, smooth fallback on unhover/untouch) */}
-        <span className={cn("relative z-10 transition-colors duration-300 ease-in-out group-data-[hover=true]:duration-450 select-none whitespace-nowrap", textClass)}>
+        <span className={cn("relative z-10 transition-colors duration-300 ease-in-out group-data-[hover=true]:duration-[450ms] select-none whitespace-nowrap", textClass)}>
           {content}
         </span>
 
         {/* Arrow - Absolute positioned to avoid layout recalculation (prevents 'shaky' text) */}
         <div 
           className={cn(
-            "absolute left-full ml-2 z-10 flex items-center transition-all duration-300 ease-in-out group-data-[hover=true]:duration-450 group-data-[hover=true]:ease-out opacity-0 -translate-x-2 group-data-[hover=true]:translate-x-0 group-data-[hover=true]:opacity-100 shrink-0",
+            "absolute left-full ml-2 z-10 flex items-center transition-all duration-[450ms] ease-in-out group-data-[hover=true]:duration-[650ms] group-data-[hover=true]:ease-out opacity-0 -translate-x-2 group-data-[hover=true]:translate-x-0 group-data-[hover=true]:opacity-100 shrink-0",
             arrowClass
           )}
         >
