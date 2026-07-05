@@ -66,9 +66,9 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
   const hasGithub = project.github && project.github !== "" && project.github !== "#";
   const hasDemo = project.demo && project.demo !== "" && project.demo !== "#";
 
-  return (
+  const cardContent = (
     <div 
-      className={`group/card flex flex-col h-full w-full min-h-[320px] lg:min-h-0 ${animate ? 'animate-slide-up' : ''} ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
+      className={`group/card flex flex-col h-full w-full min-h-[320px] lg:min-h-0 ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
         isNeumorphic ? "brutalist-container bg-white border-black" : "brutalist-container-dark"
       }`}
     >
@@ -197,6 +197,16 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
       </div>
     </div>
   );
+
+  if (animate) {
+    return (
+      <div className="animate-slide-up h-full w-full">
+        {cardContent}
+      </div>
+    );
+  }
+
+  return cardContent;
 };
 
 export default function Projects({ dict }: { dict: ProjectsDictionary }) {
