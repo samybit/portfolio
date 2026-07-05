@@ -355,7 +355,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
               className={`p-8 md:p-10 transition-all duration-300 ${
                 isNeumorphic 
                   ? "brutalist-container bg-white text-black hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none" 
-                  : "brutalist-container-dark"
+                  : "brutalist-container-dark hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
               }`}>
               <div className="flex flex-col gap-6 text-lg md:text-xl font-medium leading-relaxed">
                 <p>
@@ -394,8 +394,8 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                   onMouseLeave={() => setIsSkillsCardHovered(false)}
                   className={`group transition-all duration-300 flex flex-col ${
                     isNeumorphic
-                      ? "brutalist-container hover:!bg-[#d1d9e6] hover:!text-[#1e293b]"
-                      : "brutalist-container-dark"
+                      ? "brutalist-container hover:!bg-[#d1d9e6] hover:!text-[#1e293b] hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
+                      : "brutalist-container-dark hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
                   }`}
                 >
                   <div className={`flex flex-col items-start gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
@@ -434,11 +434,12 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   const section4 = (
       <div className={`w-full ${isCurtainMode ? `flex flex-col justify-between min-h-[100svh] transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
         <div className={`w-full ${isCurtainMode ? 'max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10 flex-grow flex flex-col justify-center py-12' : ''}`}>
-          <section className={`animate-slide-up-delay-2 p-8 md:p-10 transition-all duration-300 ${
-            isNeumorphic
-              ? "brutalist-container"
-              : "brutalist-container-dark"
-          }`}>
+          <div className="animate-slide-up-delay-2 w-full">
+            <section className={`p-8 md:p-10 transition-all duration-300 ${
+              isNeumorphic
+                ? "brutalist-container hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
+                : "brutalist-container-dark hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
+            }`}>
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="flex flex-col text-center md:text-left rtl:md:text-right">
                 <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight">{dict?.legacySys || "Legacy Systems"}</h2>
@@ -475,7 +476,8 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                 </RippleButton>
               </div>
             </div>
-          </section>
+            </section>
+          </div>
         </div>
         {isCurtainMode && <Footer dict={footerDict} />}
       </div>
