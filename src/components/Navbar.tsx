@@ -1,6 +1,6 @@
 "use client";
 
-import { playClack, playTick, prewarmAudio } from "@/utils/audio";
+import { playClack, playTick, playLanguageToggle, prewarmAudio } from "@/utils/audio";
 import { Origami, ArrowUpRight, ArrowUpLeft, Menu, X, Palette, Globe, Layers, List } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -131,7 +131,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
   };
 
   const toggleLanguage = () => {
-    playTick();
+    playLanguageToggle();
     const newLocale = currentLocale === 'en' ? 'ar' : 'en';
     // Replace the current locale in the pathname
     const newPath = pathname.replace(`/${currentLocale}`, `/${newLocale}`);
