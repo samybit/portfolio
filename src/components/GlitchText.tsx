@@ -3,13 +3,13 @@
 
 import { useState, useRef, useEffect } from "react";
 
-// Brutalist & Industrial Palette
+// Premium Brutalist / Cyberpunk Palette (high-contrast on both white and black backgrounds)
 const COLORS = [
-  "#FF0000", // Pure Red
-  "#0000FF", // Pure Blue
-  "#FFFF00", // Pure Yellow
-  "#FF4F00", // Fiery Orange (Matches your Ember Theme)
-  "#00FF00", // Terminal Green
+  "#FF4F00", // Fiery Orange (Matches Ember Theme)
+  "#00B0FF", // Vivid Electric Blue
+  "#00E676", // Toxic/Neon Green
+  "#BD00FF", // Synthwave Purple
+  "#FF2A85", // Neon Rose/Pink
 ];
 
 export default function GlitchText({ text }: { text: string }) {
