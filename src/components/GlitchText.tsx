@@ -12,6 +12,8 @@ const COLORS = [
   "#FF2A85", // Neon Rose/Pink
 ];
 
+let colorIndex = 0;
+
 export default function GlitchText({ text }: { text: string }) {
   const isArabic = /[\u0600-\u06FF]/.test(text);
   const parts = isArabic ? text.split(/(\s+)/) : text.split("");
@@ -27,14 +29,20 @@ export default function GlitchText({ text }: { text: string }) {
 function HoverChar({ char }: { char: string }) {
   const [color, setColor] = useState<string | undefined>(undefined);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastHoverRef = useRef<number>(0);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
-    const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
-    setColor(randomColor);
+    const now = Date.now();
+    if (now - lastHoverRef.current < 150) return; // Prevent repaint infinite render loops
+    lastHoverRef.current = now;
+
+    const nextColor = COLORS[colorIndex];
+    colorIndex = (colorIndex + 1) % COLORS.length;
+    setColor(nextColor);
   };
 
   const handleMouseLeave = () => {
