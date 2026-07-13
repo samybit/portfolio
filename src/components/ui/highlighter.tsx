@@ -45,6 +45,16 @@ export function Highlighter({
   const resizeObserverRef = useRef<ResizeObserver | null>(null)
   const isInitialResizeRef = useRef(true)
 
+  const prevConfigRef = useRef({
+    action,
+    color,
+    strokeWidth,
+    animationDuration,
+    iterations,
+    padding,
+    multiline,
+  })
+
   const isInView = useInView(elementRef, {
     once: true,
     margin: "-10%",
@@ -59,6 +69,38 @@ export function Highlighter({
   useEffect(() => {
     const element = elementRef.current
     if (!element) return
+
+    // Recreate annotation if configuration values change
+    const prev = prevConfigRef.current
+    const configChanged =
+      prev.action !== action ||
+      prev.color !== color ||
+      prev.strokeWidth !== strokeWidth ||
+      prev.animationDuration !== animationDuration ||
+      prev.iterations !== iterations ||
+      prev.padding !== padding ||
+      prev.multiline !== multiline
+
+    if (configChanged && annotationRef.current) {
+      annotationRef.current.remove()
+      annotationRef.current = null
+      if (resizeObserverRef.current) {
+        resizeObserverRef.current.disconnect()
+        resizeObserverRef.current = null
+      }
+      isInitialResizeRef.current = true
+    }
+
+    // Always update current config ref
+    prevConfigRef.current = {
+      action,
+      color,
+      strokeWidth,
+      animationDuration,
+      iterations,
+      padding,
+      multiline,
+    }
 
     // Lazy initialization: Only create annotation when it needs to be shown
     if (!annotationRef.current && shouldShow) {
