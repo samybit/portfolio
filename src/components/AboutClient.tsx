@@ -137,6 +137,8 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
     dateColor: "inherit",
   };
 
+
+
   const topContent = (
     <>
       {/* --- HEADER --- */}
@@ -338,8 +340,17 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
 
 
   const section2 = (
-      <div className={`w-full ${isCurtainMode ? `min-h-[100svh] flex items-center transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
-        <div className={`w-full ${isCurtainMode ? 'max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10' : ''}`}>
+      <div className={`relative w-full ${isCurtainMode ? `min-h-[100svh] flex items-center transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
+        {/* --- STAGE 1: SIMPLE PROGRESSIVE DRAWING (SINGLE WAVE) --- */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" preserveAspectRatio="none" viewBox="0 0 1440 800" fill="none" aria-hidden="true">
+          <path 
+            d="M -100,400 Q 360,200 720,400 T 1540,400" 
+            stroke={isNeumorphic ? "rgba(0, 0, 0, 0.18)" : "rgba(255, 255, 255, 0.22)"} 
+            strokeWidth="3" 
+            strokeLinecap="round"
+          />
+        </svg>
+        <div className="w-full relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
           <section className="animate-slide-up-delay-2">
             <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
               <MorphingText 
@@ -375,8 +386,24 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   );
 
   const section3 = (
-      <div className={`w-full ${isCurtainMode ? `min-h-[100svh] flex items-center transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
-        <div className={`w-full ${isCurtainMode ? 'max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10 py-12' : ''}`}>
+      <div className={`relative w-full ${isCurtainMode ? `min-h-[100svh] flex items-center transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
+        {/* --- STAGE 2: STRUCTURED PROGRESSIVE DRAWING (DOUBLE WAVES) --- */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" preserveAspectRatio="none" viewBox="0 0 1440 800" fill="none" aria-hidden="true">
+          <path 
+            d="M -100,300 C 300,100 600,600 1000,200 T 1540,500" 
+            stroke={isNeumorphic ? "rgba(0, 0, 0, 0.16)" : "rgba(255, 255, 255, 0.20)"} 
+            strokeWidth="3" 
+            strokeLinecap="round"
+          />
+          <path 
+            d="M -100,500 C 400,700 700,200 1100,600 T 1540,300" 
+            stroke={isNeumorphic ? "rgba(0, 0, 0, 0.10)" : "rgba(255, 255, 255, 0.12)"} 
+            strokeWidth="2" 
+            strokeDasharray="8,8"
+            strokeLinecap="round"
+          />
+        </svg>
+        <div className="w-full relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-12">
           <section className="animate-slide-up-delay-2">
             <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
               <MorphingText 
@@ -432,8 +459,40 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   );
 
   const section4 = (
-      <div className={`w-full ${isCurtainMode ? `flex flex-col justify-between min-h-[100svh] transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
-        <div className={`w-full ${isCurtainMode ? 'max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10 flex-grow flex flex-col justify-center py-12' : ''}`}>
+      <div className={`relative w-full ${isCurtainMode ? `flex flex-col justify-between min-h-[100svh] transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
+        {/* --- STAGE 3: DETAILED GEOMETRIC CLIMAX DRAWING (MULTIPLE INTERSECTING WAVES) --- */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" preserveAspectRatio="none" viewBox="0 0 1440 800" fill="none" aria-hidden="true">
+          {/* Wave 1 */}
+          <path 
+            d="M -100,200 C 300,600 500,-100 900,500 T 1540,100" 
+            stroke={isNeumorphic ? "rgba(0, 0, 0, 0.20)" : "rgba(255, 255, 255, 0.24)"} 
+            strokeWidth="4" 
+            strokeLinecap="round"
+          />
+          {/* Wave 2 */}
+          <path 
+            d="M -100,600 C 200,100 700,800 1000,300 T 1540,700" 
+            stroke={isNeumorphic ? "rgba(0, 0, 0, 0.14)" : "rgba(255, 255, 255, 0.16)"} 
+            strokeWidth="3" 
+            strokeLinecap="round"
+          />
+          {/* Wave 3 - Dashed structure */}
+          <path 
+            d="M -100,400 C 400,300 600,600 1100,200 T 1540,400" 
+            stroke={isNeumorphic ? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.10)"} 
+            strokeWidth="2" 
+            strokeDasharray="6,6"
+            strokeLinecap="round"
+          />
+          {/* Wave 4 - High-frequency sine wave overlay */}
+          <path 
+            d="M -100,450 Q 100,350 300,450 T 700,450 T 1100,450 T 1540,450" 
+            stroke={isNeumorphic ? "rgba(0, 0, 0, 0.06)" : "rgba(255, 255, 255, 0.08)"} 
+            strokeWidth="1.5" 
+            strokeLinecap="round"
+          />
+        </svg>
+        <div className="w-full relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 flex-grow flex flex-col justify-center py-12">
           <div className="animate-slide-up-delay-2 w-full">
             <section className={`p-8 md:p-10 transition-all duration-300 ${
               isNeumorphic
@@ -526,7 +585,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
     }`} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <div className="flex-grow flex flex-col">
         {section1}
-        <div className="w-full max-w-7xl mx-auto flex flex-col gap-16 mt-8 mb-24 px-6 md:px-12 lg:px-24 relative z-10">
+        <div className="w-full flex flex-col gap-16 mt-8 mb-24 relative z-10">
           {section2}
           {section3}
           {section4}
