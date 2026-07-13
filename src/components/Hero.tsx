@@ -81,13 +81,13 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             <span className={`text-[clamp(0.75rem,4.5vw,1.25rem)] whitespace-nowrap font-bold uppercase tracking-widest border-b-4 pb-1 ${
               isNeumorphic ? "bg-[#e0e5ec] border-[#a3b1c6] text-[#4b5563]" : "text-white border-white bg-transparent"
             }`}>
-              {dict?.availability || "Available for Full-Time Roles"}
+              {dict?.availability || "Available: Full-Time / Freelance"}
             </span>
           </div>
 
           {/* --- DESKTOP DESCRIPTION (Hidden on mobile) --- */}
           <HeroDescription
-            html={dict?.description || "Full-Stack Developer. <br/> MERN Stack Specialist. <br/> Based in Egypt. <br/> Building fast effective apps."}
+            html={dict?.description || "Full-Stack Developer. <br/> BUILDING END-TO-END. <br/> Based in Egypt. <br/> TURNING IDEAS INTO CODE."}
             className="hidden md:block text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-white/80 -ms-2 ps-2 hero-subtitle-backdrop mb-6"
           />
 
@@ -117,7 +117,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
 
           {/* --- MOBILE DESCRIPTION (Hidden on desktop) --- */}
           <HeroDescription
-            html={dict?.description || "Full-Stack Developer. <br/> MERN Stack Specialist. <br/> Based in Egypt. <br/> Building fast effective apps."}
+            html={dict?.description || "Full-Stack Developer. <br/> BUILDING END-TO-END. <br/> Based in Egypt. <br/> TURNING IDEAS INTO CODE."}
             className="block md:hidden text-2xl md:text-4xl font-bold max-w-2xl uppercase leading-snug text-white/80 -ms-2 ps-2 hero-subtitle-backdrop mt-6"
           />
         </div>
