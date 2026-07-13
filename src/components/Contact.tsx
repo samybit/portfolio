@@ -82,10 +82,10 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
     }
 
     setErrors({});
-    
+
     // Start the flying animation
     setIsFlying(true);
-    
+
     // Wait for the animation to finish (matching the 0.6s in CSS)
     await new Promise(resolve => setTimeout(resolve, 600));
 
@@ -151,7 +151,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                 LinkedIn
               </InteractiveHoverButton>
               <InteractiveHoverButton
-                href="https://www.behance.net/samybit"
+                href="https://www.behance.net/samy-barsoum"
                 target="_blank"
                 rel="noopener noreferrer"
                 icon={
@@ -299,15 +299,13 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                     if (status !== "loading" && !isSubmitting.current) playPowerUp();
                   }}
                   disabled={status === "loading"}
-                  className={`mt-2 flex items-center justify-center py-3 px-5 text-xl md:text-2xl font-black uppercase transition-all duration-300 ease-in-out group relative z-20 ${
-                    isNeumorphic
+                  className={`mt-2 flex items-center justify-center py-3 px-5 text-xl md:text-2xl font-black uppercase transition-all duration-300 ease-in-out group relative z-20 ${isNeumorphic
                       ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                      : `bg-black text-white border-4 border-black ${
-                          status === "loading"
-                            ? "opacity-80 cursor-wait translate-x-1 translate-y-1 shadow-[4px_4px_0px_#000]"
-                            : "shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
-                        }`
-                  }`}
+                      : `bg-black text-white border-4 border-black ${status === "loading"
+                        ? "opacity-80 cursor-wait translate-x-1 translate-y-1 shadow-[4px_4px_0px_#000]"
+                        : "shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                      }`
+                    }`}
                 >
                   <span className="transition-transform duration-300">
                     {status === "loading" ? (dict?.btnSending || "Sending...") : (dict?.btnSend || "Send Message")}

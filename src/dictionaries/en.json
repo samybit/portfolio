@@ -135,7 +135,9 @@
   "footer": {
     "samy": "Samy Barsoum",
     "copyright": "© {year} SAMYBIT // ALL RIGHTS RESERVED.",
-    "backToTop": "↑ Back to top"
+    "backToTop": "↑ Back to top",
+    "enableMotion": "Enable Motion",
+    "disableMotion": "Disable Motion"
   },
   "menu": {
     "systemMenu": "System_Menu",

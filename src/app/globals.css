@@ -1421,3 +1421,13 @@ html.theme-neumorphic .egypt-map-tooltip span.border-b-4 {
 .logo-link:active .origami-icon path:nth-child(2) {
   animation: flap-left 0.3s ease-in-out 3 forwards;
 }
+
+/* Global override to disable all CSS transitions, keyframe animations, and smooth scroll behavior */
+.no-animations *,
+.no-animations *::before,
+.no-animations *::after {
+  animation-duration: 0.001s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001s !important;
+  scroll-behavior: auto !important;
+}

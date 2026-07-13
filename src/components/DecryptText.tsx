@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useInView } from "framer-motion";
+import { useAnimationConfig } from "@/context/AnimationContext";
 
 // The characters used for the scrambling effect
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
@@ -15,11 +16,16 @@ export default function DecryptText({
 }) {
   const [displayText, setDisplayText] = useState(text);
   const ref = useRef<HTMLSpanElement>(null);
+  const { isAnimationsDisabled } = useAnimationConfig();
 
   // Triggers once when the element comes into the viewport
   const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
 
   useEffect(() => {
+    if (isAnimationsDisabled) {
+      setDisplayText(text);
+      return;
+    }
     if (!isInView) return;
 
     let iteration = 0;

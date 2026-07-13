@@ -5,9 +5,10 @@ import { createPortal } from "react-dom";
 import { useInView } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useScrollMode } from "@/context/ScrollModeContext";
+import { useAnimationConfig } from "@/context/AnimationContext";
 import FallingLayersIcon from "./FallingLayersIcon";
 import { CustomTooltip } from "@/components/ui/tooltip";
-import { Palette, ArrowUp } from "lucide-react";
+import { Palette, ArrowUp, Zap, ZapOff } from "lucide-react";
 import SpeedDial from "@/components/animata/fabs/speed-dial";
 import { playClack, playTick } from "@/utils/audio";
 
@@ -24,6 +25,7 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
   const [isNeumorphic, setIsNeumorphic] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { isCurtainMode, toggleScrollMode } = useScrollMode();
+  const { isAnimationsDisabled, toggleAnimations } = useAnimationConfig();
 
   useEffect(() => {
     setMounted(true);
@@ -97,6 +99,12 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
             label: "Cycle Theme",
             icon: <Palette size={20} />,
             action: cycleTheme,
+          },
+          {
+            key: "animations",
+            label: isAnimationsDisabled ? (dict?.enableMotion || "Enable Motion") : (dict?.disableMotion || "Disable Motion"),
+            icon: isAnimationsDisabled ? <ZapOff size={20} /> : <Zap size={20} />,
+            action: toggleAnimations,
           },
           {
             key: "top",

@@ -4,6 +4,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Float } from "@react-three/drei";
 import { useRef, useState, useEffect, useMemo } from "react";
 import * as THREE from "three";
+import { useAnimationConfig } from "@/context/AnimationContext";
 
 // --- PROCEDURAL TEXTURE CACHE ---
 const textureCache: Record<string, THREE.CanvasTexture> = {};
@@ -598,6 +599,7 @@ function CarabinerModel() {
 export default function HeroCarabiner3D() {
   const [mounted, setMounted] = useState(false);
   const [shouldRenderWebGL, setShouldRenderWebGL] = useState(false);
+  const { isAnimationsDisabled } = useAnimationConfig();
 
   useEffect(() => {
     setTimeout(() => setMounted(true), 0);
@@ -626,8 +628,8 @@ export default function HeroCarabiner3D() {
       />
 
       {/* 3D Canvas (Delayed to give UI animations priority, then fades in) */}
-      <div className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${shouldRenderWebGL ? 'opacity-100' : 'opacity-0'}`}>
-        {shouldRenderWebGL && (
+      <div className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${shouldRenderWebGL && !isAnimationsDisabled ? 'opacity-100' : 'opacity-0'}`}>
+        {shouldRenderWebGL && !isAnimationsDisabled && (
           <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ antialias: true }} dpr={[1, 1.5]}>
             {/* Lighting to highlight the metal without blowing it out */}
             <ambientLight intensity={0.5} />

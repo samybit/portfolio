@@ -4,6 +4,7 @@ import "../globals.css";
 import Navbar from "@/components/Navbar";
 import SystemOverride from "@/components/SystemOverride";
 import { ScrollModeProvider } from "@/context/ScrollModeContext";
+import { AnimationProvider } from "@/context/AnimationContext";
 import CustomContextMenu from "@/components/CustomContextMenu";
 import GhostInTheMachine from "@/components/GhostInTheMachine";
 import CurveLoader from "@/components/CurveLoader";
@@ -115,15 +116,30 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="scroll-smooth snap-y snap-mandatory" data-scroll-behavior="smooth" style={{ overflow: "hidden" }}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (localStorage.getItem('disable-animations') === 'true') {
+                  document.documentElement.classList.add('no-animations');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className={`${fontClassName} text-black antialiased selection:bg-black selection:text-white`}>
         <CurveLoader locale={locale} />
         <SystemOverride />
         <CustomContextMenu dict={dict.menu} />
         <GhostInTheMachine />
-        <ScrollModeProvider>
-          <Navbar dict={dict.nav} currentLocale={locale as Locale} />
-          {children}
-        </ScrollModeProvider>
+        <AnimationProvider>
+          <ScrollModeProvider>
+            <Navbar dict={dict.nav} currentLocale={locale as Locale} />
+            {children}
+          </ScrollModeProvider>
+        </AnimationProvider>
       </body>
     </html>
   );
