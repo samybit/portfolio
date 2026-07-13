@@ -8,6 +8,7 @@ import { AnimationProvider } from "@/context/AnimationContext";
 import CustomContextMenu from "@/components/CustomContextMenu";
 import GhostInTheMachine from "@/components/GhostInTheMachine";
 import CurveLoader from "@/components/CurveLoader";
+import ReaderModeWrapper from "@/components/ReaderModeWrapper";
 import { notFound } from "next/navigation";
 import { getDictionary, Locale } from "@/dictionaries/getDictionary";
 
@@ -137,7 +138,9 @@ export default async function RootLayout({
         <AnimationProvider>
           <ScrollModeProvider>
             <Navbar dict={dict.nav} currentLocale={locale as Locale} />
-            {children}
+            <ReaderModeWrapper dict={dict as Record<string, Record<string, unknown>>} locale={locale}>
+              {children}
+            </ReaderModeWrapper>
           </ScrollModeProvider>
         </AnimationProvider>
       </body>

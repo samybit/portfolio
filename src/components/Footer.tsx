@@ -8,7 +8,7 @@ import { useScrollMode } from "@/context/ScrollModeContext";
 import { useAnimationConfig } from "@/context/AnimationContext";
 import FallingLayersIcon from "./FallingLayersIcon";
 import { CustomTooltip } from "@/components/ui/tooltip";
-import { Palette, ArrowUp, Zap, ZapOff } from "lucide-react";
+import { Palette, ArrowUp, Zap, ZapOff, BookOpen, BookText } from "lucide-react";
 import SpeedDial from "@/components/animata/fabs/speed-dial";
 import { playClack, playTick } from "@/utils/audio";
 
@@ -25,7 +25,7 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
   const [isNeumorphic, setIsNeumorphic] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { isCurtainMode, toggleScrollMode } = useScrollMode();
-  const { isAnimationsDisabled, toggleAnimations } = useAnimationConfig();
+  const { isAnimationsDisabled, toggleAnimations, isReaderMode, toggleReaderMode } = useAnimationConfig();
 
   useEffect(() => {
     setMounted(true);
@@ -90,13 +90,13 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
         actionButtons={[
           {
             key: "scrollMode",
-            label: isCurtainMode ? "Normal Scroll" : "Curtain Scroll",
+            label: isCurtainMode ? (dict?.normalScroll || "Normal Scroll") : (dict?.curtainScroll || "Curtain Scroll"),
             icon: <FallingLayersIcon isCurtainMode={isCurtainMode} />,
             action: toggleScrollMode,
           },
           {
             key: "theme",
-            label: "Cycle Theme",
+            label: dict?.cycleTheme || "Cycle Theme",
             icon: <Palette size={20} />,
             action: cycleTheme,
           },
@@ -107,8 +107,14 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
             action: toggleAnimations,
           },
           {
+            key: "reader",
+            label: isReaderMode ? (dict?.exitTextMode || "Exit Text Mode") : (dict?.textOnlyMode || "Text-Only Mode"),
+            icon: isReaderMode ? <BookText size={20} /> : <BookOpen size={20} />,
+            action: () => { playTick(); toggleReaderMode(); },
+          },
+          {
             key: "top",
-            label: "Back to Top",
+            label: dict?.backToTop || "Back to Top",
             icon: <ArrowUp size={20} />,
             action: scrollToTop,
           }

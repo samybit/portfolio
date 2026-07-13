@@ -7,17 +7,21 @@ import { MotionConfig } from "framer-motion";
 interface AnimationContextType {
   isAnimationsDisabled: boolean;
   toggleAnimations: () => void;
+  isReaderMode: boolean;
+  toggleReaderMode: () => void;
 }
 
 const AnimationContext = createContext<AnimationContextType | undefined>(undefined);
 
 export function AnimationProvider({ children }: { children: React.ReactNode }) {
   const [isAnimationsDisabled, setIsAnimationsDisabled] = useState(false);
+  const [isReaderMode, setIsReaderMode] = useState(false);
 
   useEffect(() => {
-    // Check initial state from document.documentElement or localStorage
     const isDisabled = localStorage.getItem("disable-animations") === "true";
+    const isReader = localStorage.getItem("reader-mode") === "true";
     setIsAnimationsDisabled(isDisabled);
+    setIsReaderMode(isReader);
     if (isDisabled) {
       document.documentElement.classList.add("no-animations");
     } else {
@@ -39,8 +43,16 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const toggleReaderMode = () => {
+    setIsReaderMode((prev) => {
+      const next = !prev;
+      localStorage.setItem("reader-mode", next ? "true" : "false");
+      return next;
+    });
+  };
+
   return (
-    <AnimationContext.Provider value={{ isAnimationsDisabled, toggleAnimations }}>
+    <AnimationContext.Provider value={{ isAnimationsDisabled, toggleAnimations, isReaderMode, toggleReaderMode }}>
       <MotionConfig reducedMotion={isAnimationsDisabled ? "always" : "user"}>
         {children}
       </MotionConfig>

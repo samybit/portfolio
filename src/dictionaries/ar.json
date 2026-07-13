@@ -176,7 +176,12 @@
     "copyright": "© {year} سامي // جميع الحقوق محفوظة.",
     "backToTop": "↑ العودة للأعلى",
     "enableMotion": "تشغيل الحركات",
-    "disableMotion": "إيقاف الحركات"
+    "disableMotion": "إيقاف الحركات",
+    "normalScroll": "تمرير عادي",
+    "curtainScroll": "تمرير الستار",
+    "cycleTheme": "تغيير الثيم",
+    "textOnlyMode": "وضع النص فقط",
+    "exitTextMode": "خروج وضع النص"
   },
   "menu": {
     "systemMenu": "قائمة_النظام",
