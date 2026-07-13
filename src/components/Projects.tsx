@@ -290,8 +290,17 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
     <section id="projects" className={`snap-start relative w-full min-h-[100svh] flex flex-col pt-24 pb-8 px-6 md:px-12 lg:px-24 border-b-8 border-black overflow-hidden ${
       isNeumorphic ? "bg-white text-black" : "bg-black text-white"
     }`}>
+      {/* --- BRUTALIST CSS GRID BACKGROUND --- */}
+      <div 
+        className={`absolute inset-0 pointer-events-none z-0 ${isNeumorphic ? "opacity-[0.06]" : "opacity-[0.04]"}`}
+        style={{
+          backgroundImage: 'linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)',
+          backgroundSize: '4rem 4rem'
+        }}
+      />
+
       {/* --- HEADER --- */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 lg:mb-12 gap-6 flex-none">
+      <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between mb-8 lg:mb-12 gap-6 flex-none">
         <div className="w-full md:w-auto">
           <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">
             <DecryptText text={titleFirst} />
@@ -342,7 +351,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
       </div>
 
       {/* --- DESKTOP VIEW: Paginated Grid & Controls --- */}
-      <div className="hidden lg:grid grid-cols-[1fr_5rem] gap-6 xl:gap-8 flex-1 min-h-0">
+      <div className="relative z-10 hidden lg:grid grid-cols-[1fr_5rem] gap-6 xl:gap-8 flex-1 min-h-0">
 
         {/* The 2x2 Grid container */}
         <div className="grid grid-cols-2 grid-rows-2 gap-6 xl:gap-8 h-full w-full">
@@ -374,7 +383,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
 
       {/* --- MOBILE VIEW --- */}
       {showAllMobile ? (
-        <div className="flex lg:hidden flex-col gap-6 pb-8 flex-1">
+        <div className="relative z-10 flex lg:hidden flex-col gap-6 pb-8 flex-1">
           {projects.map((project: Project, index: number) => (
             <div key={`mobile-list-${index}`} className="w-full">
               <ProjectCard project={project} dict={dict} animate={true} isNeumorphic={isNeumorphic} asHeading={false} />
@@ -382,7 +391,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col lg:hidden flex-1 w-full relative">
+        <div className="relative z-10 flex flex-col lg:hidden flex-1 w-full">
           <div
             ref={mobileSwipeRef}
             onScroll={handleMobileScroll}
@@ -424,7 +433,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
       )}
 
       {/* --- MOBILE GITHUB LINK (Bottom CTA) --- */}
-      <div className="flex md:hidden mt-4 w-full flex-none">
+      <div className="relative z-10 flex md:hidden mt-4 w-full flex-none">
         <a
           href="https://github.com/samybit"
           target="_blank"
