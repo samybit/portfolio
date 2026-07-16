@@ -1,15 +1,17 @@
 "use client";
 
 import { playClack, playTick, playLanguageToggle, prewarmAudio } from "@/utils/audio";
-import { Origami, ArrowUpRight, ArrowUpLeft, Menu, X, Palette, Globe, Layers, List } from "lucide-react";
+import { Origami, ArrowUpRight, ArrowUpLeft, Menu, X, Palette, Globe, Layers, List, Github } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import Smoke from "@/components/Smoke";
 import { CustomTooltip } from "@/components/ui/tooltip";
 import { useScrollMode } from "@/context/ScrollModeContext";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { StaggeredMenu } from "@/components/StaggeredMenu";
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/animate-ui/components/radix/hover-card";
 
 export default function Navbar({ dict, currentLocale }: { dict: Record<string, string>, currentLocale: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -279,23 +281,63 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
               <span className="relative z-10">{dict?.work || "Work"}</span>
             </Link>
 
-            <a
-              href="https://github.com/samybit"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative group overflow-hidden isolate flex items-center gap-1 text-lg font-bold uppercase px-4 border-2 border-transparent hover:border-black hover:bg-black hover:text-white active:border-black active:bg-black active:text-white transition-all"
-            >
-              <Smoke />
-              <span className="relative z-10 flex items-center gap-1">
-                {dict?.github || "GitHub"}
-                {currentLocale === 'ar' ? (
-                  <ArrowUpLeft size={20} className="ms-1 fly-spin-arrow-rtl" />
-                ) : (
-                  <ArrowUpRight size={20} className="ms-1 fly-spin-arrow" />
-                )}
-                <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
-              </span>
-            </a>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <a
+                  href="https://github.com/samybit"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative group overflow-hidden isolate flex items-center gap-1 text-lg font-bold uppercase px-4 border-2 border-transparent hover:border-black hover:bg-black hover:text-white active:border-black active:bg-black active:text-white transition-all"
+                >
+                  <Smoke />
+                  <span className="relative z-10 flex items-center gap-1">
+                    {dict?.github || "GitHub"}
+                    {currentLocale === 'ar' ? (
+                      <ArrowUpLeft size={20} className="ms-1 fly-spin-arrow-rtl" />
+                    ) : (
+                      <ArrowUpRight size={20} className="ms-1 fly-spin-arrow" />
+                    )}
+                    <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
+                  </span>
+                </a>
+              </HoverCardTrigger>
+              <HoverCardContent className="bg-white text-black border-4 border-black brutalist-shadow-static w-80 p-4 z-[99999] flex flex-col gap-3 text-start pointer-events-auto">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 border-2 border-black rounded-full overflow-hidden shrink-0 relative bg-zinc-100">
+                    <Image
+                      src="/github_profile.jpg"
+                      alt="Samy Barsoum"
+                      fill
+                      sizes="40px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-extrabold text-sm leading-tight text-black">Samy Barsoum</span>
+                    <span className="text-xs text-zinc-500 font-medium">@samybit</span>
+                  </div>
+                </div>
+
+
+                <div className="flex flex-col gap-1.5 border-t-2 border-black pt-2.5 mt-1">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500">
+                    {currentLocale === 'ar' ? "ملف غيت هاب الشخصي:" : "GitHub Profile:"}
+                  </span>
+                  <span className="text-xs font-bold leading-tight text-black">
+                    {currentLocale === 'ar' ? "المستودعات والمساهمات" : "Repositories & Contributions"}
+                  </span>
+                  <div className="relative w-full aspect-video border-2 border-black bg-zinc-100 overflow-hidden mt-1">
+                    <Image
+                      src="/github_preview.png"
+                      alt="GitHub Profile Preview"
+                      fill
+                      sizes="(max-width: 320px) 100vw, 320px"
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
 
             <Link
               href={`/${currentLocale}#contact`}
