@@ -78,9 +78,24 @@ interface ProjectCardProps {
   disableObserver?: boolean;
   isNeumorphic?: boolean;
   asHeading?: boolean;
+  hoveredImage?: string | null;
+  hoveredTitle?: string | null;
+  onHover?: (image: string, title: string) => void;
+  onLeave?: () => void;
 }
 
-const ProjectCard = ({ project, dict, animate = false, disableObserver = false, isNeumorphic = false, asHeading = true }: ProjectCardProps) => {
+const ProjectCard = ({ 
+  project, 
+  dict, 
+  animate = false, 
+  disableObserver = false, 
+  isNeumorphic = false, 
+  asHeading = true,
+  hoveredImage = null,
+  hoveredTitle = null,
+  onHover,
+  onLeave
+}: ProjectCardProps) => {
   const [isToggled, setIsToggled] = useState(false);
 
   // Cleanly check if valid links exist (ignoring empty strings and "#" placeholders)
@@ -89,10 +104,44 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
 
   const cardContent = (
     <div 
-      className={`group/card flex flex-col h-full w-full min-h-[320px] lg:min-h-0 ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
+      className={`relative overflow-hidden group/card flex flex-col h-full w-full min-h-[320px] lg:min-h-0 ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
         isNeumorphic ? "brutalist-container bg-white border-black" : "brutalist-container-dark"
       }`}
+      onMouseEnter={() => {
+        if (window.innerWidth >= 1024) {
+          onHover?.(project.image, project.title);
+        }
+      }}
+      onMouseLeave={() => {
+        if (window.innerWidth >= 1024) {
+          onLeave?.();
+        }
+      }}
     >
+      {/* OTHER CARD HOVERED IMAGE OVERLAY (Desktop only - covers the WHOLE card) */}
+      {hoveredTitle && hoveredTitle !== project.title && (
+        <div className={`absolute inset-0 z-30 ${
+          isNeumorphic ? "bg-white" : "bg-black"
+        }`}>
+          {hoveredImage ? (
+            <Image
+              src={hoveredImage}
+              alt="Hovered Project Preview"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className={`w-full h-full flex items-center justify-center ${
+              isNeumorphic ? "bg-zinc-100" : "bg-zinc-900"
+            }`}>
+              <span className={`font-black uppercase tracking-widest text-sm text-center px-4 ${
+                isNeumorphic ? "text-zinc-400" : "text-zinc-600"
+              }`}>Screenshot Missing</span>
+            </div>
+          )}
+        </div>
+      )}
 
       <div 
         className="relative flex-1 flex flex-col min-h-0 pb-4 md:pb-5 cursor-pointer lg:cursor-auto"
@@ -138,8 +187,8 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
           </div>
         </div>
 
-        {/* INSTANT HOVER IMAGE OVERLAY */}
-        <div className={`project-image-overlay hidden lg:group-hover/card:block absolute inset-0 z-10 ${
+        {/* INSTANT HOVER IMAGE OVERLAY (Mobile/CSS active state) */}
+        <div className={`project-image-overlay hidden absolute inset-0 z-10 ${
           isNeumorphic ? "bg-white" : "bg-black"
         }`}>
           {project.image ? (
@@ -162,6 +211,8 @@ const ProjectCard = ({ project, dict, animate = false, disableObserver = false, 
             </div>
           )}
         </div>
+
+
       </div>
 
       {/* BOTTOM LINKS BLOCK */}
@@ -237,6 +288,13 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
   const [mobileScrollProgress, setMobileScrollProgress] = useState(0);
   const isDraggingSlider = useRef(false);
   const mobileSwipeRef = useRef<HTMLDivElement>(null);
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
+  const [hoveredTitle, setHoveredTitle] = useState<string | null>(null);
+
+  useEffect(() => {
+    setHoveredImage(null);
+    setHoveredTitle(null);
+  }, [page]);
 
   const projects = dict?.list || [];
 
@@ -377,7 +435,23 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
         {/* The 2x2 Grid container */}
         <div className="grid grid-cols-2 grid-rows-2 gap-6 xl:gap-8 h-full w-full">
           {currentProjects.map((project: Project, index: number) => (
-            <ProjectCard key={`desktop-${page}-${index}`} project={project} dict={dict} animate={true} isNeumorphic={isNeumorphic} />
+            <ProjectCard 
+              key={`desktop-${page}-${index}`} 
+              project={project} 
+              dict={dict} 
+              animate={true} 
+              isNeumorphic={isNeumorphic} 
+              hoveredImage={hoveredImage}
+              hoveredTitle={hoveredTitle}
+              onHover={(image, title) => {
+                setHoveredImage(image);
+                setHoveredTitle(title);
+              }}
+              onLeave={() => {
+                setHoveredImage(null);
+                setHoveredTitle(null);
+              }}
+            />
           ))}
         </div>
 
