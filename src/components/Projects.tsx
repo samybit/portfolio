@@ -293,6 +293,57 @@ const ProjectCard = ({
   return cardContent;
 };
 
+interface PlaceholderCardProps {
+  index: number;
+  hoveredTitle: string | null;
+  hoveredImages: string[] | null;
+  hoveredIndex: number | null;
+  isNeumorphic: boolean;
+}
+
+const PlaceholderCard = ({
+  index,
+  hoveredTitle,
+  hoveredImages,
+  hoveredIndex,
+  isNeumorphic
+}: PlaceholderCardProps) => {
+  // Find the image for this slot from the hovered card's images
+  let otherImage = "";
+  if (hoveredImages && hoveredIndex !== null) {
+    const imageIndex = index < hoveredIndex ? index : index - 1;
+    otherImage = hoveredImages[imageIndex] || "";
+  }
+
+  if (!hoveredTitle) return null; // completely hidden when no hover
+
+  return (
+    <div 
+      className={`relative overflow-hidden w-full h-full min-h-[320px] lg:min-h-0 ${
+        isNeumorphic ? "brutalist-container bg-white border-black" : "brutalist-container-dark"
+      }`}
+    >
+      {otherImage ? (
+        <Image
+          src={otherImage}
+          alt="Hovered Project Preview"
+          fill
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <div className={`w-full h-full flex items-center justify-center ${
+          isNeumorphic ? "bg-zinc-100" : "bg-zinc-900"
+        }`}>
+          <span className={`font-black uppercase tracking-widest text-sm text-center px-4 ${
+            isNeumorphic ? "text-zinc-400" : "text-zinc-600"
+          }`}>Screenshot Missing</span>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function Projects({ dict }: { dict: ProjectsDictionary }) {
   const [page, setPage] = useState(0);
   const [showAllMobile, setShowAllMobile] = useState(false);
@@ -448,29 +499,45 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
 
         {/* The 2x2 Grid container */}
         <div className="grid grid-cols-2 grid-rows-2 gap-6 xl:gap-8 h-full w-full">
-          {currentProjects.map((project: Project, index: number) => (
-            <ProjectCard 
-              key={`desktop-${page}-${index}`} 
-              project={project} 
-              dict={dict} 
-              animate={true} 
-              isNeumorphic={isNeumorphic} 
-              hoveredImages={hoveredImages}
-              hoveredTitle={hoveredTitle}
-              cardIndex={index}
-              hoveredIndex={hoveredIndex}
-              onHover={(images, title, idx) => {
-                setHoveredImages(images);
-                setHoveredTitle(title);
-                setHoveredIndex(idx);
-              }}
-              onLeave={() => {
-                setHoveredImages(null);
-                setHoveredTitle(null);
-                setHoveredIndex(null);
-              }}
-            />
-          ))}
+          {Array.from({ length: 4 }).map((_, index) => {
+            if (index < currentProjects.length) {
+              const project = currentProjects[index];
+              return (
+                <ProjectCard 
+                  key={`desktop-${page}-${index}`} 
+                  project={project} 
+                  dict={dict} 
+                  animate={true} 
+                  isNeumorphic={isNeumorphic} 
+                  hoveredImages={hoveredImages}
+                  hoveredTitle={hoveredTitle}
+                  cardIndex={index}
+                  hoveredIndex={hoveredIndex}
+                  onHover={(images, title, idx) => {
+                    setHoveredImages(images);
+                    setHoveredTitle(title);
+                    setHoveredIndex(idx);
+                  }}
+                  onLeave={() => {
+                    setHoveredImages(null);
+                    setHoveredTitle(null);
+                    setHoveredIndex(null);
+                  }}
+                />
+              );
+            } else {
+              return (
+                <PlaceholderCard
+                  key={`desktop-placeholder-${page}-${index}`}
+                  index={index}
+                  hoveredTitle={hoveredTitle}
+                  hoveredImages={hoveredImages}
+                  hoveredIndex={hoveredIndex}
+                  isNeumorphic={isNeumorphic}
+                />
+              );
+            }
+          })}
         </div>
 
         {/* The Sidebar Controls */}

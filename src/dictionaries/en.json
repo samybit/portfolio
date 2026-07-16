@@ -140,7 +140,7 @@
       {
         "id": "cli",
         "title": "CLI Expense Tracker",
-        "description": "Memory-safe, blazingly fast command-line tool featuring dynamic allocation and file I/O.",
+        "description": "A CLI personal finance manager written in C featuring manual dynamic memory management, binary file storage, and a custom recursive QuickSort.",
         "tech": ["C", "CLI", "Data Structures"],
         "github": "https://github.com/samybit/cli-expense-tracker",
         "demo": "#",
