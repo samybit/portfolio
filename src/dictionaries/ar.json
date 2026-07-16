@@ -34,6 +34,24 @@
     "newTab": " (يفتح في علامة تبويب جديدة)",
     "list": [
       {
+        "id": "arch-studio",
+        "title": "Arch Studio",
+        "description": "موقع معرض أعمال متجاوب لعرض التصاميم المعمارية. يقدم واجهة أمامية تركز على الأداء مع مسارات صور محملة كسلان (lazy-loaded) مدمجة مع نظام إدارة المحتوى (CMS).",
+        "tech": [
+          "Next.js",
+          "Sanity.io",
+          "Framer Motion",
+          "TailwindCSS"
+        ],
+        "github": "https://github.com/samybit/michael-studio",
+        "demo": "https://michael-studio.vercel.app/",
+        "images": [
+          "/projects/arch-studio/arch-studio-1.png",
+          "/projects/arch-studio/arch-studio-2.png",
+          "/projects/arch-studio/arch-studio-3.png"
+        ]
+      },
+      {
         "id": "bento",
         "title": "Nexus Board",
         "description": "لوحة متابعة الألعاب بتصميم Bento. مبنية باستخدام أحدث تقنيات Next.js ومدمجة مع ذكاء Google Gemini لتوليد مسارات ذكية لإنجاز الألعاب.",

@@ -34,6 +34,19 @@
     "newTab": " (opens in a new tab)",
     "list": [
       {
+        "id": "arch-studio",
+        "title": "Arch Studio",
+        "description": "A responsive portfolio site for showcasing architectural design work. Serves as a performance focused frontend implementation using lazy loaded image trails with cms.",
+        "tech": ["Next.js", "Sanity.io", "Framer Motion", "TailwindCSS"],
+        "github": "https://github.com/samybit/michael-studio",
+        "demo": "https://michael-studio.vercel.app/",
+        "images": [
+          "/projects/arch-studio/arch-studio-1.png",
+          "/projects/arch-studio/arch-studio-2.png",
+          "/projects/arch-studio/arch-studio-3.png"
+        ]
+      },
+      {
         "id": "bento",
         "title": "Nexus Board",
         "description": "Bento-styled game completion board designed for focused gamers. Built with the latest Next.js App Router and integrated with Google Gemini for intelligent achievement roadmaps.",
