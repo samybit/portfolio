@@ -40,7 +40,11 @@
         "tech": ["Next.js", "Gemini AI", "Prisma", "TailwindCSS"],
         "github": "https://github.com/samybit/bento-game-tracker",
         "demo": "https://bento-game-tracker.vercel.app/",
-        "image": "/bento.png"
+        "images": [
+          "/projects/nexus-board/nexus-board-1.png",
+          "/projects/nexus-board/nexus-board-1.png",
+          "/projects/nexus-board/nexus-board-1.png"
+        ]
       },
       {
         "id": "movie",
@@ -49,7 +53,11 @@
         "tech": ["React", "Firebase", "Redux", "TailwindCSS"],
         "github": "https://github.com/samybit/iti-movie-app",
         "demo": "https://iti-movie-app.pages.dev/",
-        "image": "/moviedb.png"
+        "images": [
+          "/projects/movie-intelligence-app/movie-intelligence-app-1.png",
+          "/projects/movie-intelligence-app/movie-intelligence-app-2.png",
+          "/projects/movie-intelligence-app/movie-intelligence-app-3.png"
+        ]
       },
       {
         "id": "3d",
@@ -58,7 +66,11 @@
         "tech": ["Next.js", "Three.js", "Spline", "Framer Motion"],
         "github": "https://github.com/samybit/3d-showcase",
         "demo": "https://3d-showcase-pi.vercel.app/",
-        "image": "/3dweb.png"
+        "images": [
+          "/projects/3d-web/3d-web-1.png",
+          "/projects/3d-web/3d-web-2.png",
+          "/projects/3d-web/3d-web-3.png"
+        ]
       },
       {
         "id": "plants",
@@ -67,7 +79,11 @@
         "tech": ["WordPress", "WooCommerce", "Elementor", "PHP"],
         "github": "",
         "demo": "",
-        "image": "/plantswp.png"
+        "images": [
+          "/projects/verdant-plants-store/verdant-plants-store-1.png",
+          "/projects/verdant-plants-store/verdant-plants-store-1.png",
+          "/projects/verdant-plants-store/verdant-plants-store-1.png"
+        ]
       },
       {
         "id": "scraper",
@@ -76,7 +92,11 @@
         "tech": ["n8n", "Python", "LLM API", "Docker"],
         "github": "https://github.com/samybit/freelance-lead-scraper",
         "demo": "#",
-        "image": "/lead-scraper.png"
+        "images": [
+          "/projects/lead-scraper/lead-scraper-1.png",
+          "/projects/lead-scraper/lead-scraper-1.png",
+          "/projects/lead-scraper/lead-scraper-1.png"
+        ]
       },
       {
         "id": "ecommerce",
@@ -85,7 +105,11 @@
         "tech": ["JavaScript", "HTML5", "CSS3", "DOM"],
         "github": "https://github.com/samybit/vanilla-js-ecommerce",
         "demo": "https://samybit.github.io/vanilla-js-ecommerce/",
-        "image": ""
+        "images": [
+          "",
+          "",
+          ""
+        ]
       },
       {
         "id": "bearbuzz",
@@ -94,7 +118,11 @@
         "tech": ["Python", "Twilio API", "CI/CD", "Tkinter"],
         "github": "https://github.com/samybit/bearbuzz",
         "demo": "#",
-        "image": "/bearbuzz.png"
+        "images": [
+          "/projects/bearbuzz/bearbuzz-1.png",
+          "/projects/bearbuzz/bearbuzz-1.png",
+          "/projects/bearbuzz/bearbuzz-1.png"
+        ]
       },
       {
         "id": "cli",
@@ -103,7 +131,11 @@
         "tech": ["C", "CLI", "Data Structures"],
         "github": "https://github.com/samybit/cli-expense-tracker",
         "demo": "#",
-        "image": "/cli.png"
+        "images": [
+          "/projects/cli-expense-tracker/cli-expense-tracker-1.png",
+          "/projects/cli-expense-tracker/cli-expense-tracker-1.png",
+          "/projects/cli-expense-tracker/cli-expense-tracker-1.png"
+        ]
       }
     ]
   },

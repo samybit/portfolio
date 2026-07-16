@@ -52,7 +52,7 @@ interface Project {
   tech: string[];
   github: string;
   demo: string;
-  image: string;
+  images: string[];
 }
 
 interface ProjectsDictionary {
@@ -78,9 +78,11 @@ interface ProjectCardProps {
   disableObserver?: boolean;
   isNeumorphic?: boolean;
   asHeading?: boolean;
-  hoveredImage?: string | null;
+  hoveredImages?: string[] | null;
   hoveredTitle?: string | null;
-  onHover?: (image: string, title: string) => void;
+  cardIndex?: number;
+  hoveredIndex?: number | null;
+  onHover?: (images: string[], title: string, index: number) => void;
   onLeave?: () => void;
 }
 
@@ -91,8 +93,10 @@ const ProjectCard = ({
   disableObserver = false, 
   isNeumorphic = false, 
   asHeading = true,
-  hoveredImage = null,
+  hoveredImages = null,
   hoveredTitle = null,
+  cardIndex,
+  hoveredIndex = null,
   onHover,
   onLeave
 }: ProjectCardProps) => {
@@ -102,6 +106,14 @@ const ProjectCard = ({
   const hasGithub = project.github && project.github !== "" && project.github !== "#";
   const hasDemo = project.demo && project.demo !== "" && project.demo !== "#";
 
+  const mainImage = project.images?.[0] || "";
+
+  let otherImage = "";
+  if (hoveredImages && hoveredIndex !== null && cardIndex !== undefined) {
+    const imageIndex = cardIndex < hoveredIndex ? cardIndex : cardIndex - 1;
+    otherImage = hoveredImages[imageIndex] || "";
+  }
+
   const cardContent = (
     <div 
       className={`relative overflow-hidden group/card flex flex-col h-full w-full min-h-[320px] lg:min-h-0 ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
@@ -109,7 +121,7 @@ const ProjectCard = ({
       }`}
       onMouseEnter={() => {
         if (window.innerWidth >= 1024) {
-          onHover?.(project.image, project.title);
+          onHover?.(project.images, project.title, cardIndex ?? 0);
         }
       }}
       onMouseLeave={() => {
@@ -123,9 +135,9 @@ const ProjectCard = ({
         <div className={`absolute inset-0 z-30 ${
           isNeumorphic ? "bg-white" : "bg-black"
         }`}>
-          {hoveredImage ? (
+          {otherImage ? (
             <Image
-              src={hoveredImage}
+              src={otherImage}
               alt="Hovered Project Preview"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -191,9 +203,9 @@ const ProjectCard = ({
         <div className={`project-image-overlay hidden absolute inset-0 z-10 ${
           isNeumorphic ? "bg-white" : "bg-black"
         }`}>
-          {project.image ? (
+          {mainImage ? (
             <Image
-              src={project.image}
+              src={mainImage}
               alt={project.title}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -288,12 +300,14 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
   const [mobileScrollProgress, setMobileScrollProgress] = useState(0);
   const isDraggingSlider = useRef(false);
   const mobileSwipeRef = useRef<HTMLDivElement>(null);
-  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
+  const [hoveredImages, setHoveredImages] = useState<string[] | null>(null);
   const [hoveredTitle, setHoveredTitle] = useState<string | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    setHoveredImage(null);
+    setHoveredImages(null);
     setHoveredTitle(null);
+    setHoveredIndex(null);
   }, [page]);
 
   const projects = dict?.list || [];
@@ -441,15 +455,19 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
               dict={dict} 
               animate={true} 
               isNeumorphic={isNeumorphic} 
-              hoveredImage={hoveredImage}
+              hoveredImages={hoveredImages}
               hoveredTitle={hoveredTitle}
-              onHover={(image, title) => {
-                setHoveredImage(image);
+              cardIndex={index}
+              hoveredIndex={hoveredIndex}
+              onHover={(images, title, idx) => {
+                setHoveredImages(images);
                 setHoveredTitle(title);
+                setHoveredIndex(idx);
               }}
               onLeave={() => {
-                setHoveredImage(null);
+                setHoveredImages(null);
                 setHoveredTitle(null);
+                setHoveredIndex(null);
               }}
             />
           ))}
