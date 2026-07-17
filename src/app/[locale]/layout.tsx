@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Noto_Kufi_Arabic } from "next/font/google";
+import { cookies } from "next/headers";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
 import SystemOverride from "@/components/SystemOverride";
@@ -113,29 +114,30 @@ export default async function RootLayout({
 
   const dict = await getDictionary(locale as Locale);
 
+  const cookieStore = await cookies();
+  const animationsDisabledCookie = cookieStore.get("disable-animations")?.value;
+  const animationsDisabled = animationsDisabledCookie === "true";
+
   const fontClassName = locale === 'ar' ? notoKufiArabic.className : spaceGrotesk.className;
 
+  // Base html classes
+  const htmlClassName = [
+    "scroll-smooth",
+    "snap-y",
+    "snap-mandatory",
+    animationsDisabled ? "no-animations" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="scroll-smooth snap-y snap-mandatory" data-scroll-behavior="smooth" style={{ overflow: "hidden" }}>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                if (localStorage.getItem('disable-animations') === 'true') {
-                  document.documentElement.classList.add('no-animations');
-                }
-              } catch (e) {}
-            `,
-          }}
-        />
-      </head>
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={htmlClassName} data-scroll-behavior="smooth" style={{ overflow: "hidden" }}>
       <body className={`${fontClassName} text-black antialiased selection:bg-black selection:text-white`}>
         <CurveLoader locale={locale} />
         <SystemOverride />
         <CustomContextMenu dict={dict.menu} />
         <GhostInTheMachine />
-        <AnimationProvider>
+        <AnimationProvider initialDisabled={animationsDisabled}>
           <ScrollModeProvider>
             <Navbar dict={dict.nav} currentLocale={locale as Locale} />
             <ReaderModeWrapper dict={dict as Record<string, Record<string, unknown>>} locale={locale}>
