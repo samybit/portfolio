@@ -4,9 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useInView } from "framer-motion";
 import dynamic from "next/dynamic";
-import { useScrollMode } from "@/context/ScrollModeContext";
 import { useAnimationConfig } from "@/context/AnimationContext";
-import FallingLayersIcon from "./FallingLayersIcon";
 import { CustomTooltip } from "@/components/ui/tooltip";
 import { Palette, ArrowUp, Zap, ZapOff, BookOpen, BookText } from "lucide-react";
 import SpeedDial from "@/components/animata/fabs/speed-dial";
@@ -24,7 +22,6 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
   const [isEmber, setIsEmber] = useState(false);
   const [isNeumorphic, setIsNeumorphic] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const { isCurtainMode, toggleScrollMode } = useScrollMode();
   const { isAnimationsDisabled, toggleAnimations, isReaderMode, toggleReaderMode } = useAnimationConfig();
 
   useEffect(() => {
@@ -66,17 +63,11 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
 
   const scrollToTop = () => {
     playTick();
-    if (isCurtainMode) {
-      window.dispatchEvent(new CustomEvent('curtainNavigate', { detail: 0 }));
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const fab = isFooterVisible && (
-    <div className={`fixed z-50 pointer-events-auto transition-all duration-300 ${
-      isCurtainMode ? 'bottom-8 right-16 md:bottom-10 md:right-20' : 'bottom-8 right-8 md:bottom-10 md:right-10'
-    }`}>
+    <div className="fixed z-50 pointer-events-auto transition-all duration-300 bottom-8 right-8 md:bottom-10 md:right-10">
       <SpeedDial
         direction="up"
         triggerLabel="Open Actions"
@@ -88,12 +79,6 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
               : "[&>button]:bg-white [&>button]:text-black [&>button]:border-2 [&>button]:border-black [&>button]:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] [&>ul>li>button]:bg-white [&>ul>li>button]:text-black [&>ul>li>button]:border-2 [&>ul>li>button]:border-black [&>ul>li>button]:shadow-[2px_2px_0px_rgba(255,255,255,0.3)]"
         }
         actionButtons={[
-          {
-            key: "scrollMode",
-            label: isCurtainMode ? (dict?.normalScroll || "Normal Scroll") : (dict?.curtainScroll || "Curtain Scroll"),
-            icon: <FallingLayersIcon isCurtainMode={isCurtainMode} />,
-            action: toggleScrollMode,
-          },
           {
             key: "theme",
             label: dict?.cycleTheme || "Cycle Theme",
@@ -141,12 +126,6 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
 
         <a
           href="#"
-          onClick={(e) => {
-            if (isCurtainMode) {
-              e.preventDefault();
-              window.dispatchEvent(new CustomEvent('curtainNavigate', { detail: 0 }));
-            }
-          }}
           className={`text-lg font-bold uppercase border-b-4 pb-1 transition-colors pointer-events-auto ${
             isNeumorphic 
               ? "border-black text-black hover:bg-black hover:text-white" 

@@ -7,8 +7,6 @@ import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import AudioPlayer from "@/components/AudioPlayer";
 import DecryptText from "@/components/DecryptText";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
-import { useScrollMode } from "@/context/ScrollModeContext";
-import CurtainScroller from "@/components/CurtainScroller";
 import Footer from "@/components/Footer";
 import { AnimatedTimeline } from "@/components/animata/progress/animatedtimeline";
 import { MorphingText } from "@/components/ui/morphing-text";
@@ -19,7 +17,6 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   const [isSummaryCardHovered, setIsSummaryCardHovered] = useState(false);
   const [isSkillsCardHovered, setIsSkillsCardHovered] = useState(false);
   const isNeumorphic = useNeumorphicTheme();
-  const { isCurtainMode } = useScrollMode();
 
   // --- FRAMER MOTION CLIP-PATH SETUP ---
   const { scrollY } = useScroll();
@@ -294,7 +291,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   );
 
   const section1 = (
-      <div className={`relative w-full ${isCurtainMode ? 'min-h-[100svh]' : ''} ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}`}>
+      <div className={`relative w-full ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-white'}`}>
 
         {/* Inline SVG filter defs for the glass overlay */}
         <svg className="absolute w-0 h-0 overflow-hidden" aria-hidden="true">
@@ -312,12 +309,12 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
           className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none"
         >
           <motion.img
-            style={isCurtainMode ? {} : { y: imageY }}
+            style={{ y: imageY }}
             src="/about.jpg"
             alt=""
-            className={`absolute ${isCurtainMode ? 'top-0 h-full' : '-top-[25%] h-[150%]'} left-0 w-full object-cover object-center`}
+            className="absolute -top-[25%] h-[150%] left-0 w-full object-cover object-center"
           />
-          <div className={`absolute ${isCurtainMode ? 'top-0 h-full' : '-top-[25%] h-[150%]'} left-0 bg-black/30 w-full`}></div>
+          <div className="absolute -top-[25%] h-[150%] left-0 bg-black/30 w-full"></div>
         </motion.div>
 
         {/* Layer 2: Content */}
@@ -340,7 +337,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
 
 
   const section2 = (
-      <div className={`relative w-full ${isCurtainMode ? `min-h-[100svh] flex items-center transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
+      <div className="relative w-full">
         {/* --- STAGE 1: SIMPLE PROGRESSIVE DRAWING (SINGLE WAVE) --- */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" preserveAspectRatio="none" viewBox="0 0 1440 800" fill="none" aria-hidden="true">
           <path 
@@ -386,7 +383,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   );
 
   const section3 = (
-      <div className={`relative w-full ${isCurtainMode ? `min-h-[100svh] flex items-center transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
+      <div className="relative w-full py-12">
         {/* --- STAGE 2: STRUCTURED PROGRESSIVE DRAWING (DOUBLE WAVES) --- */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" preserveAspectRatio="none" viewBox="0 0 1440 800" fill="none" aria-hidden="true">
           <path 
@@ -459,7 +456,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   );
 
   const section4 = (
-      <div className={`relative w-full ${isCurtainMode ? `flex flex-col justify-between min-h-[100svh] transition-colors duration-300 ${isNeumorphic ? 'bg-[#e0e5ec]' : 'bg-black'}` : ''}`}>
+      <div className="relative w-full flex flex-col justify-between transition-colors duration-300">
         {/* --- STAGE 3: DETAILED GEOMETRIC CLIMAX DRAWING (MULTIPLE INTERSECTING WAVES) --- */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" preserveAspectRatio="none" viewBox="0 0 1440 800" fill="none" aria-hidden="true">
           {/* Wave 1 */}
@@ -538,7 +535,6 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
             </section>
           </div>
         </div>
-        {isCurtainMode && <Footer dict={footerDict} />}
       </div>
   );
 
@@ -564,20 +560,6 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
       />
     </div>
   ) : null;
-
-  if (isCurtainMode) {
-    return (
-      <main className="h-[100svh] w-full overflow-hidden flex flex-col bg-black" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-        <CurtainScroller>
-          {section1}
-          {section2}
-          {section3}
-          {section4}
-        </CurtainScroller>
-        {toastOverlay}
-      </main>
-    );
-  }
 
   return (
     <main className={`min-h-screen flex flex-col overflow-x-hidden transition-colors duration-300 ${

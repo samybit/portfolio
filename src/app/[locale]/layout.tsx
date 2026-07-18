@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
 import SystemOverride from "@/components/SystemOverride";
-import { ScrollModeProvider } from "@/context/ScrollModeContext";
 import { AnimationProvider } from "@/context/AnimationContext";
 import CustomContextMenu from "@/components/CustomContextMenu";
 import GhostInTheMachine from "@/components/GhostInTheMachine";
@@ -138,12 +137,10 @@ export default async function RootLayout({
         <CustomContextMenu dict={dict.menu} />
         <GhostInTheMachine />
         <AnimationProvider initialDisabled={animationsDisabled}>
-          <ScrollModeProvider>
-            <Navbar dict={dict.nav} currentLocale={locale as Locale} />
-            <ReaderModeWrapper dict={dict as Record<string, Record<string, unknown>>} locale={locale}>
-              {children}
-            </ReaderModeWrapper>
-          </ScrollModeProvider>
+          <Navbar dict={dict.nav} currentLocale={locale as Locale} />
+          <ReaderModeWrapper dict={dict as Record<string, Record<string, unknown>>} locale={locale}>
+            {children}
+          </ReaderModeWrapper>
         </AnimationProvider>
       </body>
     </html>

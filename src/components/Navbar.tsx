@@ -8,7 +8,6 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import Smoke from "@/components/Smoke";
 import { CustomTooltip } from "@/components/ui/tooltip";
-import { useScrollMode } from "@/context/ScrollModeContext";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { StaggeredMenu } from "@/components/StaggeredMenu";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/animate-ui/components/radix/hover-card";
@@ -22,7 +21,6 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
   const navRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
-  const { isCurtainMode } = useScrollMode();
 
   const isHome = pathname === `/${currentLocale}` || pathname === `/${currentLocale}/`;
 
@@ -151,11 +149,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
 
     if (isHome) {
       e.preventDefault();
-      if (isCurtainMode) {
-        window.dispatchEvent(new CustomEvent('curtainNavigate', { detail: 0 }));
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       router.replace(`/${currentLocale}`, { scroll: false });
       setActiveHash("");
     }
@@ -164,16 +158,9 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
   const handleHashClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
     if (isHome) {
       e.preventDefault();
-      if (isCurtainMode) {
-        let index = 0;
-        if (hash === '#projects') index = 1;
-        else if (hash === '#contact') index = 3;
-        window.dispatchEvent(new CustomEvent('curtainNavigate', { detail: index }));
-      } else {
-        const element = document.getElementById(hash.substring(1));
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
+      const element = document.getElementById(hash.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
       }
       router.replace(`/${currentLocale}${hash}`, { scroll: false });
     }
@@ -192,7 +179,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
   return (
     <>
       <nav id="navbar-container" ref={navRef} className={`animate-slide-down fixed top-0 left-0 z-50 w-full px-6 md:px-12 lg:px-24 py-6 pointer-events-none flex flex-col transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
-        <div className={`flex justify-between items-start w-full max-w-[90rem] mx-auto relative z-10 ${isCurtainMode ? 'pr-4 md:pr-6 lg:pr-8' : ''}`}>
+        <div className="flex justify-between items-start w-full max-w-[90rem] mx-auto relative z-10">
 
           {/* --- Left Column: Logo & Tools (Total height exactly 64px / h-16) --- */}
           <div className="pointer-events-auto flex brutalist-shadow-static h-16">

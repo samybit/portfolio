@@ -10,7 +10,6 @@ import HeroCarabiner3D from "@/components/HeroCarabiner3D";
 import EgyptMapTooltip from "@/components/EgyptMapTooltip";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 import { useEmberTheme } from "@/hooks/useEmberTheme";
-import { useScrollMode } from "@/context/ScrollModeContext";
 
 // --- HERO DESCRIPTION RENDERER ---
 // Parses the description string (which may contain <br/> tags) and wraps
@@ -52,7 +51,6 @@ function HeroDescription({ html, className }: { html: string; className: string 
 export default function Hero({ dict }: { dict: Record<string, string> }) {
   const isNeumorphic = useNeumorphicTheme();
   const isEmber = useEmberTheme();
-  const { isCurtainMode } = useScrollMode();
 
   const getHighlightColor = (isDarkButton: boolean) => {
     if (isEmber) return "#facc15"; // Fiery Yellow to contrast with Orange/Charcoal
@@ -159,11 +157,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             onTouchEnd={() => setIsWorkHovered(false)}
             onClick={(e) => {
               e.preventDefault();
-              if (isCurtainMode) {
-                window.dispatchEvent(new CustomEvent('curtainNavigate', { detail: 1 }));
-              } else {
-                document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-              }
+              document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
               window.history.pushState(null, '', '#projects');
             }}
             className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
@@ -187,11 +181,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             onTouchEnd={() => setIsContactHovered(false)}
             onClick={(e) => {
               e.preventDefault();
-              if (isCurtainMode) {
-                window.dispatchEvent(new CustomEvent('curtainNavigate', { detail: 3 }));
-              } else {
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-              }
+              document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
               window.history.pushState(null, '', '#contact');
             }}
             className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
