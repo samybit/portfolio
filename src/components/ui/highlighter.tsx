@@ -64,7 +64,10 @@ export function Highlighter({
   const shouldShow = show !== undefined ? show : (!isView || isInView)
 
   const shouldShowRef = useRef(shouldShow)
-  shouldShowRef.current = shouldShow
+
+  useEffect(() => {
+    shouldShowRef.current = shouldShow
+  }, [shouldShow])
 
   useEffect(() => {
     const element = elementRef.current
