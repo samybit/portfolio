@@ -1,6 +1,8 @@
 "use server";
 
 import { Resend } from "resend";
+import * as React from "react";
+import { PortfolioContactEmail } from "@/emails/portfolio-contact-email";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -23,6 +25,7 @@ export async function sendEmail(formData: FormData) {
       from: "Portfolio Contact <onboarding@resend.dev>",
       to: "samyb.samir@gmail.com",
       subject: `New Freelance Lead from ${name}`,
+      react: React.createElement(PortfolioContactEmail, { name, email, message }),
       text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
     });
 
