@@ -70,21 +70,21 @@
         ]
       },
       {
-        "id": "bento",
-        "title": "Nexus Board",
-        "description": "لوحة متابعة الألعاب بتصميم Bento. مبنية باستخدام أحدث تقنيات Next.js ومدمجة مع ذكاء Google Gemini لتوليد مسارات ذكية لإنجاز الألعاب.",
+        "id": "3d",
+        "title": "3D Web",
+        "description": "تجربة سردية تستكشف 7 أساليب لتجسيد البعد الثالث. تعتبر مرجعاً تقنياً لمكتبات مثل Three.js و Spline و Globe.gl والرياضيات في CSS.",
         "tech": [
           "Next.js",
-          "Gemini AI",
-          "Prisma",
-          "TailwindCSS"
+          "Three.js",
+          "Spline",
+          "Framer Motion"
         ],
-        "github": "https://github.com/samybit/bento-game-tracker",
-        "demo": "https://bento-game-tracker.vercel.app/",
+        "github": "https://github.com/samybit/3d-showcase",
+        "demo": "https://3d-showcase-pi.vercel.app/",
         "images": [
-          "/projects/nexus-board/nexus-board-1.png",
-          "/projects/nexus-board/nexus-board-1.png",
-          "/projects/nexus-board/nexus-board-1.png"
+          "/projects/3d-web/3d-web-1.png",
+          "/projects/3d-web/3d-web-2.png",
+          "/projects/3d-web/3d-web-3.png"
         ]
       },
       {
@@ -106,21 +106,21 @@
         ]
       },
       {
-        "id": "3d",
-        "title": "3D Web",
-        "description": "تجربة سردية تستكشف 7 أساليب لتجسيد البعد الثالث. تعتبر مرجعاً تقنياً لمكتبات مثل Three.js و Spline و Globe.gl والرياضيات في CSS.",
+        "id": "bento",
+        "title": "Nexus Board",
+        "description": "لوحة متابعة الألعاب بتصميم Bento. مبنية باستخدام أحدث تقنيات Next.js ومدمجة مع ذكاء Google Gemini لتوليد مسارات ذكية لإنجاز الألعاب.",
         "tech": [
           "Next.js",
-          "Three.js",
-          "Spline",
-          "Framer Motion"
+          "Gemini AI",
+          "Prisma",
+          "TailwindCSS"
         ],
-        "github": "https://github.com/samybit/3d-showcase",
-        "demo": "https://3d-showcase-pi.vercel.app/",
+        "github": "https://github.com/samybit/bento-game-tracker",
+        "demo": "https://bento-game-tracker.vercel.app/",
         "images": [
-          "/projects/3d-web/3d-web-1.png",
-          "/projects/3d-web/3d-web-2.png",
-          "/projects/3d-web/3d-web-3.png"
+          "/projects/nexus-board/nexus-board-1.png",
+          "/projects/nexus-board/nexus-board-1.png",
+          "/projects/nexus-board/nexus-board-1.png"
         ]
       },
       {
