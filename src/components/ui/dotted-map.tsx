@@ -39,7 +39,7 @@ export interface DottedMapProps<
 }
 
 // Global cache for precomputed map points to prevent CPU-intensive recalculations
-const mapCache = new Map<string, { points: any[]; addMarkers: any }>();
+const mapCache = new Map<string, ReturnType<typeof createMap>>();
 
 export function DottedMap<M extends Marker = Marker>({
   width = 150,

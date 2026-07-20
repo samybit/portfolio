@@ -143,7 +143,7 @@ export function InteractiveHoverButton({
         onTouchStart={() => setIsHovered(true)}
         onTouchEnd={() => setIsHovered(false)}
         onTouchCancel={() => setIsHovered(false)}
-        {...(props as any)}
+        {...(props as Omit<React.ComponentPropsWithoutRef<"a">, keyof InteractiveHoverButtonProps>)}
       >
         {innerContent}
       </a>
@@ -159,7 +159,7 @@ export function InteractiveHoverButton({
       onTouchStart={() => setIsHovered(true)}
       onTouchEnd={() => setIsHovered(false)}
       onTouchCancel={() => setIsHovered(false)}
-      {...(props as any)}
+      {...(props as Omit<React.ComponentPropsWithoutRef<"button">, keyof InteractiveHoverButtonProps>)}
     >
       {innerContent}
     </button>

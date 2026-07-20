@@ -448,7 +448,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   return (
     <div
       className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')}
-      style={accentColor ? { ['--sm-accent' as any]: accentColor } : undefined}
+      style={accentColor ? ({ '--sm-accent': accentColor } as React.CSSProperties & Record<'--sm-accent', string>) : undefined}
       data-position={position}
       data-open={open || undefined}
     >
@@ -562,7 +562,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           </ul>
           {displaySocials && socialItems && socialItems.length > 0 && (
             <div className="sm-socials" aria-label="Social links">
-              <h3 className="sm-socials-title">// SOCIALS</h3>
+              <h3 className="sm-socials-title">SOCIALS</h3>
               <ul className="sm-socials-list mt-2" role="list">
                 {socialItems.map((s, i) => (
                   <li key={s.label + i} className="sm-socials-item">
