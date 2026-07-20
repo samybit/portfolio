@@ -34,6 +34,24 @@
     "newTab": " (يفتح في علامة تبويب جديدة)",
     "list": [
       {
+        "id": "knowledge-archive",
+        "title": "Knowledge Archive",
+        "description": "أرشيف تعليمي تفاعلي مستوحى من عصر النهضة يستكشف الهيكل التنظيمي لمنظومة Spring Boot ومخططات المجلدات ودورة حياة طلبات Web MVC من خلال أدلة مرجعية بصرية أنيقة.",
+        "tech": [
+          "Next.js",
+          "Lenis Scroll",
+          "GSAP",
+          "Base UI"
+        ],
+        "github": "https://github.com/samybit/primavera",
+        "demo": "https://primavera-4yi.pages.dev/",
+        "images": [
+          "/projects/knowledge-archive/knowledge-archive-1.png",
+          "/projects/knowledge-archive/knowledge-archive-2.png",
+          "/projects/knowledge-archive/knowledge-archive-3.png"
+        ]
+      },
+      {
         "id": "arch-studio",
         "title": "Arch Studio",
         "description": "موقع معرض أعمال متجاوب لعرض التصاميم المعمارية. يقدم واجهة أمامية تركز على الأداء مع مسارات صور محملة كسلان (lazy-loaded) مدمجة مع نظام إدارة المحتوى (CMS).",

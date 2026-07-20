@@ -34,6 +34,19 @@
     "newTab": " (opens in a new tab)",
     "list": [
       {
+        "id": "knowledge-archive",
+        "title": "Knowledge Archive",
+        "description": "A Renaissance-inspired interactive learning archive exploring the Spring Boot ecosystem hierarchy, directory blueprints, and Web MVC request lifecycles through clean visual reference guides.",
+        "tech": ["Next.js", "Lenis Scroll", "GSAP", "Base UI"],
+        "github": "https://github.com/samybit/primavera",
+        "demo": "https://primavera-4yi.pages.dev/",
+        "images": [
+          "/projects/knowledge-archive/knowledge-archive-1.png",
+          "/projects/knowledge-archive/knowledge-archive-2.png",
+          "/projects/knowledge-archive/knowledge-archive-3.png"
+        ]
+      },
+      {
         "id": "arch-studio",
         "title": "Arch Studio",
         "description": "A responsive portfolio site for showcasing architectural design work. Serves as a performance focused frontend implementation using lazy loaded image trails with cms.",
