@@ -63,7 +63,7 @@
     color: black;
     /* Brutalist dot-grid background */
     background-image: radial-gradient(#e5e5e5 1px, transparent 0);
-    background-position: center;
+    background-position: calc(50% - 20px) calc(50% - 20px);
     background-size: 40px 40px;
   }
 }
@@ -444,7 +444,7 @@ html.theme-color body {
   color: #FF4F00 !important;
   /* Pure Fiery Orange */
   background-image: radial-gradient(#000000 1px, transparent 0) !important;
-  background-position: center !important;
+  background-position: calc(50% - 20px) calc(50% - 20px) !important;
   background-size: 40px 40px !important;
 }
 
@@ -576,32 +576,85 @@ html.theme-color img {
 #brutalist-scrollbar-thumb {
   background-color: #ffffff !important;
   border: 2px solid #000000 !important;
-  box-shadow: 3px 3px 0px #000000 !important;
+  box-shadow: none !important;
   border-radius: 0px !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+#brutalist-scrollbar-track:hover #brutalist-scrollbar-thumb,
+#brutalist-scrollbar-thumb:hover {
+  background-color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+#brutalist-scrollbar-track:active #brutalist-scrollbar-thumb,
+#brutalist-scrollbar-thumb:active,
+body.is-scrolling-drag #brutalist-scrollbar-thumb {
+  background-color: #ef4444 !important;
+  border-color: #000000 !important;
 }
 
 /* Invert theme */
 html.invert-theme #brutalist-scrollbar-thumb {
   background-color: #000000 !important;
   border: 2px solid #ffffff !important;
-  box-shadow: 3px 3px 0px #ffffff !important;
+  box-shadow: none !important;
   border-radius: 0px !important;
+}
+
+html.invert-theme #brutalist-scrollbar-track:hover #brutalist-scrollbar-thumb,
+html.invert-theme #brutalist-scrollbar-thumb:hover {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+html.invert-theme #brutalist-scrollbar-track:active #brutalist-scrollbar-thumb,
+html.invert-theme #brutalist-scrollbar-thumb:active,
+html.invert-theme body.is-scrolling-drag #brutalist-scrollbar-thumb {
+  background-color: #ef4444 !important;
+  border-color: #ffffff !important;
 }
 
 /* Ember theme (Warm Charcoal + Fiery Orange accent) */
 html.theme-color #brutalist-scrollbar-thumb {
   background-color: #1A1716 !important;
   border: 2px solid #FF4F00 !important;
-  box-shadow: 3px 3px 0px #FF4F00 !important;
+  box-shadow: none !important;
   border-radius: 0px !important;
 }
 
-/* Neumorphic theme (Dark Slate pill with soft neumorphic extruded glow) */
+html.theme-color #brutalist-scrollbar-track:hover #brutalist-scrollbar-thumb,
+html.theme-color #brutalist-scrollbar-thumb:hover {
+  background-color: #FF4F00 !important;
+  border-color: #1A1716 !important;
+}
+
+html.theme-color #brutalist-scrollbar-track:active #brutalist-scrollbar-thumb,
+html.theme-color #brutalist-scrollbar-thumb:active,
+html.theme-color body.is-scrolling-drag #brutalist-scrollbar-thumb {
+  background-color: #ffffff !important;
+  border-color: #FF4F00 !important;
+}
+
+/* Neumorphic theme (Dark Slate pill) */
 html.theme-neumorphic #brutalist-scrollbar-thumb {
-  background-color: #4b5563 !important;
+  background-color: #a3b1c6 !important;
   border: 2px solid #e0e5ec !important;
-  box-shadow: 4px 4px 10px rgba(163, 177, 198, 0.9), -2px -2px 6px rgba(255, 255, 255, 0.6) !important;
+  box-shadow: none !important;
   border-radius: 4px !important;
+}
+
+html.theme-neumorphic #brutalist-scrollbar-track:hover #brutalist-scrollbar-thumb,
+html.theme-neumorphic #brutalist-scrollbar-thumb:hover {
+  background-color: #4b5563 !important;
+  border-color: #e0e5ec !important;
+}
+
+html.theme-neumorphic #brutalist-scrollbar-track:active #brutalist-scrollbar-thumb,
+html.theme-neumorphic #brutalist-scrollbar-thumb:active,
+html.theme-neumorphic body.is-scrolling-drag #brutalist-scrollbar-thumb {
+  background-color: #1f2937 !important;
+  border-color: #e0e5ec !important;
 }
 
 /* Scrollbar Cursor & Dragging States */
@@ -686,7 +739,7 @@ html.theme-neumorphic body {
   color: #4b5563 !important;
   background-image: radial-gradient(#ffffff 1px, transparent 0),
                     radial-gradient(#a3b1c6 1px, transparent 0) !important;
-  background-position: center, calc(50% + 1px) calc(50% + 1px) !important;
+  background-position: calc(50% - 20px) calc(50% - 20px), calc(50% - 19px) calc(50% - 19px) !important;
   background-size: 40px 40px !important;
 }
 

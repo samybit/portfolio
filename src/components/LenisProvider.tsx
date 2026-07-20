@@ -177,7 +177,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
         ref={trackRef}
         id="brutalist-scrollbar-track"
         aria-hidden="true"
-        className="fixed top-0 right-2 h-screen z-[9998] pointer-events-auto cursor-grab active:cursor-grabbing select-none"
+        className="fixed top-0 right-0 h-screen z-[9998] pointer-events-auto cursor-grab active:cursor-grabbing select-none"
         style={{ width: "16px" }}
       >
         {/* Thumb */}

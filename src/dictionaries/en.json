@@ -140,7 +140,7 @@
       {
         "id": "bearbuzz",
         "title": "BearBuzz",
-        "description": "Dual-interface (CLI & GUI) Python engine tracking stock volatility, dispatching automated Twilio SMS alerts with live financial headlines.",
+        "description": "Automated financial monitoring engine featuring dual desktop and terminal interfaces to track stock price volatility, aggregate breaking headlines, and deliver instant text alert notifications to mobile phones.",
         "tech": ["Python", "Twilio API", "CI/CD", "Tkinter"],
         "github": "https://github.com/samybit/bearbuzz",
         "demo": "#",
