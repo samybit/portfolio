@@ -1,14 +1,16 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import { createPortal } from "react-dom";
 import { useInView } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useAnimationConfig } from "@/context/AnimationContext";
-import { CustomTooltip } from "@/components/ui/tooltip";
 import { Palette, ArrowUp, Zap, ZapOff, BookOpen, BookText } from "lucide-react";
 import SpeedDial from "@/components/animata/fabs/speed-dial";
 import { playClack, playTick } from "@/utils/audio";
+import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
+import { useEmberTheme } from "@/hooks/useEmberTheme";
+import { useSyncExternalStore } from "react";
 
 const Footer3D = dynamic(() => import("@/components/Footer3D"), { ssr: false });
 
@@ -19,24 +21,18 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
   const isInView = useInView(footerRef, { margin: "200px 0px 200px 0px" });
   const isFooterVisible = useInView(footerRef, { margin: "0px" });
 
-  const [isEmber, setIsEmber] = useState(false);
-  const [isNeumorphic, setIsNeumorphic] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  // useSyncExternalStore: subscribe returns a no-op (DOM doesn't change during the portal check),
+  // getSnapshot returns true on client, getServerSnapshot returns false — no setState needed.
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+
+  const isEmber = useEmberTheme();
+  const isNeumorphic = useNeumorphicTheme();
+
   const { isAnimationsDisabled, toggleAnimations, isReaderMode, toggleReaderMode } = useAnimationConfig();
-
-  useEffect(() => {
-    setMounted(true);
-    const checkTheme = () => {
-      setIsEmber(document.documentElement.classList.contains("theme-color"));
-      setIsNeumorphic(document.documentElement.classList.contains("theme-neumorphic"));
-    };
-    checkTheme();
-
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-
-    return () => observer.disconnect();
-  }, []);
 
   const currentYear = new Date().getFullYear();
   const copyrightText = (dict?.copyright || "© {year} SAMYBIT // WITH NEXT.JS & BRUTALISM.").replace('{year}', currentYear.toString());
@@ -56,9 +52,7 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
     } else {
       html.classList.add("invert-theme");
     }
-    
-    setIsEmber(html.classList.contains("theme-color"));
-    setIsNeumorphic(html.classList.contains("theme-neumorphic"));
+    // useEmberTheme / useNeumorphicTheme hooks react automatically via MutationObserver
   };
 
   const scrollToTop = () => {

@@ -14,7 +14,7 @@ export default function DecryptText({
   text: string;
   className?: string;
 }) {
-  const [displayText, setDisplayText] = useState(text);
+  const [scrambledText, setScrambledText] = useState(text);
   const ref = useRef<HTMLSpanElement>(null);
   const { isAnimationsDisabled } = useAnimationConfig();
 
@@ -22,11 +22,9 @@ export default function DecryptText({
   const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
 
   useEffect(() => {
-    if (isAnimationsDisabled) {
-      setDisplayText(text);
-      return;
-    }
-    if (!isInView) return;
+    // When animations are off or the element is not yet in view, do nothing.
+    // The render output below derives the correct text without needing setState here.
+    if (isAnimationsDisabled || !isInView) return;
 
     let iteration = 0;
     let interval: NodeJS.Timeout;
@@ -36,8 +34,8 @@ export default function DecryptText({
 
       // Runs every 30 milliseconds for a rapid, mechanical flicker
       interval = setInterval(() => {
-        setDisplayText((oldText) => {
-          return text
+        setScrambledText(
+          text
             .split("")
             .map((letter, index) => {
               // Ignore spaces to keep word structure intact
@@ -51,8 +49,8 @@ export default function DecryptText({
               // Otherwise, show a random scrambling character
               return CHARS[Math.floor(Math.random() * CHARS.length)];
             })
-            .join("");
-        });
+            .join("")
+        );
 
         // Stop the interval when the whole word is revealed
         if (iteration >= text.length) {
@@ -67,7 +65,10 @@ export default function DecryptText({
     startDecrypt();
 
     return () => clearInterval(interval);
-  }, [text, isInView]);
+  }, [text, isInView, isAnimationsDisabled]);
+
+  // Derived: when animations are disabled (or not yet in view), always show the real text.
+  const displayText = isAnimationsDisabled ? text : scrambledText;
 
   return (
     <span ref={ref} className={className}>

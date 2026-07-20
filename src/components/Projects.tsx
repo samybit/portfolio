@@ -355,12 +355,6 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
   const [hoveredTitle, setHoveredTitle] = useState<string | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  useEffect(() => {
-    setHoveredImages(null);
-    setHoveredTitle(null);
-    setHoveredIndex(null);
-  }, [page]);
-
   const projects = dict?.list || [];
 
   const itemsPerPage = 4;
@@ -368,11 +362,17 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
 
   const nextSlide = () => {
     playTick();
+    setHoveredImages(null);
+    setHoveredTitle(null);
+    setHoveredIndex(null);
     setPage((p) => (p + 1) % totalPages);
   };
 
   const prevSlide = () => {
     playTick();
+    setHoveredImages(null);
+    setHoveredTitle(null);
+    setHoveredIndex(null);
     setPage((p) => (p - 1 + totalPages) % totalPages);
   };
 
