@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "email": "email dev -d src/emails",
-    "triad": "npm run lint && npm run dev",
-    "preview": "npm run lint && npm run build && npm run start"
+    "mydev": "eslint && next dev",
+    "preview": "eslint && next build && next start"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
