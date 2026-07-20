@@ -60,56 +60,154 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
     return null;
   }
 
+  const isAr = locale === 'ar';
+  const nameText = isAr ? "سامي برسوم" : "SAMY BARSOUM";
+  const statusText = isExiting ? (isAr ? "جاهز" : "READY") : (isAr ? "جاري التحميل" : "LOADING");
+
   return (
-    <motion.div
-      className={`fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden ${
-        isExiting ? "pointer-events-none" : ""
-      }`}
-      animate={isExiting ? { y: "-100%" } : { y: "0%" }}
-      transition={isExiting ? { duration: 0.9, ease: [0.76, 0, 0.24, 1] } : { duration: 0 }}
-      onAnimationComplete={isExiting ? handleExitComplete : undefined}
-    >
-      {/* Central Welcome Text with DiaTextReveal */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-10">
-        <h1 className="text-4xl md:text-7xl font-black uppercase tracking-[0.2em] text-white">
-          <DiaTextReveal
-            text={locale === 'ar' ? "أهلاً بك" : "Welcome"}
-            textColor="#ffffff"
-            colors={["#ffffff", "#888888", "#ffffff", "#aaaaaa", "#ffffff"]}
-            duration={1.2}
-            delay={0.2}
-          />
-        </h1>
-      </div>
+    <>
+      <style>{`
+        /* Pure CSS 3D Hardware-Accelerated Scene */
+        .cl-3d-scene {
+          perspective: 800px;
+          perspective-origin: 50% 50%;
+        }
+        
+        .cl-3d-cube {
+          width: 64px;
+          height: 64px;
+          position: relative;
+          transform-style: preserve-3d;
+          animation: cl-cube-spin 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          will-change: transform;
+        }
 
-      {/* Counter */}
-      <div className="fixed bottom-8 left-8 font-mono text-white select-none leading-none opacity-80">
-        <span
-          ref={countElRef}
-          id="cl-count"
-          className="font-bold tabular-nums tracking-tighter"
-          style={{ fontSize: "10vmin" }}
-        >
-          0
-        </span>
-        <span style={{ fontSize: "3vmin", opacity: 0.5, marginLeft: 4 }}>%</span>
-      </div>
+        .cl-3d-cube.exiting {
+          animation: cl-cube-exit 0.8s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+        }
 
-      {/* Site name */}
-      <div
-        className="fixed top-8 left-8 text-white font-bold uppercase select-none opacity-80"
-        style={{ letterSpacing: "0.3em", fontSize: "clamp(10px,1.2vw,14px)" }}
+        .cl-face {
+          position: absolute;
+          width: 64px;
+          height: 64px;
+          border: 1.5px solid rgba(255, 255, 255, 0.4);
+          background: rgba(255, 255, 255, 0.04);
+          box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.08);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: monospace;
+          font-size: 11px;
+          font-weight: bold;
+          color: rgba(255, 255, 255, 0.7);
+          user-select: none;
+        }
+
+        .cl-face-front  { transform: translateZ(32px); }
+        .cl-face-back   { transform: rotateY(180deg) translateZ(32px); }
+        .cl-face-right  { transform: rotateY(90deg) translateZ(32px); }
+        .cl-face-left   { transform: rotateY(-90deg) translateZ(32px); }
+        .cl-face-top    { transform: rotateX(90deg) translateZ(32px); }
+        .cl-face-bottom { transform: rotateX(-90deg) translateZ(32px); }
+
+        /* Outer 3D Dashed Orbit Ring */
+        .cl-3d-ring {
+          position: absolute;
+          width: 130px;
+          height: 130px;
+          border: 1.5px dashed rgba(255, 255, 255, 0.25);
+          border-radius: 50%;
+          transform-style: preserve-3d;
+          animation: cl-ring-spin 4s linear infinite;
+          will-change: transform;
+        }
+
+        @keyframes cl-cube-spin {
+          0% {
+            transform: rotateX(-20deg) rotateY(0deg) rotateZ(0deg);
+          }
+          50% {
+            transform: rotateX(20deg) rotateY(180deg) rotateZ(15deg);
+          }
+          100% {
+            transform: rotateX(-20deg) rotateY(360deg) rotateZ(0deg);
+          }
+        }
+
+        @keyframes cl-ring-spin {
+          0% {
+            transform: rotateX(70deg) rotateZ(0deg);
+          }
+          100% {
+            transform: rotateX(70deg) rotateZ(360deg);
+          }
+        }
+
+        @keyframes cl-cube-exit {
+          0% {
+            transform: scale(1) translateZ(0);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(2.8) translateZ(350px);
+            opacity: 0;
+          }
+        }
+      `}</style>
+
+      <motion.div
+        className={`fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center overflow-hidden px-4 text-center select-none ${
+          isExiting ? "pointer-events-none" : ""
+        }`}
+        animate={isExiting ? { y: "-100%" } : { y: "0%" }}
+        transition={isExiting ? { duration: 0.9, ease: [0.76, 0, 0.24, 1] } : { duration: 0 }}
+        onAnimationComplete={isExiting ? handleExitComplete : undefined}
       >
-        {locale === 'ar' ? "سامي برسوم" : "SAMY BARSOUM"}
-      </div>
+        <div className="flex flex-col items-center justify-center space-y-4 md:space-y-5">
+          {/* Pure CSS 3D Wireframe Monolith Scene */}
+          <div className="cl-3d-scene relative flex items-center justify-center py-2">
+            <div className="cl-3d-ring pointer-events-none" />
+            <div className={`cl-3d-cube${isExiting ? " exiting" : ""}`}>
+              <div className="cl-face cl-face-front">+</div>
+              <div className="cl-face cl-face-back">+</div>
+              <div className="cl-face cl-face-right">+</div>
+              <div className="cl-face cl-face-left">+</div>
+              <div className="cl-face cl-face-top">+</div>
+              <div className="cl-face cl-face-bottom">+</div>
+            </div>
+          </div>
 
-      {/* Status */}
-      <div
-        className="fixed top-8 right-8 text-white font-mono uppercase select-none"
-        style={{ fontSize: "clamp(9px,1vw,12px)", letterSpacing: "0.15em", opacity: 0.5 }}
-      >
-        {isExiting ? (locale === 'ar' ? "جاهز" : "READY") : (locale === 'ar' ? "جاري التحميل" : "LOADING")}
-      </div>
-    </motion.div>
+          {/* Name & Status Tag in Middle */}
+          <div className="font-mono text-xs sm:text-sm tracking-[0.25em] text-white/60 uppercase flex items-center justify-center gap-2">
+            <span>{nameText}</span>
+            <span className="text-white/30">•</span>
+            <span className="text-white/80 font-bold">{statusText}</span>
+          </div>
+
+          {/* Central Welcome Text with DiaTextReveal */}
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-[0.15em] text-white">
+            <DiaTextReveal
+              text={isAr ? "أهلاً بك" : "Welcome"}
+              textColor="#ffffff"
+              colors={["#ffffff", "#888888", "#ffffff", "#aaaaaa", "#ffffff"]}
+              duration={1.2}
+              delay={0.2}
+            />
+          </h1>
+
+          {/* Counter in Middle */}
+          <div className="font-mono text-white leading-none pt-1 flex items-baseline justify-center">
+            <span
+              ref={countElRef}
+              id="cl-count"
+              className="font-black tabular-nums tracking-tighter text-4xl sm:text-5xl md:text-6xl"
+            >
+              0
+            </span>
+            <span className="text-lg sm:text-xl opacity-50 font-bold ml-1">%</span>
+          </div>
+        </div>
+      </motion.div>
+    </>
   );
 }
