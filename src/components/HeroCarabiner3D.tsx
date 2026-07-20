@@ -618,13 +618,13 @@ export default function HeroCarabiner3D() {
       {/* Dot grid background — white dots on black */}
       <div
         className="absolute inset-0 opacity-[0.25]"
-        style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 0)', backgroundSize: '40px 40px' }}
+        style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 0)', backgroundSize: '40px 40px', backgroundPosition: 'center center' }}
       />
 
       {/* Topographic 2D Background Pattern */}
       <div 
         className="absolute inset-0 opacity-[0.12]" 
-        style={{ backgroundImage: 'repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 40px, #ffffff 40px, #ffffff 41px)' }} 
+        style={{ backgroundImage: 'repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 40px, #ffffff 40px, #ffffff 41px)', backgroundPosition: 'center center' }} 
       />
 
       {/* 3D Canvas (Delayed to give UI animations priority, then fades in) */}
