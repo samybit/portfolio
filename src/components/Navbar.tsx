@@ -20,28 +20,59 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
   const [activeHash, setActiveHash] = useState("");
   const navRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
+  const isVisibleRef = useRef(true);
+  const activeHashRef = useRef("");
   const lastScrollY = useRef(0);
+  const ticking = useRef(false);
 
   const isHome = pathname === `/${currentLocale}` || pathname === `/${currentLocale}/`;
 
   useEffect(() => {
-    const handleScroll = () => {
+    const updateScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // If mobile menu is open, don't hide the navbar
+      // If mobile menu is open, keep navbar visible
       if (isOpen) {
+        if (!isVisibleRef.current) {
+          isVisibleRef.current = true;
+          setIsVisible(true);
+        }
         lastScrollY.current = currentScrollY;
+        ticking.current = false;
         return;
       }
 
-      // Hide if scrolling down and past 80px, show if scrolling up
-      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
-        setIsVisible(prev => prev ? false : prev);
-      } else if (currentScrollY < lastScrollY.current) {
-        setIsVisible(prev => !prev ? true : prev);
+      // Always show navbar at top of page (<= 80px)
+      if (currentScrollY <= 80) {
+        if (!isVisibleRef.current) {
+          isVisibleRef.current = true;
+          setIsVisible(true);
+        }
+      }
+      // Hide if scrolling down past 80px
+      else if (currentScrollY > lastScrollY.current) {
+        if (isVisibleRef.current) {
+          isVisibleRef.current = false;
+          setIsVisible(false);
+        }
+      }
+      // Show if scrolling up
+      else if (currentScrollY < lastScrollY.current) {
+        if (!isVisibleRef.current) {
+          isVisibleRef.current = true;
+          setIsVisible(true);
+        }
       }
 
       lastScrollY.current = currentScrollY;
+      ticking.current = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking.current) {
+        ticking.current = true;
+        requestAnimationFrame(updateScroll);
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -50,7 +81,10 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
 
   useEffect(() => {
     if (!isHome) {
-      requestAnimationFrame(() => setActiveHash(""));
+      if (activeHashRef.current !== "") {
+        activeHashRef.current = "";
+        requestAnimationFrame(() => setActiveHash(""));
+      }
       return;
     }
 
@@ -61,12 +95,19 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
             const id = entry.target.id;
 
             if (id === 'hero') {
-              setActiveHash("");
+              if (activeHashRef.current !== "") {
+                activeHashRef.current = "";
+                setActiveHash("");
+              }
               window.history.replaceState(null, '', `/${currentLocale}`);
             }
             else if (id === 'projects' || id === 'contact') {
-              setActiveHash(`#${id}`);
-              window.history.replaceState(null, '', `/${currentLocale}#${id}`);
+              const newHash = `#${id}`;
+              if (activeHashRef.current !== newHash) {
+                activeHashRef.current = newHash;
+                setActiveHash(newHash);
+              }
+              window.history.replaceState(null, '', `/${currentLocale}${newHash}`);
             }
           }
         });
