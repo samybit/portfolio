@@ -147,9 +147,6 @@ export const AnimatedThemeToggler = React.forwardRef<HTMLButtonElement, Animated
   // Expose the ref to parent (e.g. Tooltip Trigger)
   const setRefs = useCallback(
     (node: HTMLButtonElement) => {
-      // @ts-expect-error — React.RefCallback must write to `.current`, but the
-      // MutableRefObject typing makes `.current` readonly at the call-site.
-      // This assignment is safe: we own the ref and no consumer mutates it externally.
       localRef.current = node
       if (typeof ref === 'function') {
         ref(node)
