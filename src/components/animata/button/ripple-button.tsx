@@ -9,20 +9,26 @@ interface RippleButtonProps {
   as?: "button" | typeof Link | "a";
   href?: string;
   className?: string;
-  onClick?: (e: any) => void;
+  // React.MouseEvent<HTMLElement> is a supertype of all element-specific mouse event
+  // handlers (HTMLAnchorElement, HTMLButtonElement), keeping this contravariant-safe.
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   onHoverChange?: (hovered: boolean) => void;
 }
 
 export default function RippleButton({ children, as: Component = "button", href, className, onClick, onHoverChange, ...props }: RippleButtonProps) {
-  const buttonRef = useRef<any>(null);
+  const buttonRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
   const rippleRef = useRef<HTMLSpanElement>(null);
   const rectRef = useRef<DOMRect | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  const setHoverState = (hovered: boolean) => {
-    setIsHovered(hovered);
-    if (onHoverChange) onHoverChange(hovered);
-  };
+  // Stable callback so createRipple/removeRipple memoization is not invalidated each render.
+  const setHoverState = useCallback(
+    (hovered: boolean) => {
+      setIsHovered(hovered);
+      if (onHoverChange) onHoverChange(hovered);
+    },
+    [onHoverChange],
+  );
 
   const getCoordinates = (event: React.MouseEvent | React.TouchEvent) => {
     if ("touches" in event && event.touches.length > 0) {
@@ -36,11 +42,11 @@ export default function RippleButton({ children, as: Component = "button", href,
       if (isHovered || !buttonRef.current || !rippleRef.current) return;
       setHoverState(true);
 
-      const button = buttonRef.current;
+      const el = buttonRef.current;
       const ripple = rippleRef.current;
-      const rect = button.getBoundingClientRect();
+      const rect = el.getBoundingClientRect();
       rectRef.current = rect;
-      const size = Math.max(rect.width, rect.height) * 2.5; // Made slightly larger to ensure full coverage
+      const size = Math.max(rect.width, rect.height) * 2.5;
       const { clientX, clientY } = getCoordinates(event);
       const x = clientX - rect.left - size / 2;
       const y = clientY - rect.top - size / 2;
@@ -53,19 +59,21 @@ export default function RippleButton({ children, as: Component = "button", href,
       ripple.classList.remove("ripple-leave");
       ripple.classList.add("ripple-enter");
     },
-    [isHovered, onHoverChange],
+    // setHoverState is now stable (wrapped in useCallback) so safe to include.
+    [isHovered, setHoverState],
   );
 
   const removeRipple = useCallback((event: React.MouseEvent | React.TouchEvent) => {
     if (!buttonRef.current || !rippleRef.current) return;
     setHoverState(false);
 
-    const button = buttonRef.current;
+    const el = buttonRef.current;
     const ripple = rippleRef.current;
-    const rect = rectRef.current || button.getBoundingClientRect();
+    const rect = rectRef.current || el.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height) * 2.5;
-    
-    let clientX, clientY;
+
+    let clientX: number;
+    let clientY: number;
     if ("changedTouches" in event && event.changedTouches.length > 0) {
       clientX = event.changedTouches[0].clientX;
       clientY = event.changedTouches[0].clientY;
@@ -94,13 +102,12 @@ export default function RippleButton({ children, as: Component = "button", href,
     };
 
     ripple.addEventListener("animationend", handleAnimationEnd);
-  }, [onHoverChange]);
+  }, [setHoverState]);
 
   const handleMouseMove = useCallback(
     (event: React.MouseEvent | React.TouchEvent) => {
       if (!buttonRef.current || !rippleRef.current || !isHovered) return;
 
-      const button = buttonRef.current;
       const ripple = rippleRef.current;
       const rect = rectRef.current;
       if (!rect) return;
@@ -117,7 +124,7 @@ export default function RippleButton({ children, as: Component = "button", href,
 
   return (
     <Component
-      ref={buttonRef}
+      ref={buttonRef as React.RefObject<HTMLButtonElement & HTMLAnchorElement>}
       href={href as string}
       className={`relative overflow-hidden ${className || ""}`}
       onMouseEnter={createRipple}

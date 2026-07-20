@@ -444,7 +444,7 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
     return () => observer.disconnect();
   }, []);
 
-  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const handleScroll = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     const contactSection = document.getElementById("contact");
     if (contactSection) {

@@ -7,7 +7,44 @@ import CTA from "@/components/CTA";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
-export default function HomeClientWrapper({ dict }: { dict: any }) {
+/** Mirrors the Project shape defined in Projects.tsx */
+interface Project {
+  id?: string;
+  title: string;
+  description: string;
+  tech: string[];
+  github: string;
+  demo: string;
+  images: string[];
+}
+
+/** Mirrors ProjectsDictionary defined in Projects.tsx */
+interface ProjectsDictionary {
+  title: string;
+  swipeHint: string;
+  viewAll: string;
+  hide: string;
+  repo: string;
+  demo: string;
+  offline: string;
+  viewGithub: string;
+  prev: string;
+  next: string;
+  pageFormat: string;
+  newTab: string;
+  list: Project[];
+}
+
+/** Full dictionary shape passed down from the locale layout */
+interface HomeDict {
+  hero: Record<string, string>;
+  projects: ProjectsDictionary;
+  cta: Record<string, string>;
+  contact: Record<string, string>;
+  footer: Record<string, string>;
+}
+
+export default function HomeClientWrapper({ dict }: { dict: HomeDict }) {
   return (
     <main className="min-h-screen overflow-x-hidden flex flex-col">
       <Hero dict={dict.hero} />
