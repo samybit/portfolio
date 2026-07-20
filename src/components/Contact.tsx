@@ -1,12 +1,30 @@
 "use client";
 
-import { Send, Check, ArrowUpRight, Loader2, Linkedin, Github } from "lucide-react";
+import { Check, ArrowUpRight, Loader2, Linkedin, Github } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { sendEmail } from "@/actions/send-email";
 import { playPowerUp, prewarmAudio } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+
+function StealthGliderIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <polygon points="22 2 2 10 9.5 13 13 14.5 22 2" fill="currentColor" fillOpacity="0.2" />
+      <polyline points="22 2 9.5 13 8 21 13 14.5" />
+      <line x1="22" y1="2" x2="13" y2="14.5" />
+    </svg>
+  );
+}
 
 export default function Contact({ dict }: { dict: Record<string, string> }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -318,7 +336,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                     {status === "loading" ? (
                       <Loader2 className="w-5 h-5 md:w-6 md:h-6 shrink-0 animate-spin" />
                     ) : (
-                      <Send className={`w-5 h-5 md:w-6 md:h-6 shrink-0 ${isFlying ? 'animate-fly-out' : 'rtl:-scale-x-100 rtl:translate-x-full -translate-x-full rtl:group-hover:-translate-x-0 group-hover:translate-x-0 rtl:group-active:-translate-x-0 group-active:translate-x-0 transition-transform duration-300 ease-out'}`} />
+                      <StealthGliderIcon className={`w-5 h-5 md:w-6 md:h-6 shrink-0 ${isFlying ? 'animate-fly-out' : 'rtl:-scale-x-100 rtl:translate-x-full -translate-x-full rtl:group-hover:-translate-x-0 group-hover:translate-x-0 rtl:group-active:-translate-x-0 group-active:translate-x-0 transition-transform duration-300 ease-out'}`} />
                     )}
                   </div>
                 </button>
