@@ -1,7 +1,7 @@
 "use client";
 
 import { playClack, playTick, playLanguageToggle, prewarmAudio } from "@/utils/audio";
-import { Origami, ArrowUpRight, ArrowUpLeft, Menu, X, Palette, Globe, Layers, List, Github } from "lucide-react";
+import { Origami, ArrowUpRight, ArrowUpLeft, Menu, X, Palette, Globe, Layers, List, Github, Linkedin } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -670,7 +670,50 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
               onClick: (e) => handleHashClick(e, '#contact')
             },
           ]}
-          displaySocials={false}
+          displaySocials={true}
+          socialTitle={dict?.networks || "Verified Networks"}
+          socialItems={[
+            {
+              label: <Github size={18} />,
+              link: "https://github.com/samybit"
+            },
+            {
+              label: <Linkedin size={18} fill="currentColor" />,
+              link: "https://linkedin.com/in/samybit/"
+            },
+            {
+              label: (
+                <svg viewBox="0 0 16 16" fill="currentColor" className="w-5 h-5">
+                  <path d="M4.654 3c.461 0 .887.035 1.278.14.39.07.711.216.996.391s.497.426.641.747c.14.32.216.711.216 1.137 0 .496-.106.922-.356 1.242-.215.32-.566.606-.997.817.606.176 1.067.496 1.348.922s.461.957.461 1.563c0 .496-.105.922-.285 1.278a2.3 2.3 0 0 1-.782.887c-.32.215-.711.39-1.137.496a5.3 5.3 0 0 1-1.278.176L0 12.803V3zm-.285 3.978c.39 0 .71-.105.957-.285.246-.18.355-.497.355-.887 0-.216-.035-.426-.105-.567a1 1 0 0 0-.32-.355 1.8 1.8 0 0 0-.461-.176c-.176-.035-.356-.035-.567-.035H2.17v2.31c0-.005 2.2-.005 2.2-.005zm.105 4.193c.215 0 .426-.035.606-.07.176-.035.356-.106.496-.216s.25-.215.356-.39c.07-.176.14-.391.14-.641 0-.496-.14-.852-.426-1.102-.285-.215-.676-.32-1.137-.32H2.17v2.734h2.305zm6.858-.035q.428.427 1.278.426c.39 0 .746-.106 1.032-.286q.426-.32.53-.64h1.74c-.286.851-.712 1.457-1.278 1.848-.566.355-1.243.566-2.06.566a4.1 4.1 0 0 1-1.527-.285 2.8 2.8 0 0 1-1.137-.782 2.85 2.85 0 0 1-.712-1.172c-.175-.461-.25-.957-.25-1.528 0-.531.07-1.032.25-1.493.18-.46.426-.852.747-1.207.32-.32.711-.606 1.137-.782a4 4 0 0 1 1.493-.285c.606 0 1.137.105 1.598.355.46.25.817.532 1.102.958.285.39.496.851.641 1.348.07.496.105.996.07 1.563h-5.15c0 .58.21 1.11.496 1.396m2.24-3.732c-.25-.25-.642-.391-1.103-.391-.32 0-.566.07-.781.176s-.356.25-.496.39a.96.96 0 0 0-.25.497c-.036.175-.07.32-.07.46h3.196c-.07-.526-.25-.882-.497-1.132zm-3.127-3.728h3.978v.957h-3.978z" />
+                </svg>
+              ),
+              link: "https://behance.net/samy-barsoum"
+            },
+            {
+              label: (
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="0.6" strokeLinejoin="round" overflow="visible" className="w-5 h-5">
+                  <path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539 0-4.51 1.649-5.31 4.366-1.22-1.834-2.148-4.036-2.687-5.892H7.828v7.112c-.002 1.406-1.141 2.546-2.547 2.548-1.405-.002-2.543-1.143-2.545-2.548V3.492H0v7.112c0 2.914 2.37 5.303 5.281 5.303 2.913 0 5.283-2.389 5.283-5.303v-1.19c.529 1.107 1.182 2.229 1.974 3.221l-1.673 7.873h2.797l1.213-5.71c1.063.679 2.285 1.109 3.686 1.109 3 0 5.439-2.452 5.439-5.45 0-3-2.439-5.439-5.439-5.439z" />
+                </svg>
+              ),
+              link: "https://www.upwork.com/freelancers/~015e572ae8edee2be8"
+            },
+            {
+              label: (
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 scale-[1.1]">
+                  <path d="M12 2C12 7.5 16.5 12 22 12C16.5 12 12 16.5 12 22C12 16.5 7.5 12 2 12C7.5 12 12 7.5 12 2Z" />
+                </svg>
+              ),
+              link: "https://contra.com/samy_barsoum_akavah3d"
+            },
+            {
+              label: (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="6" className="w-5 h-5 scale-90">
+                  <circle cx="12" cy="12" r="7" />
+                </svg>
+              ),
+              link: "https://mostaql.com/u/Samy_01"
+            }
+          ]}
         />
       </div>
     </>
