@@ -11,6 +11,7 @@ import { CustomTooltip } from "@/components/ui/tooltip";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { StaggeredMenu } from "@/components/StaggeredMenu";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/animate-ui/components/radix/hover-card";
+import { cycleAboutImage } from "@/utils/aboutImage";
 
 export default function Navbar({ dict, currentLocale }: { dict: Record<string, string>, currentLocale: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,9 +36,11 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
       // 1. Prefetch Next.js route bundle and RSC payload
       router.prefetch(aboutUrl);
 
-      // 2. Pre-cache About page hero image into browser cache
-      const img = new window.Image();
-      img.src = "/about.jpg";
+      // 2. Pre-cache all 4 About page background images into browser cache
+      for (let i = 1; i <= 4; i++) {
+        const img = new window.Image();
+        img.src = `/about-${i}.jpg`;
+      }
     };
 
     let idleId: number | null = null;
@@ -247,6 +250,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
   };
 
   const handleAboutClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    cycleAboutImage();
     if (pathname === `/${currentLocale}/about`) {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });

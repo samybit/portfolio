@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Terminal, User, Mail, Link as LinkIcon, Copy, ClipboardPaste } from "lucide-react";
 import { playThud } from "@/utils/audio";
+import { cycleAboutImage } from "@/utils/aboutImage";
 
 // --- CUSTOM GITHUB ICON ---
 const GithubIcon = ({ size = 16 }: { size?: number }) => (
@@ -147,6 +148,7 @@ export default function CustomContextMenu({ dict }: { dict?: Record<string, stri
 
       <Link
         href={`/${currentLocale}/about`}
+        onClick={() => cycleAboutImage()}
         className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
       >
         <User size={16} /> {dict?.specs || "Specs"}

@@ -11,12 +11,25 @@ import Footer from "@/components/Footer";
 import { AnimatedTimeline } from "@/components/animata/progress/animatedtimeline";
 import { MorphingText } from "@/components/ui/morphing-text";
 import RippleButton from "@/components/lightswind/ripple-button";
+import { getAboutImageIndex } from "@/utils/aboutImage";
 
 export default function AboutClient({ dict, footerDict, tabTitles, locale }: { dict: Record<string, string>, footerDict: Record<string, string>, tabTitles: Record<string, string>, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isSummaryCardHovered, setIsSummaryCardHovered] = useState(false);
   const [isSkillsCardHovered, setIsSkillsCardHovered] = useState(false);
   const isNeumorphic = useNeumorphicTheme();
+  const [imageIndex, setImageIndex] = useState(() => getAboutImageIndex());
+
+  useEffect(() => {
+    const handleCycle = () => {
+      setImageIndex(getAboutImageIndex());
+    };
+
+    window.addEventListener("cycle-about-image", handleCycle);
+    return () => {
+      window.removeEventListener("cycle-about-image", handleCycle);
+    };
+  }, []);
 
   // --- FRAMER MOTION CLIP-PATH SETUP ---
   const { scrollY } = useScroll();
@@ -70,7 +83,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   const imageY = useTransform(scrollY, (y) => {
     // Parallax can start from 0 for a continuous smooth background scroll
     const progress = getProgress(y, 0, parallaxEndScroll.get());
-    return progress * -150;
+    return progress * -40;
   });
 
   const showToast = (message: string) => {
@@ -310,11 +323,11 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
         >
           <motion.img
             style={{ y: imageY }}
-            src="/about.jpg"
+            src={`/about-${imageIndex}.jpg`}
             alt=""
-            className="absolute -top-[25%] h-[150%] left-0 w-full object-cover object-center"
+            className="absolute -top-[5%] h-[110%] left-0 w-full object-cover object-center"
           />
-          <div className="absolute -top-[25%] h-[150%] left-0 bg-black/30 w-full"></div>
+          <div className="absolute -top-[5%] h-[110%] left-0 bg-black/30 w-full"></div>
         </motion.div>
 
         {/* Layer 2: Content */}
