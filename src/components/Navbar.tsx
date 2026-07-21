@@ -16,8 +16,17 @@ import { cycleAboutImage } from "@/utils/aboutImage";
 export default function Navbar({ dict, currentLocale }: { dict: Record<string, string>, currentLocale: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [logoError, setLogoError] = useState(false); // Add this line
+  const [emailCopied, setEmailCopied] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+
+  const handleCopyEmail = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText("samyb.samir@gmail.com");
+    setEmailCopied(true);
+    setTimeout(() => setEmailCopied(false), 2000);
+  };
   const [activeHash, setActiveHash] = useState("");
   const navRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
@@ -409,17 +418,92 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
               </HoverCardContent>
             </HoverCard>
 
-            <Link
-              href={`/${currentLocale}#contact`}
-              onClick={(e) => handleHashClick(e, '#contact')}
-              className={`relative group overflow-hidden isolate px-5 flex items-center text-lg font-bold uppercase border-2 transition-all ms-1 ${isHome && activeHash === '#contact'
-                ? 'bg-white text-black border-black'
-                : 'bg-black text-white border-black hover:bg-white hover:text-black active:bg-white active:text-black'
-                }`}
-            >
-              <Smoke inverse={true} isActive={isHome && activeHash === '#contact'} />
-              <span className="relative z-10">{dict?.contact || "Contact"}</span>
-            </Link>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <Link
+                  href={`/${currentLocale}#contact`}
+                  onClick={(e) => handleHashClick(e, '#contact')}
+                  className={`relative group overflow-hidden isolate px-5 flex items-center text-lg font-bold uppercase border-2 transition-all ms-1 ${isHome && activeHash === '#contact'
+                    ? 'bg-white text-black border-black'
+                    : 'bg-black text-white border-black hover:bg-white hover:text-black active:bg-white active:text-black'
+                    }`}
+                >
+                  <Smoke inverse={true} isActive={isHome && activeHash === '#contact'} />
+                  <span className="relative z-10">{dict?.contact || "Contact"}</span>
+                </Link>
+              </HoverCardTrigger>
+              <HoverCardContent className="bg-white text-black border-4 border-black brutalist-shadow-static rounded-none w-72 p-4 z-[99999] flex flex-col gap-3 text-start pointer-events-auto">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500">
+                    {currentLocale === 'ar' ? "البريد الإلكتروني:" : "Email Address:"}
+                  </span>
+                  <span className="text-xs font-mono font-black break-all select-all border border-zinc-200 p-2 bg-zinc-50">
+                    samyb.samir [at] gmail [dot] com
+                  </span>
+                </div>
+                <button
+                  onClick={handleCopyEmail}
+                  className="w-full flex items-center justify-center gap-3 py-2.5 border-2 border-black bg-black text-white hover:bg-white hover:text-black font-mono font-black text-xs uppercase tracking-wider transition-colors"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="square"
+                    strokeLinejoin="miter"
+                    className="shrink-0 overflow-visible"
+                    aria-hidden="true"
+                  >
+                    {/* Back pocket */}
+                    <rect x="3" y="8" width="18" height="12" fill="white" stroke="currentColor" strokeWidth="2" />
+                    
+                    {/* Popout Letter Card (slides up when copied) */}
+                    <g
+                      style={{
+                        transform: emailCopied ? 'translateY(-6px)' : 'translateY(4px)',
+                        opacity: emailCopied ? 1 : 0,
+                        transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease'
+                      }}
+                    >
+                      <rect x="6" y="2" width="12" height="10" fill="white" stroke="currentColor" strokeWidth="2" />
+                      <path d="M10 7 l2 2 l3 -3" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
+                    </g>
+
+                    {/* Front panel overlay to cover the letter card in down state */}
+                    <path d="M3 8l9 6 9-6 v12 H3 z" fill="white" stroke="currentColor" strokeWidth="2" />
+                    <path d="M3 20l9-6 9 6" stroke="currentColor" strokeWidth="2" />
+
+                    {/* Flap (Morphs smoothly between open and closed) */}
+                    <path
+                      d={emailCopied ? "M3 8l9-6 9 6" : "M3 8l9 6 9-6"}
+                      fill="white"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      className="transition-all duration-300 ease-in-out"
+                    />
+                  </svg>
+                  <span className="relative grid grid-cols-1 grid-rows-1">
+                    <span
+                      className={`col-start-1 row-start-1 transition-opacity duration-300 ${
+                        emailCopied ? "opacity-100" : "opacity-0 pointer-events-none"
+                      }`}
+                    >
+                      {currentLocale === 'ar' ? "تم النسخ" : "Copied!"}
+                    </span>
+                    <span
+                      className={`col-start-1 row-start-1 transition-opacity duration-300 ${
+                        emailCopied ? "opacity-0 pointer-events-none" : "opacity-100"
+                      }`}
+                    >
+                      {currentLocale === 'ar' ? "نسخ البريد" : "Copy Email"}
+                    </span>
+                  </span>
+                </button>
+              </HoverCardContent>
+            </HoverCard>
           </div>
 
           {/* Mobile Toggle Button */}
