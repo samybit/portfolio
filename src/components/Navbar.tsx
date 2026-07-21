@@ -25,6 +25,43 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
 
+  // ── Background Idle Prefetch for /about Route & Assets ──
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const aboutUrl = `/${currentLocale}/about`;
+
+    const triggerPrefetch = () => {
+      // 1. Prefetch Next.js route bundle and RSC payload
+      router.prefetch(aboutUrl);
+
+      // 2. Pre-cache About page hero image into browser cache
+      const img = new window.Image();
+      img.src = "/about.jpg";
+    };
+
+    let idleId: number | null = null;
+    let timerId: ReturnType<typeof setTimeout> | null = null;
+
+    // Wait 2200ms after mount (ensuring initial hero animations & preloader finish)
+    timerId = setTimeout(() => {
+      if ("requestIdleCallback" in window) {
+        idleId = (window as unknown as { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(() => {
+          triggerPrefetch();
+        });
+      } else {
+        triggerPrefetch();
+      }
+    }, 2200);
+
+    return () => {
+      if (timerId) clearTimeout(timerId);
+      if (idleId && "cancelIdleCallback" in window) {
+        (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(idleId);
+      }
+    };
+  }, [currentLocale, router]);
+
   const isHome = pathname === `/${currentLocale}` || pathname === `/${currentLocale}/`;
 
   useEffect(() => {
@@ -287,6 +324,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
 
             <Link
               href={`/${currentLocale}/about`}
+              prefetch={true}
               onClick={handleAboutClick}
               className={`relative group overflow-hidden isolate text-lg font-bold uppercase px-4 flex items-center border-2 transition-all ${pathname === `/${currentLocale}/about`
                 ? 'bg-black text-white border-black'
