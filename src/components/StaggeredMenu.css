@@ -104,7 +104,9 @@
 .sm-panel-itemWrap {
   position: relative;
   overflow: hidden;
-  line-height: 1;
+  line-height: 1.35;
+  padding-top: 0.15em;
+  padding-bottom: 0.15em;
 }
 
 .sm-icon-line {
@@ -271,7 +273,7 @@
   font-weight: 600;
   font-size: 2rem;
   cursor: pointer;
-  line-height: 1;
+  line-height: 1.35;
   letter-spacing: -2px;
   text-transform: uppercase;
   transition:
@@ -279,6 +281,8 @@
     color 0.25s;
   display: inline-block;
   text-decoration: none;
+  padding-top: 0.15em;
+  padding-bottom: 0.15em;
   padding-right: 1.8em;
 }
 
@@ -325,7 +329,8 @@
   counter-increment: smItem;
   content: "// " counter(smItem, decimal-leading-zero);
   position: absolute;
-  top: 0.2em;
+  top: 50%;
+  transform: translateY(-50%);
   right: 0;
   font-size: 0.35em;
   font-family: var(--font-mono);
