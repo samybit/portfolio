@@ -615,6 +615,14 @@ html.invert-theme body.is-scrolling-drag #brutalist-scrollbar-thumb {
   border-color: #ffffff !important;
 }
 
+/* Touchscreen device safety: hide custom floating scrollbar track on coarse pointers (smartphones/tablets) */
+@media (pointer: coarse) {
+  #brutalist-scrollbar-track {
+    display: none !important;
+    pointer-events: none !important;
+  }
+}
+
 /* Ember theme (Warm Charcoal + Fiery Orange accent) */
 html.theme-color #brutalist-scrollbar-thumb {
   background-color: #1A1716 !important;

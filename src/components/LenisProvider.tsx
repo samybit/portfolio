@@ -104,6 +104,9 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     };
 
     const handlePointerDown = (e: PointerEvent) => {
+      // Ignore touch events to prevent touch scroll conflicts on mobile/tablet touchscreens
+      if (e.pointerType === "touch") return;
+
       e.preventDefault();
       isDraggingRef.current = true;
       showThumb();
@@ -169,15 +172,15 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
 
       {/*
         ── Brutalist Floating Scrollbar ──────────────────────────────────────
-        Fixed interactive overlay, right edge. Pointer events enabled on the
-        track container so the user can grab & drag or click anywhere to scroll.
+        Fixed interactive overlay on desktop (md+ / fine pointers).
+        Hidden on mobile touch screens to prevent touch scroll conflicts.
         z-[9998] keeps it below the CurveLoader (z-[9999]) and Navbar (z-50).
       */}
       <div
         ref={trackRef}
         id="brutalist-scrollbar-track"
         aria-hidden="true"
-        className="fixed top-0 right-0 h-screen z-[9998] pointer-events-auto cursor-grab active:cursor-grabbing select-none"
+        className="hidden md:block fixed top-0 right-0 h-screen z-[9998] pointer-events-auto cursor-grab active:cursor-grabbing select-none"
         style={{ width: "16px" }}
       >
         {/* Thumb */}
