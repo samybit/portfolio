@@ -8,6 +8,7 @@ import SplitText from "@/components/animata/text/split-text";
 import GlitchText from "@/components/GlitchText";
 import HeroCarabiner3D from "@/components/HeroCarabiner3D";
 import EgyptMapTooltip from "@/components/EgyptMapTooltip";
+import { CoolMode } from "@/components/ui/cool-mode";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 import { useEmberTheme } from "@/hooks/useEmberTheme";
 
@@ -126,27 +127,29 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
         }`}>
 
           {/* CV Button */}
-          <a
-            href="/Samy_Barsoum_CV.pdf"
-            download="Samy_Barsoum_CV.pdf"
-            onMouseEnter={() => setIsCvHovered(true)}
-            onMouseLeave={() => setIsCvHovered(false)}
-            onTouchStart={() => setIsCvHovered(true)}
-            onTouchEnd={() => setIsCvHovered(false)}
-            className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
-              isNeumorphic
-                ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                : "bg-white text-black border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:bg-black hover:text-white hover:border-white hover:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
-            }`}
-          >
-            <Highlighter show={isCvHovered} action="highlight" color={getHighlightColor(true)}>
-              {dict?.getCV || "Get CV"}
-            </Highlighter>
-            <div className="relative w-6 h-6 md:w-10 md:h-10 overflow-hidden">
-              <Download className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-0 scale-50 translate-y-4" : ""}`} />
-              <FileText className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 -translate-y-4"}`} />
-            </div>
-          </a>
+          <CoolMode options={{ particle: "brutalist-cv" }}>
+            <a
+              href="/Samy_Barsoum_CV.pdf"
+              download="Samy_Barsoum_CV.pdf"
+              onMouseEnter={() => setIsCvHovered(true)}
+              onMouseLeave={() => setIsCvHovered(false)}
+              onTouchStart={() => setIsCvHovered(true)}
+              onTouchEnd={() => setIsCvHovered(false)}
+              className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
+                isNeumorphic
+                  ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                  : "bg-white text-black border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:bg-black hover:text-white hover:border-white hover:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+              }`}
+            >
+              <Highlighter show={isCvHovered} action="highlight" color={getHighlightColor(true)}>
+                {dict?.getCV || "Get CV"}
+              </Highlighter>
+              <div className="relative w-6 h-6 md:w-10 md:h-10 overflow-hidden">
+                <Download className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-0 scale-50 translate-y-4" : ""}`} />
+                <FileText className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 -translate-y-4"}`} />
+              </div>
+            </a>
+          </CoolMode>
 
           {/* Work Button */}
           <Link
