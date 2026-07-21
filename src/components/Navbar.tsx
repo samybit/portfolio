@@ -445,6 +445,61 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                   onClick={handleCopyEmail}
                   className="group w-full flex items-center justify-center gap-3 py-2.5 border-2 border-black bg-black text-white hover:bg-white hover:text-black font-mono font-black text-xs uppercase tracking-wider transition-colors"
                 >
+                  <style>{`
+                    @keyframes crumble-and-vanish {
+                      0% {
+                        transform: translateY(4px) scale(1) skewX(0deg) skewY(0deg);
+                        transform-origin: 12px 7px;
+                        clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+                        opacity: 0;
+                      }
+                      30% {
+                        /* Shoots up cleanly as an intact paper */
+                        transform: translateY(-16px) scale(1) skewX(0deg) skewY(0deg);
+                        transform-origin: 12px 7px;
+                        clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+                        opacity: 1;
+                      }
+                      50% {
+                        /* Hold flat and intact at peak */
+                        transform: translateY(-16px) scale(1) skewX(0deg) skewY(0deg);
+                        transform-origin: 12px 7px;
+                        clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+                        opacity: 1;
+                      }
+                      62% {
+                        /* Squeezes rapidly in-place while edges cave in jaggedly */
+                        transform: translateY(-16px) scaleX(0.7) scaleY(0.85) skewX(15deg) skewY(-5deg);
+                        transform-origin: 12px 7px;
+                        clip-path: polygon(5% 8%, 52% 3%, 92% 6%, 96% 48%, 94% 92%, 48% 95%, 6% 91%, 3% 52%);
+                        opacity: 1;
+                      }
+                      74% {
+                        /* Crumples smaller into irregular paper lump */
+                        transform: translateY(-16px) scaleX(0.4) scaleY(0.55) skewX(-20deg) skewY(15deg);
+                        transform-origin: 12px 7px;
+                        clip-path: polygon(15% 20%, 48% 10%, 82% 16%, 88% 52%, 80% 82%, 52% 88%, 18% 80%, 12% 46%);
+                        opacity: 0.9;
+                      }
+                      86% {
+                        /* Squeezed to a tiny paper ball in-place */
+                        transform: translateY(-16px) scaleX(0.2) scaleY(0.2) skewX(25deg) skewY(-20deg);
+                        transform-origin: 12px 7px;
+                        clip-path: polygon(30% 32%, 50% 25%, 72% 28%, 76% 52%, 68% 70%, 48% 75%, 28% 68%, 24% 48%);
+                        opacity: 0.5;
+                      }
+                      95%, 100% {
+                        /* Vanishes completely */
+                        transform: translateY(-16px) scale(0);
+                        transform-origin: 12px 7px;
+                        clip-path: polygon(45% 46%, 50% 42%, 55% 46%, 56% 50%, 54% 54%, 50% 56%, 46% 54%, 45% 50%);
+                        opacity: 0;
+                      }
+                    }
+                    .letter-crumble {
+                      animation: crumble-and-vanish 1.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+                    }
+                  `}</style>
                   <svg
                     viewBox="0 0 24 24"
                     width="16"
@@ -480,11 +535,12 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                     
                     {/* 3. Popout Letter Card (slides up when copied, in front of back pocket and back flap) */}
                     <g
-                      style={{
-                        transform: emailCopied ? 'translateY(-6px)' : 'translateY(4px)',
-                        opacity: emailCopied ? 1 : 0,
-                        transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease'
-                      }}
+                      className={emailCopied ? "letter-crumble" : ""}
+                      style={!emailCopied ? {
+                        transform: 'translateY(4px)',
+                        opacity: 0,
+                        transition: 'transform 0.3s ease, opacity 0.3s ease'
+                      } : undefined}
                     >
                       <rect
                         x="6"
@@ -496,6 +552,28 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                         className="fill-black group-hover:fill-white transition-colors duration-300"
                       />
                       <path d="M10 7 l2 2 l3 -3" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
+                      
+                      {/* Crease/Wrinkle Lines (appear with delay when crumbling starts) */}
+                      <path
+                        d="M8 3 l2 2 l-1 2 l3 -1 l-1 2"
+                        stroke="currentColor"
+                        strokeWidth="1.2"
+                        className="transition-opacity duration-300"
+                        style={{
+                          opacity: emailCopied ? 0.75 : 0,
+                          transition: emailCopied ? 'opacity 0.2s ease 0.5s' : 'opacity 0.1s ease'
+                        }}
+                      />
+                      <path
+                        d="M16 4 l-3 2 l1 2 l-2 -1 l1 2"
+                        stroke="currentColor"
+                        strokeWidth="1.2"
+                        className="transition-opacity duration-300"
+                        style={{
+                          opacity: emailCopied ? 0.75 : 0,
+                          transition: emailCopied ? 'opacity 0.2s ease 0.5s' : 'opacity 0.1s ease'
+                        }}
+                      />
                     </g>
 
                     {/* 4. Front panel overlay to cover the letter card in down state */}
