@@ -258,14 +258,29 @@ const ProjectCard = ({
                 : "border-2 border-white text-white hover:bg-white hover:text-black"
             }`}
           >
-            <span className="relative flex h-2.5 w-2.5 me-1" aria-hidden="true">
-              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                isNeumorphic ? "bg-black" : "bg-current"
-              }`}></span>
-              <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
-                isNeumorphic ? "bg-black" : "bg-current"
-              }`}></span>
-            </span>
+            {/* Perfectly Concentric Vector Live Indicator */}
+            <svg
+              className="w-3.5 h-3.5 me-1 shrink-0 overflow-visible"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+            >
+              <circle
+                cx="8"
+                cy="8"
+                r="7"
+                className={`animate-ping opacity-60 ${
+                  isNeumorphic ? "fill-black" : "fill-current"
+                }`}
+                style={{ transformOrigin: "8px 8px" }}
+              />
+              <circle
+                cx="8"
+                cy="8"
+                r="3.5"
+                className={isNeumorphic ? "fill-black" : "fill-current"}
+              />
+            </svg>
             <span className="sr-only">Active live demo indicator: </span>
             {dict?.demo || "Live Demo"} <ExternalLink size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" />
             <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
