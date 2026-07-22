@@ -17,7 +17,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
   const dragOffsetRef = useRef(0);
 
   useEffect(() => {
-    // ── Suppress Three.js internal deprecation/unmount warnings ────────────
+    // ── Suppress Three.js internal engine logs and preloader warnings ────────
     if (typeof window !== "undefined") {
       const originalLog = console.log;
       const originalWarn = console.warn;
@@ -25,7 +25,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       console.log = (...args: unknown[]) => {
         if (
           typeof args[0] === "string" &&
-          args[0].includes("THREE.WebGLRenderer: Context Lost")
+          (args[0].startsWith("THREE.") || args[0].includes("WebGLRenderer"))
         ) {
           return;
         }
@@ -35,8 +35,9 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       console.warn = (...args: unknown[]) => {
         if (
           typeof args[0] === "string" &&
-          (args[0].includes("THREE.WebGLRenderer: Context Lost") ||
-           args[0].includes("THREE.Clock"))
+          (args[0].startsWith("THREE.") ||
+           args[0].includes("WebGLRenderer") ||
+           args[0].includes("preloaded using link preload"))
         ) {
           return;
         }
