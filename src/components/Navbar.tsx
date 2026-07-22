@@ -441,7 +441,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                     samyb.samir [at] gmail [dot] com
                   </span>
                 </div>
-                <div className="w-full flex items-center justify-between gap-3 pt-1">
+                <div className="group/copycard w-full flex items-center justify-between gap-3 pt-1">
                   {/* Left Side: Standalone Envelope Icon & Animation */}
                   <div
                     onClick={handleCopyEmail}
@@ -456,7 +456,14 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                           clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
                           opacity: 0;
                         }
-                        30% {
+                        18% {
+                          /* Emerges out of open envelope */
+                          transform: translateY(-2px) scale(1) skewX(0deg) skewY(0deg);
+                          transform-origin: 12px 7px;
+                          clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+                          opacity: 1;
+                        }
+                        36% {
                           /* Shoots up cleanly into open space above */
                           transform: translateY(-16px) scale(1) skewX(0deg) skewY(0deg);
                           transform-origin: 12px 7px;
@@ -512,17 +519,17 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                       strokeWidth="2"
                       strokeLinecap="square"
                       strokeLinejoin="miter"
-                      className="shrink-0 overflow-visible transition-transform duration-200 group-hover/env:scale-110"
+                      className="shrink-0 overflow-visible"
                       aria-hidden="true"
                     >
-                      {/* 1. Back Flap (Open state, folded behind the letter card) */}
+                      {/* 1. Back Flap (Open state, folds open when hovered or copied) */}
                       <path
                         d="M3 8l9-6 9 6"
                         stroke="black"
                         strokeWidth="2"
                         fill="white"
                         className={`transition-all duration-300 ease-in-out ${
-                          emailCopied ? "opacity-100" : "opacity-0"
+                          emailCopied ? "opacity-100" : "opacity-0 group-hover/copycard:opacity-100"
                         }`}
                       />
 
@@ -537,13 +544,12 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                         fill="white"
                       />
                       
-                      {/* 3. Popout Letter Card (slides up when copied) */}
+                      {/* 3. Popout Letter Card (emerges, shoots up & crumples ONLY on copy press) */}
                       <g
                         className={emailCopied ? "letter-crumble" : ""}
                         style={!emailCopied ? {
                           transform: 'translateY(4px)',
                           opacity: 0,
-                          transition: 'transform 0.3s ease, opacity 0.3s ease'
                         } : undefined}
                       >
                         <rect
@@ -557,7 +563,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                         />
                         <path d="M10 7 l2 2 l3 -3" stroke="black" strokeWidth="2" strokeLinecap="square" />
                         
-                        {/* Crease/Wrinkle Lines */}
+                        {/* Crease/Wrinkle Lines (visible during crumble phase) */}
                         <path
                           d="M8 3 l2 2 l-1 2 l3 -1 l-1 2"
                           stroke="black"
@@ -589,14 +595,14 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                       />
                       <path d="M3 20l9-6 9 6" stroke="black" strokeWidth="2" />
 
-                      {/* 5. Front Flap (Closed state, folded in front of everything) */}
+                      {/* 5. Front Flap (Closed state, folds down when hovered or copied) */}
                       <path
                         d="M3 8l9 6 9-6"
                         stroke="black"
                         strokeWidth="2"
                         fill="white"
                         className={`transition-all duration-300 ease-in-out ${
-                          emailCopied ? "opacity-0" : "opacity-100"
+                          emailCopied ? "opacity-0" : "opacity-100 group-hover/copycard:opacity-0"
                         }`}
                       />
                     </svg>
