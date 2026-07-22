@@ -2,7 +2,6 @@
 
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
-import "./ripple-button.css";
 
 interface RippleButtonProps {
   children: React.ReactNode;

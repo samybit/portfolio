@@ -7,7 +7,6 @@ import { CustomTooltip } from "@/components/ui/tooltip";
 
 import { cn } from "@/lib/utils";
 
-import "./speed-dial.css";
 
 type Direction = "up" | "down" | "left" | "right";
 
