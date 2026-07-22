@@ -17,6 +17,33 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
   const dragOffsetRef = useRef(0);
 
   useEffect(() => {
+    // ── Suppress Three.js internal deprecation/unmount warnings ────────────
+    if (typeof window !== "undefined") {
+      const originalLog = console.log;
+      const originalWarn = console.warn;
+
+      console.log = (...args: unknown[]) => {
+        if (
+          typeof args[0] === "string" &&
+          args[0].includes("THREE.WebGLRenderer: Context Lost")
+        ) {
+          return;
+        }
+        originalLog(...args);
+      };
+
+      console.warn = (...args: unknown[]) => {
+        if (
+          typeof args[0] === "string" &&
+          (args[0].includes("THREE.WebGLRenderer: Context Lost") ||
+           args[0].includes("THREE.Clock"))
+        ) {
+          return;
+        }
+        originalWarn(...args);
+      };
+    }
+
     // ── 1. Initialise Lenis ─────────────────────────────────────────────────
     const lenis = new Lenis({
       // Smooth wheel scrolling; do not override native touch inertia

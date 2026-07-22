@@ -1,9 +1,32 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { MeshDistortMaterial } from "@react-three/drei";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import * as THREE from "three";
+
+function WebGLCleanup() {
+  const { gl } = useThree();
+
+  useEffect(() => {
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+    };
+
+    const domElement = gl?.domElement;
+    if (domElement) {
+      domElement.addEventListener("webglcontextlost", handleContextLost, false);
+    }
+
+    return () => {
+      if (domElement) {
+        domElement.removeEventListener("webglcontextlost", handleContextLost);
+      }
+    };
+  }, [gl]);
+
+  return null;
+}
 
 function FooterLandscape({ isEmber, isNeumorphic }: { isEmber: boolean; isNeumorphic: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -51,6 +74,7 @@ export default function Footer3D({ isInView, isEmber, isNeumorphic }: { isInView
       camera={{ position: [0, 0, 8], fov: 50 }}
       dpr={[1, 1.5]}
     >
+      <WebGLCleanup />
       <ambientLight intensity={2} />
       <directionalLight position={[10, 10, 5]} intensity={3} />
       <FooterLandscape isEmber={isEmber} isNeumorphic={isNeumorphic} />

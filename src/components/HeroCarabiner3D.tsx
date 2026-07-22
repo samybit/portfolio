@@ -595,6 +595,29 @@ function CarabinerModel() {
   );
 }
 
+function WebGLCleanup() {
+  const { gl } = useThree();
+
+  useEffect(() => {
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+    };
+
+    const domElement = gl?.domElement;
+    if (domElement) {
+      domElement.addEventListener("webglcontextlost", handleContextLost, false);
+    }
+
+    return () => {
+      if (domElement) {
+        domElement.removeEventListener("webglcontextlost", handleContextLost);
+      }
+    };
+  }, [gl]);
+
+  return null;
+}
+
 // --- MAIN WRAPPER COMPONENT ---
 export default function HeroCarabiner3D() {
   const [mounted, setMounted] = useState(false);
@@ -631,6 +654,7 @@ export default function HeroCarabiner3D() {
       <div className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${shouldRenderWebGL && !isAnimationsDisabled ? 'opacity-100' : 'opacity-0'}`}>
         {shouldRenderWebGL && !isAnimationsDisabled && (
           <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ antialias: true }} dpr={[1, 1.5]}>
+            <WebGLCleanup />
             {/* Lighting to highlight the metal without blowing it out */}
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 5]} intensity={1.2} />
