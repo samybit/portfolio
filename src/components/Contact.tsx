@@ -145,11 +145,14 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
 
         {/* --- LEFT COLUMN: TEXT & SOCIALS --- */}
         <div className="flex-1 w-full relative z-30">
-          <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-8 relative z-30">
-            <DecryptText text={dict?.lets || "Let's"} />
-            <br />
-            <DecryptText text={dict?.talk || "Talk"} />
-          </h2>
+          <div className="flex items-center gap-4 sm:gap-6 mb-8 relative z-30">
+            <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">
+              <DecryptText text={dict?.lets || "Let's"} />
+              <br />
+              <DecryptText text={dict?.talk || "Talk"} />
+            </h2>
+            <div className="h-1.5 md:h-2 bg-current w-12 sm:w-20 md:w-28 shrink-0 self-center" />
+          </div>
           <p className="text-2xl font-bold max-w-md text-zinc-400 uppercase mb-8 lg:mb-16 relative z-30">
             {dict?.description || "Drop a message to discuss a project, a full-time role, or just to say hi."}
           </p>

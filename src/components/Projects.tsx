@@ -487,11 +487,14 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
       {/* --- HEADER --- */}
       <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between mb-8 lg:mb-12 gap-6 flex-none">
         <div className="w-full md:w-auto">
-          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">
-            <DecryptText text={titleFirst} />
-            <br />
-            {titleRest && <DecryptText text={titleRest} />}
-          </h2>
+          <div className="flex items-center gap-4 sm:gap-6">
+            <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">
+              <DecryptText text={titleFirst} />
+              <br />
+              {titleRest && <DecryptText text={titleRest} />}
+            </h2>
+            <div className="h-1.5 md:h-2 bg-current w-12 sm:w-20 md:w-28 shrink-0 self-center" />
+          </div>
 
           <p className={`hidden lg:block text-lg font-bold uppercase mt-4 tracking-widest ${
             isNeumorphic ? "text-zinc-500" : "text-zinc-400"

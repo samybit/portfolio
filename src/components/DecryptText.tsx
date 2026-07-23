@@ -71,8 +71,35 @@ export default function DecryptText({
   const displayText = isAnimationsDisabled ? text : scrambledText;
 
   return (
-    <span ref={ref} className={className}>
-      {displayText}
+    <span ref={ref} className={`inline-flex items-baseline ${className}`}>
+      {text.split("").map((realChar, index) => {
+        if (realChar === " ") {
+          return (
+            <span key={index} className="inline-block whitespace-pre">
+              {" "}
+            </span>
+          );
+        }
+
+        const currentChar = displayText[index] || realChar;
+
+        return (
+          <span
+            key={index}
+            className="relative inline-block align-baseline select-none"
+          >
+            {/* Ghost invisible element: locks the exact layout width of this character */}
+            <span className="invisible opacity-0 pointer-events-none" aria-hidden="true">
+              {realChar}
+            </span>
+
+            {/* Scrambled element: absolute top-0 left-0 cannot affect container layout width */}
+            <span className="absolute top-0 left-0 whitespace-nowrap">
+              {currentChar}
+            </span>
+          </span>
+        );
+      })}
     </span>
   );
 }
