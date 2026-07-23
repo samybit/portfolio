@@ -38,13 +38,51 @@ export interface DottedMapProps<
   }) => React.ReactNode
 }
 
-// Global cache for precomputed map points to prevent CPU-intensive recalculations
-const mapCache = new Map<string, ReturnType<typeof createMap>>();
+interface MapDataCache {
+  mapData: ReturnType<typeof createMap>;
+  xStep: number;
+  yToRowIndex: Map<number, number>;
+}
+
+// Global cache for precomputed map points and row data to prevent CPU-intensive recalculations
+const mapCache = new Map<string, MapDataCache>();
+
+function getOrComputeMapData(width: number, height: number, mapSamples: number): MapDataCache {
+  const key = `${width}-${height}-${mapSamples}`;
+  if (!mapCache.has(key)) {
+    const mapData = createMap({ width, height, mapSamples });
+    const sorted = [...mapData.points].sort((a, b) => a.y - b.y || a.x - b.x);
+    const rowMap = new Map<number, number>();
+    let step = 0;
+    let prevY = Number.NaN;
+    let prevXInRow = Number.NaN;
+
+    for (const p of sorted) {
+      if (p.y !== prevY) {
+        prevY = p.y;
+        prevXInRow = Number.NaN;
+        if (!rowMap.has(p.y)) rowMap.set(p.y, rowMap.size);
+      }
+      if (!Number.isNaN(prevXInRow)) {
+        const delta = p.x - prevXInRow;
+        if (delta > 0) step = step === 0 ? delta : Math.min(step, delta);
+      }
+      prevXInRow = p.x;
+    }
+
+    mapCache.set(key, {
+      mapData,
+      xStep: step || 1,
+      yToRowIndex: rowMap,
+    });
+  }
+  return mapCache.get(key)!;
+}
 
 export function DottedMap<M extends Marker = Marker>({
   width = 150,
   height = 75,
-  mapSamples = 5000,
+  mapSamples = 2500,
   markers = [],
   dotColor = "currentColor",
   markerColor = "#FF6900",
@@ -56,42 +94,13 @@ export function DottedMap<M extends Marker = Marker>({
   style,
   ...svgProps
 }: DottedMapProps<M>) {
-  const { points, addMarkers } = React.useMemo(() => {
-    const key = `${width}-${height}-${mapSamples}`;
-    if (!mapCache.has(key)) {
-      mapCache.set(key, createMap({ width, height, mapSamples }));
-    }
-    return mapCache.get(key)!;
-  }, [width, height, mapSamples])
+  const { mapData, xStep, yToRowIndex } = React.useMemo(() => {
+    return getOrComputeMapData(width, height, mapSamples);
+  }, [width, height, mapSamples]);
 
   const processedMarkers = React.useMemo(() => {
-    return addMarkers(markers)
-  }, [addMarkers, markers])
-
-  // Compute stagger helpers in a single, simple pass
-  const { xStep, yToRowIndex } = React.useMemo(() => {
-    const sorted = [...points].sort((a, b) => a.y - b.y || a.x - b.x)
-    const rowMap = new Map<number, number>()
-    let step = 0
-    let prevY = Number.NaN
-    let prevXInRow = Number.NaN
-
-    for (const p of sorted) {
-      if (p.y !== prevY) {
-        // new row
-        prevY = p.y
-        prevXInRow = Number.NaN
-        if (!rowMap.has(p.y)) rowMap.set(p.y, rowMap.size)
-      }
-      if (!Number.isNaN(prevXInRow)) {
-        const delta = p.x - prevXInRow
-        if (delta > 0) step = step === 0 ? delta : Math.min(step, delta)
-      }
-      prevXInRow = p.x
-    }
-
-    return { xStep: step || 1, yToRowIndex: rowMap }
-  }, [points])
+    return mapData.addMarkers(markers);
+  }, [mapData, markers]);
 
   return (
     <svg
@@ -100,7 +109,7 @@ export function DottedMap<M extends Marker = Marker>({
       style={{ width: "100%", height: "100%", ...style }}
       {...svgProps}
     >
-      {points.map((point, index) => {
+      {mapData.points.map((point, index) => {
         const rowIndex = yToRowIndex.get(point.y) ?? 0
         const offsetX = stagger && rowIndex % 2 === 1 ? xStep / 2 : 0
         return (

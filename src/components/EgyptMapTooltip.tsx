@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
@@ -34,12 +34,30 @@ export default function EgyptMapTooltip({ children }: { children: React.ReactNod
   const hideTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isNeumorphic = useNeumorphicTheme();
 
+  // Pre-warm / pre-mount map in background during idle time after page load
+  useEffect(() => {
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      const handle = (window as unknown as { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(() => {
+        setHasBeenShown(true);
+      });
+      return () => {
+        if ("cancelIdleCallback" in window) {
+          (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(handle);
+        }
+      };
+    } else {
+      const timer = setTimeout(() => {
+        setHasBeenShown(true);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   const show = useCallback(() => {
     if (hideTimeout.current) {
       clearTimeout(hideTimeout.current);
       hideTimeout.current = null;
     }
-    // Latch hasBeenShown on the first show — keeps the DottedMap mounted thereafter
     setHasBeenShown(true);
     setVisible(true);
   }, []);
