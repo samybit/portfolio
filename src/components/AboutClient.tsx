@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal, Compass } from "lucide-react";
+import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal, Compass, PenTool, Cpu, Cloud, FlaskConical, GitBranch } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
@@ -13,6 +13,50 @@ import { MorphingText } from "@/components/ui/morphing-text";
 import RippleButton from "@/components/lightswind/ripple-button";
 import { getAboutImageIndex } from "@/utils/aboutImage";
 import { playPowerUp, prewarmAudio } from "@/utils/audio";
+
+function CategoryIconMorph({
+  icon: DefaultIcon,
+  hoverIcon: HoverIcon,
+  isHovered,
+  isNeumorphic
+}: {
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  hoverIcon: React.ComponentType<{ size?: number; className?: string }>;
+  isHovered: boolean;
+  isNeumorphic: boolean;
+}) {
+  return (
+    <div
+      className={`relative w-11 h-11 flex items-center justify-center p-2 border-2 transition-all duration-300 ${
+        isNeumorphic
+          ? "border-transparent text-black rounded-xl shadow-[inset_2px_2px_5px_rgba(163,177,198,0.5),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
+          : "border-white text-white bg-white/10"
+      }`}
+    >
+      {/* Default Icon */}
+      <div
+        className={`transition-all duration-300 transform ${
+          isHovered
+            ? "opacity-0 scale-50 rotate-90 pointer-events-none absolute"
+            : "opacity-100 scale-100 rotate-0"
+        }`}
+      >
+        <DefaultIcon size={26} />
+      </div>
+
+      {/* Hover Morph Icon */}
+      <div
+        className={`transition-all duration-300 transform ${
+          isHovered
+            ? "opacity-100 scale-100 rotate-0"
+            : "opacity-0 scale-50 -rotate-90 pointer-events-none absolute"
+        }`}
+      >
+        <HoverIcon size={26} />
+      </div>
+    </div>
+  );
+}
 
 interface SkillItemMeta {
   name: string;
@@ -111,6 +155,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isSummaryCardHovered, setIsSummaryCardHovered] = useState(false);
   const [isSkillsCardHovered, setIsSkillsCardHovered] = useState(false);
+  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
   const isNeumorphic = useNeumorphicTheme();
   const [imageIndex, setImageIndex] = useState(() => getAboutImageIndex());
 
@@ -204,7 +249,8 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   const stack = [
     {
       category: "Frontend & Design",
-      icon: <LayoutTemplate size={28} />,
+      icon: LayoutTemplate,
+      hoverIcon: PenTool,
       items: [
         { name: "Next.js", role: "SSR & App Router", color: "#ffffff", iconUrl: "https://cdn.simpleicons.org/nextdotjs/white" },
         { name: "React", role: "UI Components", color: "#61dafb", iconUrl: "https://cdn.simpleicons.org/react/61dafb" },
@@ -215,7 +261,8 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
     },
     {
       category: "Backend & Database",
-      icon: <Database size={28} />,
+      icon: Database,
+      hoverIcon: Cpu,
       items: [
         { name: "NestJS", role: "Modular Backend API", color: "#e0234e", iconUrl: "https://cdn.simpleicons.org/nestjs/e0234e" },
         { name: "Node.js", role: "Async JS Runtime", color: "#5fa04e", iconUrl: "https://cdn.simpleicons.org/nodedotjs/5fa04e" },
@@ -228,7 +275,8 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
     },
     {
       category: "Architecture & DevOps",
-      icon: <Server size={28} />,
+      icon: Server,
+      hoverIcon: Cloud,
       items: [
         { name: "Docker", role: "Containerization", color: "#2496ed", iconUrl: "https://cdn.simpleicons.org/docker/2496ed" },
         { name: "Kubernetes", role: "Cluster Orchestration", color: "#326ce5", iconUrl: "https://cdn.simpleicons.org/kubernetes/326ce5" },
@@ -239,7 +287,8 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
     },
     {
       category: "API & Testing",
-      icon: <Wrench size={28} />,
+      icon: Wrench,
+      hoverIcon: FlaskConical,
       items: [
         { name: "Postman", role: "API Testing Suite", color: "#ff6c37", iconUrl: "https://cdn.simpleicons.org/postman/ff6c37" },
         { name: "Swagger", role: "OpenAPI Documentation", color: "#85ea2d", iconUrl: "https://cdn.simpleicons.org/swagger/85ea2d" },
@@ -252,7 +301,8 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
     },
     {
       category: "Agile & Collab",
-      icon: <Workflow size={28} />,
+      icon: Workflow,
+      hoverIcon: GitBranch,
       items: [
         { name: "Git", role: "Version Control", color: "#f05032", iconUrl: "https://cdn.simpleicons.org/git/f05032" },
         { name: "Jira", role: "Agile Tracking", color: "#0052cc", iconUrl: "https://cdn.simpleicons.org/jira/0052cc" },
@@ -555,8 +605,14 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
               {stack.map((category, index) => (
                 <div
                   key={index}
-                  onMouseEnter={() => setIsSkillsCardHovered(true)}
-                  onMouseLeave={() => setIsSkillsCardHovered(false)}
+                  onMouseEnter={() => {
+                    setIsSkillsCardHovered(true);
+                    setHoveredCardIndex(index);
+                  }}
+                  onMouseLeave={() => {
+                    setIsSkillsCardHovered(false);
+                    setHoveredCardIndex(null);
+                  }}
                   className={`group transition-all duration-300 flex flex-col justify-between p-4 ${
                     isNeumorphic
                       ? "brutalist-container hover:!bg-[#d1d9e6] hover:!text-[#1e293b] hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
@@ -567,13 +623,12 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                     <div className={`flex flex-col items-center text-center gap-2 border-b-2 pb-3 mb-3.5 transition-all duration-300 ${
                       isNeumorphic ? "border-[#a3b1c6]" : "border-white/30"
                     }`}>
-                      <div className={`p-2 border-2 transition-all duration-300 ${
-                        isNeumorphic
-                          ? "border-transparent text-black rounded-xl shadow-[inset_2px_2px_5px_rgba(163,177,198,0.5),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
-                          : "border-white text-white bg-white/10"
-                      }`}>
-                        {category.icon}
-                      </div>
+                      <CategoryIconMorph
+                        icon={category.icon}
+                        hoverIcon={category.hoverIcon}
+                        isHovered={hoveredCardIndex === index}
+                        isNeumorphic={isNeumorphic}
+                      />
                       <h3 className="text-xs sm:text-sm font-black uppercase tracking-tight leading-tight min-h-[2.2rem] flex items-center justify-center text-center">
                         {category.category}
                       </h3>
