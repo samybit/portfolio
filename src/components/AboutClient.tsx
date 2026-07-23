@@ -253,6 +253,8 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
       icon: Database,
       hoverIcon: Cpu,
       items: [
+        { name: "Java", role: "Enterprise OOP", color: "#f8981d", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
+        { name: "Spring", role: "Backend Framework", color: "#6db33f", iconUrl: "https://cdn.simpleicons.org/spring/6db33f" },
         { name: "NestJS", role: "Modular Backend API", color: "#e0234e", iconUrl: "https://cdn.simpleicons.org/nestjs/e0234e" },
         { name: "Node.js", role: "Async JS Runtime", color: "#5fa04e", iconUrl: "https://cdn.simpleicons.org/nodedotjs/5fa04e" },
         { name: "Express.js", role: "REST Middleware", color: "#a0a0a0", iconUrl: "https://cdn.simpleicons.org/express/white" },
