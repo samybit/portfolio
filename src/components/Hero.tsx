@@ -170,7 +170,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             }`}
           >
             <Highlighter show={isWorkHovered} action="highlight" color={getHighlightColor(false)}>
-              {dict?.work || "Work"}
+              {dict?.work || "Projects"}
             </Highlighter>
             <ArrowDownRight className={`w-6 h-6 md:w-10 md:h-10 transition-transform rtl:-scale-x-100 ${isWorkHovered ? "[animation:arrow-snap-sequence_0.8s_ease-in-out_forwards]" : ""}`} />
           </Link>
