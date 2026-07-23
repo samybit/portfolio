@@ -449,14 +449,40 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
     <section id="projects" className={`snap-start relative w-full min-h-[100svh] flex flex-col pt-24 pb-8 px-6 md:px-12 lg:px-24 border-b-8 border-black overflow-hidden ${
       isNeumorphic ? "bg-white text-black" : "bg-black text-white"
     }`}>
-      {/* --- BRUTALIST CSS GRID BACKGROUND --- */}
-      <div 
-        className={`absolute inset-0 pointer-events-none z-0 ${isNeumorphic ? "opacity-15" : "opacity-20"}`}
-        style={{
-          backgroundImage: 'linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)',
-          backgroundSize: '4rem 4rem'
-        }}
-      />
+      {/* --- CREATIVE ENGINEERING BLUEPRINT & DOT MATRIX BACKGROUND --- */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden select-none" aria-hidden="true">
+        {/* Subtle Top Ambient Lighting */}
+        <div 
+          className={`absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] pointer-events-none ${
+            isNeumorphic ? "opacity-30" : "opacity-20"
+          }`}
+          style={{
+            background: isNeumorphic 
+              ? "radial-gradient(ellipse at 50% 0%, rgba(0,0,0,0.06), transparent 70%)"
+              : "radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.12), transparent 70%)"
+          }}
+        />
+
+        {/* Micro Technical Dot Matrix */}
+        <div 
+          className={`absolute inset-0 ${isNeumorphic ? "opacity-20" : "opacity-25"}`}
+          style={{
+            backgroundImage: isNeumorphic
+              ? "radial-gradient(rgba(0, 0, 0, 0.4) 1.2px, transparent 1.2px)"
+              : "radial-gradient(rgba(255, 255, 255, 0.35) 1.2px, transparent 1.2px)",
+            backgroundSize: "32px 32px"
+          }}
+        />
+
+        {/* Subtle Crosshair Plus Markers */}
+        <div 
+          className={`absolute inset-0 ${isNeumorphic ? "opacity-15" : "opacity-20"}`}
+          style={{
+            backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'><path d='M48 42v12M42 48h12' stroke='${isNeumorphic ? '%23000000' : '%23ffffff'}' stroke-width='1.5' stroke-linecap='square'/></svg>")`,
+            backgroundSize: "96px 96px"
+          }}
+        />
+      </div>
 
       {/* --- HEADER --- */}
       <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between mb-8 lg:mb-12 gap-6 flex-none">
