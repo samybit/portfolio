@@ -12,7 +12,6 @@ import { AnimatedTimeline } from "@/components/animata/progress/animatedtimeline
 import { MorphingText } from "@/components/ui/morphing-text";
 import RippleButton from "@/components/lightswind/ripple-button";
 import { getAboutImageIndex } from "@/utils/aboutImage";
-import { playPowerUp, prewarmAudio } from "@/utils/audio";
 
 function CategoryIconMorph({
   icon: DefaultIcon,
@@ -69,28 +68,18 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
   const [isHovered, setIsHovered] = useState(false);
   const [imgError, setImgError] = useState(false);
 
-  const handleInteract = () => {
-    prewarmAudio();
-    playPowerUp();
-    setIsHovered((prev) => !prev);
-  };
-
   return (
     <div
-      onMouseEnter={() => {
-        prewarmAudio();
-        setIsHovered(true);
-      }}
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={handleInteract}
-      className={`group/keycap relative w-full h-9 rounded-none cursor-pointer transition-all duration-200 select-none overflow-hidden ${
+      className={`group/keycap relative w-full h-9 rounded-none cursor-default transition-all duration-200 select-none overflow-hidden ${
         isNeumorphic
           ? isHovered
-            ? "bg-[#d1d9e6] text-[#1e293b] shadow-[inset_2px_2px_4px_#b8bec5,inset_-2px_-2px_4px_#ffffff]"
-            : "bg-[#e0e5ec] text-black shadow-[2.5px_2.5px_5px_#b8bec5,-2.5px_-2.5px_5px_#ffffff]"
+            ? "bg-[#d1d9e6] text-[#1e293b]"
+            : "bg-[#e0e5ec] text-black"
           : isHovered
-            ? "border-2 border-white bg-white text-black translate-x-[1.5px] translate-y-[1.5px] shadow-none"
-            : "border-2 border-white/80 bg-zinc-950 text-white shadow-[2.5px_2.5px_0px_rgba(255,255,255,0.25)] hover:shadow-none"
+            ? "border-2 border-white bg-white text-black"
+            : "border-2 border-white/80 bg-zinc-950 text-white"
       }`}
       title={`${item.name} // ${item.role}`}
     >
