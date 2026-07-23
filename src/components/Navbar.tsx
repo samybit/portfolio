@@ -380,40 +380,15 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                   </span>
                 </a>
               </HoverCardTrigger>
-              <HoverCardContent className="bg-white text-black border-4 border-black brutalist-shadow-static rounded-none w-80 p-4 z-[99999] flex flex-col gap-3 text-start pointer-events-auto">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 border-2 border-black rounded-none overflow-hidden shrink-0 relative bg-zinc-100">
-                    <Image
-                      src="/github_profile.jpg"
-                      alt="Samy Barsoum"
-                      fill
-                      sizes="40px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="font-extrabold text-sm leading-tight text-black">Samy Barsoum</span>
-                    <span className="text-xs text-zinc-500 font-medium">@samybit</span>
-                  </div>
-                </div>
-
-
-                <div className="flex flex-col gap-1.5 border-t-2 border-black pt-2.5 mt-1">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500">
-                    {currentLocale === 'ar' ? "ملف غيت هاب الشخصي:" : "GitHub Profile:"}
-                  </span>
-                  <span className="text-xs font-bold leading-tight text-black">
-                    {currentLocale === 'ar' ? "المستودعات والمساهمات" : "Repositories & Contributions"}
-                  </span>
-                  <div className="relative w-full aspect-video border-2 border-black rounded-none bg-zinc-100 overflow-hidden mt-1">
-                    <Image
-                      src="/github_preview.png"
-                      alt="GitHub Profile Preview"
-                      fill
-                      sizes="(max-width: 320px) 100vw, 320px"
-                      className="object-cover"
-                    />
-                  </div>
+              <HoverCardContent className="bg-white text-black border-4 border-black brutalist-shadow-static rounded-none w-80 p-2 z-[99999] pointer-events-auto">
+                <div className="relative w-full aspect-video border-2 border-black rounded-none bg-zinc-100 overflow-hidden">
+                  <Image
+                    src="/github_preview.png"
+                    alt="GitHub Profile Preview"
+                    fill
+                    sizes="(max-width: 320px) 100vw, 320px"
+                    className="object-cover"
+                  />
                 </div>
               </HoverCardContent>
             </HoverCard>
