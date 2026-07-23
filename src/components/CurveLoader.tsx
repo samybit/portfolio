@@ -82,8 +82,17 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
           will-change: transform;
         }
 
-        .cl-3d-cube.exiting {
-          animation: cl-cube-exit 0.8s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+        .cl-3d-scene.exiting {
+          animation: cl-scene-exit 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .cl-3d-scene.exiting .cl-face {
+          animation: cl-face-exit 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .cl-3d-scene.exiting .cl-3d-ring {
+          border-color: rgba(255, 255, 255, 0.85);
+          box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
         }
 
         .cl-face {
@@ -119,7 +128,8 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
           border-radius: 50%;
           transform-style: preserve-3d;
           animation: cl-ring-spin 4s linear infinite;
-          will-change: transform;
+          will-change: transform, border-color, box-shadow;
+          transition: border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
         @keyframes cl-cube-spin {
@@ -143,14 +153,38 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
           }
         }
 
-        @keyframes cl-cube-exit {
+        @keyframes cl-scene-exit {
           0% {
-            transform: scale(1) translateZ(0);
+            transform: translateY(0) scale(1);
+            opacity: 1;
+          }
+          40% {
+            /* Lifts upward smoothly into top space, subtle expansion pulse */
+            transform: translateY(-16px) scale(1.08);
             opacity: 1;
           }
           100% {
-            transform: scale(2.8) translateZ(350px);
+            /* Implodes smoothly into quantum point away from text */
+            transform: translateY(-26px) scale(0);
             opacity: 0;
+          }
+        }
+
+        @keyframes cl-face-exit {
+          0% {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.08);
+          }
+          40% {
+            border-color: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.4);
+          }
+          100% {
+            border-color: rgba(255, 255, 255, 0);
+            background: rgba(255, 255, 255, 0);
+            box-shadow: inset 0 0 0px rgba(255, 255, 255, 0);
           }
         }
       `}</style>
@@ -165,9 +199,9 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
       >
         <div className="flex flex-col items-center justify-center space-y-4 md:space-y-5">
           {/* Pure CSS 3D Wireframe Monolith Scene */}
-          <div className="cl-3d-scene relative flex items-center justify-center py-2">
+          <div className={`cl-3d-scene relative flex items-center justify-center py-2${isExiting ? " exiting" : ""}`}>
             <div className="cl-3d-ring pointer-events-none" />
-            <div className={`cl-3d-cube${isExiting ? " exiting" : ""}`}>
+            <div className="cl-3d-cube">
               <div className="cl-face cl-face-front">+</div>
               <div className="cl-face cl-face-back">+</div>
               <div className="cl-face cl-face-right">+</div>
