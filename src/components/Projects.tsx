@@ -451,7 +451,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
     }`}>
       {/* --- BRUTALIST CSS GRID BACKGROUND --- */}
       <div 
-        className={`absolute inset-0 pointer-events-none z-0 ${isNeumorphic ? "opacity-[0.06]" : "opacity-[0.04]"}`}
+        className={`absolute inset-0 pointer-events-none z-0 ${isNeumorphic ? "opacity-15" : "opacity-20"}`}
         style={{
           backgroundImage: 'linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)',
           backgroundSize: '4rem 4rem'
