@@ -62,7 +62,6 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
 
   const isAr = locale === 'ar';
   const nameText = isAr ? "سامي برسوم" : "SAMY BARSOUM";
-  const statusText = isExiting ? (isAr ? "جاهز" : "READY") : (isAr ? "جاري التحميل" : "LOADING");
 
   return (
     <>
@@ -215,7 +214,14 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
           <div className="font-mono text-xs sm:text-sm tracking-[0.25em] text-white/60 uppercase flex items-center justify-center gap-2">
             <span>{nameText}</span>
             <span className="text-white/30">•</span>
-            <span className="text-white/80 font-bold">{statusText}</span>
+            <span className="relative inline-grid grid-cols-1 grid-rows-1 text-start font-bold text-white/80">
+              <span className={`col-start-1 row-start-1 transition-opacity duration-300 ${isExiting ? "opacity-0" : "opacity-100"}`}>
+                {isAr ? "جاري التحميل" : "LOADING"}
+              </span>
+              <span className={`col-start-1 row-start-1 transition-opacity duration-300 ${isExiting ? "opacity-100" : "opacity-0"}`}>
+                {isAr ? "جاهز" : "READY"}
+              </span>
+            </span>
           </div>
 
           {/* Central Welcome Text with DiaTextReveal */}
