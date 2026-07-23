@@ -33,6 +33,16 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
   const [values, setValues] = useState({ name: "", email: "", message: "" });
   const isNeumorphic = useNeumorphicTheme();
   const [isFlying, setIsFlying] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  const handleCopyEmail = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    navigator.clipboard.writeText("samyb.samir@gmail.com");
+    prewarmAudio();
+    playPowerUp();
+    setEmailCopied(true);
+    setTimeout(() => setEmailCopied(false), 2000);
+  };
 
   const emailErrorText = dict?.errEmail || "VALID EMAIL IS REQUIRED.";
   const messageErrorText = dict?.errMessage || "MESSAGE IS REQUIRED.";
@@ -140,9 +150,194 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
             <br />
             <DecryptText text={dict?.talk || "Talk"} />
           </h2>
-          <p className="text-2xl font-bold max-w-md text-zinc-400 uppercase mb-16 relative z-30">
+          <p className="text-2xl font-bold max-w-md text-zinc-400 uppercase mb-8 lg:mb-16 relative z-30">
             {dict?.description || "Drop a message to discuss a project, a full-time role, or just to say hi."}
           </p>
+
+          {/* Direct Email Copy Card (Mobile Only) */}
+          <div className="lg:hidden bg-white text-black border-4 border-black p-4 mb-10 w-full max-w-md shadow-[6px_6px_0px_rgba(255,255,255,0.2)] flex flex-col gap-3 relative z-30 select-none">
+            <div className="flex flex-col gap-1">
+              <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500 select-none">
+                {dict?.emailAddress || "Direct Email:"}
+              </span>
+              <span className="text-xs font-mono font-black break-all select-all border border-zinc-200 p-2 bg-zinc-50">
+                samyb.samir [at] gmail [dot] com
+              </span>
+            </div>
+            <div className="group/copycard w-full flex items-center justify-between gap-3 pt-1">
+              {/* Left Side: Standalone Envelope Icon & Animation */}
+              <div
+                onClick={handleCopyEmail}
+                className="cursor-pointer shrink-0 flex items-center justify-center p-2 active:scale-95 transition-transform touch-manipulation group/env"
+                title="Copy Email"
+              >
+                <style>{`
+                  @keyframes contact-crumble-and-vanish {
+                    0% {
+                      transform: translateY(4px) scale(1) skewX(0deg) skewY(0deg);
+                      transform-origin: 12px 7px;
+                      clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+                      opacity: 0;
+                    }
+                    18% {
+                      transform: translateY(-2px) scale(1) skewX(0deg) skewY(0deg);
+                      transform-origin: 12px 7px;
+                      clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+                      opacity: 1;
+                    }
+                    36% {
+                      transform: translateY(-16px) scale(1) skewX(0deg) skewY(0deg);
+                      transform-origin: 12px 7px;
+                      clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+                      opacity: 1;
+                    }
+                    50% {
+                      transform: translateY(-16px) scale(1) skewX(0deg) skewY(0deg);
+                      transform-origin: 12px 7px;
+                      clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+                      opacity: 1;
+                    }
+                    62% {
+                      transform: translateY(-16px) scaleX(0.7) scaleY(0.85) skewX(15deg) skewY(-5deg);
+                      transform-origin: 12px 7px;
+                      clip-path: polygon(5% 8%, 52% 3%, 92% 6%, 96% 48%, 94% 92%, 48% 95%, 6% 91%, 3% 52%);
+                      opacity: 1;
+                    }
+                    74% {
+                      transform: translateY(-16px) scaleX(0.4) scaleY(0.55) skewX(-20deg) skewY(15deg);
+                      transform-origin: 12px 7px;
+                      clip-path: polygon(15% 20%, 48% 10%, 82% 16%, 88% 52%, 80% 82%, 52% 88%, 18% 80%, 12% 46%);
+                      opacity: 0.9;
+                    }
+                    86% {
+                      transform: translateY(-16px) scaleX(0.2) scaleY(0.2) skewX(25deg) skewY(-20deg);
+                      transform-origin: 12px 7px;
+                      clip-path: polygon(30% 32%, 50% 25%, 72% 28%, 76% 52%, 68% 70%, 48% 75%, 28% 68%, 24% 48%);
+                      opacity: 0.5;
+                    }
+                    95%, 100% {
+                      transform: translateY(-16px) scale(0);
+                      transform-origin: 12px 7px;
+                      clip-path: polygon(45% 46%, 50% 42%, 55% 46%, 56% 50%, 54% 54%, 50% 56%, 46% 54%, 45% 50%);
+                      opacity: 0;
+                    }
+                  }
+                  .contact-letter-crumble {
+                    animation: contact-crumble-and-vanish 1.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+                  }
+                `}</style>
+                <svg
+                  viewBox="0 0 24 24"
+                  width="32"
+                  height="32"
+                  fill="none"
+                  stroke="black"
+                  strokeWidth="2"
+                  strokeLinecap="square"
+                  strokeLinejoin="miter"
+                  className="shrink-0 overflow-visible"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M3 8l9-6 9 6"
+                    stroke="black"
+                    strokeWidth="2"
+                    fill="white"
+                    className={`transition-all duration-300 ease-in-out ${
+                      emailCopied ? "opacity-100" : "opacity-0 group-hover/copycard:opacity-100"
+                    }`}
+                  />
+                  <rect
+                    x="3"
+                    y="8"
+                    width="18"
+                    height="12"
+                    stroke="black"
+                    strokeWidth="2"
+                    fill="white"
+                  />
+                  <g
+                    className={emailCopied ? "contact-letter-crumble" : ""}
+                    style={!emailCopied ? {
+                      transform: 'translateY(4px)',
+                      opacity: 0,
+                    } : undefined}
+                  >
+                    <rect
+                      x="6"
+                      y="2"
+                      width="12"
+                      height="10"
+                      stroke="black"
+                      strokeWidth="2"
+                      fill="white"
+                    />
+                    <path d="M10 7 l2 2 l3 -3" stroke="black" strokeWidth="2" strokeLinecap="square" />
+                    <path
+                      d="M8 3 l2 2 l-1 2 l3 -1 l-1 2"
+                      stroke="black"
+                      strokeWidth="1.2"
+                      className="transition-opacity duration-300"
+                      style={{
+                        opacity: emailCopied ? 0.75 : 0,
+                        transition: emailCopied ? 'opacity 0.2s ease 0.5s' : 'opacity 0.1s ease'
+                      }}
+                    />
+                    <path
+                      d="M16 4 l-3 2 l1 2 l-2 -1 l1 2"
+                      stroke="black"
+                      strokeWidth="1.2"
+                      className="transition-opacity duration-300"
+                      style={{
+                        opacity: emailCopied ? 0.75 : 0,
+                        transition: emailCopied ? 'opacity 0.2s ease 0.5s' : 'opacity 0.1s ease'
+                      }}
+                    />
+                  </g>
+                  <path
+                    d="M3 8l9 6 9-6 v12 H3 z"
+                    stroke="black"
+                    strokeWidth="2"
+                    fill="white"
+                  />
+                  <path d="M3 20l9-6 9 6" stroke="black" strokeWidth="2" />
+                  <path
+                    d="M3 8l9 6 9-6"
+                    stroke="black"
+                    strokeWidth="2"
+                    fill="white"
+                    className={`transition-all duration-300 ease-in-out ${
+                      emailCopied ? "opacity-0" : "opacity-100 group-hover/copycard:opacity-0"
+                    }`}
+                  />
+                </svg>
+              </div>
+
+              {/* Right Side: Copy Button */}
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                className="flex-1 py-3 px-3 border-2 border-black bg-black text-white hover:bg-white hover:text-black active:bg-white active:text-black font-mono font-black text-xs uppercase tracking-wider transition-colors text-center touch-manipulation select-none active:scale-95"
+              >
+                <span className="relative grid grid-cols-1 grid-rows-1 justify-items-center">
+                  <span
+                    className={`col-start-1 row-start-1 transition-opacity duration-300 ${
+                      emailCopied ? "opacity-100" : "opacity-0 pointer-events-none"
+                    }`}
+                  >
+                    {dict?.copied || "Copied!"}
+                  </span>
+                  <span
+                    className={`col-start-1 row-start-1 transition-opacity duration-300 ${
+                      emailCopied ? "opacity-0 pointer-events-none" : "opacity-100"
+                    }`}
+                  >
+                    {dict?.copyEmail || "Copy Email"}
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
 
           <div className="flex flex-col gap-4 relative z-30">
             <h3 className="text-xl font-black uppercase tracking-widest text-zinc-400 mb-2 border-b-4 border-white pb-2 inline-block self-start">
