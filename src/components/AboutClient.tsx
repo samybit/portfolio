@@ -12,6 +12,98 @@ import { AnimatedTimeline } from "@/components/animata/progress/animatedtimeline
 import { MorphingText } from "@/components/ui/morphing-text";
 import RippleButton from "@/components/lightswind/ripple-button";
 import { getAboutImageIndex } from "@/utils/aboutImage";
+import { playPowerUp, prewarmAudio } from "@/utils/audio";
+
+interface SkillItemMeta {
+  name: string;
+  role: string;
+  color: string;
+  iconUrl: string;
+}
+
+function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic: boolean }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [imgError, setImgError] = useState(false);
+
+  const handleInteract = () => {
+    prewarmAudio();
+    playPowerUp();
+    setIsHovered((prev) => !prev);
+  };
+
+  return (
+    <div
+      onMouseEnter={() => {
+        prewarmAudio();
+        setIsHovered(true);
+      }}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={handleInteract}
+      className={`group/keycap relative w-full h-9 rounded-none cursor-pointer transition-all duration-200 select-none overflow-hidden ${
+        isNeumorphic
+          ? isHovered
+            ? "bg-[#d1d9e6] text-[#1e293b] shadow-[inset_2px_2px_4px_#b8bec5,inset_-2px_-2px_4px_#ffffff]"
+            : "bg-[#e0e5ec] text-black shadow-[2.5px_2.5px_5px_#b8bec5,-2.5px_-2.5px_5px_#ffffff]"
+          : isHovered
+            ? "border-2 border-white bg-white text-black translate-x-[1.5px] translate-y-[1.5px] shadow-none"
+            : "border-2 border-white/80 bg-zinc-950 text-white shadow-[2.5px_2.5px_0px_rgba(255,255,255,0.25)] hover:shadow-none"
+      }`}
+      title={`${item.name} // ${item.role}`}
+    >
+      <div className="w-full h-full flex items-center justify-between px-2.5 relative">
+        {/* Left: Brand Color Dot Indicator */}
+        <span
+          className="w-2 h-2 rounded-full shrink-0 transition-transform duration-200 group-hover/keycap:scale-125 shadow-sm"
+          style={{ backgroundColor: item.color }}
+        />
+
+        {/* Center Content: Name vs Role Swap */}
+        <div className="flex-1 mx-2 relative h-full flex items-center justify-center overflow-hidden">
+          <span
+            className={`font-mono font-black text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 transform whitespace-nowrap ${
+              isHovered
+                ? "opacity-0 -translate-y-3.5 pointer-events-none"
+                : "opacity-100 translate-y-0"
+            }`}
+          >
+            {item.name}
+          </span>
+
+          <span
+            className={`absolute font-mono font-bold text-[9px] sm:text-[9.5px] uppercase tracking-tight transition-all duration-200 transform whitespace-nowrap ${
+              isHovered
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-3.5 pointer-events-none"
+            }`}
+          >
+            {item.role}
+          </span>
+        </div>
+
+        {/* Right: Authentic Brand Vector Logo */}
+        <div className="w-4 h-4 shrink-0 flex items-center justify-center">
+          {!imgError ? (
+            <img
+              src={item.iconUrl}
+              alt={item.name}
+              loading="lazy"
+              onError={() => setImgError(true)}
+              className="w-3.5 h-3.5 object-contain transition-transform duration-200 group-hover/keycap:scale-110"
+              style={{
+                filter: isHovered && !isNeumorphic ? "invert(1) brightness(0)" : "none"
+              }}
+            />
+          ) : (
+            <span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ backgroundColor: item.color }}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function AboutClient({ dict, footerDict, tabTitles, locale }: { dict: Record<string, string>, footerDict: Record<string, string>, tabTitles: Record<string, string>, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -110,28 +202,62 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   const stack = [
     {
       category: "Frontend & Design",
-      icon: <LayoutTemplate size={32} />,
-      tech: ["Next.js", "React", "Angular", "TypeScript", "Tailwind CSS"]
+      icon: <LayoutTemplate size={28} />,
+      items: [
+        { name: "Next.js", role: "SSR & App Router", color: "#ffffff", iconUrl: "https://cdn.simpleicons.org/nextdotjs/white" },
+        { name: "React", role: "UI Components", color: "#61dafb", iconUrl: "https://cdn.simpleicons.org/react/61dafb" },
+        { name: "Angular", role: "Enterprise SPA", color: "#dd0031", iconUrl: "https://cdn.simpleicons.org/angular/dd0031" },
+        { name: "TypeScript", role: "Typed JavaScript", color: "#3178c6", iconUrl: "https://cdn.simpleicons.org/typescript/3178c6" },
+        { name: "Tailwind CSS", role: "Utility Design Tokens", color: "#38bdf8", iconUrl: "https://cdn.simpleicons.org/tailwindcss/38bdf8" },
+      ]
     },
     {
       category: "Backend & Database",
-      icon: <Database size={32} />,
-      tech: ["NestJS", "Node.js", "Express.js", "Python", "Flask", "Postgres", "MongoDB"]
+      icon: <Database size={28} />,
+      items: [
+        { name: "NestJS", role: "Modular Backend API", color: "#e0234e", iconUrl: "https://cdn.simpleicons.org/nestjs/e0234e" },
+        { name: "Node.js", role: "Async JS Runtime", color: "#5fa04e", iconUrl: "https://cdn.simpleicons.org/nodedotjs/5fa04e" },
+        { name: "Express.js", role: "REST Middleware", color: "#a0a0a0", iconUrl: "https://cdn.simpleicons.org/express/white" },
+        { name: "Python", role: "Core Data & Scripting", color: "#3776ab", iconUrl: "https://cdn.simpleicons.org/python/3776ab" },
+        { name: "Flask", role: "Micro Services", color: "#ffffff", iconUrl: "https://cdn.simpleicons.org/flask/white" },
+        { name: "Postgres", role: "ACID Relational SQL", color: "#336791", iconUrl: "https://cdn.simpleicons.org/postgresql/336791" },
+        { name: "MongoDB", role: "NoSQL Document DB", color: "#47a248", iconUrl: "https://cdn.simpleicons.org/mongodb/47a248" },
+      ]
     },
     {
       category: "Architecture & DevOps",
-      icon: <Server size={32} />,
-      tech: ["Docker", "Kubernetes", "Jenkins", "Linux OS", "Nexus Repo"]
+      icon: <Server size={28} />,
+      items: [
+        { name: "Docker", role: "Containerization", color: "#2496ed", iconUrl: "https://cdn.simpleicons.org/docker/2496ed" },
+        { name: "Kubernetes", role: "Cluster Orchestration", color: "#326ce5", iconUrl: "https://cdn.simpleicons.org/kubernetes/326ce5" },
+        { name: "Jenkins", role: "CI/CD Automation", color: "#d24939", iconUrl: "https://cdn.simpleicons.org/jenkins/d24939" },
+        { name: "Linux OS", role: "Server Kernel", color: "#fcc624", iconUrl: "https://cdn.simpleicons.org/linux/fcc624" },
+        { name: "Nexus Repo", role: "Artifact Registry", color: "#1c77c3", iconUrl: "https://cdn.simpleicons.org/sonatype/1c77c3" },
+      ]
     },
     {
       category: "API & Testing",
-      icon: <Wrench size={32} />,
-      tech: ["Postman", "Swagger", "Jest", "Selenium", "BeautifulSoup", "REST APIs", "GraphQL"]
+      icon: <Wrench size={28} />,
+      items: [
+        { name: "Postman", role: "API Testing Suite", color: "#ff6c37", iconUrl: "https://cdn.simpleicons.org/postman/ff6c37" },
+        { name: "Swagger", role: "OpenAPI Documentation", color: "#85ea2d", iconUrl: "https://cdn.simpleicons.org/swagger/85ea2d" },
+        { name: "Jest", role: "Unit Testing", color: "#c21325", iconUrl: "https://cdn.simpleicons.org/jest/c21325" },
+        { name: "Selenium", role: "E2E Automation", color: "#43b02a", iconUrl: "https://cdn.simpleicons.org/selenium/43b02a" },
+        { name: "BeautifulSoup", role: "Web Scraping Engine", color: "#ffd43b", iconUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ffd43b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 15.5a3.5 3.5 0 0 0 7 0V5a2 2 0 0 1 3.5-1.5"/><text x="6.8" y="14" font-size="8.5" font-weight="900" font-family="sans-serif" fill="%23ffd43b" stroke="none">B</text></svg>' },
+        { name: "REST APIs", role: "HTTP API Standard", color: "#009688", iconUrl: "https://cdn.simpleicons.org/fastapi/009688" },
+        { name: "GraphQL", role: "Data Query Language", color: "#e535ab", iconUrl: "https://cdn.simpleicons.org/graphql/e535ab" },
+      ]
     },
     {
       category: "Agile & Collab",
-      icon: <Workflow size={32} />,
-      tech: ["Git", "Jira", "Trello", "Notion", "Slack"]
+      icon: <Workflow size={28} />,
+      items: [
+        { name: "Git", role: "Version Control", color: "#f05032", iconUrl: "https://cdn.simpleicons.org/git/f05032" },
+        { name: "Jira", role: "Agile Tracking", color: "#0052cc", iconUrl: "https://cdn.simpleicons.org/jira/0052cc" },
+        { name: "Trello", role: "Kanban Board", color: "#0079bf", iconUrl: "https://cdn.simpleicons.org/trello/0079bf" },
+        { name: "Notion", role: "Docs & Knowledge", color: "#ffffff", iconUrl: "https://cdn.simpleicons.org/notion/white" },
+        { name: "Slack", role: "Team Comms", color: "#e01e5a", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/slack/slack-original.svg" },
+      ]
     },
   ];
 
@@ -396,7 +522,7 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
   );
 
   const section3 = (
-      <div className="relative w-full py-12">
+      <div className="relative w-full py-6 md:py-8">
         {/* --- STAGE 2: STRUCTURED PROGRESSIVE DRAWING (DOUBLE WAVES) --- */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" preserveAspectRatio="none" viewBox="0 0 1440 800" fill="none" aria-hidden="true">
           <path 
@@ -413,53 +539,50 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
             strokeLinecap="round"
           />
         </svg>
-        <div className="w-full relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-12">
+        <div className="w-full relative z-10 max-w-[90rem] mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-4">
           <section className="animate-slide-up-delay-2">
-            <div className="inline-block bg-black text-white px-6 py-2 mb-8 transform -skew-x-2">
+            <div className="inline-block bg-black text-white px-5 py-1.5 mb-6 transform -skew-x-2">
               <MorphingText 
                 texts={[dict?.techArsenal || "Technical Arsenal", dict?.skills || "Skills"]}
-                className="text-4xl font-black uppercase tracking-widest text-white m-0 p-0"
+                className="text-3xl md:text-4xl font-black uppercase tracking-widest text-white m-0 p-0"
                 forceHover={isSkillsCardHovered}
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" dir="ltr">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4" dir="ltr">
               {stack.map((category, index) => (
                 <div
                   key={index}
                   onMouseEnter={() => setIsSkillsCardHovered(true)}
                   onMouseLeave={() => setIsSkillsCardHovered(false)}
-                  className={`group transition-all duration-300 flex flex-col ${
+                  className={`group transition-all duration-300 flex flex-col justify-between p-4 ${
                     isNeumorphic
                       ? "brutalist-container hover:!bg-[#d1d9e6] hover:!text-[#1e293b] hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
                       : "brutalist-container-dark hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
                   }`}
                 >
-                  <div className={`flex flex-col items-start gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
-                    isNeumorphic ? "border-[#a3b1c6]" : "border-white"
-                  }`}>
-                    <div className={`p-3 border-4 transition-all duration-300 ${
-                      isNeumorphic
-                        ? "border-transparent text-black rounded-xl shadow-[inset_2px_2px_5px_rgba(163,177,198,0.5),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
-                        : "border-white text-white"
+                  <div>
+                    <div className={`flex flex-col items-center text-center gap-2 border-b-2 pb-3 mb-3.5 transition-all duration-300 ${
+                      isNeumorphic ? "border-[#a3b1c6]" : "border-white/30"
                     }`}>
-                      {category.icon}
+                      <div className={`p-2 border-2 transition-all duration-300 ${
+                        isNeumorphic
+                          ? "border-transparent text-black rounded-xl shadow-[inset_2px_2px_5px_rgba(163,177,198,0.5),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
+                          : "border-white text-white bg-white/10"
+                      }`}>
+                        {category.icon}
+                      </div>
+                      <h3 className="text-xs sm:text-sm font-black uppercase tracking-tight leading-tight min-h-[2.2rem] flex items-center justify-center text-center">
+                        {category.category}
+                      </h3>
                     </div>
-                    <h3 className="text-xl sm:text-2xl xl:text-[1.35rem] 2xl:text-2xl tracking-tighter font-black uppercase leading-none text-left">{category.category}</h3>
-                  </div>
 
-                  <ul className="flex flex-col gap-3">
-                    {category.tech.map((item, i) => (
-                      <li key={i} className="text-lg font-bold uppercase flex items-center gap-2">
-                        <span className={`w-2 h-2 inline-block transition-all duration-300 shrink-0 ${
-                          isNeumorphic
-                            ? "bg-[#4b5563] group-hover:bg-[#1e293b]"
-                            : "bg-white"
-                        }`}></span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                    <div className="flex flex-col gap-2">
+                      {category.items.map((item, i) => (
+                        <SkillKeycap key={i} item={item} isNeumorphic={isNeumorphic} />
+                      ))}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
