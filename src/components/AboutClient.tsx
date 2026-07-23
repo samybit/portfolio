@@ -51,16 +51,18 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
       title={`${item.name} // ${item.role}`}
     >
       <div className="w-full h-full flex items-center justify-between px-2.5 relative">
-        {/* Left: Brand Color Dot Indicator */}
-        <span
-          className="w-2 h-2 rounded-full shrink-0 transition-transform duration-200 group-hover/keycap:scale-125 shadow-sm"
-          style={{ backgroundColor: item.color }}
-        />
+        {/* Left: Brand Color Dot Indicator (Scales safely inside reserved wrapper) */}
+        <div className="w-3 shrink-0 flex items-center justify-center">
+          <span
+            className="w-2 h-2 rounded-full shrink-0 transition-transform duration-200 group-hover/keycap:scale-125 shadow-sm"
+            style={{ backgroundColor: item.color }}
+          />
+        </div>
 
         {/* Center Content: Name vs Role Swap */}
-        <div className="flex-1 mx-2 relative h-full flex items-center justify-center overflow-hidden">
+        <div className="flex-1 mx-1.5 relative h-full flex items-center justify-center overflow-hidden">
           <span
-            className={`font-mono font-black text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 transform whitespace-nowrap ${
+            className={`font-mono font-black text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 transform whitespace-nowrap truncate max-w-full ${
               isHovered
                 ? "opacity-0 -translate-y-3.5 pointer-events-none"
                 : "opacity-100 translate-y-0"
@@ -70,7 +72,7 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
           </span>
 
           <span
-            className={`absolute font-mono font-bold text-[9px] sm:text-[9.5px] uppercase tracking-tight transition-all duration-200 transform whitespace-nowrap ${
+            className={`absolute font-mono font-bold text-[8.5px] sm:text-[9px] md:text-[9.5px] uppercase tracking-tight transition-all duration-200 transform whitespace-nowrap truncate max-w-full px-0.5 ${
               isHovered
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-3.5 pointer-events-none"
@@ -80,7 +82,7 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
           </span>
         </div>
 
-        {/* Right: Authentic Brand Vector Logo */}
+        {/* Right: Authentic Brand Vector Logo (No scale distortion on hover) */}
         <div className="w-4 h-4 shrink-0 flex items-center justify-center">
           {!imgError ? (
             <img
@@ -88,7 +90,7 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
               alt={item.name}
               loading="lazy"
               onError={() => setImgError(true)}
-              className="w-3.5 h-3.5 object-contain transition-transform duration-200 group-hover/keycap:scale-110"
+              className="w-3.5 h-3.5 object-contain"
               style={{
                 filter: isHovered && !isNeumorphic ? "invert(1) brightness(0)" : "none"
               }}
