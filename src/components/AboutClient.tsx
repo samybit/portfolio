@@ -241,11 +241,11 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
       icon: LayoutTemplate,
       hoverIcon: PenTool,
       items: [
-        { name: "Next.js", role: "SSR & App Router", color: "#ffffff", iconUrl: "https://cdn.simpleicons.org/nextdotjs/white" },
-        { name: "React", role: "UI Components", color: "#61dafb", iconUrl: "https://cdn.simpleicons.org/react/61dafb" },
-        { name: "Angular", role: "Enterprise SPA", color: "#dd0031", iconUrl: "https://cdn.simpleicons.org/angular/dd0031" },
-        { name: "TypeScript", role: "Typed JavaScript", color: "#3178c6", iconUrl: "https://cdn.simpleicons.org/typescript/3178c6" },
-        { name: "Tailwind CSS", role: "Utility Design Tokens", color: "#38bdf8", iconUrl: "https://cdn.simpleicons.org/tailwindcss/38bdf8" },
+        { name: "Next.js", role: "SSR & App Router", color: "#ffffff", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
+        { name: "React", role: "UI Components", color: "#61dafb", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+        { name: "Angular", role: "Enterprise SPA", color: "#dd0031", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angular/angular-original.svg" },
+        { name: "TypeScript", role: "Typed JavaScript", color: "#3178c6", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
+        { name: "Tailwind CSS", role: "Utility Design Tokens", color: "#38bdf8", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" },
       ]
     },
     {
@@ -254,14 +254,14 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
       hoverIcon: Cpu,
       items: [
         { name: "Java", role: "Enterprise OOP", color: "#f8981d", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
-        { name: "Spring", role: "Backend Framework", color: "#6db33f", iconUrl: "https://cdn.simpleicons.org/spring/6db33f" },
-        { name: "NestJS", role: "Modular Backend API", color: "#e0234e", iconUrl: "https://cdn.simpleicons.org/nestjs/e0234e" },
-        { name: "Node.js", role: "Async JS Runtime", color: "#5fa04e", iconUrl: "https://cdn.simpleicons.org/nodedotjs/5fa04e" },
+        { name: "Spring", role: "Backend Framework", color: "#6db33f", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" },
+        { name: "NestJS", role: "Modular Backend API", color: "#e0234e", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nestjs/nestjs-original.svg" },
+        { name: "Node.js", role: "Async JS Runtime", color: "#5fa04e", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
         { name: "Express.js", role: "REST Middleware", color: "#a0a0a0", iconUrl: "https://cdn.simpleicons.org/express/white" },
-        { name: "Python", role: "Core Data & Scripting", color: "#3776ab", iconUrl: "https://cdn.simpleicons.org/python/3776ab" },
+        { name: "Python", role: "Core Data & Scripting", color: "#3776ab", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
         { name: "Flask", role: "Micro Services", color: "#ffffff", iconUrl: "https://cdn.simpleicons.org/flask/white" },
-        { name: "Postgres", role: "ACID Relational SQL", color: "#336791", iconUrl: "https://cdn.simpleicons.org/postgresql/336791" },
-        { name: "MongoDB", role: "NoSQL Document DB", color: "#47a248", iconUrl: "https://cdn.simpleicons.org/mongodb/47a248" },
+        { name: "Postgres", role: "ACID Relational SQL", color: "#336791", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
+        { name: "MongoDB", role: "NoSQL Document DB", color: "#47a248", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
       ]
     },
     {
@@ -269,10 +269,10 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
       icon: Server,
       hoverIcon: Cloud,
       items: [
-        { name: "Docker", role: "Containerization", color: "#2496ed", iconUrl: "https://cdn.simpleicons.org/docker/2496ed" },
-        { name: "Kubernetes", role: "Cluster Orchestration", color: "#326ce5", iconUrl: "https://cdn.simpleicons.org/kubernetes/326ce5" },
-        { name: "Jenkins", role: "CI/CD Automation", color: "#d24939", iconUrl: "https://cdn.simpleicons.org/jenkins/d24939" },
-        { name: "Linux OS", role: "Server Kernel", color: "#fcc624", iconUrl: "https://cdn.simpleicons.org/linux/fcc624" },
+        { name: "Docker", role: "Containerization", color: "#2496ed", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
+        { name: "Kubernetes", role: "Cluster Orchestration", color: "#326ce5", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-original.svg" },
+        { name: "Jenkins", role: "CI/CD Automation", color: "#d24939", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" },
+        { name: "Linux OS", role: "Server Kernel", color: "#fcc624", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" },
         { name: "Nexus Repo", role: "Artifact Registry", color: "#1c77c3", iconUrl: "https://cdn.simpleicons.org/sonatype/1c77c3" },
       ]
     },
@@ -281,13 +281,13 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
       icon: Wrench,
       hoverIcon: FlaskConical,
       items: [
-        { name: "Postman", role: "API Testing Suite", color: "#ff6c37", iconUrl: "https://cdn.simpleicons.org/postman/ff6c37" },
-        { name: "Swagger", role: "OpenAPI Documentation", color: "#85ea2d", iconUrl: "https://cdn.simpleicons.org/swagger/85ea2d" },
-        { name: "Jest", role: "Unit Testing", color: "#c21325", iconUrl: "https://cdn.simpleicons.org/jest/c21325" },
+        { name: "Postman", role: "API Testing Suite", color: "#ff6c37", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg" },
+        { name: "Swagger", role: "OpenAPI Documentation", color: "#85ea2d", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swagger/swagger-original.svg" },
+        { name: "Jest", role: "Unit Testing", color: "#9A425B", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" },
         { name: "Selenium", role: "E2E Automation", color: "#43b02a", iconUrl: "https://cdn.simpleicons.org/selenium/43b02a" },
         { name: "BeautifulSoup", role: "Web Scraping Engine", color: "#ffd43b", iconUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ffd43b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 15.5a3.5 3.5 0 0 0 7 0V5a2 2 0 0 1 3.5-1.5"/><text x="6.8" y="14" font-size="8.5" font-weight="900" font-family="sans-serif" fill="%23ffd43b" stroke="none">B</text></svg>' },
-        { name: "REST APIs", role: "HTTP API Standard", color: "#009688", iconUrl: "https://cdn.simpleicons.org/fastapi/009688" },
-        { name: "GraphQL", role: "Data Query Language", color: "#e535ab", iconUrl: "https://cdn.simpleicons.org/graphql/e535ab" },
+        { name: "REST APIs", role: "HTTP API Standard", color: "#009688", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" },
+        { name: "GraphQL", role: "Data Query Language", color: "#e535ab", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg" },
       ]
     },
     {
@@ -295,10 +295,10 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
       icon: Workflow,
       hoverIcon: GitBranch,
       items: [
-        { name: "Git", role: "Version Control", color: "#f05032", iconUrl: "https://cdn.simpleicons.org/git/f05032" },
-        { name: "Jira", role: "Agile Tracking", color: "#0052cc", iconUrl: "https://cdn.simpleicons.org/jira/0052cc" },
-        { name: "Trello", role: "Kanban Board", color: "#0079bf", iconUrl: "https://cdn.simpleicons.org/trello/0079bf" },
-        { name: "Notion", role: "Docs & Knowledge", color: "#ffffff", iconUrl: "https://cdn.simpleicons.org/notion/white" },
+        { name: "Git", role: "Version Control", color: "#f05032", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
+        { name: "Jira", role: "Agile Tracking", color: "#0052cc", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg" },
+        { name: "Trello", role: "Kanban Board", color: "#0079bf", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/trello/trello-original.svg" },
+        { name: "Notion", role: "Docs & Knowledge", color: "#ffffff", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/notion/notion-original.svg" },
         { name: "Slack", role: "Team Comms", color: "#e01e5a", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/slack/slack-original.svg" },
       ]
     },
