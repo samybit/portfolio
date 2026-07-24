@@ -43,7 +43,7 @@ function BongoCat({ pawState }: { pawState: 'idle' | 'left' | 'right' }) {
 
   return (
     <div
-      className="absolute -top-[48px] sm:-top-[56px] right-2 sm:right-6 z-30 pointer-events-none select-none w-[110px] sm:w-[135px] aspect-[360/220]"
+      className="absolute -top-[52px] sm:-top-[62px] right-2 sm:right-6 z-30 pointer-events-none select-none w-[130px] sm:w-[160px] aspect-[447/262]"
       aria-hidden="true"
     >
       <div className="relative w-full h-full">
