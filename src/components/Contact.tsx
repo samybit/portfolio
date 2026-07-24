@@ -26,6 +26,66 @@ function StealthGliderIcon({ className }: { className?: string }) {
   );
 }
 
+function BongoCat({ pawState }: { pawState: 'idle' | 'left' | 'right' }) {
+  const catHead = "/bongo/parts/cat-white.png";
+  const mouth = "/bongo/parts/mouth-open-white.png";
+
+  // White Paw Sprite Mapping:
+  // For left paw: paw-left-down-white.png is HIGHER (UP paw), paw-left-up-white.png is LOWER (DOWN paw)
+  // For right paw: paw-right-up-white.png is HIGHER (UP paw), paw-right-down-white.png is LOWER (DOWN paw)
+  const pawLeft = pawState === 'left'
+    ? "/bongo/parts/paw-left-up-white.png"     // Struck DOWN on keypress
+    : "/bongo/parts/paw-left-down-white.png";  // Raised UP by default
+
+  const pawRight = pawState === 'right'
+    ? "/bongo/parts/paw-right-down-white.png" // Struck DOWN on keypress
+    : "/bongo/parts/paw-right-up-white.png";   // Raised UP by default
+
+  return (
+    <div
+      className="absolute -top-[48px] sm:-top-[56px] right-2 sm:right-6 z-30 pointer-events-none select-none w-[110px] sm:w-[135px] aspect-[360/220]"
+      aria-hidden="true"
+    >
+      <div className="relative w-full h-full">
+        {/* User-provided Black Silhouette Backdrop Asset */}
+        <img
+          src="/bongo/parts/group.svg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+        />
+
+        {/* White Line Art Base Head Layer */}
+        <img
+          src={catHead}
+          alt=""
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+        />
+
+        {/* White Line Art Mouth Layer (Always Mouth Open) */}
+        <img
+          src={mouth}
+          alt=""
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+        />
+
+        {/* White Line Art Left Paw Layer */}
+        <img
+          src={pawLeft}
+          alt=""
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+        />
+
+        {/* White Line Art Right Paw Layer */}
+        <img
+          src={pawRight}
+          alt=""
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function Contact({ dict }: { dict: Record<string, string> }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errors, setErrors] = useState<{ email?: string; message?: string }>({});
@@ -34,6 +94,42 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
   const isNeumorphic = useNeumorphicTheme();
   const [isFlying, setIsFlying] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
+  const [pawState, setPawState] = useState<'idle' | 'left' | 'right'>('idle');
+  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastKeyRef = useRef<string | null>(null);
+  const lastPawRef = useRef<'left' | 'right'>('left');
+
+  const handleFormKeyDown = (e: React.KeyboardEvent) => {
+    // Ignore control / modifier keys
+    if (['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Tab', 'Escape'].includes(e.key)) return;
+
+    let nextPaw: 'left' | 'right';
+    if (e.key === lastKeyRef.current) {
+      // Same key repeated: use the SAME hand!
+      nextPaw = lastPawRef.current;
+    } else {
+      // Different key: alternate hands!
+      nextPaw = lastPawRef.current === 'left' ? 'right' : 'left';
+    }
+
+    lastKeyRef.current = e.key;
+    lastPawRef.current = nextPaw;
+
+    // Briefly reset to idle then trigger nextPaw so repeated keypress visibly re-taps
+    setPawState('idle');
+    requestAnimationFrame(() => {
+      setPawState(nextPaw);
+    });
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      setPawState('idle');
+      lastKeyRef.current = null;
+    }, 280);
+  };
 
   const handleCopyEmail = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
@@ -424,12 +520,13 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
 
         {/* --- RIGHT COLUMN: STATIC FORM ENGINE --- */}
         <div className="flex-1 w-full relative max-w-xl mx-auto lg:mx-0">
-
           <form
             onSubmit={handleSubmit}
             noValidate
+            onKeyDown={handleFormKeyDown}
             className="relative z-10 bg-white text-black border-4 border-black flex flex-col gap-2 md:gap-3 p-6 lg:p-8 shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-300"
           >
+            <BongoCat pawState={pawState} />
             {status === "success" ? (
               <div className="p-8 border-4 border-black bg-green-400 text-black text-2xl font-black uppercase text-center flex flex-col items-center gap-4 relative z-20">
                 <Check size={48} className="text-black" />
