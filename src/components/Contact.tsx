@@ -251,21 +251,23 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
 
   return (
     <section id="contact" className="snap-start min-h-[80vh] flex flex-col justify-center pt-24 pb-16 px-6 md:px-12 lg:px-24 bg-black text-white overflow-hidden">
-      <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-start">
+      <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-stretch">
 
         {/* --- LEFT COLUMN: TEXT & SOCIALS --- */}
-        <div className="flex-1 w-full relative z-30">
-          <div className="flex items-center gap-4 sm:gap-6 mb-8 relative z-30">
-            <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">
-              <DecryptText text={dict?.lets || "Let's"} />
-              <br />
-              <DecryptText text={dict?.talk || "Talk"} />
-            </h2>
-            <div className="h-1.5 md:h-2 bg-current w-12 sm:w-20 md:w-28 shrink-0 self-center" />
+        <div className="flex-1 w-full relative z-30 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center gap-4 sm:gap-6 mb-8 relative z-30">
+              <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">
+                <DecryptText text={dict?.lets || "Let's"} />
+                <br />
+                <DecryptText text={dict?.talk || "Talk"} />
+              </h2>
+              <div className="h-1.5 md:h-2 bg-current w-12 sm:w-20 md:w-28 shrink-0 self-center" />
+            </div>
+            <p className="text-2xl font-bold max-w-md text-zinc-400 uppercase mb-8 lg:mb-12 relative z-30">
+              {dict?.description || "Drop a message to discuss a project, a full-time role, or just to say hi."}
+            </p>
           </div>
-          <p className="text-2xl font-bold max-w-md text-zinc-400 uppercase mb-8 lg:mb-16 relative z-30">
-            {dict?.description || "Drop a message to discuss a project, a full-time role, or just to say hi."}
-          </p>
 
           {/* Direct Email Copy Card (Mobile Only) */}
           <div className="lg:hidden bg-white text-black border-4 border-black p-4 mb-10 w-full max-w-md shadow-[6px_6px_0px_rgba(255,255,255,0.2)] flex flex-col gap-3 relative z-30 select-none">
