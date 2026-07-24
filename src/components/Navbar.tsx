@@ -1,7 +1,7 @@
 "use client";
 
 import { playClack, playTick, playLanguageToggle, prewarmAudio } from "@/utils/audio";
-import { Origami, ArrowUpRight, ArrowUpLeft, Menu, X, Palette, Globe, Layers, List, Github, Linkedin } from "lucide-react";
+import { Origami, ArrowUpRight, ArrowUpLeft, Menu, X, Palette, Globe, Layers, List, Linkedin } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -667,10 +667,6 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
           displaySocials={true}
           socialTitle={dict?.networks || "Verified Networks"}
           socialItems={[
-            {
-              label: <Github size={18} />,
-              link: "https://github.com/samybit"
-            },
             {
               label: <Linkedin size={18} fill="currentColor" />,
               link: "https://linkedin.com/in/samybit/"

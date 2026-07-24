@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ArrowUpRight, Loader2, Linkedin, Github } from "lucide-react";
+import { Check, ArrowUpRight, Loader2, Linkedin } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { sendEmail } from "@/actions/send-email";
 import { playPowerUp, prewarmAudio } from "@/utils/audio";
@@ -27,19 +27,33 @@ function StealthGliderIcon({ className }: { className?: string }) {
 }
 
 function BongoCat({ pawState }: { pawState: 'idle' | 'left' | 'right' }) {
-  const catHead = "/bongo/parts/cat-white.png";
-  const mouth = "/bongo/parts/mouth-open-white.png";
+  const isNeumorphic = useNeumorphicTheme();
 
-  // White Paw Sprite Mapping:
-  // For left paw: paw-left-down-white.png is HIGHER (UP paw), paw-left-up-white.png is LOWER (DOWN paw)
-  // For right paw: paw-right-up-white.png is HIGHER (UP paw), paw-right-down-white.png is LOWER (DOWN paw)
+  // Silhouette Backdrop:
+  // Neumorphic Mode -> group-white.svg (white silhouette)
+  // Brutalist / Dark Mode -> group.svg (black silhouette)
+  const silhouette = isNeumorphic
+    ? "/bongo/parts/group-white.svg"
+    : "/bongo/parts/group.svg";
+
+  // Line Art Variant:
+  // Neumorphic Mode -> black line art (-black.png)
+  // Brutalist / Dark Mode -> white line art (-white.png)
+  const variant = isNeumorphic ? "black" : "white";
+
+  const catHead = `/bongo/parts/cat-${variant}.png`;
+  const mouth = `/bongo/parts/mouth-open-${variant}.png`;
+
+  // Paw Sprite Mapping:
+  // Left paw: paw-left-down is HIGHER (UP paw), paw-left-up is LOWER (DOWN paw)
+  // Right paw: paw-right-up is HIGHER (UP paw), paw-right-down is LOWER (DOWN paw)
   const pawLeft = pawState === 'left'
-    ? "/bongo/parts/paw-left-up-white.png"     // Struck DOWN on keypress
-    : "/bongo/parts/paw-left-down-white.png";  // Raised UP by default
+    ? `/bongo/parts/paw-left-up-${variant}.png`     // Struck DOWN on keypress
+    : `/bongo/parts/paw-left-down-${variant}.png`;  // Raised UP by default
 
   const pawRight = pawState === 'right'
-    ? "/bongo/parts/paw-right-down-white.png" // Struck DOWN on keypress
-    : "/bongo/parts/paw-right-up-white.png";   // Raised UP by default
+    ? `/bongo/parts/paw-right-down-${variant}.png` // Struck DOWN on keypress
+    : `/bongo/parts/paw-right-up-${variant}.png`;   // Raised UP by default
 
   return (
     <div
@@ -47,35 +61,35 @@ function BongoCat({ pawState }: { pawState: 'idle' | 'left' | 'right' }) {
       aria-hidden="true"
     >
       <div className="relative w-full h-full">
-        {/* User-provided Black Silhouette Backdrop Asset */}
+        {/* Silhouette Backdrop Asset */}
         <img
-          src="/bongo/parts/group.svg"
+          src={silhouette}
           alt=""
           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
         />
 
-        {/* White Line Art Base Head Layer */}
+        {/* Line Art Base Head Layer */}
         <img
           src={catHead}
           alt=""
           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
         />
 
-        {/* White Line Art Mouth Layer (Always Mouth Open) */}
+        {/* Line Art Mouth Layer (Always Mouth Open :D) */}
         <img
           src={mouth}
           alt=""
           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
         />
 
-        {/* White Line Art Left Paw Layer */}
+        {/* Line Art Left Paw Layer */}
         <img
           src={pawLeft}
           alt=""
           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
         />
 
-        {/* White Line Art Right Paw Layer */}
+        {/* Line Art Right Paw Layer */}
         <img
           src={pawRight}
           alt=""
@@ -444,15 +458,6 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
             </h3>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-              <InteractiveHoverButton
-                href="https://github.com/samybit"
-                target="_blank"
-                rel="noopener noreferrer"
-                icon={<Github className="w-full h-full" />}
-                aria-label={`GitHub${dict?.newTab || " (opens in a new tab)"}`}
-              >
-                GitHub
-              </InteractiveHoverButton>
               <InteractiveHoverButton
                 href="https://linkedin.com/in/samybit/"
                 target="_blank"
