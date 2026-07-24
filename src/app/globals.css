@@ -796,13 +796,22 @@ html.theme-neumorphic a.border-4,
 html.theme-neumorphic button.border-2,
 html.theme-neumorphic button.border-4,
 html.theme-neumorphic .project-card,
-html.theme-neumorphic .bg-white.border-4:not(input):not(textarea) {
+html.theme-neumorphic .bg-white.border-4:not(input):not(textarea):not(form) {
   border-radius: 1.5rem !important;
   box-shadow: 9px 9px 16px rgba(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5) !important;
   background-color: #e0e5ec !important;
   border-color: transparent !important;
   transition: all 0.3s ease !important;
   overflow: hidden !important;
+}
+
+html.theme-neumorphic form {
+  border-radius: 1.5rem !important;
+  box-shadow: 9px 9px 16px rgba(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5) !important;
+  background-color: #e0e5ec !important;
+  border-color: transparent !important;
+  transition: all 0.3s ease !important;
+  overflow: visible !important;
 }
 
 /* Hover Shadows */
