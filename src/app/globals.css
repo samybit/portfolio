@@ -534,6 +534,12 @@ html.theme-color .hero-subtitle-backdrop {
   box-shadow: none !important;
 }
 
+html.theme-neumorphic .hero-subtitle-backdrop {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  border-left-color: #374151 !important;
+  color: #2d3748 !important;
+}
+
 /* Ensure 'Samy' text becomes highly readable pure white on hover */
 html.theme-color .hero-samy-text.text-white {
   color: #FFFFFF !important;
