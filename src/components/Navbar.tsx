@@ -35,17 +35,12 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
 
-  // ── Background Idle Prefetch for /about Route & Assets ──
+  // ── Background Idle Image Pre-caching for /about Assets ──
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const aboutUrl = `/${currentLocale}/about`;
-
-    const triggerPrefetch = () => {
-      // 1. Prefetch Next.js route bundle and RSC payload
-      router.prefetch(aboutUrl);
-
-      // 2. Pre-cache all 4 About page background images into browser cache
+    const triggerPrecacheImages = () => {
+      // Pre-cache all 4 About page background images into browser cache
       for (let i = 1; i <= 4; i++) {
         const img = new window.Image();
         img.src = `/about-${i}.jpg`;
@@ -59,10 +54,10 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
     timerId = setTimeout(() => {
       if ("requestIdleCallback" in window) {
         idleId = (window as unknown as { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(() => {
-          triggerPrefetch();
+          triggerPrecacheImages();
         });
       } else {
-        triggerPrefetch();
+        triggerPrecacheImages();
       }
     }, 2200);
 
@@ -72,7 +67,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
         (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(idleId);
       }
     };
-  }, [currentLocale, router]);
+  }, []);
 
   const isHome = pathname === `/${currentLocale}` || pathname === `/${currentLocale}/`;
 
@@ -337,7 +332,6 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
 
             <Link
               href={`/${currentLocale}/about`}
-              prefetch={true}
               onClick={handleAboutClick}
               className={`relative group overflow-hidden isolate text-lg font-bold uppercase px-4 flex items-center border-2 transition-all ${pathname === `/${currentLocale}/about`
                 ? 'bg-black text-white border-black'

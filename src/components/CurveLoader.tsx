@@ -4,12 +4,19 @@ import { motion } from "framer-motion";
 
 export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?: () => void; locale?: string }) {
   const [isExiting, setIsExiting] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
+  const [isFinished, setIsFinished] = useState(() => {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("cl_initial_loaded") === "true";
+    }
+    return false;
+  });
   const countRef = useRef(0);
   const countElRef = useRef<HTMLSpanElement>(null);
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
+    if (isFinished) return;
+
     const duration = 1500; // 1.5s
     const start = performance.now();
     let exitTimeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -47,10 +54,13 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
       clearTimeout(fallbackTimeoutId);
       if (exitTimeoutId) clearTimeout(exitTimeoutId);
     };
-  }, []);
+  }, [isFinished]);
 
   const handleExitComplete = () => {
     document.documentElement.style.overflow = "";
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("cl_initial_loaded", "true");
+    }
     setIsFinished(true);
     if (onComplete) onComplete();
   };

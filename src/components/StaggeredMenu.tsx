@@ -514,7 +514,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                     <Link 
                       className="sm-panel-item" 
                       href={it.link || '#'} 
-                      prefetch={true}
+                      prefetch={it.link?.includes('#') ? false : undefined}
                       onClick={(e) => {
                         if (it.onClick) {
                           it.onClick(e as unknown as React.MouseEvent<HTMLAnchorElement>);
