@@ -358,9 +358,8 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                     stroke="black"
                     strokeWidth="2"
                     fill="white"
-                    className={`transition-all duration-300 ease-in-out ${
-                      emailCopied ? "opacity-100" : "opacity-0 group-hover/copycard:opacity-100"
-                    }`}
+                    className={`transition-all duration-300 ease-in-out ${emailCopied ? "opacity-100" : "opacity-0 group-hover/copycard:opacity-100"
+                      }`}
                   />
                   <rect
                     x="3"
@@ -421,9 +420,8 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                     stroke="black"
                     strokeWidth="2"
                     fill="white"
-                    className={`transition-all duration-300 ease-in-out ${
-                      emailCopied ? "opacity-0" : "opacity-100 group-hover/copycard:opacity-0"
-                    }`}
+                    className={`transition-all duration-300 ease-in-out ${emailCopied ? "opacity-0" : "opacity-100 group-hover/copycard:opacity-0"
+                      }`}
                   />
                 </svg>
               </div>
@@ -436,16 +434,14 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
               >
                 <span className="relative grid grid-cols-1 grid-rows-1 justify-items-center">
                   <span
-                    className={`col-start-1 row-start-1 transition-opacity duration-300 ${
-                      emailCopied ? "opacity-100" : "opacity-0 pointer-events-none"
-                    }`}
+                    className={`col-start-1 row-start-1 transition-opacity duration-300 ${emailCopied ? "opacity-100" : "opacity-0 pointer-events-none"
+                      }`}
                   >
                     {dict?.copied || "Copied!"}
                   </span>
                   <span
-                    className={`col-start-1 row-start-1 transition-opacity duration-300 ${
-                      emailCopied ? "opacity-0 pointer-events-none" : "opacity-100"
-                    }`}
+                    className={`col-start-1 row-start-1 transition-opacity duration-300 ${emailCopied ? "opacity-0 pointer-events-none" : "opacity-100"
+                      }`}
                   >
                     {dict?.copyEmail || "Copy Email"}
                   </span>
@@ -459,13 +455,14 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
               {dict?.networks || "Verified Networks"}
             </h3>
 
-            <div className="flex flex-col sm:flex-row flex-wrap gap-4">
+            <div className="grid grid-cols-2 sm:flex sm:flex-row sm:flex-wrap gap-2.5 sm:gap-4">
               <InteractiveHoverButton
                 href="https://linkedin.com/in/samybit/"
                 target="_blank"
                 rel="noopener noreferrer"
                 icon={<Linkedin className="w-full h-full" fill="currentColor" />}
                 aria-label={`LinkedIn${dict?.newTab || " (opens in a new tab)"}`}
+                className="!w-full sm:!w-48 text-base sm:text-xl p-2.5 sm:p-3 px-3 sm:px-6"
               >
                 LinkedIn
               </InteractiveHoverButton>
@@ -479,6 +476,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                   </svg>
                 }
                 aria-label={`Behance${dict?.newTab || " (opens in a new tab)"}`}
+                className="!w-full sm:!w-48 text-base sm:text-xl p-2.5 sm:p-3 px-3 sm:px-6"
               >
                 Behance
               </InteractiveHoverButton>
@@ -492,6 +490,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                   </svg>
                 }
                 aria-label={`Upwork${dict?.newTab || " (opens in a new tab)"}`}
+                className="!w-full sm:!w-48 text-base sm:text-xl p-2.5 sm:p-3 px-3 sm:px-6"
               >
                 Upwork
               </InteractiveHoverButton>
@@ -505,6 +504,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                   </svg>
                 }
                 aria-label={`Contra${dict?.newTab || " (opens in a new tab)"}`}
+                className="!w-full sm:!w-48 text-base sm:text-xl p-2.5 sm:p-3 px-3 sm:px-6"
               >
                 Contra
               </InteractiveHoverButton>
@@ -518,8 +518,23 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                   </svg>
                 }
                 aria-label={`mostaql${dict?.newTab || " (opens in a new tab)"}`}
+                className="!w-full sm:!w-48 text-base sm:text-xl p-2.5 sm:p-3 px-3 sm:px-6"
               >
                 mostaql
+              </InteractiveHoverButton>
+              <InteractiveHoverButton
+                href="https://khamsat.com/user/samy-b"
+                target="_blank"
+                rel="noopener noreferrer"
+                icon={
+                  <svg viewBox="0 0 67.94 100" fill="currentColor" className="w-full h-full scale-[0.85]">
+                    <path d="M16 46.2269C17.6962 43.3192 19.7615 40.6423 22.1712 38.2327C25.0885 35.3154 28.3942 32.9038 32.0308 31.0404V16.0308H43.6712V0H16V46.2269ZM32.0308 37.1769C22.6077 43.05 16.2712 53.4077 16.0096 65.2673C16.0058 65.3942 16.0038 65.5212 16.0019 65.6481C16 65.775 16 65.9019 16 66.0288H32.0308C32.0308 58.3538 36.8788 51.7865 43.6712 49.2308V32.6462C39.4692 33.4365 35.5365 35.0058 32.0308 37.1942V37.1769ZM16.0404 83.9692H43.6712V100H16.0404V83.9692ZM49.9692 32.0615C49.65 32.0615 49.3327 32.0654 49.0154 32.0769V48.1173C49.3308 48.1 49.6481 48.0923 49.9692 48.0923C59.8596 48.0923 67.9077 56.1404 67.9077 66.0308C67.9077 75.9212 59.8596 83.9692 49.9692 83.9692H49.0154V100H49.9692C68.7 100 83.9385 84.7615 83.9385 66.0308C83.9385 47.3 68.7 32.0615 49.9692 32.0615ZM49.0154 0H79.1673V16.0308H49.0154V0Z" />
+                  </svg>
+                }
+                aria-label={`Khamsat${dict?.newTab || " (opens in a new tab)"}`}
+                className="!w-full sm:!w-48 text-base sm:text-xl p-2.5 sm:p-3 px-3 sm:px-6"
+              >
+                Khamsat
               </InteractiveHoverButton>
             </div>
           </div>
@@ -620,11 +635,11 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                   }}
                   disabled={status === "loading"}
                   className={`mt-2 flex items-center justify-center py-3 px-5 text-xl md:text-2xl font-black uppercase transition-all duration-300 ease-in-out group relative z-20 ${isNeumorphic
-                      ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
-                      : `bg-black text-white border-4 border-black ${status === "loading"
-                        ? "opacity-80 cursor-wait translate-x-1 translate-y-1 shadow-[4px_4px_0px_#000]"
-                        : "shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
-                      }`
+                    ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+                    : `bg-black text-white border-4 border-black ${status === "loading"
+                      ? "opacity-80 cursor-wait translate-x-1 translate-y-1 shadow-[4px_4px_0px_#000]"
+                      : "shadow-[8px_8px_0px_#000] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_#000] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
+                    }`
                     }`}
                 >
                   <span className="transition-transform duration-300">

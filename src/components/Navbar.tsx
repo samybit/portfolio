@@ -503,9 +503,8 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                         stroke="black"
                         strokeWidth="2"
                         fill="white"
-                        className={`transition-all duration-300 ease-in-out ${
-                          emailCopied ? "opacity-100" : "opacity-0 group-hover/copycard:opacity-100"
-                        }`}
+                        className={`transition-all duration-300 ease-in-out ${emailCopied ? "opacity-100" : "opacity-0 group-hover/copycard:opacity-100"
+                          }`}
                       />
 
                       {/* 2. Back pocket of envelope */}
@@ -518,7 +517,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                         strokeWidth="2"
                         fill="white"
                       />
-                      
+
                       {/* 3. Popout Letter Card (emerges, shoots up & crumples ONLY on copy press) */}
                       <g
                         className={emailCopied ? "letter-crumble" : ""}
@@ -537,7 +536,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                           fill="white"
                         />
                         <path d="M10 7 l2 2 l3 -3" stroke="black" strokeWidth="2" strokeLinecap="square" />
-                        
+
                         {/* Crease/Wrinkle Lines (visible during crumble phase) */}
                         <path
                           d="M8 3 l2 2 l-1 2 l3 -1 l-1 2"
@@ -576,9 +575,8 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                         stroke="black"
                         strokeWidth="2"
                         fill="white"
-                        className={`transition-all duration-300 ease-in-out ${
-                          emailCopied ? "opacity-0" : "opacity-100 group-hover/copycard:opacity-0"
-                        }`}
+                        className={`transition-all duration-300 ease-in-out ${emailCopied ? "opacity-0" : "opacity-100 group-hover/copycard:opacity-0"
+                          }`}
                       />
                     </svg>
                   </div>
@@ -590,16 +588,14 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                   >
                     <span className="relative grid grid-cols-1 grid-rows-1 justify-items-center">
                       <span
-                        className={`col-start-1 row-start-1 transition-opacity duration-300 ${
-                          emailCopied ? "opacity-100" : "opacity-0 pointer-events-none"
-                        }`}
+                        className={`col-start-1 row-start-1 transition-opacity duration-300 ${emailCopied ? "opacity-100" : "opacity-0 pointer-events-none"
+                          }`}
                       >
                         {currentLocale === 'ar' ? "تم النسخ" : "Copied!"}
                       </span>
                       <span
-                        className={`col-start-1 row-start-1 transition-opacity duration-300 ${
-                          emailCopied ? "opacity-0 pointer-events-none" : "opacity-100"
-                        }`}
+                        className={`col-start-1 row-start-1 transition-opacity duration-300 ${emailCopied ? "opacity-0 pointer-events-none" : "opacity-100"
+                          }`}
                       >
                         {currentLocale === 'ar' ? "نسخ البريد" : "Copy Email"}
                       </span>
@@ -702,6 +698,14 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                 </svg>
               ),
               link: "https://mostaql.com/u/Samy_01"
+            },
+            {
+              label: (
+                <svg viewBox="0 0 67.94 100" fill="currentColor" className="w-5 h-5 scale-[0.85]">
+                  <path d="M16 46.2269C17.6962 43.3192 19.7615 40.6423 22.1712 38.2327C25.0885 35.3154 28.3942 32.9038 32.0308 31.0404V16.0308H43.6712V0H16V46.2269ZM32.0308 37.1769C22.6077 43.05 16.2712 53.4077 16.0096 65.2673C16.0058 65.3942 16.0038 65.5212 16.0019 65.6481C16 65.775 16 65.9019 16 66.0288H32.0308C32.0308 58.3538 36.8788 51.7865 43.6712 49.2308V32.6462C39.4692 33.4365 35.5365 35.0058 32.0308 37.1942V37.1769ZM16.0404 83.9692H43.6712V100H16.0404V83.9692ZM49.9692 32.0615C49.65 32.0615 49.3327 32.0654 49.0154 32.0769V48.1173C49.3308 48.1 49.6481 48.0923 49.9692 48.0923C59.8596 48.0923 67.9077 56.1404 67.9077 66.0308C67.9077 75.9212 59.8596 83.9692 49.9692 83.9692H49.0154V100H49.9692C68.7 100 83.9385 84.7615 83.9385 66.0308C83.9385 47.3 68.7 32.0615 49.9692 32.0615ZM49.0154 0H79.1673V16.0308H49.0154V0Z" />
+                </svg>
+              ),
+              link: "https://khamsat.com/user/samy-b"
             }
           ]}
         />
