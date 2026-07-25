@@ -77,16 +77,15 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
         <div className="animate-slide-up relative z-10">
 
           <div className="flex items-center gap-4 mb-6">
-            <span className={`text-[clamp(0.75rem,4.5vw,1.25rem)] whitespace-nowrap font-bold uppercase tracking-widest border-b-4 pb-1 ${
-              isNeumorphic ? "bg-[#e0e5ec] border-[#a3b1c6] text-[#4b5563]" : "text-white border-white bg-transparent"
-            }`}>
+            <span className={`text-[clamp(0.75rem,4.5vw,1.25rem)] whitespace-nowrap font-bold uppercase tracking-widest border-b-4 pb-1 ${isNeumorphic ? "bg-[#e0e5ec] border-[#a3b1c6] text-[#4b5563]" : "text-white border-white bg-transparent"
+              }`}>
               {dict?.availability || "Available: Full-Time / Freelance"}
             </span>
           </div>
 
           {/* --- DESKTOP DESCRIPTION (Hidden on mobile) --- */}
           <HeroDescription
-            html={dict?.description || "Full-Stack Developer. <br/> Next.js • Angular • Java / Spring • Docker <br/> Based in Egypt. <br/> Building web apps & APIs"}
+            html={dict?.description || "Full-Stack Developer. <br/> Next.js • Spring Boot • MongoDB • Docker <br/> Based in Egypt. <br/> Building web apps & APIs."}
             className="hidden md:block text-lg md:text-2xl font-bold max-w-2xl leading-snug text-white/80 -ms-2 ps-2 hero-subtitle-backdrop mb-6"
           />
 
@@ -101,12 +100,12 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
               <span className="absolute inset-0 text-white px-2 sm:px-4 z-0 pointer-events-none flex items-center" aria-hidden="true">
                 <GlitchText text={dict?.barsoum || "Barsoum"} />
               </span>
-              
+
               {/* Top Layer: White bg, black text, clipped to padding box */}
               <span className="absolute inset-0 bg-white text-black px-2 sm:px-4 z-10 overflow-hidden flex items-center">
                 <GlitchText text={dict?.barsoum || "Barsoum"} />
               </span>
-              
+
               {/* Structural Layer: Invisible, sets wrapper dimensions */}
               <span className="relative invisible px-2 sm:px-4 z-[-1] pointer-events-none flex items-center" aria-hidden="true">
                 <GlitchText text={dict?.barsoum || "Barsoum"} />
@@ -116,15 +115,14 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
 
           {/* --- MOBILE DESCRIPTION (Hidden on desktop) --- */}
           <HeroDescription
-            html={dict?.description || "Full-Stack Developer. <br/> Next.js • Angular • Java / Spring • Docker <br/> Based in Egypt. <br/> Building web apps & APIs"}
+            html={dict?.description || "Full-Stack Developer. <br/> Next.js • Spring Boot • MongoDB • Docker <br/> Based in Egypt. <br/> Building web apps & APIs."}
             className="block md:hidden text-lg md:text-2xl font-bold max-w-2xl leading-snug text-white/80 -ms-2 ps-2 hero-subtitle-backdrop mt-6"
           />
         </div>
 
         {/* --- RIGHT COLUMN: ACTIONS --- */}
-        <div className={`flex flex-col w-full gap-4 md:gap-6 border-t-0 border-s-0 min-[1300px]:border-s-8 min-[1300px]:ps-12 min-[1300px]:py-8 animate-slide-up-delay-1 relative z-0 ${
-          isNeumorphic ? "border-black" : "border-white"
-        }`}>
+        <div className={`flex flex-col w-full gap-4 md:gap-6 border-t-0 border-s-0 min-[1300px]:border-s-8 min-[1300px]:ps-12 min-[1300px]:py-8 animate-slide-up-delay-1 relative z-0 ${isNeumorphic ? "border-black" : "border-white"
+          }`}>
 
           {/* CV Button */}
           <CoolMode options={{ particle: "brutalist-cv" }}>
@@ -135,16 +133,13 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
               onMouseLeave={() => setIsCvHovered(false)}
               onTouchStart={() => setIsCvHovered(true)}
               onTouchEnd={() => setIsCvHovered(false)}
-              className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
-                isNeumorphic
+              className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
                   ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                   : "bg-white text-black border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:bg-black hover:text-white hover:border-white hover:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
-              }`}
+                }`}
             >
-              <Highlighter show={isCvHovered} action="highlight" color={getHighlightColor(true)}>
-                {dict?.getCV || "Get CV"}
-              </Highlighter>
-              <div className="relative w-6 h-6 md:w-10 md:h-10 overflow-hidden">
+              <span>{dict?.getCV || "Get CV"}</span>
+              <div className="relative w-6 h-6 md:w-10 md:h-10">
                 <Download className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-0 scale-50 translate-y-4" : ""}`} />
                 <FileText className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 -translate-y-4"}`} />
               </div>
@@ -163,11 +158,10 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
               document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
               window.history.pushState(null, '', '#projects');
             }}
-            className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
-              isNeumorphic
+            className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                 : "bg-transparent text-white border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.2)] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_rgba(255,255,255,0.2)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
-            }`}
+              }`}
           >
             <Highlighter show={isWorkHovered} action="highlight" color={getHighlightColor(false)}>
               {dict?.work || "Projects"}
@@ -187,11 +181,10 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
               document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
               window.history.pushState(null, '', '#contact');
             }}
-            className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${
-              isNeumorphic
+            className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                 : "bg-transparent text-white border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.2)] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_rgba(255,255,255,0.2)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
-            }`}
+              }`}
           >
             <Highlighter show={isContactHovered} action="highlight" color={getHighlightColor(false)}>
               {dict?.contact || "Contact"}

@@ -549,10 +549,10 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
             <div 
               onMouseEnter={() => setIsSummaryCardHovered(true)}
               onMouseLeave={() => setIsSummaryCardHovered(false)}
-              className={`p-8 md:p-10 transition-all duration-300 ${
+              className={`p-8 md:p-10 transition-all duration-300 hover:!transform-none ${
                 isNeumorphic 
-                  ? "brutalist-container bg-white text-black hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none" 
-                  : "brutalist-container-dark hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
+                  ? "brutalist-container bg-white text-black !shadow-[8px_8px_0px_0px_#000000]" 
+                  : "brutalist-container-dark !shadow-[8px_8px_0px_0px_rgba(255,255,255,0.3)]"
               }`}>
               <div className="flex flex-col gap-6 text-lg md:text-xl font-medium leading-relaxed">
                 <p>

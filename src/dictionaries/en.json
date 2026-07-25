@@ -11,7 +11,7 @@
   },
   "hero": {
     "availability": "Available: Full-Time / Freelance",
-    "description": "Full-Stack Developer. <br/> Next.js • Angular • Java / Spring • Docker <br/> Based in Egypt. <br/> Building web apps & APIs",
+    "description": "Full-Stack Developer. <br/> Next.js • Spring Boot • MongoDB • Docker <br/> Based in Egypt. <br/> Building web apps & APIs.",
     "samy": "Samy",
     "barsoum": "Barsoum",
     "work": "Projects",
@@ -37,7 +37,12 @@
         "id": "knowledge-archive",
         "title": "Knowledge Archive",
         "description": "A Renaissance-inspired interactive learning archive exploring the Spring Boot ecosystem hierarchy, directory blueprints, and Web MVC request lifecycles through clean visual reference guides.",
-        "tech": ["Next.js", "Lenis Scroll", "GSAP", "Base UI"],
+        "tech": [
+          "Next.js",
+          "Lenis Scroll",
+          "GSAP",
+          "Base UI"
+        ],
         "github": "https://github.com/samybit/primavera",
         "demo": "https://primavera-4yi.pages.dev/",
         "images": [
@@ -50,7 +55,12 @@
         "id": "arch-studio",
         "title": "Arch Studio",
         "description": "A responsive portfolio site for showcasing architectural design work. Serves as a performance focused frontend implementation using lazy loaded image trails with cms.",
-        "tech": ["Next.js", "Sanity.io", "Framer Motion", "TailwindCSS"],
+        "tech": [
+          "Next.js",
+          "Sanity.io",
+          "Framer Motion",
+          "TailwindCSS"
+        ],
         "github": "https://github.com/samybit/michael-studio",
         "demo": "https://michael-studio.vercel.app/",
         "images": [
@@ -63,7 +73,12 @@
         "id": "3d",
         "title": "3D Web",
         "description": "A vertical storytelling experience exploring 7 approaches to 3D rendering. Serves as a technical reference for WebGL pipelines, Spline, Globe.gl, and CSS trigonometry.",
-        "tech": ["Next.js", "Three.js", "Spline", "Framer Motion"],
+        "tech": [
+          "Next.js",
+          "Three.js",
+          "Spline",
+          "Framer Motion"
+        ],
         "github": "https://github.com/samybit/3d-showcase",
         "demo": "https://3d-showcase-pi.vercel.app/",
         "images": [
@@ -76,7 +91,12 @@
         "id": "movie",
         "title": "Movie Intelligence App",
         "description": "Cinematic platform featuring Firebase authentication, global state management, and an advanced IMDB-style rating algorithm.",
-        "tech": ["React", "Firebase", "Redux", "TailwindCSS"],
+        "tech": [
+          "React",
+          "Firebase",
+          "Redux",
+          "TailwindCSS"
+        ],
         "github": "https://github.com/samybit/iti-movie-app",
         "demo": "https://iti-movie-app.pages.dev/",
         "images": [
@@ -89,7 +109,12 @@
         "id": "bento",
         "title": "Nexus Board",
         "description": "Bento-styled game completion board designed for focused gamers. Built with the latest Next.js App Router and integrated with Google Gemini for intelligent achievement roadmaps.",
-        "tech": ["Next.js", "Gemini AI", "Prisma", "TailwindCSS"],
+        "tech": [
+          "Next.js",
+          "Gemini AI",
+          "Prisma",
+          "TailwindCSS"
+        ],
         "github": "https://github.com/samybit/bento-game-tracker",
         "demo": "https://bento-game-tracker.vercel.app/",
         "images": [
@@ -102,7 +127,12 @@
         "id": "plants",
         "title": "Verdant Plants Store",
         "description": "Fully functional e-commerce boutique powered by WordPress and WooCommerce.",
-        "tech": ["WordPress", "WooCommerce", "Elementor", "PHP"],
+        "tech": [
+          "WordPress",
+          "WooCommerce",
+          "Elementor",
+          "PHP"
+        ],
         "github": "",
         "demo": "",
         "images": [
@@ -115,7 +145,12 @@
         "id": "scraper",
         "title": "Lead Scraper",
         "description": "An automated n8n workflow orchestrating a Python/Flask microservice. It scrapes daily job postings, leverages an LLM to summarize requirements, and delivers insights via email.",
-        "tech": ["n8n", "Python", "LLM API", "Docker"],
+        "tech": [
+          "n8n",
+          "Python",
+          "LLM API",
+          "Docker"
+        ],
         "github": "https://github.com/samybit/freelance-lead-scraper",
         "demo": "#",
         "images": [
@@ -128,7 +163,12 @@
         "id": "ecommerce",
         "title": "Vanilla JS E-Commerce",
         "description": "A pure Vanilla JavaScript e-commerce engine with an integrated cart, seamless checkout flow, and custom modal windows.",
-        "tech": ["JavaScript", "HTML5", "CSS3", "DOM"],
+        "tech": [
+          "JavaScript",
+          "HTML5",
+          "CSS3",
+          "DOM"
+        ],
         "github": "https://github.com/samybit/vanilla-js-ecommerce",
         "demo": "https://samybit.github.io/vanilla-js-ecommerce/",
         "images": [
@@ -141,7 +181,12 @@
         "id": "bearbuzz",
         "title": "BearBuzz",
         "description": "Automated financial monitoring engine featuring dual desktop and terminal interfaces to track stock price volatility, aggregate breaking headlines, and deliver instant text alert notifications to mobile phones.",
-        "tech": ["Python", "Twilio API", "CI/CD", "Tkinter"],
+        "tech": [
+          "Python",
+          "Twilio API",
+          "CI/CD",
+          "Tkinter"
+        ],
         "github": "https://github.com/samybit/bearbuzz",
         "demo": "#",
         "images": [
@@ -154,7 +199,11 @@
         "id": "cli",
         "title": "CLI Expense Tracker",
         "description": "A CLI personal finance manager written in C featuring manual dynamic memory management, binary file storage, and a custom recursive QuickSort.",
-        "tech": ["C", "CLI", "Data Structures"],
+        "tech": [
+          "C",
+          "CLI",
+          "Data Structures"
+        ],
         "github": "https://github.com/samybit/cli-expense-tracker",
         "demo": "#",
         "images": [
