@@ -6,6 +6,8 @@ import { Terminal, User, Mail, Link as LinkIcon, Copy, ClipboardPaste } from "lu
 import { playThud } from "@/utils/audio";
 import { cycleAboutImage } from "@/utils/aboutImage";
 
+import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
+
 // --- CUSTOM GITHUB ICON ---
 const GithubIcon = ({ size = 16 }: { size?: number }) => (
   <svg
@@ -25,6 +27,7 @@ const GithubIcon = ({ size = 16 }: { size?: number }) => (
 );
 
 export default function CustomContextMenu({ dict }: { dict?: Record<string, string> }) {
+  const isNeumorphic = useNeumorphicTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [currentLocale, setCurrentLocale] = useState("en");
@@ -110,7 +113,9 @@ export default function CustomContextMenu({ dict }: { dict?: Record<string, stri
 
   return (
     <div
-      className="fixed z-[9999] bg-white border-4 border-black brutalist-shadow flex flex-col w-[200px] context-menu-wrapper"
+      className={`fixed z-[9999] bg-white border-4 border-black flex flex-col w-[200px] context-menu-wrapper ${
+        isNeumorphic ? "brutalist-shadow" : "brutalist-shadow-dark"
+      }`}
       style={{ top: `${position.y}px`, left: `${position.x}px` }}
       dir={currentLocale === "ar" ? "rtl" : "ltr"}
     >
@@ -141,7 +146,7 @@ export default function CustomContextMenu({ dict }: { dict?: Record<string, stri
       {/* Menu Actions */}
       <button
         onClick={copyUrl}
-        className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
+        className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors text-black"
       >
         <LinkIcon size={16} /> {dict?.copyUrl || "Copy URL"}
       </button>
@@ -149,7 +154,7 @@ export default function CustomContextMenu({ dict }: { dict?: Record<string, stri
       <Link
         href={`/${currentLocale}/about`}
         onClick={() => cycleAboutImage()}
-        className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
+        className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors text-black"
       >
         <User size={16} /> {dict?.specs || "Specs"}
       </Link>
@@ -158,7 +163,7 @@ export default function CustomContextMenu({ dict }: { dict?: Record<string, stri
         href="https://github.com/samybit/portfolio"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors"
+        className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors text-black"
       >
         {/* Replaced Lucide Github with custom inline SVG */}
         <GithubIcon size={16} /> {dict?.source || "Source"}
@@ -167,7 +172,7 @@ export default function CustomContextMenu({ dict }: { dict?: Record<string, stri
 
       <Link
         href={`/${currentLocale}#contact`}
-        className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase hover:bg-black hover:text-white transition-colors"
+        className="flex items-center gap-3 w-full text-left rtl:text-right px-4 py-3 text-sm font-black uppercase hover:bg-black hover:text-white transition-colors text-black"
       >
         <Mail size={16} /> {dict?.contact || "Contact"}
       </Link>

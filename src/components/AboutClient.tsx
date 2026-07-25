@@ -350,8 +350,8 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
         {/* --- EDUCATION & CERTS ROW --- */}
         <div className="animate-slide-up-delay-1 grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-          <section className={`brutalist-container flex flex-col justify-between transition-all duration-300 ${
-            isNeumorphic ? "" : "!bg-black !text-white"
+          <section className={`brutalist-container flex flex-col justify-between transition-all duration-300 hover:!transform-none ${
+            isNeumorphic ? "hover:!shadow-[8px_8px_0px_0px_#000000]" : "!bg-black !text-white !shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:!shadow-[8px_8px_0px_rgba(255,255,255,0.3)]"
           }`}>
             <div>
               <div className={`flex items-center gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
@@ -370,7 +370,9 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
             </div>
           </section>
 
-          <section className="brutalist-container flex flex-col text-black">
+          <section className={`brutalist-container flex flex-col text-black overflow-hidden ${
+            isNeumorphic ? "" : "brutalist-shadow-dark"
+          }`}>
             <div className={`flex items-center gap-4 border-b-4 pb-3 mb-4 transition-all duration-300 ${
               isNeumorphic ? "border-[#a3b1c6]" : "border-black"
             }`}>
@@ -391,18 +393,18 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                         e.preventDefault();
                         showToast(dict?.notOnline || "MERN Stack certificate is not online yet.");
                       }}
-                      className={`group block border-s-8 ps-4 py-1.5 transition-all cursor-pointer w-full text-left rtl:text-right ${
+                      className={`group block border-s-8 ps-3 pe-2 py-1.5 transition-all cursor-pointer w-full text-left rtl:text-right overflow-hidden ${
                         isNeumorphic
                           ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:bg-[#d1d9e6] active:text-[#1e293b]"
                           : "border-black hover:bg-black hover:text-white active:bg-black active:text-white"
                       }`}
                     >
-                      <div className="flex justify-between items-center w-full">
-                        <div>
-                          <h3 className="text-2xl font-black uppercase leading-tight">{dict?.mernStack || "MERN Stack & Gen AI"}</h3>
-                          <div className="flex items-center gap-3 mt-1">
-                            <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 group-active:text-zinc-300 uppercase leading-none whitespace-nowrap">ITI (MCIT)</p>
-                            <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 group-active:text-zinc-400 transition-colors leading-none whitespace-nowrap">
+                      <div className="flex justify-between items-center w-full min-w-0">
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-xl sm:text-2xl font-black uppercase leading-tight truncate">{dict?.mernStack || "MERN Stack & Gen AI"}</h3>
+                          <div className="flex items-center gap-2 sm:gap-3 mt-1 flex-wrap">
+                            <p className="text-sm sm:text-lg font-bold text-zinc-500 group-hover:text-zinc-300 group-active:text-zinc-300 uppercase leading-none whitespace-nowrap">ITI (MCIT)</p>
+                            <span className="text-sm sm:text-lg font-bold text-zinc-600 group-hover:text-zinc-400 group-active:text-zinc-400 transition-colors leading-none whitespace-nowrap">
                               {"// 2026"}
                             </span>
                           </div>
@@ -417,23 +419,23 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                       href="https://cs50.harvard.edu/certificates/09d4b4ad-f9dd-4cf3-a1dc-7385742119f9"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`group block border-s-8 ps-4 py-1.5 transition-all cursor-pointer w-full text-left rtl:text-right ${
+                      className={`group block border-s-8 ps-3 pe-2 py-1.5 transition-all cursor-pointer w-full text-left rtl:text-right overflow-hidden ${
                         isNeumorphic
                           ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:bg-[#d1d9e6] active:text-[#1e293b]"
                           : "border-black hover:bg-black hover:text-white active:bg-black active:text-white"
                       }`}
                     >
-                      <div className="flex justify-between items-center w-full">
-                        <div>
-                          <h3 className="text-2xl font-black uppercase leading-tight">{dict?.cs50 || "CS50x"}</h3>
-                          <div className="flex items-center gap-3 mt-1">
-                            <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 group-active:text-zinc-300 uppercase leading-none whitespace-nowrap">edX (Harvard)</p>
-                            <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 group-active:text-zinc-400 transition-colors leading-none whitespace-nowrap">
+                      <div className="flex justify-between items-center w-full min-w-0">
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-xl sm:text-2xl font-black uppercase leading-tight truncate">{dict?.cs50 || "CS50x"}</h3>
+                          <div className="flex items-center gap-2 sm:gap-3 mt-1 flex-wrap">
+                            <p className="text-sm sm:text-lg font-bold text-zinc-500 group-hover:text-zinc-300 group-active:text-zinc-300 uppercase leading-none whitespace-nowrap">edX (Harvard)</p>
+                            <span className="text-sm sm:text-lg font-bold text-zinc-600 group-hover:text-zinc-400 group-active:text-zinc-400 transition-colors leading-none whitespace-nowrap">
                               {"// 2025"}
                             </span>
                           </div>
                         </div>
-                        <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 group-active:opacity-100 rtl:translate-x-4 ltr:-translate-x-4 group-hover:translate-x-0 group-active:translate-x-0 transition-all duration-300 mx-4 shrink-0" />
+                        <ExternalLink size={20} className="opacity-0 group-hover:opacity-100 group-active:opacity-100 rtl:translate-x-2 ltr:-translate-x-2 group-hover:translate-x-0 group-active:translate-x-0 transition-all duration-300 ms-2 shrink-0" />
                         <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
                       </div>
                     </a>
@@ -445,23 +447,23 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
                       href="https://i.ibb.co/ynPJ6szk/FWD-data-Certificate.png"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`group block border-s-8 ps-4 py-1.5 transition-all cursor-pointer w-full text-left rtl:text-right ${
+                      className={`group block border-s-8 ps-3 pe-2 py-1.5 transition-all cursor-pointer w-full text-left rtl:text-right overflow-hidden ${
                         isNeumorphic
                           ? "border-[#a3b1c6] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:bg-[#d1d9e6] active:text-[#1e293b]"
                           : "border-black hover:bg-black hover:text-white active:bg-black active:text-white"
                       }`}
                     >
-                      <div className="flex justify-between items-center w-full">
-                        <div>
-                          <h3 className="text-2xl font-black uppercase leading-tight">{dict?.dataAnalysis || "Data Analysis"}</h3>
-                          <div className="flex items-center gap-3 mt-1">
-                            <p className="text-lg font-bold text-zinc-500 group-hover:text-zinc-300 group-active:text-zinc-300 uppercase leading-none whitespace-nowrap">Egypt FWD (MCIT)</p>
-                            <span className="text-lg font-bold text-zinc-600 group-hover:text-zinc-400 group-active:text-zinc-400 transition-colors leading-none whitespace-nowrap">
+                      <div className="flex justify-between items-center w-full min-w-0">
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-xl sm:text-2xl font-black uppercase leading-tight truncate">{dict?.dataAnalysis || "Data Analysis"}</h3>
+                          <div className="flex items-center gap-2 sm:gap-3 mt-1 flex-wrap">
+                            <p className="text-sm sm:text-lg font-bold text-zinc-500 group-hover:text-zinc-300 group-active:text-zinc-300 uppercase leading-none whitespace-nowrap">Egypt FWD (MCIT)</p>
+                            <span className="text-sm sm:text-lg font-bold text-zinc-600 group-hover:text-zinc-400 group-active:text-zinc-400 transition-colors leading-none whitespace-nowrap">
                               {"// 2021"}
                             </span>
                           </div>
                         </div>
-                        <ExternalLink size={24} className="opacity-0 group-hover:opacity-100 group-active:opacity-100 rtl:translate-x-4 ltr:-translate-x-4 group-hover:translate-x-0 group-active:translate-x-0 transition-all duration-300 mx-4 shrink-0" />
+                        <ExternalLink size={20} className="opacity-0 group-hover:opacity-100 group-active:opacity-100 rtl:translate-x-2 ltr:-translate-x-2 group-hover:translate-x-0 group-active:translate-x-0 transition-all duration-300 ms-2 shrink-0" />
                         <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
                       </div>
                     </a>

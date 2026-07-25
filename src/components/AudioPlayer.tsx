@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Disc3 } from "lucide-react";
 import localFont from "next/font/local";
+import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
 const mallory = localFont({
   src: "../app/fonts/Mallory.otf",
@@ -15,6 +16,7 @@ const tracks = [
 ];
 
 export default function AudioPlayer({ dict }: { dict?: Record<string, string> }) {
+  const isNeumorphic = useNeumorphicTheme();
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const titleRef = useRef<HTMLSpanElement>(null);
@@ -339,7 +341,9 @@ export default function AudioPlayer({ dict }: { dict?: Record<string, string> })
     <div className="relative w-full min-w-[260px] max-w-[280px] z-10">
 
       {/* The main styled card (Acts as the peer for hover syncing) */}
-      <div className="peer audio-player-container border-4 border-black p-3 flex items-center justify-between gap-6 bg-white text-black w-full shadow-[8px_8px_0px_0px_#000000] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all relative z-10">
+      <div className={`peer audio-player-container border-4 border-black p-3 flex items-center justify-between gap-6 bg-white text-black w-full hover:translate-y-1 hover:translate-x-1 hover:!shadow-none transition-all relative z-10 ${
+        isNeumorphic ? "shadow-[8px_8px_0px_0px_#000000]" : "shadow-[8px_8px_0px_0px_rgba(255,255,255,0.3)]"
+      }`}>
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <Disc3
             size={28}

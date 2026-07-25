@@ -536,7 +536,7 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
             <p className={`text-base md:text-lg lg:text-xl font-bold uppercase ${
               isNeumorphic ? "text-zinc-600" : "text-zinc-400"
             }`}>
-              {dict?.description || "Currently open for freelance projects and full-time roles. Let's make something impactful."}
+              {dict?.description || "Open for freelance projects and full-time roles."}
             </p>
             <RippleButton
               as={Link}
