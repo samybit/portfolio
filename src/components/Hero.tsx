@@ -87,7 +87,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
           {/* --- DESKTOP DESCRIPTION (Hidden on mobile) --- */}
           <HeroDescription
             html={dict?.description || "Full-Stack Developer. <br/> Next.js • Angular • Java / Spring • Docker <br/> Based in Egypt. <br/> Building web apps & APIs"}
-            className="hidden md:block text-lg md:text-2xl font-bold max-w-2xl uppercase leading-snug text-white/80 -ms-2 ps-2 hero-subtitle-backdrop mb-6"
+            className="hidden md:block text-lg md:text-2xl font-bold max-w-2xl leading-snug text-white/80 -ms-2 ps-2 hero-subtitle-backdrop mb-6"
           />
 
           <h1 className="text-[18vw] sm:text-6xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem] font-black uppercase tracking-tighter leading-[0.85]">
@@ -117,7 +117,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
           {/* --- MOBILE DESCRIPTION (Hidden on desktop) --- */}
           <HeroDescription
             html={dict?.description || "Full-Stack Developer. <br/> Next.js • Angular • Java / Spring • Docker <br/> Based in Egypt. <br/> Building web apps & APIs"}
-            className="block md:hidden text-lg md:text-2xl font-bold max-w-2xl uppercase leading-snug text-white/80 -ms-2 ps-2 hero-subtitle-backdrop mt-6"
+            className="block md:hidden text-lg md:text-2xl font-bold max-w-2xl leading-snug text-white/80 -ms-2 ps-2 hero-subtitle-backdrop mt-6"
           />
         </div>
 

@@ -638,13 +638,7 @@ export default function HeroCarabiner3D() {
   return (
     <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
       
-      {/* Dot grid background — white dots on black */}
-      <div
-        className="absolute inset-0 opacity-[0.25]"
-        style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 0)', backgroundSize: '40px 40px', backgroundPosition: 'calc(50% - 20px) calc(50% - 20px)' }}
-      />
-
-      {/* Topographic 2D Background Pattern */}
+      {/* Topographic 2D Background Pattern (Concentric Circles) */}
       <div 
         className="absolute inset-0 opacity-[0.12]" 
         style={{ backgroundImage: 'repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 40px, #ffffff 40px, #ffffff 41px)', backgroundPosition: 'center center' }} 
