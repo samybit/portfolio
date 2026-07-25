@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { DiaTextReveal } from "@/components/ui/dia-text-reveal";
 
 export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?: () => void; locale?: string }) {
   const [isExiting, setIsExiting] = useState(false);
@@ -62,10 +61,26 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
 
   const isAr = locale === 'ar';
   const nameText = isAr ? "سامي برسوم" : "SAMY BARSOUM";
+  const welcomeText = isAr ? "أهلاً بك" : "WELCOME";
 
   return (
     <>
       <style>{`
+        /* Feather-Light GPU Hardware-Accelerated Welcome Text Animation */
+        .cl-welcome-text {
+          opacity: 0;
+          transform: translateY(8px);
+          animation: cl-welcome-fade 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+          will-change: opacity, transform;
+        }
+
+        @keyframes cl-welcome-fade {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
         /* Pure CSS 3D Hardware-Accelerated Scene */
         .cl-3d-scene {
           perspective: 800px;
@@ -224,15 +239,9 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
             </span>
           </div>
 
-          {/* Central Welcome Text with DiaTextReveal */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-[0.15em] text-white">
-            <DiaTextReveal
-              text={isAr ? "أهلاً بك" : "Welcome"}
-              textColor="#ffffff"
-              colors={["#ffffff", "#888888", "#ffffff", "#aaaaaa", "#ffffff"]}
-              duration={1.2}
-              delay={0.2}
-            />
+          {/* Central Welcome Text with Pure CSS Hardware Accelerated Fade */}
+          <h1 className="cl-welcome-text text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-[0.15em] text-white">
+            {welcomeText}
           </h1>
 
           {/* Counter in Middle */}
