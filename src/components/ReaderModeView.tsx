@@ -14,6 +14,7 @@ const stack = [
 interface Project {
   id: string;
   title: string;
+  subtitle?: string;
   description: string;
   tech: string[];
   github?: string;
@@ -165,6 +166,11 @@ export default function ReaderModeView({ dict, locale, onExit }: ReaderModeViewP
                     </a>
                   )}
                 </p>
+                {project.subtitle && (
+                  <p style={{ fontSize: "0.8rem", color: "#666", fontWeight: 600, marginBottom: "0.25rem" }}>
+                    {project.subtitle}
+                  </p>
+                )}
                 <p style={{ fontSize: "0.9rem", color: "#444", lineHeight: 1.6, marginBottom: "0.35rem", whiteSpace: "pre-line" }}>
                   {project.description}
                 </p>

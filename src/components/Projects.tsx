@@ -48,6 +48,7 @@ const GithubIcon = ({ size = 20 }: { size?: number }) => (
 
 interface Project {
   title: string;
+  subtitle?: string;
   description: string;
   tech: string[];
   github: string;
@@ -117,7 +118,7 @@ const ProjectCard = ({
   const cardContent = (
     <div 
       className={`relative overflow-hidden group/card flex flex-col h-full w-full min-h-[320px] lg:min-h-0 ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
-        isNeumorphic ? "brutalist-container bg-white border-black" : "brutalist-container-dark"
+        isNeumorphic ? "brutalist-container bg-white border-black p-4 md:p-5" : "brutalist-container-dark p-4 md:p-5"
       }`}
       onMouseEnter={() => {
         if (window.innerWidth >= 1024) {
@@ -168,14 +169,27 @@ const ProjectCard = ({
         <div className="flex flex-col flex-1">
           <div>
             {asHeading ? (
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-black uppercase mb-2 md:mb-3 tracking-tight leading-none md:leading-tight">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black uppercase mb-1.5 md:mb-2 tracking-tight leading-none md:leading-tight">
                 {project.title}
               </h3>
             ) : (
-              <div className="text-xl sm:text-2xl md:text-3xl font-black uppercase mb-2 md:mb-3 tracking-tight leading-none md:leading-tight">
+              <div className="text-xl sm:text-2xl md:text-3xl font-black uppercase mb-1.5 md:mb-2 tracking-tight leading-none md:leading-tight">
                 {project.title}
               </div>
             )}
+
+            {project.subtitle && (
+              <div className="mb-2 md:mb-3">
+                <span className={`inline-block text-xs sm:text-sm font-bold px-2.5 py-0.5 rounded border tracking-wide ${
+                  isNeumorphic
+                    ? "bg-[#d1d9e6]/70 text-zinc-700 border-zinc-400/70"
+                    : "bg-zinc-900 text-zinc-300 border-zinc-700"
+                }`}>
+                  {project.subtitle}
+                </span>
+              </div>
+            )}
+
             <p className={`text-sm sm:text-base md:text-lg font-medium leading-snug whitespace-pre-line ${
               isNeumorphic ? "text-zinc-800" : "text-zinc-300"
             }`}>
@@ -446,7 +460,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
   const titleRest = titleWords.slice(1).join(" ");
 
   return (
-    <section id="projects" className={`snap-start relative w-full min-h-[100svh] flex flex-col pt-24 pb-8 px-6 md:px-12 lg:px-24 border-b-8 border-black overflow-hidden ${
+    <section id="projects" className={`snap-start relative w-full min-h-[100svh] flex flex-col pt-24 pb-12 px-6 md:px-12 lg:px-24 border-b-8 border-black overflow-hidden ${
       isNeumorphic ? "bg-white text-black" : "bg-black text-white"
     }`}>
       {/* --- CREATIVE ENGINEERING BLUEPRINT & DOT MATRIX BACKGROUND --- */}
@@ -542,7 +556,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
       <div className="relative z-10 hidden lg:grid grid-cols-[1fr_5rem] gap-6 xl:gap-8 flex-1 min-h-0">
 
         {/* The 2x2 Grid container */}
-        <div className="grid grid-cols-2 grid-rows-2 gap-6 xl:gap-8 h-full w-full">
+        <div className="grid grid-cols-2 gap-6 xl:gap-8 w-full">
           {Array.from({ length: 4 }).map((_, index) => {
             if (index < currentProjects.length) {
               const project = currentProjects[index];
