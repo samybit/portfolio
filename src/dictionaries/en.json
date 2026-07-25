@@ -162,7 +162,7 @@
       {
         "id": "ecommerce",
         "title": "Vanilla JS E-Commerce",
-        "description": "A pure Vanilla JavaScript e-commerce engine with an integrated cart, seamless checkout flow, and custom modal windows.",
+        "description": "-(5-Person Team Project • ITI Internship)\n- Built a full e-commerce platform featuring cart functionality, checkout flows, and user authentication.\n- Implemented a dedicated admin dashboard for managing catalog items and order data using pure JavaScript (DOM manipulation).",
         "tech": [
           "JavaScript",
           "HTML5",
@@ -172,9 +172,9 @@
         "github": "https://github.com/samybit/vanilla-js-ecommerce",
         "demo": "https://samybit.github.io/vanilla-js-ecommerce/",
         "images": [
-          "",
-          "",
-          ""
+          "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-1.png",
+          "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-2.png",
+          "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-3.png"
         ]
       },
       {

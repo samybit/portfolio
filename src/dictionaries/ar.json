@@ -162,7 +162,7 @@
       {
         "id": "ecommerce",
         "title": "Vanilla JS E-Commerce",
-        "description": "محرك تجارة إلكترونية باستخدام Vanilla JavaScript نقي مع عربة تسوق متكاملة وتدفق دفع سلس ونوافذ منبثقة مخصصة.",
+        "description": "-(مشروع فريق مكون من 5 أفراد • تدريب ITI)\n- بناء منصة تجارة إلكترونية كاملة تتميز بوظائف عربة التسوق وتدفقات الدفع وتوثيق المستخدمين.\n- تنفيذ لوحة تحكم مخصصة لإدارة عناصر الكتالوج وبيانات الطلبات باستخدام JavaScript نقي (التعامل مع DOM).",
         "tech": [
           "JavaScript",
           "HTML5",
@@ -172,9 +172,9 @@
         "github": "https://github.com/samybit/vanilla-js-ecommerce",
         "demo": "https://samybit.github.io/vanilla-js-ecommerce/",
         "images": [
-          "",
-          "",
-          ""
+          "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-1.png",
+          "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-2.png",
+          "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-3.png"
         ]
       },
       {

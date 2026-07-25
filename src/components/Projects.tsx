@@ -176,7 +176,7 @@ const ProjectCard = ({
                 {project.title}
               </div>
             )}
-            <p className={`text-sm sm:text-base md:text-lg font-medium leading-snug ${
+            <p className={`text-sm sm:text-base md:text-lg font-medium leading-snug whitespace-pre-line ${
               isNeumorphic ? "text-zinc-800" : "text-zinc-300"
             }`}>
               {project.description}

@@ -165,7 +165,7 @@ export default function ReaderModeView({ dict, locale, onExit }: ReaderModeViewP
                     </a>
                   )}
                 </p>
-                <p style={{ fontSize: "0.9rem", color: "#444", lineHeight: 1.6, marginBottom: "0.35rem" }}>
+                <p style={{ fontSize: "0.9rem", color: "#444", lineHeight: 1.6, marginBottom: "0.35rem", whiteSpace: "pre-line" }}>
                   {project.description}
                 </p>
                 <p style={{ fontSize: "0.75rem", color: "#888", letterSpacing: "0.05em" }}>
