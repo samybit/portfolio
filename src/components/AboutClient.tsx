@@ -62,6 +62,7 @@ interface SkillItemMeta {
   role: string;
   color: string;
   iconUrl: string;
+  url: string;
 }
 
 function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic: boolean }) {
@@ -69,10 +70,13 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
   const [imgError, setImgError] = useState(false);
 
   return (
-    <div
+    <a
+      href={item.url}
+      target="_blank"
+      rel="noopener noreferrer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group/keycap relative w-full h-9 rounded-none cursor-default transition-all duration-200 select-none overflow-hidden ${
+      className={`group/keycap relative w-full h-9 rounded-none cursor-pointer transition-all duration-200 select-none overflow-hidden block ${
         isNeumorphic
           ? isHovered
             ? "bg-[#d1d9e6] text-[#1e293b]"
@@ -82,6 +86,7 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
             : "border-2 border-white/80 bg-zinc-950 text-white"
       }`}
       title={`${item.name} // ${item.role}`}
+      aria-label={`${item.name} documentation (opens in a new tab)`}
     >
       <div className="w-full h-full flex items-center justify-between px-2.5 relative">
         {/* Left: Brand Color Dot Indicator (Scales safely inside reserved wrapper) */}
@@ -136,7 +141,7 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
           )}
         </div>
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -241,11 +246,11 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
       icon: LayoutTemplate,
       hoverIcon: PenTool,
       items: [
-        { name: "Next.js", role: "SSR & App Router", color: "#ffffff", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
-        { name: "React", role: "UI Components", color: "#61dafb", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
-        { name: "Angular", role: "Enterprise SPA", color: "#dd0031", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angular/angular-original.svg" },
-        { name: "TypeScript", role: "Typed JavaScript", color: "#3178c6", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
-        { name: "Tailwind CSS", role: "Utility Design Tokens", color: "#38bdf8", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" },
+        { name: "Next.js", role: "SSR & App Router", color: "#ffffff", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg", url: "https://nextjs.org/docs" },
+        { name: "React", role: "UI Components", color: "#61dafb", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg", url: "https://react.dev" },
+        { name: "Angular", role: "Enterprise SPA", color: "#dd0031", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angular/angular-original.svg", url: "https://angular.dev" },
+        { name: "TypeScript", role: "Typed JavaScript", color: "#3178c6", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg", url: "https://www.typescriptlang.org/docs/" },
+        { name: "Tailwind CSS", role: "Utility Design Tokens", color: "#38bdf8", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg", url: "https://tailwindcss.com/docs" },
       ]
     },
     {
@@ -253,15 +258,15 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
       icon: Database,
       hoverIcon: Cpu,
       items: [
-        { name: "Java", role: "Enterprise OOP", color: "#f8981d", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
-        { name: "Spring", role: "Backend Framework", color: "#6db33f", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" },
-        { name: "NestJS", role: "Modular Backend API", color: "#e0234e", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nestjs/nestjs-original.svg" },
-        { name: "Node.js", role: "Async JS Runtime", color: "#5fa04e", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
-        { name: "Express.js", role: "REST Middleware", color: "#a0a0a0", iconUrl: "https://cdn.simpleicons.org/express/white" },
-        { name: "Python", role: "Core Data & Scripting", color: "#3776ab", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
-        { name: "Flask", role: "Micro Services", color: "#ffffff", iconUrl: "https://cdn.simpleicons.org/flask/white" },
-        { name: "Postgres", role: "ACID Relational SQL", color: "#336791", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
-        { name: "MongoDB", role: "NoSQL Document DB", color: "#47a248", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
+        { name: "Java", role: "Enterprise OOP", color: "#f8981d", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg", url: "https://docs.oracle.com/en/java/" },
+        { name: "Spring", role: "Backend Framework", color: "#6db33f", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg", url: "https://spring.io/docs" },
+        { name: "NestJS", role: "Modular Backend API", color: "#e0234e", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nestjs/nestjs-original.svg", url: "https://docs.nestjs.com/" },
+        { name: "Node.js", role: "Async JS Runtime", color: "#5fa04e", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg", url: "https://nodejs.org/en/docs" },
+        { name: "Express.js", role: "REST Middleware", color: "#a0a0a0", iconUrl: "https://cdn.simpleicons.org/express/white", url: "https://expressjs.com/" },
+        { name: "Python", role: "Core Data & Scripting", color: "#3776ab", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg", url: "https://docs.python.org/3/" },
+        { name: "Flask", role: "Micro Services", color: "#ffffff", iconUrl: "https://cdn.simpleicons.org/flask/white", url: "https://flask.palletsprojects.com/" },
+        { name: "Postgres", role: "ACID Relational SQL", color: "#336791", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg", url: "https://www.postgresql.org/docs/" },
+        { name: "MongoDB", role: "NoSQL Document DB", color: "#47a248", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg", url: "https://www.mongodb.com/docs/" },
       ]
     },
     {
@@ -269,11 +274,11 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
       icon: Server,
       hoverIcon: Cloud,
       items: [
-        { name: "Docker", role: "Containerization", color: "#2496ed", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
-        { name: "Kubernetes", role: "Cluster Orchestration", color: "#326ce5", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-original.svg" },
-        { name: "Jenkins", role: "CI/CD Automation", color: "#d24939", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" },
-        { name: "Linux OS", role: "Server Kernel", color: "#fcc624", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" },
-        { name: "Nexus Repo", role: "Artifact Registry", color: "#1c77c3", iconUrl: "https://cdn.simpleicons.org/sonatype/1c77c3" },
+        { name: "Docker", role: "Containerization", color: "#2496ed", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg", url: "https://docs.docker.com/" },
+        { name: "Kubernetes", role: "Cluster Orchestration", color: "#326ce5", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-original.svg", url: "https://kubernetes.io/docs/" },
+        { name: "Jenkins", role: "CI/CD Automation", color: "#d24939", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg", url: "https://www.jenkins.io/doc/" },
+        { name: "Linux OS", role: "Server Kernel", color: "#fcc624", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg", url: "https://docs.kernel.org/" },
+        { name: "Nexus Repo", role: "Artifact Registry", color: "#1c77c3", iconUrl: "https://cdn.simpleicons.org/sonatype/1c77c3", url: "https://help.sonatype.com/en/nexus-repository.html" },
       ]
     },
     {
@@ -281,13 +286,13 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
       icon: Wrench,
       hoverIcon: FlaskConical,
       items: [
-        { name: "Postman", role: "API Testing Suite", color: "#ff6c37", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg" },
-        { name: "Swagger", role: "OpenAPI Documentation", color: "#85ea2d", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swagger/swagger-original.svg" },
-        { name: "Jest", role: "Unit Testing", color: "#9A425B", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" },
-        { name: "Selenium", role: "E2E Automation", color: "#43b02a", iconUrl: "https://cdn.simpleicons.org/selenium/43b02a" },
-        { name: "BeautifulSoup", role: "Web Scraping Engine", color: "#ffd43b", iconUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ffd43b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 15.5a3.5 3.5 0 0 0 7 0V5a2 2 0 0 1 3.5-1.5"/><text x="6.8" y="14" font-size="8.5" font-weight="900" font-family="sans-serif" fill="%23ffd43b" stroke="none">B</text></svg>' },
-        { name: "REST APIs", role: "HTTP API Standard", color: "#009688", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" },
-        { name: "GraphQL", role: "Data Query Language", color: "#e535ab", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg" },
+        { name: "Postman", role: "API Testing Suite", color: "#ff6c37", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg", url: "https://learning.postman.com/docs/" },
+        { name: "Swagger", role: "OpenAPI Documentation", color: "#85ea2d", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swagger/swagger-original.svg", url: "https://swagger.io/docs/" },
+        { name: "Jest", role: "Unit Testing", color: "#9A425B", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg", url: "https://jestjs.io/docs/getting-started" },
+        { name: "Selenium", role: "E2E Automation", color: "#43b02a", iconUrl: "https://cdn.simpleicons.org/selenium/43b02a", url: "https://www.selenium.dev/documentation/" },
+        { name: "BeautifulSoup", role: "Web Scraping Engine", color: "#ffd43b", iconUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ffd43b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 15.5a3.5 3.5 0 0 0 7 0V5a2 2 0 0 1 3.5-1.5"/><text x="6.8" y="14" font-size="8.5" font-weight="900" font-family="sans-serif" fill="%23ffd43b" stroke="none">B</text></svg>', url: "https://www.crummy.com/software/BeautifulSoup/bs4/doc/" },
+        { name: "REST APIs", role: "HTTP API Standard", color: "#009688", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg", url: "https://restfulapi.net/" },
+        { name: "GraphQL", role: "Data Query Language", color: "#e535ab", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg", url: "https://graphql.org/learn/" },
       ]
     },
     {
@@ -295,11 +300,11 @@ export default function AboutClient({ dict, footerDict, tabTitles, locale }: { d
       icon: Workflow,
       hoverIcon: GitBranch,
       items: [
-        { name: "Git", role: "Version Control", color: "#f05032", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
-        { name: "Jira", role: "Agile Tracking", color: "#0052cc", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg" },
-        { name: "Trello", role: "Kanban Board", color: "#0079bf", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/trello/trello-original.svg" },
-        { name: "Notion", role: "Docs & Knowledge", color: "#ffffff", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/notion/notion-original.svg" },
-        { name: "Slack", role: "Team Comms", color: "#e01e5a", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/slack/slack-original.svg" },
+        { name: "Git", role: "Version Control", color: "#f05032", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg", url: "https://git-scm.com/doc" },
+        { name: "Jira", role: "Agile Tracking", color: "#0052cc", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg", url: "https://support.atlassian.com/jira-software-cloud/" },
+        { name: "Trello", role: "Kanban Board", color: "#0079bf", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/trello/trello-original.svg", url: "https://support.atlassian.com/trello/" },
+        { name: "Notion", role: "Docs & Knowledge", color: "#ffffff", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/notion/notion-original.svg", url: "https://www.notion.so/help" },
+        { name: "Slack", role: "Team Comms", color: "#e01e5a", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/slack/slack-original.svg", url: "https://api.slack.com/" },
       ]
     },
   ];
