@@ -3,17 +3,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?: () => void; locale?: string }) {
+  // isMounted: false on SSR/before hydration, true only after client mount
+  const [isMounted, setIsMounted] = useState(false);
+  const [shouldShow, setShouldShow] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const [isFinished, setIsFinished] = useState(() => {
-    if (typeof window !== "undefined") {
-      try {
-        return sessionStorage.getItem("cl_initial_loaded") === "true";
-      } catch {
-        return false;
-      }
-    }
-    return false;
-  });
+  const [isFinished, setIsFinished] = useState(false);
 
   const countRef = useRef(0);
   const countElRef = useRef<HTMLSpanElement>(null);
@@ -31,17 +25,36 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
     if (onComplete) onComplete();
   }, [onComplete]);
 
+  // Step 1: on mount, decide whether to show the loader at all
   useEffect(() => {
-    if (isFinished) return;
+    setIsMounted(true);
+    try {
+      const alreadyLoaded = sessionStorage.getItem("cl_initial_loaded") === "true";
+      if (alreadyLoaded) {
+        // Session already had the preloader — skip it entirely
+        document.documentElement.classList.add("cl-loaded");
+        setIsFinished(true);
+        if (onComplete) onComplete();
+      } else {
+        setShouldShow(true);
+      }
+    } catch {
+      setShouldShow(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Step 2: run the counter animation only if we decided to show
+  useEffect(() => {
+    if (!shouldShow || isFinished) return;
 
     // Lock body scroll while loader is active
     document.documentElement.style.overflow = "hidden";
 
-    const duration = 1500; // 1.5s
+    const duration = 1500;
     const start = performance.now();
     let exitTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
-    // Hard Guaranteed Safety Fallback: max 2000ms deadline to slide out under any circumstances
     const fallbackTimeoutId = setTimeout(() => {
       setIsExiting(true);
     }, 2000);
@@ -74,7 +87,7 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
       clearTimeout(fallbackTimeoutId);
       if (exitTimeoutId) clearTimeout(exitTimeoutId);
     };
-  }, [isFinished]);
+  }, [shouldShow, isFinished]);
 
   // Safety fallback timer for Framer Motion exit animation completion
   useEffect(() => {
@@ -87,7 +100,8 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
     return () => clearTimeout(exitSafetyTimer);
   }, [isExiting, isFinished, handleExitComplete]);
 
-  if (isFinished) {
+  // Don't render anything until client has mounted and decided to show
+  if (!isMounted || !shouldShow || isFinished) {
     return null;
   }
 

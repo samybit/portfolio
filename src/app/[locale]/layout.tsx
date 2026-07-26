@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Noto_Kufi_Arabic } from "next/font/google";
 import { cookies } from "next/headers";
+import Script from "next/script";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
 import SystemOverride from "@/components/SystemOverride";
@@ -130,6 +131,14 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={htmlClassName} data-scroll-behavior="smooth">
+      {/* Synchronous pre-paint script: hides the loader overlay before browser renders anything on refresh */}
+      <Script
+        id="cl-session-check"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `try{if(sessionStorage.getItem('cl_initial_loaded')==='true'){document.documentElement.classList.add('cl-loaded');}}catch(e){}`,
+        }}
+      />
       <body className={`${fontClassName} text-black antialiased selection:bg-black selection:text-white`}>
         <CurveLoader locale={locale} />
         <SystemOverride />
