@@ -284,7 +284,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
 
             <CustomTooltip content={dict?.cycleTheme || "Cycle Theme"} side="bottom">
               <AnimatedThemeToggler
-                variant="square"
+                variant="rectangle"
                 onToggle={cycleTheme}
                 onMouseEnter={prewarmAudio}
                 onTouchStart={prewarmAudio}

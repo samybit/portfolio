@@ -5,12 +5,11 @@ import { ArrowDownRight } from "lucide-react";
 import Link from "next/link";
 import RippleButton from "./animata/button/ripple-button";
 // 3D imports are kept for the disabled Canvas block — re-enable when needed
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Canvas, useFrame } from "@react-three/fiber";
-import { MeshDistortMaterial } from "@react-three/drei";
-/* eslint-enable @typescript-eslint/no-unused-vars */
-import { useRef, useEffect, useMemo, useState } from "react";
-import * as THREE from "three";
+// import { Canvas, useFrame } from "@react-three/fiber";
+// import { MeshDistortMaterial } from "@react-three/drei";
+/* might need to add useMemo for 3d objects or others */
+import { useRef, useEffect, useState } from "react";
+// import * as THREE from "three";
 
 
 
