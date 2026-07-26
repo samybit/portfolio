@@ -30,7 +30,7 @@ export async function sendEmail(formData: FormData) {
     });
 
     return { success: true };
-  } catch (error) {
+  } catch {
     return { error: "Failed to send email. Please try again later." };
   }
 }

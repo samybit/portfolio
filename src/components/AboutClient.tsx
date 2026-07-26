@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal, Compass, PenTool, Cpu, Cloud, FlaskConical, GitBranch } from "lucide-react";
+import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Compass, PenTool, Cpu, Cloud, FlaskConical, GitBranch } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -147,7 +147,7 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
   );
 }
 
-export default function AboutClient({ dict, footerDict, tabTitles, locale }: { dict: Record<string, string>, footerDict: Record<string, string>, tabTitles: Record<string, string>, locale: string }) {
+export default function AboutClient({ dict, footerDict, locale }: { dict: Record<string, string>, footerDict: Record<string, string>, tabTitles?: Record<string, string>, locale: string }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isSummaryCardHovered, setIsSummaryCardHovered] = useState(false);
   const [isSkillsCardHovered, setIsSkillsCardHovered] = useState(false);

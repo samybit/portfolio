@@ -497,11 +497,8 @@ function CarabinerModel() {
   }, [p1, p2, p3]);
 
   const scratchedTexture = getScratchedTexture();
-  const ropeColorTexture = getRopeColorTexture();
   const yellowRubberTexture = generateRubberTexture("#eab308", "yellowRubber");
   const grayRubberTexture = generateRubberTexture("#4b5563", "grayRubber");
-  const knotColorTexture = getKnotColorTexture();
-  const ropeEndTexture = getRopeEndTexture();
 
   // Materials (Rugged, tactical, heavily damaged metal)
   const metalMaterial = (

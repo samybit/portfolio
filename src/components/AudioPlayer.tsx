@@ -47,6 +47,9 @@ export default function AudioPlayer({ dict }: { dict?: Record<string, string> })
         audioRef.current.play().catch(e => console.error("Auto-play prevented", e));
       }
     }
+  // isPlaying is intentionally omitted: this effect only loads the new track.
+  // Including isPlaying would re-load audio on every play/pause toggle.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTrackIndex]);
   
   useEffect(() => {
@@ -291,6 +294,9 @@ export default function AudioPlayer({ dict }: { dict?: Record<string, string> })
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
+  // drawVisualizer is defined in the same render and is intentionally kept out of deps
+  // to avoid restarting the visualizer RAF loop on unrelated re-renders.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPlaying]);
 
   const togglePlay = () => {

@@ -98,7 +98,7 @@ export default function CustomContextMenu({ dict }: { dict?: Record<string, stri
         // Revert it back to an email input instantly
         if (isEmail) target.setAttribute('type', 'email');
       }
-    } catch (e) {
+    } catch {
       console.warn("Paste permission denied or not supported.");
     }
     setIsOpen(false);

@@ -1,8 +1,8 @@
 "use client";
 
-import { Check, ArrowUpRight, Loader2, Linkedin } from "lucide-react";
+import { Check, Loader2, Linkedin } from "lucide-react";
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { sendEmail } from "@/actions/send-email";
 import { playPowerUp, prewarmAudio } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";

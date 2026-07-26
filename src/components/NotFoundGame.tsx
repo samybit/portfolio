@@ -445,6 +445,9 @@ export default function NotFoundGame({ locale }: { locale: 'en' | 'ar' }) {
       canvas.removeEventListener("touchend", handleTouchEnd);
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
+  // t.boss* strings are used inside the RAF loop closure; adding them would recreate
+  // the entire game loop on every render. t is derived from a stable locale prop.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPlaying, gameOver, highScore]);
 
   return (

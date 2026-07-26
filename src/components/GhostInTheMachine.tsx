@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function GhostInTheMachine() {
   const [isTriggered, setIsTriggered] = useState(false);
-  const [keyBuffer, setKeyBuffer] = useState("");
+  const keyBufferRef = useRef("");
   const [displayedText, setDisplayedText] = useState("");
   const [showAuthor, setShowAuthor] = useState(false);
 
@@ -23,16 +23,13 @@ export default function GhostInTheMachine() {
       // Guard against undefined key, which can happen with some browser autofills/extensions
       if (typeof e.key !== "string") return;
 
-      setKeyBuffer((prev) => {
-        // Keep only the last 5 characters (length of "exist")
-        const newBuffer = (prev + e.key.toLowerCase()).slice(-SECRET_CODE.length);
+      const newBuffer = (keyBufferRef.current + e.key.toLowerCase()).slice(-SECRET_CODE.length);
+      keyBufferRef.current = newBuffer;
 
-        if (newBuffer === SECRET_CODE) {
-          setIsTriggered(true);
-          setKeyBuffer(""); // Clear buffer
-        }
-        return newBuffer;
-      });
+      if (newBuffer === SECRET_CODE) {
+        setIsTriggered(true);
+        keyBufferRef.current = "";
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);

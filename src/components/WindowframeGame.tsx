@@ -202,7 +202,6 @@ export default function WindowframeGame({ locale }: { locale: 'en' | 'ar' }) {
     const update = (time: number) => {
       const s = stateRef.current;
       const lvl = LEVELS[currentLevel];
-      const deltaTime = Math.min(time - s.lastTime, 50);
       s.lastTime = time;
 
       const gravity = 0.6;
@@ -438,6 +437,9 @@ export default function WindowframeGame({ locale }: { locale: 'en' | 'ar' }) {
       canvas.removeEventListener("contextmenu", blockContextMenu);
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
+  // nextLevel closes over currentLevel which is already a dep; nextLevel itself
+  // is not memoized but is functionally covered by the currentLevel dep.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPlaying, gameOver, gameWon, currentLevel]);
 
   return (

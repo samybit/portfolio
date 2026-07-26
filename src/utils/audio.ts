@@ -17,7 +17,7 @@ const initAudio = () => {
 export const prewarmAudio = () => {
   try {
     initAudio();
-  } catch (e) {
+  } catch {
     // silently fail
   }
 };
@@ -56,7 +56,7 @@ export const playThud = () => {
 
     createTone(220, now, 0.22, 0.05);          // A3 — warm thump
     createTone(146.83, now + 0.07, 0.25, 0.04); // D3 — low resolving drop
-  } catch (error) {
+  } catch {
     // Silently fail
   }
 };
@@ -101,7 +101,7 @@ export const playMechanicalClick = (isPressDown: boolean) => {
       createTone(880, now, 0.1, 0.035);
       createTone(659.25, now + 0.045, 0.12, 0.025);
     }
-  } catch (error) {
+  } catch {
     // Silently fail
   }
 };
@@ -140,7 +140,7 @@ export const playTick = () => {
     // A bright, airy upward chime — C6 → E6
     createTone(1046.50, now, 0.12, 0.03);
     createTone(1318.51, now + 0.05, 0.14, 0.025);
-  } catch (error) {
+  } catch {
     // Silently fail
   }
 };
@@ -179,7 +179,7 @@ export const playClack = () => {
     // A rounded mid-tone shift — G4 → B4, like a satisfying toggle
     createTone(392, now, 0.16, 0.04);
     createTone(493.88, now + 0.07, 0.18, 0.035);
-  } catch (error) {
+  } catch {
     // Silently fail
   }
 };
@@ -225,7 +225,7 @@ export const playPowerUp = () => {
 
     createTone(880, now, 0.18, 0.04);        // A5
     createTone(1318.51, now + 0.06, 0.22, 0.03); // E6
-  } catch (error) {
+  } catch {
     // Silently fail
   }
 };
@@ -264,7 +264,7 @@ export const playLanguageToggle = () => {
     // Tritone flip — C5 → F#5: the most "otherworldly" interval, like a world turning
     createTone(523.25, now, 0.14, 0.04);          // C5
     createTone(739.99, now + 0.065, 0.18, 0.035); // F#5
-  } catch (error) {
+  } catch {
     // Silently fail
   }
 };
@@ -327,7 +327,7 @@ export const playPaperCrumble = () => {
 
     osc.start(now);
     osc.stop(now + 0.18);
-  } catch (error) {
+  } catch {
     // Silently fail
   }
 };
