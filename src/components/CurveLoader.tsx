@@ -57,7 +57,7 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
 
     const fallbackTimeoutId = setTimeout(() => {
       setIsExiting(true);
-    }, 2000);
+    }, 1750);
 
     const tick = (now: number) => {
       const t = Math.min((now - start) / duration, 1);
@@ -76,7 +76,7 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
         if (el) el.textContent = "100";
         exitTimeoutId = setTimeout(() => {
           setIsExiting(true);
-        }, 150);
+        }, 100);
       }
     };
 
@@ -112,19 +112,27 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
   return (
     <div id="cl-wrapper" className={isFinished ? "cl-hidden" : ""}>
       <style>{`
-        /* Feather-Light GPU Hardware-Accelerated Welcome Text Animation */
+        /* Brutalist Per-Letter Slam Drop — GPU-only (transform + opacity) */
         .cl-welcome-text {
-          opacity: 0;
-          transform: translateY(8px);
-          animation: cl-welcome-fade 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
-          will-change: opacity, transform;
+          display: flex;
+          justify-content: center;
+          overflow: visible;
         }
 
-        @keyframes cl-welcome-fade {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        .cl-char {
+          display: inline-block;
+          opacity: 0;
+          transform: translateY(-48px) scaleY(1.6);
+          animation: cl-char-slam 0.45s cubic-bezier(0.22, 1, 0.36, 1) calc(0.1s + var(--ci, 0) * 0.055s) forwards;
+          will-change: transform, opacity;
+          transform-origin: top center;
+        }
+
+        @keyframes cl-char-slam {
+          0%   { opacity: 0; transform: translateY(-48px) scaleY(1.6); }
+          55%  { opacity: 1; transform: translateY(5px)  scaleY(0.88); }
+          75%  { transform: translateY(-3px) scaleY(1.04); }
+          100% { opacity: 1; transform: translateY(0)    scaleY(1); }
         }
 
         /* Pure CSS 3D Hardware-Accelerated Scene */
@@ -254,7 +262,7 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
           isExiting ? "pointer-events-none" : ""
         }`}
         animate={isExiting ? { y: "-100%" } : { y: "0%" }}
-        transition={isExiting ? { duration: 0.9, ease: [0.76, 0, 0.24, 1] } : { duration: 0 }}
+        transition={isExiting ? { duration: 0.8, ease: [0.76, 0, 0.24, 1] } : { duration: 0 }}
         onAnimationComplete={isExiting ? handleExitComplete : undefined}
       >
         <div className="flex flex-col items-center justify-center space-y-4 md:space-y-5">
@@ -285,9 +293,17 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
             </span>
           </div>
 
-          {/* Central Welcome Text with Pure CSS Hardware Accelerated Fade */}
+          {/* Central Welcome Text — Brutalist Per-Letter Slam Drop */}
           <h1 className="cl-welcome-text text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-[0.15em] text-white">
-            {welcomeText}
+            {welcomeText.split('').map((char, i) => (
+              <span
+                key={i}
+                className="cl-char"
+                style={{ '--ci': i } as React.CSSProperties}
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            ))}
           </h1>
 
           {/* Counter in Middle */}
