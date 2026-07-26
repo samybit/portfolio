@@ -3,50 +3,41 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?: () => void; locale?: string }) {
-  // isMounted: false on SSR/before hydration, true only after client mount
-  const [isMounted, setIsMounted] = useState(false);
-  const [shouldShow, setShouldShow] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
+  const [isFinished, setIsFinished] = useState(() => {
+    if (typeof window !== "undefined") {
+      try {
+        return sessionStorage.getItem("cl_initial_loaded") === "true";
+      } catch {}
+    }
+    return false;
+  });
 
   const countRef = useRef(0);
   const countElRef = useRef<HTMLSpanElement>(null);
   const rafRef = useRef<number>(0);
 
   const handleExitComplete = useCallback(() => {
-    document.documentElement.style.overflow = "";
-    document.documentElement.classList.add("cl-loaded");
     if (typeof window !== "undefined") {
       try {
         sessionStorage.setItem("cl_initial_loaded", "true");
       } catch {}
     }
     setIsFinished(true);
-    if (onComplete) onComplete();
-  }, [onComplete]);
-
-  // Step 1: on mount, decide whether to show the loader at all
-  useEffect(() => {
-    setIsMounted(true);
-    try {
-      const alreadyLoaded = sessionStorage.getItem("cl_initial_loaded") === "true";
-      if (alreadyLoaded) {
-        // Session already had the preloader — skip it entirely
-        document.documentElement.classList.add("cl-loaded");
-        setIsFinished(true);
-        if (onComplete) onComplete();
-      } else {
-        setShouldShow(true);
-      }
-    } catch {
-      setShouldShow(true);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Step 2: run the counter animation only if we decided to show
+  // Single source of truth: handles scroll unlock, CSS class, and onComplete callback once
   useEffect(() => {
-    if (!shouldShow || isFinished) return;
+    if (isFinished) {
+      document.documentElement.style.overflow = "";
+      document.documentElement.classList.add("cl-loaded");
+      if (onComplete) onComplete();
+    }
+  }, [isFinished, onComplete]);
+
+  // Step 2: run counter animation if active
+  useEffect(() => {
+    if (isFinished) return;
 
     // Lock body scroll while loader is active
     document.documentElement.style.overflow = "hidden";
@@ -57,7 +48,7 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
 
     const fallbackTimeoutId = setTimeout(() => {
       setIsExiting(true);
-    }, 1750);
+    }, 1700);
 
     const tick = (now: number) => {
       const t = Math.min((now - start) / duration, 1);
@@ -87,7 +78,7 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
       clearTimeout(fallbackTimeoutId);
       if (exitTimeoutId) clearTimeout(exitTimeoutId);
     };
-  }, [shouldShow, isFinished]);
+  }, [isFinished]);
 
   // Safety fallback timer for Framer Motion exit animation completion
   useEffect(() => {
@@ -95,13 +86,13 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
 
     const exitSafetyTimer = setTimeout(() => {
       handleExitComplete();
-    }, 1000);
+    }, 1500);
 
     return () => clearTimeout(exitSafetyTimer);
   }, [isExiting, isFinished, handleExitComplete]);
 
-  // Don't render anything until client has mounted and decided to show
-  if (!isMounted || !shouldShow || isFinished) {
+  // Don't render if completed
+  if (isFinished) {
     return null;
   }
 
@@ -110,7 +101,7 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
   const welcomeText = isAr ? "أهلاً بك" : "WELCOME";
 
   return (
-    <div id="cl-wrapper" className={isFinished ? "cl-hidden" : ""}>
+    <div id="cl-wrapper">
       <style>{`
         /* Brutalist Per-Letter Slam Drop — GPU-only (transform + opacity) */
         .cl-welcome-text {
