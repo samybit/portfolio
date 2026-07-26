@@ -1,26 +1,41 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?: () => void; locale?: string }) {
-  const [isMounted, setIsMounted] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
+  const [isFinished, setIsFinished] = useState(() => {
+    if (typeof window !== "undefined") {
+      try {
+        return sessionStorage.getItem("cl_initial_loaded") === "true";
+      } catch {
+        return false;
+      }
+    }
+    return false;
+  });
 
   const countRef = useRef(0);
   const countElRef = useRef<HTMLSpanElement>(null);
   const rafRef = useRef<number>(0);
 
-  useEffect(() => {
-    setIsMounted(true);
-
-    // Check if initial loader has already completed in this session
-    if (typeof window !== "undefined" && sessionStorage.getItem("cl_initial_loaded") === "true") {
-      document.documentElement.style.overflow = "";
-      setIsFinished(true);
-      if (onComplete) onComplete();
-      return;
+  const handleExitComplete = useCallback(() => {
+    document.documentElement.style.overflow = "";
+    document.documentElement.classList.add("cl-loaded");
+    if (typeof window !== "undefined") {
+      try {
+        sessionStorage.setItem("cl_initial_loaded", "true");
+      } catch {}
     }
+    setIsFinished(true);
+    if (onComplete) onComplete();
+  }, [onComplete]);
+
+  useEffect(() => {
+    if (isFinished) return;
+
+    // Lock body scroll while loader is active
+    document.documentElement.style.overflow = "hidden";
 
     const duration = 1500; // 1.5s
     const start = performance.now();
@@ -59,7 +74,7 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
       clearTimeout(fallbackTimeoutId);
       if (exitTimeoutId) clearTimeout(exitTimeoutId);
     };
-  }, [onComplete]);
+  }, [isFinished]);
 
   // Safety fallback timer for Framer Motion exit animation completion
   useEffect(() => {
@@ -70,18 +85,9 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
     }, 1000);
 
     return () => clearTimeout(exitSafetyTimer);
-  }, [isExiting, isFinished]);
+  }, [isExiting, isFinished, handleExitComplete]);
 
-  const handleExitComplete = () => {
-    document.documentElement.style.overflow = "";
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("cl_initial_loaded", "true");
-    }
-    setIsFinished(true);
-    if (onComplete) onComplete();
-  };
-
-  if (!isMounted || isFinished) {
+  if (isFinished) {
     return null;
   }
 
@@ -90,7 +96,7 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
   const welcomeText = isAr ? "أهلاً بك" : "WELCOME";
 
   return (
-    <>
+    <div id="cl-wrapper" className={isFinished ? "cl-hidden" : ""}>
       <style>{`
         /* Feather-Light GPU Hardware-Accelerated Welcome Text Animation */
         .cl-welcome-text {
@@ -283,6 +289,6 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
           </div>
         </div>
       </motion.div>
-    </>
+    </div>
   );
 }

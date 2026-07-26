@@ -54,6 +54,11 @@
     background-color: black;
   }
 
+  html.cl-loaded #cl-wrapper,
+  #cl-wrapper.cl-hidden {
+    display: none !important;
+  }
+
   * {
     border-color: black;
   }

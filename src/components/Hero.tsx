@@ -54,8 +54,8 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
   const isEmber = useEmberTheme();
 
   const getHighlightColor = (isDarkButton: boolean) => {
-    if (isEmber) return "#facc15"; // Fiery Yellow to contrast with Orange/Charcoal
-    if (isNeumorphic) return "#94a3b8";
+    if (isEmber) return isDarkButton ? "#1BADF0" : "#facc15";
+    if (isNeumorphic) return isDarkButton ? "#ffffff" : "#94a3b8";
     return isDarkButton ? "#facc15" : "#ef4444";
   };
 
@@ -141,7 +141,9 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
                   : "bg-white text-black border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:bg-black hover:text-white hover:border-white hover:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
                 }`}
             >
-              <span>{dict?.getCV || "Get CV"}</span>
+              <Highlighter show={isCvHovered} action="highlight" color={getHighlightColor(true)}>
+                {dict?.getCV || "Get CV"}
+              </Highlighter>
               <div className="relative w-6 h-6 md:w-10 md:h-10">
                 <Download className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-0 scale-50 translate-y-4" : ""}`} />
                 <FileText className={`absolute inset-0 w-full h-full transition-all duration-500 ${isCvHovered ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 -translate-y-4"}`} />
