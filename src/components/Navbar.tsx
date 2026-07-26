@@ -1,7 +1,7 @@
 "use client";
 
 import { playClack, playTick, playLanguageToggle, prewarmAudio } from "@/utils/audio";
-import { Origami, ArrowUpRight, ArrowUpLeft, Menu, X, Palette, Globe, Layers, List, Linkedin } from "lucide-react";
+import { Origami, ArrowUpRight, ArrowUpLeft, Menu, X, Palette, Globe, Linkedin } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";

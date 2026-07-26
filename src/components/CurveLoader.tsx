@@ -3,28 +3,33 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?: () => void; locale?: string }) {
+  const [isMounted, setIsMounted] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const [isFinished, setIsFinished] = useState(() => {
-    if (typeof window !== "undefined") {
-      return sessionStorage.getItem("cl_initial_loaded") === "true";
-    }
-    return false;
-  });
+  const [isFinished, setIsFinished] = useState(false);
+
   const countRef = useRef(0);
   const countElRef = useRef<HTMLSpanElement>(null);
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    if (isFinished) return;
+    setIsMounted(true);
+
+    // Check if initial loader has already completed in this session
+    if (typeof window !== "undefined" && sessionStorage.getItem("cl_initial_loaded") === "true") {
+      document.documentElement.style.overflow = "";
+      setIsFinished(true);
+      if (onComplete) onComplete();
+      return;
+    }
 
     const duration = 1500; // 1.5s
     const start = performance.now();
     let exitTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
-    // Guaranteed Safety Fallback Timer: triggers exit at 1800ms even if RAF or hydration fails
+    // Hard Guaranteed Safety Fallback: max 2000ms deadline to slide out under any circumstances
     const fallbackTimeoutId = setTimeout(() => {
       setIsExiting(true);
-    }, 1800);
+    }, 2000);
 
     const tick = (now: number) => {
       const t = Math.min((now - start) / duration, 1);
@@ -54,7 +59,18 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
       clearTimeout(fallbackTimeoutId);
       if (exitTimeoutId) clearTimeout(exitTimeoutId);
     };
-  }, [isFinished]);
+  }, [onComplete]);
+
+  // Safety fallback timer for Framer Motion exit animation completion
+  useEffect(() => {
+    if (!isExiting || isFinished) return;
+
+    const exitSafetyTimer = setTimeout(() => {
+      handleExitComplete();
+    }, 1000);
+
+    return () => clearTimeout(exitSafetyTimer);
+  }, [isExiting, isFinished]);
 
   const handleExitComplete = () => {
     document.documentElement.style.overflow = "";
@@ -65,7 +81,7 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
     if (onComplete) onComplete();
   };
 
-  if (isFinished) {
+  if (!isMounted || isFinished) {
     return null;
   }
 
