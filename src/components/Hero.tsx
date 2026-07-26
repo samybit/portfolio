@@ -92,12 +92,11 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
           />
 
           <h1 className="text-[18vw] sm:text-6xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem] font-black uppercase tracking-tighter leading-[0.85]">
-            <SplitText text={dict?.samy || "Samy"} className="text-white hero-samy-text cursor-pointer z-10" />
+            <SplitText text={dict?.samy || "Samy"} className="text-white hero-samy-text z-10" />
 
             <br />
 
-            {/* Added cursor-crosshair to match the 'Samy' interaction */}
-            <span className="inline-flex mt-4 md:mt-4 transform -skew-x-6 z-20 relative cursor-crosshair">
+            <span className="inline-flex mt-4 md:mt-4 transform -skew-x-6 z-20 relative">
               {/* Bottom Layer: Solid white text, unclipped, overflows naturally against the black hero bg */}
               <span className="absolute inset-0 text-white px-2 sm:px-4 z-0 pointer-events-none flex items-center" aria-hidden="true">
                 <GlitchText text={dict?.barsoum || "Barsoum"} />
