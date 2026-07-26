@@ -34,24 +34,6 @@
     "newTab": " (opens in a new tab)",
     "list": [
       {
-        "id": "knowledge-archive",
-        "title": "Knowledge Archive",
-        "description": "A Renaissance-inspired interactive learning archive exploring the Spring Boot ecosystem hierarchy, directory blueprints, and Web MVC request lifecycles through clean visual reference guides.",
-        "tech": [
-          "Next.js",
-          "Lenis Scroll",
-          "GSAP",
-          "Base UI"
-        ],
-        "github": "https://github.com/samybit/primavera",
-        "demo": "https://primavera-4yi.pages.dev/",
-        "images": [
-          "/projects/knowledge-archive/knowledge-archive-1.png",
-          "/projects/knowledge-archive/knowledge-archive-2.png",
-          "/projects/knowledge-archive/knowledge-archive-3.png"
-        ]
-      },
-      {
         "id": "arch-studio",
         "title": "Arch Studio",
         "description": "A responsive portfolio site for showcasing architectural design work. Serves as a performance focused frontend implementation using lazy loaded image trails with cms.",
@@ -70,6 +52,80 @@
         ]
       },
       {
+        "id": "movie",
+        "title": "Movie Intelligence App",
+        "subtitle": "(4-Person Team Project • ITI Internship)",
+        "description": "Cinematic platform featuring Firebase authentication, global state management, and an advanced IMDB-style rating algorithm.",
+        "tech": [
+          "React",
+          "Firebase",
+          "Redux",
+          "Shadcn"
+        ],
+        "github": "https://github.com/samybit/iti-movie-app",
+        "demo": "https://iti-movie-app.pages.dev/",
+        "images": [
+          "/projects/movie-intelligence-app/movie-intelligence-app-1.png",
+          "/projects/movie-intelligence-app/movie-intelligence-app-2.png",
+          "/projects/movie-intelligence-app/movie-intelligence-app-3.png"
+        ]
+      },
+      {
+        "id": "knowledge-archive",
+        "title": "Knowledge Archive",
+        "description": "A Renaissance-inspired interactive learning archive exploring the Spring Boot ecosystem hierarchy, directory blueprints, and Web MVC request lifecycles through clean visual reference guides.",
+        "tech": [
+          "Next.js",
+          "Lenis Scroll",
+          "GSAP",
+          "Base UI"
+        ],
+        "github": "https://github.com/samybit/primavera",
+        "demo": "https://primavera-4yi.pages.dev/",
+        "images": [
+          "/projects/knowledge-archive/knowledge-archive-1.png",
+          "/projects/knowledge-archive/knowledge-archive-2.png",
+          "/projects/knowledge-archive/knowledge-archive-3.png"
+        ]
+      },
+      {
+        "id": "ecommerce",
+        "title": "Vanilla JS E-Commerce",
+        "subtitle": "(5-Person Team Project • ITI Internship)",
+        "description": "- Built a full e-commerce platform featuring cart functionality, checkout flows, and user authentication.\n- Implemented a dedicated admin dashboard for managing catalog items and order data using pure JavaScript.",
+        "tech": [
+          "JavaScript",
+          "HTML5",
+          "CSS3",
+          "DOM"
+        ],
+        "github": "https://github.com/samybit/vanilla-js-ecommerce",
+        "demo": "https://samybit.github.io/vanilla-js-ecommerce/",
+        "images": [
+          "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-1.png",
+          "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-2.png",
+          "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-3.png"
+        ]
+      },
+      {
+        "id": "bento",
+        "title": "Bento Games Tracker",
+        "description": "Bento-styled game completion board designed for focused gamers. Built with the latest Next.js App Router and integrated with Google Gemini for intelligent achievement roadmaps.",
+        "tech": [
+          "Next.js",
+          "Gemini AI",
+          "Prisma",
+          "TailwindCSS"
+        ],
+        "github": "https://github.com/samybit/bento-game-tracker",
+        "demo": "https://bento-game-tracker.vercel.app/",
+        "images": [
+          "/projects/nexus-board/bento-games-tracker-1.png",
+          "/projects/nexus-board/bento-games-tracker-2.png",
+          "/projects/nexus-board/bento-games-tracker-3.png"
+        ]
+      },
+      {
         "id": "3d",
         "title": "3D Web",
         "description": "A vertical storytelling experience exploring 7 approaches to 3D rendering. Serves as a technical reference for WebGL pipelines, Spline, Globe.gl, and CSS trigonometry.",
@@ -85,42 +141,6 @@
           "/projects/3d-web/3d-web-1.png",
           "/projects/3d-web/3d-web-2.png",
           "/projects/3d-web/3d-web-3.png"
-        ]
-      },
-      {
-        "id": "movie",
-        "title": "Movie Intelligence App",
-        "description": "Cinematic platform featuring Firebase authentication, global state management, and an advanced IMDB-style rating algorithm.",
-        "tech": [
-          "React",
-          "Firebase",
-          "Redux",
-          "TailwindCSS"
-        ],
-        "github": "https://github.com/samybit/iti-movie-app",
-        "demo": "https://iti-movie-app.pages.dev/",
-        "images": [
-          "/projects/movie-intelligence-app/movie-intelligence-app-1.png",
-          "/projects/movie-intelligence-app/movie-intelligence-app-2.png",
-          "/projects/movie-intelligence-app/movie-intelligence-app-3.png"
-        ]
-      },
-      {
-        "id": "bento",
-        "title": "Nexus Board",
-        "description": "Bento-styled game completion board designed for focused gamers. Built with the latest Next.js App Router and integrated with Google Gemini for intelligent achievement roadmaps.",
-        "tech": [
-          "Next.js",
-          "Gemini AI",
-          "Prisma",
-          "TailwindCSS"
-        ],
-        "github": "https://github.com/samybit/bento-game-tracker",
-        "demo": "https://bento-game-tracker.vercel.app/",
-        "images": [
-          "/projects/nexus-board/nexus-board-1.png",
-          "/projects/nexus-board/nexus-board-1.png",
-          "/projects/nexus-board/nexus-board-1.png"
         ]
       },
       {
@@ -160,25 +180,6 @@
         ]
       },
       {
-        "id": "ecommerce",
-        "title": "Vanilla JS E-Commerce",
-        "subtitle": "(5-Person Team Project • ITI Internship)",
-        "description": "- Built a full e-commerce platform featuring cart functionality, checkout flows, and user authentication.\n- Implemented a dedicated admin dashboard for managing catalog items and order data using pure JavaScript.",
-        "tech": [
-          "JavaScript",
-          "HTML5",
-          "CSS3",
-          "DOM"
-        ],
-        "github": "https://github.com/samybit/vanilla-js-ecommerce",
-        "demo": "https://samybit.github.io/vanilla-js-ecommerce/",
-        "images": [
-          "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-1.png",
-          "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-2.png",
-          "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-3.png"
-        ]
-      },
-      {
         "id": "bearbuzz",
         "title": "BearBuzz",
         "description": "Automated financial monitoring engine featuring dual desktop and terminal interfaces to track stock price volatility, aggregate breaking headlines, and deliver instant text alert notifications to mobile phones.",
@@ -208,9 +209,9 @@
         "github": "https://github.com/samybit/cli-expense-tracker",
         "demo": "#",
         "images": [
-          "/projects/cli-expense-tracker/cli-expense-tracker-1.png",
-          "/projects/cli-expense-tracker/cli-expense-tracker-1.png",
-          "/projects/cli-expense-tracker/cli-expense-tracker-1.png"
+          "/projects/cli-expense-tracker/cli-expense-tracker-1.jpg",
+          "/projects/cli-expense-tracker/cli-expense-tracker-2.jpg",
+          "/projects/cli-expense-tracker/cli-expense-tracker-3.jpg"
         ]
       }
     ]

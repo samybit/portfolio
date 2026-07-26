@@ -540,6 +540,21 @@ html.theme-neumorphic .hero-subtitle-backdrop {
   color: #2d3748 !important;
 }
 
+/* Custom Micro Scrollbar for Card Descriptions */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 2px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.8);
+}
+
 /* Ensure 'Samy' text becomes highly readable pure white on hover */
 html.theme-color .hero-samy-text.text-white {
   color: #FFFFFF !important;

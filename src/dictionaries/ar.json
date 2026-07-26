@@ -107,7 +107,7 @@
       },
       {
         "id": "bento",
-        "title": "Nexus Board",
+        "title": "Bento Games Tracker",
         "description": "لوحة متابعة الألعاب بتصميم Bento. مبنية باستخدام أحدث تقنيات Next.js ومدمجة مع ذكاء Google Gemini لتوليد مسارات ذكية لإنجاز الألعاب.",
         "tech": [
           "Next.js",
@@ -118,9 +118,9 @@
         "github": "https://github.com/samybit/bento-game-tracker",
         "demo": "https://bento-game-tracker.vercel.app/",
         "images": [
-          "/projects/nexus-board/nexus-board-1.png",
-          "/projects/nexus-board/nexus-board-1.png",
-          "/projects/nexus-board/nexus-board-1.png"
+          "/projects/nexus-board/bento-games-tracker-1.png",
+          "/projects/nexus-board/bento-games-tracker-2.png",
+          "/projects/nexus-board/bento-games-tracker-3.png"
         ]
       },
       {
@@ -208,9 +208,9 @@
         "github": "https://github.com/samybit/cli-expense-tracker",
         "demo": "#",
         "images": [
-          "/projects/cli-expense-tracker/cli-expense-tracker-1.png",
-          "/projects/cli-expense-tracker/cli-expense-tracker-1.png",
-          "/projects/cli-expense-tracker/cli-expense-tracker-1.png"
+          "/projects/cli-expense-tracker/cli-expense-tracker-1.jpg",
+          "/projects/cli-expense-tracker/cli-expense-tracker-2.jpg",
+          "/projects/cli-expense-tracker/cli-expense-tracker-3.jpg"
         ]
       }
     ]

@@ -148,8 +148,6 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
   const handleCopyEmail = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
     navigator.clipboard.writeText("samyb.samir@gmail.com");
-    prewarmAudio();
-    playPowerUp();
     setEmailCopied(true);
     setTimeout(() => setEmailCopied(false), 2000);
   };

@@ -117,8 +117,8 @@ const ProjectCard = ({
 
   const cardContent = (
     <div 
-      className={`relative overflow-hidden group/card flex flex-col h-full w-full min-h-[320px] lg:min-h-0 ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
-        isNeumorphic ? "brutalist-container bg-white border-black p-4 md:p-5" : "brutalist-container-dark p-4 md:p-5"
+      className={`relative overflow-hidden group/card flex flex-col justify-between aspect-[16/9] w-full ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
+        isNeumorphic ? "brutalist-container bg-white border-black p-3.5 xl:p-5" : "brutalist-container-dark p-3.5 xl:p-5"
       }`}
       onMouseEnter={() => {
         if (window.innerWidth >= 1024) {
@@ -157,7 +157,7 @@ const ProjectCard = ({
       )}
 
       <div 
-        className="relative flex-1 flex flex-col min-h-0 pb-4 md:pb-5 cursor-pointer lg:cursor-auto"
+        className="relative flex-1 flex flex-col min-h-0 pb-1 cursor-pointer lg:cursor-auto justify-between overflow-hidden"
         onClick={() => {
           if (window.innerWidth < 1024 && disableObserver) {
             setIsToggled(!isToggled);
@@ -166,21 +166,21 @@ const ProjectCard = ({
       >
 
         {/* Default Content Block */}
-        <div className="flex flex-col flex-1">
-          <div>
+        <div className="flex flex-col flex-1 min-h-0 justify-between">
+          <div className="flex-1 min-h-0 flex flex-col justify-start">
             {asHeading ? (
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-black uppercase mb-1.5 md:mb-2 tracking-tight leading-none md:leading-tight">
+              <h3 className="text-lg sm:text-xl xl:text-2xl font-black uppercase mb-1 tracking-tight leading-none">
                 {project.title}
               </h3>
             ) : (
-              <div className="text-xl sm:text-2xl md:text-3xl font-black uppercase mb-1.5 md:mb-2 tracking-tight leading-none md:leading-tight">
+              <div className="text-lg sm:text-xl xl:text-2xl font-black uppercase mb-1 tracking-tight leading-none">
                 {project.title}
               </div>
             )}
 
             {project.subtitle && (
-              <div className="mb-2 md:mb-3">
-                <span className={`inline-block text-xs sm:text-sm font-bold px-2.5 py-0.5 rounded border tracking-wide ${
+              <div className="mb-1 xl:mb-1.5">
+                <span className={`inline-block text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded border tracking-wide ${
                   isNeumorphic
                     ? "bg-[#d1d9e6]/70 text-zinc-700 border-zinc-400/70"
                     : "bg-zinc-900 text-zinc-300 border-zinc-700"
@@ -190,18 +190,18 @@ const ProjectCard = ({
               </div>
             )}
 
-            <p className={`text-sm sm:text-base md:text-lg font-medium leading-snug whitespace-pre-line ${
-              isNeumorphic ? "text-zinc-800" : "text-zinc-300"
-            }`}>
-              {project.description}
-            </p>
+            <div className="flex-1 min-h-0 overflow-y-auto pr-1 text-xs sm:text-sm md:text-base font-medium leading-relaxed whitespace-pre-line custom-scrollbar my-1">
+              <p className={isNeumorphic ? "text-zinc-800" : "text-zinc-300"}>
+                {project.description}
+              </p>
+            </div>
           </div>
 
-          <div className="flex flex-wrap gap-2 mt-auto pt-4">
+          <div className="flex flex-wrap gap-1.5 mt-auto pt-1.5">
             {project.tech.map((tech: string, i: number) => (
               <span
                 key={i}
-                className={`px-2 py-1 md:px-2.5 text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                className={`px-2 py-0.5 md:px-2.5 text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                   isNeumorphic
                     ? "bg-[#d1d9e6]/70 text-[#4b5563] rounded-md"
                     : "bg-white text-black"
@@ -344,11 +344,23 @@ const PlaceholderCard = ({
     otherImage = hoveredImages[imageIndex] || "";
   }
 
-  if (!hoveredTitle) return null; // completely hidden when no hover
+  if (!hoveredTitle) {
+    return (
+      <div 
+        className={`relative overflow-hidden w-full aspect-[16/9] border-4 border-dashed flex flex-col items-center justify-center p-6 transition-all opacity-40 select-none ${
+          isNeumorphic ? "bg-white/50 border-black text-black" : "bg-black/50 border-white/60 text-white"
+        }`}
+      >
+        <div className="font-mono text-xs font-bold uppercase tracking-widest text-center">
+          [ BLUEPRINT SLOT 0{index + 1} ]
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div 
-      className={`relative overflow-hidden w-full h-full min-h-[320px] lg:min-h-0 ${
+      className={`relative overflow-hidden w-full aspect-[16/9] ${
         isNeumorphic ? "brutalist-container bg-white border-black" : "brutalist-container-dark"
       }`}
     >
@@ -460,7 +472,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
   const titleRest = titleWords.slice(1).join(" ");
 
   return (
-    <section id="projects" className={`snap-start relative w-full min-h-[100svh] flex flex-col pt-24 pb-12 px-6 md:px-12 lg:px-24 border-b-8 border-black overflow-hidden ${
+    <section id="projects" className={`snap-start relative w-full min-h-[100svh] flex flex-col justify-between pt-12 lg:pt-16 pb-8 md:pb-12 px-6 md:px-12 lg:px-24 border-b-8 border-black ${
       isNeumorphic ? "bg-white text-black" : "bg-black text-white"
     }`}>
       {/* --- CREATIVE ENGINEERING BLUEPRINT & DOT MATRIX BACKGROUND --- */}
@@ -499,7 +511,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
       </div>
 
       {/* --- HEADER --- */}
-      <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between mb-8 lg:mb-12 gap-6 flex-none">
+      <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between mb-4 lg:mb-6 gap-4 flex-none">
         <div className="w-full md:w-auto">
           <div className="flex items-center gap-4 sm:gap-6">
             <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">
@@ -553,10 +565,10 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
       </div>
 
       {/* --- DESKTOP VIEW: Paginated Grid & Controls --- */}
-      <div className="relative z-10 hidden lg:grid grid-cols-[1fr_5rem] gap-6 xl:gap-8 flex-1 min-h-0">
+      <div className="relative z-10 hidden lg:grid grid-cols-[1fr_5rem] gap-5 xl:gap-6 flex-1 min-h-0 w-full items-center mb-2">
 
         {/* The 2x2 Grid container */}
-        <div className="grid grid-cols-2 gap-6 xl:gap-8 w-full">
+        <div className="grid grid-cols-2 gap-4 xl:gap-5 w-full">
           {Array.from({ length: 4 }).map((_, index) => {
             if (index < currentProjects.length) {
               const project = currentProjects[index];

@@ -268,3 +268,66 @@ export const playLanguageToggle = () => {
     // Silently fail
   }
 };
+
+// --- 7. PAPER CRUMBLE (For Copy Email Button) - Tactile Paper Crinkle Feeling ---
+export const playPaperCrumble = () => {
+  try {
+    const ctx = initAudio();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    // Create 0.3s noise buffer for organic paper texture
+    const bufferSize = Math.floor(ctx.sampleRate * 0.3);
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+
+    // Micro-crinkle noise bursts (rapid paper folds & crisp friction creases)
+    const numBursts = 7;
+    for (let i = 0; i < numBursts; i++) {
+      const startTime = now + i * 0.032 + (Math.random() * 0.012 - 0.006);
+      const duration = 0.025 + Math.random() * 0.02;
+
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = "bandpass";
+      filter.frequency.value = 1600 + Math.random() * 3400; // High-frequency paper friction
+      filter.Q.value = 2.0 + Math.random() * 2.5;
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.06 + Math.random() * 0.04, startTime + 0.005);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+      source.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      source.start(startTime);
+      source.stop(startTime + duration);
+    }
+
+    // Subtle paper body resonance (low-frequency crunch thud)
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(260, now);
+    osc.frequency.exponentialRampToValueAtTime(90, now + 0.16);
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.04, now + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.18);
+  } catch (error) {
+    // Silently fail
+  }
+};
