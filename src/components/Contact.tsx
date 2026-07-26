@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, ArrowUpRight, Loader2, Linkedin } from "lucide-react";
+import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { sendEmail } from "@/actions/send-email";
 import { playPowerUp, prewarmAudio } from "@/utils/audio";
@@ -62,35 +63,45 @@ function BongoCat({ pawState }: { pawState: 'idle' | 'left' | 'right' }) {
     >
       <div className="relative w-full h-full">
         {/* Silhouette Backdrop Asset */}
-        <img
+        <Image
+          fill
+          unoptimized
           src={silhouette}
           alt=""
           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
         />
 
         {/* Line Art Base Head Layer */}
-        <img
+        <Image
+          fill
+          unoptimized
           src={catHead}
           alt=""
           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
         />
 
         {/* Line Art Mouth Layer (Always Mouth Open :D) */}
-        <img
+        <Image
+          fill
+          unoptimized
           src={mouth}
           alt=""
           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
         />
 
         {/* Line Art Left Paw Layer */}
-        <img
+        <Image
+          fill
+          unoptimized
           src={pawLeft}
           alt=""
           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
         />
 
         {/* Line Art Right Paw Layer */}
-        <img
+        <Image
+          fill
+          unoptimized
           src={pawRight}
           alt=""
           className="absolute inset-0 w-full h-full object-contain pointer-events-none"

@@ -2,6 +2,7 @@
 
 import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Terminal, Compass, PenTool, Cpu, Cloud, FlaskConical, GitBranch } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import AudioPlayer from "@/components/AudioPlayer";
@@ -123,10 +124,11 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
         {/* Right: Authentic Brand Vector Logo (No scale distortion on hover) */}
         <div className="w-4 h-4 shrink-0 flex items-center justify-center">
           {!imgError ? (
-            <img
+            <Image
               src={item.iconUrl}
               alt={item.name}
-              loading="lazy"
+              width={14}
+              height={14}
               onError={() => setImgError(true)}
               className="w-3.5 h-3.5 object-contain"
               style={{
