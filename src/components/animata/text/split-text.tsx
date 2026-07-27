@@ -58,7 +58,7 @@ export default function SplitText({
               {/** top half */}
               <span 
                 className={`${baseLetterClassName}${topTranslate}`}
-                style={{ clipPath: "inset(-100% -100% -1px -100%)" }}
+                style={{ clipPath: "inset(-100% -100% -0.5px -100%)" }}
               >
                 {letter}
               </span>
@@ -66,7 +66,7 @@ export default function SplitText({
               {/** bottom half */}
               <span 
                 className={`${baseLetterClassName}${bottomTranslate}`}
-                style={{ clipPath: "inset(-1px -100% -100% -100%)" }}
+                style={{ clipPath: "inset(-0.5px -100% -100% -100%)" }}
               >
                 <span className="absolute -translate-y-1/2 leading-none">{letter}</span>
               </span>

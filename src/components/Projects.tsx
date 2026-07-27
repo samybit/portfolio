@@ -117,8 +117,8 @@ const ProjectCard = ({
 
   const cardContent = (
     <div 
-      className={`relative overflow-hidden group/card flex flex-col justify-between aspect-[16/9] w-full ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
-        isNeumorphic ? "brutalist-container bg-white border-black p-3.5 xl:p-5" : "brutalist-container-dark p-3.5 xl:p-5"
+      className={`relative overflow-hidden group/card flex flex-col justify-between aspect-auto min-h-[360px] sm:min-h-[380px] lg:aspect-[16/9] lg:min-h-0 w-full ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
+        isNeumorphic ? "brutalist-container bg-white border-black p-4 xl:p-5" : "brutalist-container-dark p-4 xl:p-5"
       }`}
       onMouseEnter={() => {
         if (window.innerWidth >= 1024) {
@@ -645,11 +645,11 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
           <div
             ref={mobileSwipeRef}
             onScroll={handleMobileScroll}
-            className="flex overflow-x-auto gap-4 pt-5 pb-6 snap-x snap-mandatory -mx-6 px-6 w-[calc(100%+3rem)] min-h-[320px] hide-scrollbar"
+            className="flex overflow-x-auto gap-4 pt-4 pb-6 snap-x snap-mandatory -mx-6 px-6 w-[calc(100%+3rem)] min-h-[380px] sm:min-h-[400px] hide-scrollbar"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {projects.map((project: Project, index: number) => (
-              <div key={`mobile-swipe-${index}`} className="w-[85vw] sm:w-[60vw] shrink-0 snap-center h-full">
+              <div key={`mobile-swipe-${index}`} className="w-[88vw] sm:w-[65vw] shrink-0 snap-center h-auto">
                 <ProjectCard project={project} dict={dict} animate={false} disableObserver={true} isNeumorphic={isNeumorphic} asHeading={false} />
               </div>
             ))}
@@ -674,7 +674,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
                 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-8 [&::-webkit-slider-thumb]:h-8 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:transition-transform
                 ${isNeumorphic 
                   ? "bg-[#e0e5ec] border-black shadow-[inset_2px_2px_4px_rgba(163,177,198,0.5),_inset_-2px_-2px_4px_rgba(255,255,255,0.7)] [&::-webkit-slider-thumb]:bg-[#e0e5ec] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)] [&::-webkit-slider-thumb]:border-none" 
-                  : "bg-black border-white [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-black [&::-webkit-slider-thumb]:rounded-none [&::-webkit-slider-thumb]:shadow-[4px_4px_0px_rgba(255,255,255,0.3)]"
+                  : "bg-black border-white [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-black [&::-webkit-slider-thumb]:rounded-none [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-black [&::-moz-range-thumb]:rounded-none"
                 }
               `}
             />
