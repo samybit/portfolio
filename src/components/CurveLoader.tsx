@@ -2,12 +2,21 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
-export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?: () => void; locale?: string }) {
+export default function CurveLoader({
+  onComplete,
+  locale = 'en',
+  initialLoaded = false,
+}: {
+  onComplete?: () => void;
+  locale?: string;
+  initialLoaded?: boolean;
+}) {
   const [isExiting, setIsExiting] = useState(false);
   const [isFinished, setIsFinished] = useState(() => {
+    if (initialLoaded) return true;
     if (typeof window !== "undefined") {
       try {
-        return sessionStorage.getItem("cl_initial_loaded") === "true";
+        return document.cookie.includes("cl_loaded=true") || sessionStorage.getItem("cl_initial_loaded") === "true";
       } catch {}
     }
     return false;
@@ -20,6 +29,7 @@ export default function CurveLoader({ onComplete, locale = 'en' }: { onComplete?
   const handleExitComplete = useCallback(() => {
     if (typeof window !== "undefined") {
       try {
+        document.cookie = "cl_loaded=true; path=/; SameSite=Lax";
         sessionStorage.setItem("cl_initial_loaded", "true");
       } catch {}
     }
