@@ -527,7 +527,7 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="w-full xl:w-[420px] shrink-0"
+          className="w-full xl:w-[29.35rem] shrink-0"
         >
           <div className={`text-center flex flex-col items-center gap-6 pointer-events-auto w-full static-card-container ${
             isNeumorphic

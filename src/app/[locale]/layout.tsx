@@ -130,7 +130,7 @@ export default async function RootLayout({
     .join(" ");
 
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={htmlClassName} data-scroll-behavior="smooth">
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={htmlClassName} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${fontClassName} text-black antialiased selection:bg-black selection:text-white`}>
         <CurveLoader locale={locale} initialLoaded={isPreloaded} />
         <SystemOverride />
