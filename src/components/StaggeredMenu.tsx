@@ -377,6 +377,9 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       onMenuOpen?.();
       playOpen();
     } else {
+      // Return focus to toggle button BEFORE hiding the panel to avoid
+      // the WAI-ARIA violation "aria-hidden on a focused element".
+      toggleBtnRef.current?.focus();
       onMenuClose?.();
       playClose();
     }
@@ -390,6 +393,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       if (externalOpen !== undefined) {
         onMenuClose?.();
       } else {
+        // Return focus to toggle button BEFORE hiding the panel.
+        toggleBtnRef.current?.focus();
         openRef.current = false;
         setOpen(false);
         onMenuClose?.();
@@ -487,7 +492,13 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         </header>
       )}
 
-      <aside id="staggered-menu-panel" ref={panelRef} className="staggered-menu-panel" aria-hidden={!open}>
+      <aside
+        id="staggered-menu-panel"
+        ref={panelRef}
+        className="staggered-menu-panel"
+        aria-hidden={!open}
+        inert={!open || undefined}
+      >
         <div className="sm-panel-inner">
           <ul className="sm-panel-list" role="list" data-numbering={displayItemNumbering || undefined}>
             {items && items.length ? (

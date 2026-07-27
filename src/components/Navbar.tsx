@@ -34,39 +34,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
 
-  // ── Background Idle Image Pre-caching for /about Assets ──
-  useEffect(() => {
-    if (typeof window === "undefined") return;
 
-    const triggerPrecacheImages = () => {
-      // Pre-cache all 4 About page background images into browser cache
-      for (let i = 1; i <= 4; i++) {
-        const img = new window.Image();
-        img.src = `/about-${i}.jpg`;
-      }
-    };
-
-    let idleId: number | null = null;
-    let timerId: ReturnType<typeof setTimeout> | null = null;
-
-    // Wait 2200ms after mount (ensuring initial hero animations & preloader finish)
-    timerId = setTimeout(() => {
-      if ("requestIdleCallback" in window) {
-        idleId = (window as unknown as { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(() => {
-          triggerPrecacheImages();
-        });
-      } else {
-        triggerPrecacheImages();
-      }
-    }, 2200);
-
-    return () => {
-      if (timerId) clearTimeout(timerId);
-      if (idleId && "cancelIdleCallback" in window) {
-        (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(idleId);
-      }
-    };
-  }, []);
 
   const isHome = pathname === `/${currentLocale}` || pathname === `/${currentLocale}/`;
 
