@@ -5,6 +5,7 @@ import { Environment, Float } from "@react-three/drei";
 import { useRef, useState, useEffect, useMemo } from "react";
 import * as THREE from "three";
 import { useAnimationConfig } from "@/context/AnimationContext";
+import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
 // --- PROCEDURAL TEXTURE CACHE ---
 const textureCache: Record<string, THREE.CanvasTexture> = {};
@@ -620,6 +621,7 @@ export default function HeroCarabiner3D() {
   const [mounted, setMounted] = useState(false);
   const [shouldRenderWebGL, setShouldRenderWebGL] = useState(false);
   const { isAnimationsDisabled } = useAnimationConfig();
+  const isNeumorphic = useNeumorphicTheme();
 
   useEffect(() => {
     setTimeout(() => setMounted(true), 0);
@@ -637,8 +639,11 @@ export default function HeroCarabiner3D() {
       
       {/* Topographic 2D Background Pattern (Concentric Circles) */}
       <div 
-        className="absolute inset-0 opacity-[0.12]" 
-        style={{ backgroundImage: 'repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 40px, #ffffff 40px, #ffffff 41px)', backgroundPosition: 'center center' }} 
+        className={`absolute inset-0 transition-opacity duration-300 ${isNeumorphic ? 'opacity-[0.28]' : 'opacity-[0.12]'}`} 
+        style={{ 
+          backgroundImage: `repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 40px, ${isNeumorphic ? '#475569' : '#ffffff'} 40px, ${isNeumorphic ? '#475569' : '#ffffff'} 41.5px)`, 
+          backgroundPosition: 'center center' 
+        }} 
       />
 
       {/* 3D Canvas (Delayed to give UI animations priority, then fades in) */}

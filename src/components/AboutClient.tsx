@@ -555,7 +555,7 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
               onMouseLeave={() => setIsSummaryCardHovered(false)}
               className={`p-8 md:p-10 transition-all duration-300 hover:!transform-none ${
                 isNeumorphic 
-                  ? "brutalist-container bg-white text-black !shadow-[8px_8px_0px_0px_#000000]" 
+                  ? "brutalist-container bg-white text-black static-card-container" 
                   : "brutalist-container-dark !shadow-[8px_8px_0px_0px_rgba(255,255,255,0.3)]"
               }`}>
               <div className="flex flex-col gap-6 text-lg md:text-xl font-medium leading-relaxed">
