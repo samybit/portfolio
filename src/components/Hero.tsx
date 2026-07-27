@@ -71,7 +71,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
       <HeroCarabiner3D />
 
       {/* Added 'relative z-10' so the content sits above the 3D grid */}
-      <div className="relative z-10 w-full max-w-[90rem] mx-auto grid grid-cols-1 min-[1300px]:grid-cols-[1fr_28rem] min-[1300px]:items-center gap-12 min-[1300px]:gap-16">
+      <div className="relative z-10 w-full max-w-[75rem] mx-auto grid grid-cols-1 min-[1300px]:grid-cols-[1fr_28rem] min-[1300px]:items-center gap-12 min-[1300px]:gap-16">
 
         {/* --- LEFT COLUMN: TYPOGRAPHY --- */}
         <div className="animate-slide-up relative z-10">

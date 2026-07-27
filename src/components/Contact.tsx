@@ -260,7 +260,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
 
   return (
     <section id="contact" className="snap-start min-h-[80vh] flex flex-col justify-center pt-24 pb-16 px-6 md:px-12 lg:px-24 bg-black text-white overflow-hidden">
-      <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-stretch">
+      <div className="w-full max-w-[75rem] mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-stretch">
 
         {/* --- LEFT COLUMN: TEXT & SOCIALS --- */}
         <div className="flex-1 w-full relative z-30 flex flex-col justify-between">
@@ -550,7 +550,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
         </div>
 
         {/* --- RIGHT COLUMN: STATIC FORM ENGINE --- */}
-        <div className="flex-1 w-full relative max-w-xl mx-auto lg:mx-0">
+        <div className="flex-1 w-full relative max-w-md mx-auto lg:mx-0">
           <form
             onSubmit={handleSubmit}
             noValidate

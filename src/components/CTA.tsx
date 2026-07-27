@@ -468,7 +468,7 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
     <section
       ref={ctaRef}
       onClick={() => setAnomalyIndex(prev => (prev + 1) % anomalies.length)}
-      className={`relative w-full min-h-[100dvh] flex flex-col items-center justify-center py-16 overflow-hidden border-t-8 border-b-8 border-black transition-colors duration-300 ${
+      className={`relative w-full min-h-[100dvh] flex flex-col items-center justify-center py-16 px-6 md:px-12 lg:px-24 overflow-hidden border-t-8 border-b-8 border-black transition-colors duration-300 ${
         isNeumorphic ? "bg-white text-black" : "bg-black text-white"
       }`}
     >
@@ -483,7 +483,7 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
       ></div>
 
       {/* --- LAYER 2: CONTENT BOX (z-10) --- */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col xl:flex-row items-center justify-between gap-16 pointer-events-none">
+      <div className="relative z-10 w-full max-w-[75rem] mx-auto flex flex-col xl:flex-row items-center justify-between gap-16 pointer-events-none">
 
         {/* LEFT SIDE: The Quote */}
         <div className="flex-1 flex flex-col relative w-full">
@@ -494,7 +494,7 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className={`text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-7xl font-black uppercase tracking-tighter leading-none relative z-10 p-4 -ms-4 quote-backdrop ${
+            className={`text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-7xl font-black uppercase tracking-tighter leading-none relative z-10 p-4 quote-backdrop ${
               isNeumorphic ? "bg-white/90 text-black" : "bg-black/90 text-white"
             }`}
           >
@@ -506,7 +506,7 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className={`flex items-center gap-4 mt-8 relative z-10 p-4 -ms-4 max-w-max quote-backdrop ${
+            className={`flex items-center gap-4 mt-8 relative z-10 p-4 max-w-max quote-backdrop ${
               isNeumorphic ? "bg-white/90" : "bg-black/90"
             }`}
           >
@@ -527,9 +527,9 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="w-full xl:w-auto shrink-0"
+          className="w-full xl:w-[420px] shrink-0"
         >
-          <div className={`text-center flex flex-col items-center gap-6 pointer-events-auto max-w-lg xl:max-w-xl mx-auto static-card-container ${
+          <div className={`text-center flex flex-col items-center gap-6 pointer-events-auto w-full static-card-container ${
             isNeumorphic
               ? "brutalist-container bg-white text-black border-4 md:border-8 border-black brutalist-shadow p-8 md:p-12"
               : "brutalist-container-dark md:border-8 p-8 md:p-12"

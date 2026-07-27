@@ -118,7 +118,7 @@ const ProjectCard = ({
   const cardContent = (
     <div 
       className={`relative overflow-hidden group/card flex flex-col justify-between aspect-auto min-h-[360px] sm:min-h-[380px] lg:aspect-[16/9] lg:min-h-0 w-full ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
-        isNeumorphic ? "brutalist-container bg-white border-black p-4 xl:p-5" : "brutalist-container-dark p-4 xl:p-5"
+        isNeumorphic ? "brutalist-container bg-white border-black p-3" : "brutalist-container-dark p-3"
       }`}
       onMouseEnter={() => {
         if (window.innerWidth >= 1024) {
@@ -169,17 +169,17 @@ const ProjectCard = ({
         <div className="flex flex-col flex-1 min-h-0 justify-between">
           <div className="flex-1 min-h-0 flex flex-col justify-start">
             {asHeading ? (
-              <h3 className="text-lg sm:text-xl xl:text-2xl font-black uppercase mb-1 tracking-tight leading-none">
+              <h3 className="text-lg sm:text-xl xl:text-2xl font-black uppercase mb-0.5 tracking-tight leading-none">
                 {project.title}
               </h3>
             ) : (
-              <div className="text-lg sm:text-xl xl:text-2xl font-black uppercase mb-1 tracking-tight leading-none">
+              <div className="text-lg sm:text-xl xl:text-2xl font-black uppercase mb-0.5 tracking-tight leading-none">
                 {project.title}
               </div>
             )}
 
             {project.subtitle && (
-              <div className="mb-1 xl:mb-1.5">
+              <div className="mb-0.5">
                 <span className={`inline-block text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded border tracking-wide ${
                   isNeumorphic
                     ? "bg-[#d1d9e6]/70 text-zinc-700 border-zinc-400/70"
@@ -190,14 +190,14 @@ const ProjectCard = ({
               </div>
             )}
 
-            <div className="flex-1 min-h-0 overflow-y-auto pr-1 text-xs sm:text-sm md:text-base font-medium leading-relaxed whitespace-pre-line custom-scrollbar my-1">
+            <div className="flex-1 min-h-0 overflow-y-auto pr-1 text-xs sm:text-sm md:text-base font-medium leading-snug whitespace-pre-line custom-scrollbar mt-1">
               <p className={isNeumorphic ? "text-zinc-800" : "text-zinc-300"}>
                 {project.description}
               </p>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-1.5 mt-auto pt-1.5">
+          <div className="flex flex-wrap gap-1 mt-auto pt-1">
             {project.tech.map((tech: string, i: number) => (
               <span
                 key={i}
@@ -242,7 +242,7 @@ const ProjectCard = ({
       </div>
 
       {/* BOTTOM LINKS BLOCK */}
-      <div className={`flex flex-wrap gap-4 border-t-4 pt-3 md:pt-4 flex-none relative z-20 min-h-[48px] md:min-h-[52px] ${
+      <div className={`flex flex-wrap gap-3 border-t-4 pt-2 flex-none relative z-20 min-h-[44px] ${
         isNeumorphic ? "border-black" : "border-white"
       }`}>
         {hasGithub && (
@@ -510,6 +510,9 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
         />
       </div>
 
+      {/* --- 1200px CONTENT WRAPPER --- */}
+      <div className="w-full max-w-[75rem] mx-auto flex flex-col flex-1 min-h-0">
+
       {/* --- HEADER --- */}
       <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between mb-4 lg:mb-6 gap-4 flex-none">
         <div className="w-full md:w-auto">
@@ -698,6 +701,9 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
           <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
         </a>
       </div>
+
+      </div>{/* end 1200px wrapper */}
+
 
     </section >
   );
