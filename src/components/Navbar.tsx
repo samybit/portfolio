@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import Smoke from "@/components/Smoke";
-import { CustomTooltip } from "@/components/ui/tooltip";
+import { MouseFollowTooltip } from "@/components/ui/mouse-follow-tooltip";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { StaggeredMenu } from "@/components/StaggeredMenu";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/animate-ui/components/radix/hover-card";
@@ -250,7 +250,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
 
             </Link>
 
-            <CustomTooltip content={dict?.cycleTheme || "Cycle Theme"} side="bottom">
+            <MouseFollowTooltip content={dict?.cycleTheme || "Cycle Theme"} className="flex items-stretch h-full">
               <AnimatedThemeToggler
                 variant="rectangle"
                 onToggle={cycleTheme}
@@ -261,9 +261,9 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
               >
                 <Palette size={18} className="theme-icon-creative" />
               </AnimatedThemeToggler>
-            </CustomTooltip>
+            </MouseFollowTooltip>
 
-            <CustomTooltip content={dict?.toggleLanguage || "Toggle Language"} side="bottom">
+            <MouseFollowTooltip content={dict?.toggleLanguage || "Toggle Language"} className="flex items-stretch h-full">
               <button
                 onClick={toggleLanguage}
                 onMouseEnter={prewarmAudio}
@@ -280,23 +280,25 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
                   </div>
                 </div>
               </button>
-            </CustomTooltip>
+            </MouseFollowTooltip>
           </div>
 
           {/* --- Desktop Nav Links Block (Locked to exactly 64px / h-16 height) --- */}
           <div className="pointer-events-auto hidden md:flex items-stretch gap-1.5 bg-white border-4 border-black p-1.5 brutalist-shadow-static h-16">
 
-            <Link
-              href={`/${currentLocale}/about`}
-              onClick={handleAboutClick}
-              className={`relative group overflow-hidden isolate text-lg font-bold uppercase px-4 flex items-center border-2 transition-all ${pathname === `/${currentLocale}/about`
-                ? 'bg-black text-white border-black'
-                : 'border-transparent hover:border-black hover:bg-black hover:text-white active:border-black active:bg-black active:text-white'
-                }`}
-            >
-              <Smoke isActive={pathname === `/${currentLocale}/about`} />
-              <span className="relative z-10">{dict?.about || "About"}</span>
-            </Link>
+            <MouseFollowTooltip content={dict?.readMoreAboutMe || "Read more about me"} className="flex items-stretch">
+              <Link
+                href={`/${currentLocale}/about`}
+                onClick={handleAboutClick}
+                className={`relative group overflow-hidden isolate text-lg font-bold uppercase px-4 flex items-center border-2 transition-all ${pathname === `/${currentLocale}/about`
+                  ? 'bg-black text-white border-black'
+                  : 'border-transparent hover:border-black hover:bg-black hover:text-white active:border-black active:bg-black active:text-white'
+                  }`}
+              >
+                <Smoke isActive={pathname === `/${currentLocale}/about`} />
+                <span className="relative z-10">{dict?.about || "About"}</span>
+              </Link>
+            </MouseFollowTooltip>
 
             <Link
               href={`/${currentLocale}#projects`}
