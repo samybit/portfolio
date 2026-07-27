@@ -352,8 +352,10 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
         {/* --- EDUCATION & CERTS ROW --- */}
         <div className="animate-slide-up-delay-1 grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-          <section className={`brutalist-container flex flex-col justify-between transition-all duration-300 hover:!transform-none ${
-            isNeumorphic ? "hover:!shadow-[8px_8px_0px_0px_#000000]" : "!bg-black !text-white !shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:!shadow-[8px_8px_0px_rgba(255,255,255,0.3)]"
+          <section className={`brutalist-container flex flex-col justify-between static-card-container ${
+            isNeumorphic
+              ? ""
+              : "!bg-black !text-white brutalist-container-dark"
           }`}>
             <div>
               <div className={`flex items-center gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${

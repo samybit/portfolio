@@ -872,6 +872,29 @@ html.theme-neumorphic button.border-4:active {
   transform: translateY(2px) !important;
 }
 
+/* Static Card Containers (Zero Hover/Active Shift in all themes) */
+.static-card-container,
+.static-card-container:hover,
+.static-card-container:active,
+.static-card-container:focus {
+  transform: none !important;
+  transition: none !important;
+}
+
+html.theme-neumorphic .static-card-container,
+html.theme-neumorphic .static-card-container:hover,
+html.theme-neumorphic .static-card-container:active {
+  box-shadow: 9px 9px 16px rgba(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5) !important;
+  transform: none !important;
+}
+
+.static-card-container.brutalist-container-dark,
+.static-card-container.brutalist-container-dark:hover,
+.static-card-container.brutalist-container-dark:active {
+  box-shadow: 8px 8px 0px 0px rgba(255, 255, 255, 0.3) !important;
+  transform: none !important;
+}
+
 /* Keep images normal */
 html.theme-neumorphic img {
   border-color: transparent !important;

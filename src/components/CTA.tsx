@@ -529,7 +529,7 @@ export default function CTA({ dict }: { dict: Record<string, string> }) {
           viewport={{ once: true }}
           className="w-full xl:w-auto shrink-0"
         >
-          <div className={`text-center flex flex-col items-center gap-6 pointer-events-auto max-w-lg xl:max-w-xl mx-auto ${
+          <div className={`text-center flex flex-col items-center gap-6 pointer-events-auto max-w-lg xl:max-w-xl mx-auto static-card-container ${
             isNeumorphic
               ? "brutalist-container bg-white text-black border-4 md:border-8 border-black brutalist-shadow p-8 md:p-12"
               : "brutalist-container-dark md:border-8 p-8 md:p-12"
