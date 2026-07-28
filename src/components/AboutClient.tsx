@@ -560,15 +560,33 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
               }`}>
               <div className="flex flex-col gap-6 text-lg md:text-xl font-medium leading-relaxed">
                 <p>
-                  {dict?.bioP1 || "My journey began with Python automation and scripting, building tools to scrape data and automate tasks. I then expanded into full-stack development, mastering the MERN stack to engineer dynamic applications."}
+                  {(() => {
+                    const text = dict?.bioP1 || "My journey began with Python automation and scripting, building tools to scrape data and automate tasks. I then expanded into full-stack development, mastering the MERN stack to engineer dynamic applications.";
+                    const first = text.charAt(0);
+                    const rest = text.slice(1);
+                    return (
+                      <>
+                        <span
+                          className="drop-cap-first select-none"
+                          aria-hidden="true"
+                          style={{ color: isNeumorphic ? "#111" : "#fff" }}
+                        >
+                          {first}
+                        </span>
+                        <span className="sr-only">{first}</span>
+                        {rest}
+                      </>
+                    );
+                  })()}
                 </p>
-                <p>
+                <p style={{ clear: "both" }}>
                   {dict?.bioP2 || "Today, I focus on building complete, containerized applications using Docker, ensuring that what runs on my machine runs everywhere."}
                 </p>
                 <p>
                   {dict?.bioP3 || "When I'm not coding, you can find me exploring retro tech, playing classic games, or experimenting with 3D web graphics."}
                 </p>
               </div>
+
             </div>
           </section>
         </div>

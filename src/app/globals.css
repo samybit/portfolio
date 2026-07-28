@@ -1,5 +1,26 @@
 @import "tailwindcss";
 
+/* ── GoudyIni Drop-Cap Font ─────────────────────────────────── */
+@font-face {
+  font-family: "GoudyIni";
+  src: url("/fonts/GoudyIni.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.drop-cap-first {
+  font-family: "GoudyIni", serif;
+  font-size: 5em;
+  line-height: 0.75;
+  float: left;
+  margin-inline-end: 0.08em;
+  margin-top: 0.06em;
+  font-weight: normal;
+}
+
+
+
 @layer utilities {
   @keyframes arrow-snap-sequence {
     0% { transform: rotate(0deg) translateY(0); }
