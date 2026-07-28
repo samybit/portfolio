@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Environment, Float } from "@react-three/drei";
+import { Float } from "@react-three/drei";
 import { useRef, useState, useEffect, useMemo } from "react";
 import * as THREE from "three";
 import { useAnimationConfig } from "@/context/AnimationContext";
@@ -24,13 +24,13 @@ const getScratchedTexture = () => {
   context.fillRect(0, 0, 1024, 1024);
   
   context.filter = "blur(15px)";
-  for (let i = 0; i < 60; i++) {
+  for (let i = 0; i < 55; i++) {
     context.fillStyle = `rgba(20, 20, 25, ${Math.random() * 0.5})`;
     context.beginPath();
     context.arc(Math.random() * 1024, Math.random() * 1024, Math.random() * 120 + 30, 0, Math.PI * 2);
     context.fill();
   }
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 35; i++) {
     context.fillStyle = `rgba(150, 150, 160, ${Math.random() * 0.4})`;
     context.beginPath();
     context.arc(Math.random() * 1024, Math.random() * 1024, Math.random() * 80 + 20, 0, Math.PI * 2);
@@ -39,15 +39,15 @@ const getScratchedTexture = () => {
   context.filter = "none";
   
   context.fillStyle = "rgba(0,0,0,0.1)";
-  for (let i = 0; i < 10000; i++) {
-    context.fillRect(Math.random() * 1024, Math.random() * 1024, Math.random() * 40 + 10, Math.random() * 2 + 1);
+  for (let i = 0; i < 7500; i++) {
+    context.fillRect(Math.random() * 1024, Math.random() * 1024, Math.random() * 30 + 8, Math.random() * 2 + 1);
   }
   context.fillStyle = "rgba(255,255,255,0.05)";
-  for (let i = 0; i < 10000; i++) {
-    context.fillRect(Math.random() * 1024, Math.random() * 1024, Math.random() * 40 + 10, Math.random() * 2 + 1);
+  for (let i = 0; i < 7500; i++) {
+    context.fillRect(Math.random() * 1024, Math.random() * 1024, Math.random() * 30 + 8, Math.random() * 2 + 1);
   }
   
-  for (let i = 0; i < 400; i++) {
+  for (let i = 0; i < 350; i++) {
     context.beginPath();
     context.fillStyle = `rgba(15, 15, 20, ${Math.random() * 0.6})`; 
     const r = Math.random() * 4 + 1;
@@ -55,7 +55,7 @@ const getScratchedTexture = () => {
     context.fill();
   }
   
-  for (let i = 0; i < 2000; i++) {
+  for (let i = 0; i < 1500; i++) {
     context.beginPath();
     const isDeep = Math.random() > 0.8;
     context.strokeStyle = isDeep ? "rgba(10,10,10,0.9)" : "rgba(160,160,160,0.5)"; 
@@ -63,7 +63,7 @@ const getScratchedTexture = () => {
     
     const x = Math.random() * 1024;
     const y = Math.random() * 1024;
-    const len = Math.random() * 100 + 20;
+    const len = Math.random() * 80 + 15;
     const angle = Math.random() * Math.PI * 2;
     
     context.moveTo(x, y);
@@ -159,12 +159,12 @@ const generateRubberTexture = (baseColor: string, cacheKey: string) => {
   context.fillStyle = baseColor;
   context.fillRect(0, 0, 512, 512);
   
-  context.filter = "blur(15px)";
-  for (let i = 0; i < 30; i++) {
+  context.filter = "blur(12px)";
+  for (let i = 0; i < 20; i++) {
     context.fillStyle = `rgba(10, 10, 10, ${Math.random() * 0.4})`;
     const cx = Math.random() * 512;
     const cy = Math.random() * 512;
-    const r = Math.random() * 80 + 20;
+    const r = Math.random() * 60 + 15;
     
     const drawSmudge = (x: number, y: number) => {
       context.beginPath();
@@ -178,12 +178,12 @@ const generateRubberTexture = (baseColor: string, cacheKey: string) => {
   }
   
   context.filter = "none";
-  for (let i = 0; i < 60000; i++) {
+  for (let i = 0; i < 20000; i++) {
     context.fillStyle = Math.random() > 0.5 ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)";
     context.fillRect(Math.random() * 512, Math.random() * 512, 2, 2);
   }
   
-  context.filter = "blur(8px)";
+  context.filter = "blur(6px)";
   context.fillStyle = "rgba(0,0,0,0.6)";
   context.fillRect(0, 0, 512, 24); 
   context.fillRect(0, 512 - 24, 512, 24); 
@@ -221,7 +221,7 @@ const getRopeEndTexture = () => {
   context.fillStyle = "#333333";
   context.fillRect(0, 0, 256, 256);
   
-  for (let i = 0; i < 3000; i++) {
+  for (let i = 0; i < 2500; i++) {
     context.beginPath();
     context.fillStyle = Math.random() > 0.5 ? "#ffffff" : "#aaaaaa";
     const r = Math.random() * 2 + 0.5;
@@ -344,7 +344,7 @@ const Rope = ({
     <group position={position}>
       <group quaternion={barQuaternion}>
         <mesh>
-          <tubeGeometry args={[activeKnotCurve, 64, 0.08, 16, false]} />
+          <tubeGeometry args={[activeKnotCurve, 48, 0.08, 12, false]} />
           {isYellow ? yellowKnotMaterial : silverKnotMaterial}
         </mesh>
         {!removeFirstTail && (
@@ -352,7 +352,7 @@ const Rope = ({
             position={activeKnotCurve.getPoint(0)} 
             quaternion={new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), activeKnotCurve.getTangent(0).normalize())}
           >
-            <circleGeometry args={[0.08, 32]} />
+            <circleGeometry args={[0.08, 20]} />
             {isYellow ? yellowRopeEndMaterial : silverRopeEndMaterial}
           </mesh>
         )}
@@ -360,14 +360,14 @@ const Rope = ({
           position={activeKnotCurve.getPoint(1)} 
           quaternion={new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), activeKnotCurve.getTangent(1).normalize())}
         >
-          <circleGeometry args={[0.08, 32]} />
+          <circleGeometry args={[0.08, 20]} />
           {isYellow ? yellowRopeEndMaterial : silverRopeEndMaterial}
         </mesh>
       </group>
       
       <group rotation={pullRotation}>
         <mesh position={[0, ropeLength / 2, 0]}>
-          <cylinderGeometry args={[0.08, 0.08, ropeLength, 16]} />
+          <cylinderGeometry args={[0.08, 0.08, ropeLength, 12]} />
           {isYellow ? yellowRopeMaterial : silverRopeMaterial}
         </mesh>
         
@@ -501,19 +501,18 @@ function CarabinerModel() {
   const yellowRubberTexture = generateRubberTexture("#eab308", "yellowRubber");
   const grayRubberTexture = generateRubberTexture("#4b5563", "grayRubber");
 
-  // Materials (Rugged, tactical, heavily damaged metal)
+  // Materials (Rugged, tactical, shiny metal)
   const metalMaterial = (
     <meshStandardMaterial 
       color="#ffffff" 
-      metalness={0.4} 
-      roughness={0.9} 
+      metalness={0.65} 
+      roughness={0.3} 
       map={scratchedTexture || undefined} 
-      roughnessMap={scratchedTexture || undefined} 
       bumpMap={scratchedTexture || undefined} 
-      bumpScale={0.15} 
+      bumpScale={0.03} 
     />
   );
-  const darkMetalMaterial = <meshStandardMaterial color="#888888" metalness={0.8} roughness={0.75} map={scratchedTexture || undefined} roughnessMap={scratchedTexture || undefined} bumpMap={scratchedTexture || undefined} bumpScale={0.04} />;
+  const darkMetalMaterial = <meshStandardMaterial color="#aaaaaa" metalness={0.8} roughness={0.35} map={scratchedTexture || undefined} bumpMap={scratchedTexture || undefined} bumpScale={0.03} />;
   
   // Tactical, dirty rubber material for the safety tape wrap
   const yellowMaterial = (
@@ -568,7 +567,7 @@ function CarabinerModel() {
         <group position={side3.position} quaternion={side3.quaternion}>
           {/* Yellow Safety Tape wrapped around */}
           <mesh position={[0, -0.5, 0]} rotation={[0, Math.PI, 0]}>
-            <cylinderGeometry args={[thickness * 1.05, thickness * 1.05, 1.5, 32]} />
+            <cylinderGeometry args={[thickness * 1.05, thickness * 1.05, 1.5, 24]} />
             {yellowMaterial}
           </mesh>
         </group>
@@ -649,16 +648,14 @@ export default function HeroCarabiner3D() {
       {/* 3D Canvas (Delayed to give UI animations priority, then fades in) */}
       <div className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${shouldRenderWebGL && !isAnimationsDisabled ? 'opacity-100' : 'opacity-0'}`}>
         {shouldRenderWebGL && !isAnimationsDisabled && (
-          <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ antialias: true }} dpr={[1, 1.5]}>
+          <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ antialias: true }} dpr={[1, 1.25]}>
             <WebGLCleanup />
-            {/* Lighting to highlight the metal without blowing it out */}
-            <ambientLight intensity={0.5} />
-            <directionalLight position={[10, 10, 5]} intensity={1.2} />
-            <directionalLight position={[-10, -10, -5]} intensity={0.5} color="#4b5563" />
-            <spotLight position={[0, 0, 10]} intensity={0.4} penumbra={1} />
-            
-            {/* Environment Map for ultra-realistic metal reflections */}
-            <Environment preset="city" />
+            {/* Bright, high-contrast lighting for crisp metallic highlights */}
+            <ambientLight intensity={0.85} />
+            <directionalLight position={[10, 10, 8]} intensity={2.2} />
+            <directionalLight position={[0, 4, 10]} intensity={1.6} color="#ffffff" />
+            <directionalLight position={[-10, 8, -5]} intensity={1.2} color="#e2e8f0" />
+            <spotLight position={[0, 0, 10]} intensity={0.6} penumbra={1} />
 
             {/* The 3D Scene */}
             <CarabinerModel />

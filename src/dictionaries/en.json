@@ -36,6 +36,7 @@
       {
         "id": "arch-studio",
         "title": "Arch Studio",
+        "subtitle": "(Freelance Project)",
         "description": "A responsive portfolio site for showcasing architectural design work. Serves as a performance focused frontend implementation using lazy loaded image trails with cms.",
         "tech": [
           "Next.js",

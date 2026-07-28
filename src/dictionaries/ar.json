@@ -54,6 +54,7 @@
       {
         "id": "arch-studio",
         "title": "Arch Studio",
+        "subtitle": "(مشروع عمل حر)",
         "description": "موقع معرض أعمال متجاوب لعرض التصاميم المعمارية. يقدم واجهة أمامية تركز على الأداء مع مسارات صور محملة كسلان (lazy-loaded) مدمجة مع نظام إدارة المحتوى (CMS).",
         "tech": [
           "Next.js",
@@ -90,6 +91,7 @@
       {
         "id": "movie",
         "title": "Movie Intelligence App",
+        "subtitle": "(مشروع فريق مكون من 4 أفراد • تدريب ITI)",
         "description": "منصة سينمائية تتميز بمصادقة Firebase وإدارة الحالة العالمية وخوارزمية تقييم متقدمة بأسلوب IMDB.",
         "tech": [
           "React",
