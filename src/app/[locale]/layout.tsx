@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Noto_Kufi_Arabic } from "next/font/google";
+import { mallory, goudyIni } from "@/app/fonts";
 import { cookies } from "next/headers";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
@@ -124,6 +125,8 @@ export default async function RootLayout({
   // Base html classes
   const htmlClassName = [
     "scroll-smooth",
+    mallory.variable,
+    goudyIni.variable,
     animationsDisabled ? "no-animations" : "",
   ]
     .filter(Boolean)

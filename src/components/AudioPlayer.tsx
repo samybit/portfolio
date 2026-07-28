@@ -2,13 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Disc3 } from "lucide-react";
-import localFont from "next/font/local";
+import { mallory } from "@/app/fonts";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
-
-const mallory = localFont({
-  src: "../app/fonts/Mallory.otf",
-  display: "swap",
-});
 
 const tracks = [
   { title: "med!cine", opus: "/track.opus", mp3: "/track.mp3" },
