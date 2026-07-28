@@ -70,7 +70,7 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
             ? "[&>button]:bg-[#e0e5ec] [&>button]:text-[#4b5563] [&>button]:border-transparent [&>button]:shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] [&>ul>li>button]:bg-[#e0e5ec] [&>ul>li>button]:text-[#4b5563] [&>ul>li>button]:border-transparent [&>ul>li>button]:shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)]"
             : isEmber
               ? "[&>button]:bg-[#1A1716] [&>button]:text-[#FF4F00] [&>button]:border-[#FF4F00] [&>button]:shadow-[4px_4px_0px_#FF4F00] [&>ul>li>button]:bg-[#1A1716] [&>ul>li>button]:text-[#FF4F00] [&>ul>li>button]:border-[#FF4F00] [&>ul>li>button]:shadow-[2px_2px_0px_#FF4F00]"
-              : "[&>button]:bg-white [&>button]:text-black [&>button]:border-2 [&>button]:border-black [&>button]:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] [&>ul>li>button]:bg-white [&>ul>li>button]:text-black [&>ul>li>button]:border-2 [&>ul>li>button]:border-black [&>ul>li>button]:shadow-[2px_2px_0px_rgba(255,255,255,0.3)]"
+              : "[&_button]:rounded-none [&>button]:bg-white [&>button]:text-black [&>button]:border-2 [&>button]:border-black [&>button]:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] [&>ul>li>button]:bg-white [&>ul>li>button]:text-black [&>ul>li>button]:border-2 [&>ul>li>button]:border-black [&>ul>li>button]:shadow-[2px_2px_0px_rgba(255,255,255,0.3)]"
         }
         actionButtons={[
           {
