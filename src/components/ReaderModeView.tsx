@@ -5,10 +5,11 @@
 
 const stack = [
   { category: "Frontend & Design", tech: ["Next.js", "React", "Angular", "TypeScript", "Tailwind CSS"] },
-  { category: "Backend & Database", tech: ["NestJS", "Node.js", "Express.js", "Python", "Flask", "Postgres", "MongoDB"] },
+  { category: "Backend & Database", tech: ["NestJS", "Express.js", "Python", "Flask", "Postgres", "MongoDB"] },
   { category: "Architecture & DevOps", tech: ["Docker", "Kubernetes", "Jenkins", "Linux OS", "Nexus Repo"] },
-  { category: "API & Testing", tech: ["Postman", "Swagger", "Jest", "Selenium", "BeautifulSoup", "REST APIs", "GraphQL"] },
+  { category: "API & Testing", tech: ["Postman", "Jest", "Selenium", "BeautifulSoup", "REST APIs", "GraphQL"] },
   { category: "Agile & Collab", tech: ["Git", "Jira", "Trello", "Notion", "Slack"] },
+  { category: "AI & Engineering", tech: ["RAG Pipelines", "LLM Fine-Tuning", "Prompt Engineering"] },
 ];
 
 interface Project {

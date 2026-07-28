@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, GraduationCap, Award, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Compass, PenTool, Cpu, Cloud, FlaskConical, GitBranch } from "lucide-react";
+import { ArrowLeft, ArrowRight, LayoutTemplate, Database, Server, Wrench, ExternalLink, Workflow, Compass, PenTool, Cpu, Cloud, FlaskConical, GitBranch, Brain, Bot } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -13,6 +13,53 @@ import { AnimatedTimeline } from "@/components/animata/progress/animatedtimeline
 import { MorphingText } from "@/components/ui/morphing-text";
 import RippleButton from "@/components/lightswind/ripple-button";
 import { getAboutImageIndex } from "@/utils/aboutImage";
+
+function EducationIcon({ size = 40, className = "" }: { size?: number; className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 256 256"
+      width={size}
+      height={size}
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="16"
+    >
+      <rect width="256" height="256" fill="none" stroke="none" />
+      <line x1="32" y1="64" x2="32" y2="144" />
+      <path d="M56,216c15.7-24.08,41.11-40,72-40s56.3,15.92,72,40" />
+      <polygon points="224 64 128 96 32 64 128 32 224 64" />
+      <path d="M169.34,82.22a56,56,0,1,1-82.68,0" />
+    </svg>
+  );
+}
+
+function ClearancesIcon({ size = 40, className = "" }: { size?: number; className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 256 256"
+      width={size}
+      height={size}
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="16"
+    >
+      <rect width="256" height="256" fill="none" stroke="none" />
+      <line x1="72" y1="136" x2="120" y2="136" />
+      <line x1="72" y1="104" x2="120" y2="104" />
+      <circle cx="196" cy="124" r="44" />
+      <path d="M168,192H40a8,8,0,0,1-8-8V56a8,8,0,0,1,8-8H216a8,8,0,0,1,8,8V90.06" />
+      <polyline points="168 157.94 168 224 196 208 224 224 224 157.94" />
+    </svg>
+  );
+}
 
 function CategoryIconMorph({
   icon: DefaultIcon,
@@ -27,9 +74,9 @@ function CategoryIconMorph({
 }) {
   return (
     <div
-      className={`relative w-11 h-11 flex items-center justify-center p-2 border-2 transition-all duration-300 ${
+      className={`relative w-9 h-9 flex items-center justify-center p-1.5 border-2 transition-all duration-300 ${
         isNeumorphic
-          ? "border-transparent text-black rounded-xl shadow-[inset_2px_2px_5px_rgba(163,177,198,0.5),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
+          ? "border-transparent text-black rounded-lg shadow-[inset_2px_2px_5px_rgba(163,177,198,0.5),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
           : "border-white text-white bg-white/10"
       }`}
     >
@@ -41,7 +88,7 @@ function CategoryIconMorph({
             : "opacity-100 scale-100 rotate-0"
         }`}
       >
-        <DefaultIcon size={26} />
+        <DefaultIcon size={22} />
       </div>
 
       {/* Hover Morph Icon */}
@@ -52,7 +99,7 @@ function CategoryIconMorph({
             : "opacity-0 scale-50 -rotate-90 pointer-events-none absolute"
         }`}
       >
-        <HoverIcon size={26} />
+        <HoverIcon size={22} />
       </div>
     </div>
   );
@@ -77,7 +124,7 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
       rel="noopener noreferrer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group/keycap relative w-full h-9 rounded-none cursor-pointer transition-all duration-200 select-none overflow-hidden block ${
+      className={`group/keycap relative w-full h-9.5 rounded-none cursor-pointer transition-all duration-200 select-none overflow-hidden block ${
         isNeumorphic
           ? isHovered
             ? "bg-[#d1d9e6] text-[#1e293b]"
@@ -89,21 +136,25 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
       title={`${item.name} // ${item.role}`}
       aria-label={`${item.name} documentation (opens in a new tab)`}
     >
-      <div className="w-full h-full flex items-center justify-between px-2.5 relative">
-        {/* Left: Brand Color Dot Indicator (Scales safely inside reserved wrapper) */}
-        <div className="w-3 shrink-0 flex items-center justify-center">
-          <span
-            className="w-2 h-2 rounded-full shrink-0 transition-transform duration-200 group-hover/keycap:scale-125 shadow-sm"
-            style={{ backgroundColor: item.color }}
-          />
-        </div>
+      <div className="w-full h-full flex items-center justify-between px-2 sm:px-2.5 relative">
+        {/* Left: Brand Color Dot Indicator */}
+        <span
+          className="w-2 h-2 rounded-full shrink-0 shadow-sm"
+          style={{ backgroundColor: item.color }}
+        />
 
         {/* Center Content: Name vs Role Swap */}
-        <div className="flex-1 mx-1.5 relative h-full flex items-center justify-center overflow-hidden">
+        <div className="flex-1 min-w-0 mx-1.5 relative h-full flex items-center justify-center overflow-hidden">
           <span
-            className={`font-mono font-black text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 transform whitespace-nowrap truncate max-w-full ${
+            className={`font-mono font-black uppercase transition-all duration-200 transform whitespace-nowrap ${
+              item.name.length > 15
+                ? "text-[10.5px] sm:text-[11.5px] tracking-tighter"
+                : item.name.length > 12
+                ? "text-[11px] sm:text-[12px] tracking-tight"
+                : "text-xs sm:text-[12.5px] tracking-tight"
+            } ${
               isHovered
-                ? "opacity-0 -translate-y-3.5 pointer-events-none"
+                ? "opacity-0 -translate-y-4 pointer-events-none"
                 : "opacity-100 translate-y-0"
             }`}
           >
@@ -111,37 +162,35 @@ function SkillKeycap({ item, isNeumorphic }: { item: SkillItemMeta; isNeumorphic
           </span>
 
           <span
-            className={`absolute font-mono font-bold text-[8.5px] sm:text-[9px] md:text-[9.5px] uppercase tracking-tight transition-all duration-200 transform whitespace-nowrap truncate max-w-full px-0.5 ${
+            className={`absolute font-mono font-bold text-[9px] sm:text-[9.5px] uppercase tracking-tight transition-all duration-200 transform whitespace-nowrap px-0.5 ${
               isHovered
                 ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-3.5 pointer-events-none"
+                : "opacity-0 translate-y-4 pointer-events-none"
             }`}
           >
             {item.role}
           </span>
         </div>
 
-        {/* Right: Authentic Brand Vector Logo (No scale distortion on hover) */}
-        <div className="w-4 h-4 shrink-0 flex items-center justify-center">
-          {!imgError ? (
-            <Image
-              src={item.iconUrl}
-              alt={item.name}
-              width={14}
-              height={14}
-              onError={() => setImgError(true)}
-              className="w-3.5 h-3.5 object-contain"
-              style={{
-                filter: isHovered && !isNeumorphic ? "invert(1) brightness(0)" : "none"
-              }}
-            />
-          ) : (
-            <span
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ backgroundColor: item.color }}
-            />
-          )}
-        </div>
+        {/* Right: Authentic Brand Vector Logo */}
+        {!imgError ? (
+          <Image
+            src={item.iconUrl}
+            alt={item.name}
+            width={16}
+            height={16}
+            onError={() => setImgError(true)}
+            className="w-4 h-4 shrink-0 object-contain"
+            style={{
+              filter: isHovered && !isNeumorphic ? "invert(1) brightness(0)" : "none"
+            }}
+          />
+        ) : (
+          <span
+            className="w-2 h-2 rounded-full shrink-0"
+            style={{ backgroundColor: item.color }}
+          />
+        )}
       </div>
     </a>
   );
@@ -263,7 +312,6 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
         { name: "Java", role: "Enterprise OOP", color: "#f8981d", iconUrl: "/skills/java.svg", url: "https://docs.oracle.com/en/java/" },
         { name: "Spring", role: "Backend Framework", color: "#6db33f", iconUrl: "/skills/spring.svg", url: "https://spring.io/docs" },
         { name: "NestJS", role: "Modular Backend API", color: "#e0234e", iconUrl: "/skills/nestjs.svg", url: "https://docs.nestjs.com/" },
-        { name: "Node.js", role: "Async JS Runtime", color: "#5fa04e", iconUrl: "/skills/nodejs.svg", url: "https://nodejs.org/en/docs" },
         { name: "Express.js", role: "REST Middleware", color: "#a0a0a0", iconUrl: "/skills/express.svg", url: "https://expressjs.com/" },
         { name: "Python", role: "Core Data & Scripting", color: "#3776ab", iconUrl: "/skills/python.svg", url: "https://docs.python.org/3/" },
         { name: "Flask", role: "Micro Services", color: "#ffffff", iconUrl: "/skills/flask.svg", url: "https://flask.palletsprojects.com/" },
@@ -289,7 +337,6 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
       hoverIcon: FlaskConical,
       items: [
         { name: "Postman", role: "API Testing Suite", color: "#ff6c37", iconUrl: "/skills/postman.svg", url: "https://learning.postman.com/docs/" },
-        { name: "Swagger", role: "OpenAPI Documentation", color: "#85ea2d", iconUrl: "/skills/swagger.svg", url: "https://swagger.io/docs/" },
         { name: "Jest", role: "Unit Testing", color: "#9A425B", iconUrl: "/skills/jest.svg", url: "https://jestjs.io/docs/getting-started" },
         { name: "Selenium", role: "E2E Automation", color: "#43b02a", iconUrl: "/skills/selenium.svg", url: "https://www.selenium.dev/documentation/" },
         { name: "BeautifulSoup", role: "Web Scraping Engine", color: "#ffd43b", iconUrl: "/skills/beautifulsoup.svg", url: "https://www.crummy.com/software/BeautifulSoup/bs4/doc/" },
@@ -307,6 +354,16 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
         { name: "Trello", role: "Kanban Board", color: "#0079bf", iconUrl: "/skills/trello.svg", url: "https://support.atlassian.com/trello/" },
         { name: "Notion", role: "Docs & Knowledge", color: "#ffffff", iconUrl: "/skills/notion.svg", url: "https://www.notion.so/help" },
         { name: "Slack", role: "Team Comms", color: "#e01e5a", iconUrl: "/skills/slack.svg", url: "https://api.slack.com/" },
+      ]
+    },
+    {
+      category: "AI & Engineering",
+      icon: Brain,
+      hoverIcon: Bot,
+      items: [
+        { name: "RAG Pipelines", role: "Vector Retrieval & Context", color: "#10a37f", iconUrl: "/skills/rag.svg", url: "https://python.langchain.com/docs/concepts/rag/" },
+        { name: "LLM Fine-Tuning", role: "Model Optimization & LoRA", color: "#8b5cf6", iconUrl: "/skills/llm.svg", url: "https://huggingface.co/docs/transformers/training" },
+        { name: "Prompt Engineering", role: "System Prompts & In-Context", color: "#f59e0b", iconUrl: "/skills/prompting.svg", url: "https://www.promptingguide.ai/" },
       ]
     },
   ];
@@ -361,7 +418,7 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
               <div className={`flex items-center gap-4 border-b-4 pb-4 mb-6 transition-all duration-300 ${
                 isNeumorphic ? "border-[#a3b1c6]" : "border-white"
               }`}>
-                <GraduationCap size={40} />
+                <EducationIcon size={40} />
                 <h2 className="text-4xl font-black uppercase">{dict?.education || "Education"}</h2>
               </div>
               <h3 className="text-3xl font-bold uppercase leading-tight mb-2">{dict?.eduSchool || "Ain Shams University"}</h3>
@@ -380,7 +437,7 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
             <div className={`flex items-center gap-4 border-b-4 pb-3 mb-4 transition-all duration-300 ${
               isNeumorphic ? "border-[#a3b1c6]" : "border-black"
             }`}>
-              <Award size={40} />
+              <ClearancesIcon size={40} />
               <h2 className="text-4xl font-black uppercase">{dict?.clearances || "Clearances"}</h2>
             </div>
 
@@ -611,7 +668,7 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
             strokeLinecap="round"
           />
         </svg>
-        <div className="w-full relative z-10 max-w-[90rem] mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-4">
+        <div className="w-full relative z-10 max-w-[85rem] mx-auto px-4 sm:px-6 md:px-8 py-4">
           <section className="animate-slide-up-delay-2">
             <div className="inline-block bg-black text-white px-5 py-1.5 mb-6 transform -skew-x-2">
               <MorphingText 
@@ -621,7 +678,7 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4" dir="ltr">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" dir="ltr">
               {stack.map((category, index) => (
                 <div
                   key={index}
@@ -633,14 +690,14 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
                     setIsSkillsCardHovered(false);
                     setHoveredCardIndex(null);
                   }}
-                  className={`group transition-all duration-300 flex flex-col justify-between p-4 ${
+                  className={`group transition-all duration-300 flex flex-col justify-between p-3.5 sm:p-4 ${
                     isNeumorphic
                       ? "brutalist-container hover:!bg-[#d1d9e6] hover:!text-[#1e293b] hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
                       : "brutalist-container-dark hover:!translate-x-1 hover:!translate-y-1 hover:!shadow-none"
                   }`}
                 >
                   <div>
-                    <div className={`flex flex-col items-center text-center gap-2 border-b-2 pb-3 mb-3.5 transition-all duration-300 ${
+                    <div className={`flex items-center gap-3 border-b-2 pb-2.5 mb-3 transition-all duration-300 ${
                       isNeumorphic ? "border-[#a3b1c6]" : "border-white/30"
                     }`}>
                       <CategoryIconMorph
@@ -649,15 +706,21 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
                         isHovered={hoveredCardIndex === index}
                         isNeumorphic={isNeumorphic}
                       />
-                      <h3 className="text-xs sm:text-sm font-black uppercase tracking-tight leading-tight min-h-[2.2rem] flex items-center justify-center text-center">
+                      <h3 className="text-sm sm:text-base font-black uppercase tracking-tight leading-tight">
                         {category.category}
                       </h3>
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                      {category.items.map((item, i) => (
-                        <SkillKeycap key={i} item={item} isNeumorphic={isNeumorphic} />
-                      ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {category.items.map((item, i) => {
+                        const isAllFullWidth = category.category === "AI & Engineering";
+                        const isLastOddItem = category.items.length % 2 !== 0 && i === category.items.length - 1;
+                        return (
+                          <div key={i} className={isAllFullWidth || isLastOddItem ? "sm:col-span-2" : ""}>
+                            <SkillKeycap item={item} isNeumorphic={isNeumorphic} />
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
