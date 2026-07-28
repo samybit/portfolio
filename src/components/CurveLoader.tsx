@@ -58,7 +58,7 @@ export default function CurveLoader({
 
     const fallbackTimeoutId = setTimeout(() => {
       setIsExiting(true);
-    }, 1700);
+    }, 1600);
 
     const tick = (now: number) => {
       const t = Math.min((now - start) / duration, 1);
@@ -96,7 +96,7 @@ export default function CurveLoader({
 
     const exitSafetyTimer = setTimeout(() => {
       handleExitComplete();
-    }, 1500);
+    }, 900);
 
     return () => clearTimeout(exitSafetyTimer);
   }, [isExiting, isFinished, handleExitComplete]);
