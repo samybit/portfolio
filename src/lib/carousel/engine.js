@@ -30,7 +30,7 @@ export function createCarousel(mount, callbacks = {}) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(W, H);
-  renderer.setClearColor(0xffffff, 1); // match page bg so FBO gaps blend
+  renderer.setClearColor(0x000000, 1); // match black page bg so FBO gaps blend
   mount.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
@@ -144,7 +144,7 @@ export function createCarousel(mount, callbacks = {}) {
   for (let r = 0; r < REPEATS; r++) {
     for (let i = 0; i < sources.length; i++) {
       const mat = new THREE.MeshBasicMaterial({
-        color: 0xdddddd,
+        color: 0x18181b,
         transparent: true,
       });
       const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 1, 1), mat);
@@ -352,9 +352,6 @@ export function createCarousel(mount, callbacks = {}) {
           col = mix(bcol / btw, col, rimMask);
         }
 
-        // glassy darkening toward center
-        col *= mix(0.91, 1.0, smoothstep(0.0, 0.38, shapeND));
-
         // white nova glow at center
         float r2 = shapeND * shapeND * 0.25;
         float gs = max(uNovaSize * uGlow * 0.003, 0.004);
@@ -362,7 +359,9 @@ export function createCarousel(mount, callbacks = {}) {
         nova *= uWhiteGlow * (uGlow / 17.0) * 1.15;
         col += vec3(nova);
 
-        // blue ring + aura
+        // blue ring + aura modulated by card presence so empty black background stays dark
+        float sceneLuma = dot(col, vec3(0.299, 0.587, 0.114));
+        float cardPresence = smoothstep(0.001, 0.08, sceneLuma);
         float dC = shapeND * 0.5;
         float tR = clamp(uRingRadius, 0.1, 0.49);
         float rW = max(uRingWidth, 0.003);
@@ -370,7 +369,7 @@ export function createCarousel(mount, callbacks = {}) {
         ring *= uBlueRing * (uGlow / 17.0) * 1.8;
         if (uShimmer > 0.5) ring *= sin(angle * uShimmerFreq + uTime * uShimmerSpeed) * uShimmerDepth + (1.0 - uShimmerDepth);
         float ringAura = exp(-pow((dC - tR) / (rW * 6.0), 2.0)) * 0.28 * uBlueRing * (uGlow / 17.0);
-        col += uBlueColor * (ring + ringAura);
+        col += uBlueColor * (ring + ringAura) * mix(0.15, 1.0, cardPresence);
         // bright border line
         col += vec3(exp(-pow((dC - uRimLinePos) / max(uRimLineWidth, 0.0001), 2.0)) * uRimLine);
 

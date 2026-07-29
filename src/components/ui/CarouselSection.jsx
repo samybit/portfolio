@@ -146,34 +146,34 @@ const CarouselSection = ({ footer }) => {
   }
 
   return (
-    <div ref={mountRef} className="h-screen relative w-screen bg-white">
+    <div ref={mountRef} className="h-screen relative w-screen bg-black">
       <div
         ref={topTextRef}
-        className="absolute px-4 left-1/2 top-[15%] mix-blend-exclusion text-white"
+        className="absolute px-4 left-1/2 top-[15%] mix-blend-exclusion text-white z-20"
         style={ENTRY.enabled ? { opacity: 0, visibility: "hidden" } : undefined}
       >
         <div className="flex flex-col items-center justify-center">
           <p className="text-center text-base">{PROJECTS[active].brand}</p>
-          <p className="text-center">{PROJECTS[active].desc}</p>
+          <p className="text-center mt-[3px]">{PROJECTS[active].desc}</p>
         </div>
       </div>
 
       <div
         ref={counterRef}
-        className="absolute px-4 left-1/2 bottom-[16%] text-black text-center whitespace-nowrap z-20"
+        className="absolute px-4 left-1/2 bottom-[16%] text-white text-center whitespace-nowrap z-20"
         style={ENTRY.enabled ? { opacity: 0, visibility: "hidden" } : undefined}
       >
-        <p className="text-center text-base font-bold">
+        <p className="text-center text-base font-bold tracking-widest text-white drop-shadow-md">
           {String(active + 1).padStart(2, "0")}/
           {String(PROJECTS.length).padStart(2, "0")}
         </p>
-        <div className="mt-2 flex items-center justify-center gap-1.5 text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider text-black/75">
-          <span className="border border-black/60 px-1 py-0.5 bg-white/70 shadow-xs">← / →</span>
-          <span className="border border-black/60 px-1 py-0.5 bg-white/70 shadow-xs">A / D</span>
+        <div className="mt-2 flex items-center justify-center gap-1.5 text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider text-white/90">
+          <span className="border border-white/40 px-1.5 py-0.5 bg-zinc-900/90 text-white shadow-xs">← / →</span>
+          <span className="border border-white/40 px-1.5 py-0.5 bg-zinc-900/90 text-white shadow-xs">A / D</span>
           <span className="opacity-40">•</span>
-          <span className="border border-black/60 px-1 py-0.5 bg-white/70 shadow-xs">ENTER</span>
+          <span className="border border-white/40 px-1.5 py-0.5 bg-zinc-900/90 text-white shadow-xs">ENTER</span>
           <span className="opacity-40">•</span>
-          <span className="border border-black/60 px-1 py-0.5 bg-white/70 shadow-xs">ESC</span>
+          <span className="border border-white/40 px-1.5 py-0.5 bg-zinc-900/90 text-white shadow-xs">ESC</span>
         </div>
       </div>
 
@@ -189,7 +189,7 @@ const CarouselSection = ({ footer }) => {
         type="button"
         onClick={() => engineRef.current?.closeFocus()}
         aria-label="Close image view (press Esc)"
-        className={`absolute top-6 right-6 sm:top-8 sm:right-8 z-40 px-4 py-2 bg-white text-black font-black text-xs sm:text-sm uppercase tracking-wider border-3 sm:border-4 border-black shadow-[4px_4px_0px_0px_#000000] hover:bg-black hover:text-white hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+        className={`absolute top-6 right-6 sm:top-8 sm:right-8 z-40 px-4 py-2 bg-white text-black font-black text-xs sm:text-sm uppercase tracking-wider border-3 sm:border-4 border-black shadow-[4px_4px_0px_0px_#ffffff] hover:bg-black hover:text-white hover:border-white hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_#ffffff] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all duration-200 flex items-center gap-2 cursor-pointer ${
           focused ? "opacity-100 pointer-events-auto scale-100" : "opacity-0 pointer-events-none scale-95"
         }`}
       >

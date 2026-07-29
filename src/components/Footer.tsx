@@ -140,8 +140,8 @@ export default function Footer({
           className={`font-bold uppercase ${
             overlay
               ? isNeumorphic
-                ? "text-black bg-white/90 px-3 py-1 border-2 border-black text-xs sm:text-sm"
-                : "text-white bg-black/90 px-3 py-1 border-2 border-white/80 text-xs sm:text-sm"
+                ? "text-black bg-white/90 px-3 py-1 text-xs sm:text-sm"
+                : "text-white/90 text-xs sm:text-sm tracking-wider"
               : "text-black bg-white px-3 py-1 text-[clamp(0.75rem,3.5vw,1.25rem)]"
           }`}
           suppressHydrationWarning

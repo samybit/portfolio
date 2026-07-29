@@ -46,29 +46,29 @@ export const LENS = {
   posX: 0.5, // center x in screen-UV (0 left .. 1 right)
   posY: 0.5, // center y in screen-UV (0 bottom .. 1 top)
   zoom: 0, // inward pull strength
-  dispersion: 11, // chromatic dispersion
+  dispersion: 12, // chromatic dispersion
   blur: 0.0, // blur amount (px)
-  glow: 4.2, // overall glow multiplier
-  whiteGlow: 0.24, // central white nova intensity
+  glow: 1.0, // overall glow multiplier
+  whiteGlow: 0.0, // zero central white fog so black background stays pure black
   novaSize: 12, // nova size
-  blueRing: 6, // blue ring intensity
+  blueRing: 1.8, // subtle blue glass rim reflection on distorted card edges
   ringRadius: 0.49, // ring radius (0..0.5)
-  ringWidth: 0.014, // ring width
+  ringWidth: 0.012, // ring width
   shimmer: true, // animated ring shimmer
   shimmerFreq: 12, // shimmer wave count around the ring
   shimmerSpeed: 3.5, // shimmer animation speed
-  shimmerDepth: 0.12, // shimmer intensity (0 = none .. 0.5 = strong)
+  shimmerDepth: 0.15, // shimmer intensity
   rimStart: 0.578, // where the rim fluid wave begins
   rimTangential: 0.6, // tangential fluid-wave displacement
   rimInward: 0, // extra inward pull at the rim
   rimFreq1: 2, // fluid wave frequency 1
   rimFreq2: 1, // fluid wave frequency 2
-  blueColor: "#009dff", // the soul: blue tint / ring color
-  rimLine: 1.4, // bright white border line intensity (0 = off)
+  blueColor: "#2563eb", // deep electric blue glass refraction accent
+  rimLine: 0.0, // zero white outline so pill boundary blends seamlessly into black bg
   rimLinePos: 0.488, // where the white border sits (0..0.5)
   rimLineWidth: 0.003, // sharpness of the white border
-  vignette: 0, // overall screen vignette strength (0 = off)
-  vignetteSize: 0.3, // how far in the vignette reaches
+  vignette: 0.0, // zero vignette so black background is completely uniform
+  vignetteSize: 0.4, // vignette radius
   samples: 16, // dispersion samples
 };
 
