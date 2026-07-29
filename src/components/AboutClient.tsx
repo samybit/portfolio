@@ -850,8 +850,7 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
           {section4}
         </div>
       </div>
-      <CarouselSection />
-      <Footer dict={footerDict} />
+      <CarouselSection footer={<Footer dict={footerDict} overlay={true} />} />
       {toastOverlay}
     </main>
   );

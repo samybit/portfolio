@@ -13,11 +13,12 @@ import { createCarouselGui } from "@/lib/carousel/gui";
 // At this viewport width or below we show a plain black screen instead.
 const MIN_VIEWPORT_WIDTH = 1025; // px
 
-const CarouselSection = () => {
+const CarouselSection = ({ footer }) => {
   const mountRef = useRef(null); // engine mounts its canvas here
   const cursorRef = useRef(null); // trailing "View" label, moved by the engine
   const topTextRef = useRef(null); // brand/desc — GSAP-animated on focus
   const counterRef = useRef(null); // 01/12 counter — GSAP-animated on focus
+  const footerOverlayRef = useRef(null); // footer overlay bar — GSAP-animated on focus
   const engineRef = useRef(null); // createCarousel() handle
   const revealPlayedRef = useRef(false); // entry reveal fade runs exactly once
 
@@ -120,7 +121,7 @@ const CarouselSection = () => {
       duration: UI_ANIM.duration,
       ease: UI_ANIM.ease,
     });
-    gsap.to(counterRef.current, {
+    gsap.to([counterRef.current, footerOverlayRef.current], {
       autoAlpha: focused ? 0 : 1,
       duration: UI_ANIM.duration,
       ease: UI_ANIM.ease,
@@ -159,7 +160,7 @@ const CarouselSection = () => {
 
       <div
         ref={counterRef}
-        className="absolute px-4 left-1/2 bottom-[12%] text-black text-center whitespace-nowrap"
+        className="absolute px-4 left-1/2 bottom-[16%] text-black text-center whitespace-nowrap z-20"
         style={ENTRY.enabled ? { opacity: 0, visibility: "hidden" } : undefined}
       >
         <p className="text-center text-base font-bold">
@@ -196,6 +197,12 @@ const CarouselSection = () => {
         <span>CLOSE</span>
         <span className="text-[10px] font-mono opacity-60 hidden sm:inline-block ms-1 border border-current px-1 py-0.5">[ESC]</span>
       </button>
+
+      {footer && (
+        <div ref={footerOverlayRef} className="absolute bottom-0 left-0 right-0 z-30 pointer-events-auto">
+          {footer}
+        </div>
+      )}
     </div>
   );
 };

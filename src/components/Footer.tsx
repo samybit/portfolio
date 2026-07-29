@@ -14,7 +14,15 @@ import { useSyncExternalStore } from "react";
 
 const Footer3D = dynamic(() => import("@/components/Footer3D"), { ssr: false });
 
-export default function Footer({ dict }: { dict: Record<string, string> }) {
+export default function Footer({
+  dict,
+  className = "",
+  overlay = false,
+}: {
+  dict: Record<string, string>;
+  className?: string;
+  overlay?: boolean;
+}) {
   // 1. Hardware Observer: Tracks if the footer is anywhere near the viewport
   const footerRef = useRef<HTMLElement>(null);
   // The margin ensures it wakes up slightly before the user actually sees it
@@ -103,27 +111,60 @@ export default function Footer({ dict }: { dict: Record<string, string> }) {
   );
 
   return (
-    <footer ref={footerRef} className={`relative min-h-[20vh] flex items-center justify-center overflow-hidden border-t-8 border-black py-6 px-6 md:py-8 md:px-12 transition-colors duration-300 ${
-      isNeumorphic ? "bg-white" : "bg-black"
-    }`}>
-      {/* --- LAYER 1: 3D KNOT BACKGROUND (z-0) --- */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* 2. The Engine Killswitch: 'never' pauses the GPU completely */}
-        <Footer3D isInView={isInView} isEmber={isEmber} isNeumorphic={isNeumorphic} />
-      </div>
+    <footer
+      ref={footerRef}
+      className={
+        overlay
+          ? `w-full py-3.5 px-6 border-t-4 border-black/80 bg-black/85 backdrop-blur-md text-white transition-colors duration-300 ${className}`
+          : `relative min-h-[20vh] flex items-center justify-center overflow-hidden border-t-8 border-black py-6 px-6 md:py-8 md:px-12 transition-colors duration-300 ${
+              isNeumorphic ? "bg-white" : "bg-black"
+            } ${className}`
+      }
+    >
+      {/* --- LAYER 1: 3D KNOT BACKGROUND (Only in standalone non-overlay mode) --- */}
+      {!overlay && (
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <Footer3D isInView={isInView} isEmber={isEmber} isNeumorphic={isNeumorphic} />
+        </div>
+      )}
 
-      {/* --- LAYER 2: FOOTER CONTENT (z-10) --- */}
-      <div className="relative z-10 text-center flex flex-col items-center justify-center gap-6 pointer-events-none">
-        <p className="text-[clamp(0.75rem,3.5vw,1.25rem)] whitespace-nowrap font-bold uppercase text-black bg-white px-3 py-1" suppressHydrationWarning>
+      {/* --- LAYER 2: FOOTER CONTENT --- */}
+      <div
+        className={
+          overlay
+            ? "relative z-10 w-full max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left rtl:sm:text-right pointer-events-auto"
+            : "relative z-10 text-center flex flex-col items-center justify-center gap-6 pointer-events-none"
+        }
+      >
+        <p
+          className={`font-bold uppercase ${
+            overlay
+              ? isNeumorphic
+                ? "text-black bg-white/90 px-3 py-1 border-2 border-black text-xs sm:text-sm"
+                : "text-white bg-black/90 px-3 py-1 border-2 border-white/80 text-xs sm:text-sm"
+              : "text-black bg-white px-3 py-1 text-[clamp(0.75rem,3.5vw,1.25rem)]"
+          }`}
+          suppressHydrationWarning
+        >
           {copyrightText}
         </p>
 
         <a
           href="#"
-          className={`text-lg font-bold uppercase border-b-4 pb-1 transition-colors pointer-events-auto ${
-            isNeumorphic 
-              ? "border-black text-black hover:bg-black hover:text-white" 
-              : "border-white text-white hover:bg-white hover:text-black"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToTop();
+          }}
+          className={`font-bold uppercase border-b-2 sm:border-b-4 pb-0.5 transition-colors pointer-events-auto cursor-pointer ${
+            overlay
+              ? isNeumorphic
+                ? "border-black text-black hover:bg-black hover:text-white px-2 text-sm sm:text-base"
+                : "border-white text-white hover:bg-white hover:text-black px-2 text-sm sm:text-base"
+              : `text-lg border-b-4 ${
+                  isNeumorphic
+                    ? "border-black text-black hover:bg-black hover:text-white"
+                    : "border-white text-white hover:bg-white hover:text-black"
+                }`
           }`}
         >
           {dict?.backToTop || "↑ Back to top"}
