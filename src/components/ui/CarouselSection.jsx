@@ -43,6 +43,8 @@ const CarouselSection = () => {
 
       if (e.key === "Escape") {
         engineRef.current?.closeFocus();
+      } else if (e.key === "Enter") {
+        engineRef.current?.openFocus();
       } else if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
         engineRef.current?.nextPanel();
       } else if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
@@ -157,13 +159,21 @@ const CarouselSection = () => {
 
       <div
         ref={counterRef}
-        className="absolute px-4 left-1/2 bottom-[15%] text-black"
+        className="absolute px-4 left-1/2 bottom-[12%] text-black text-center whitespace-nowrap"
         style={ENTRY.enabled ? { opacity: 0, visibility: "hidden" } : undefined}
       >
-        <p className="text-center text-base">
+        <p className="text-center text-base font-bold">
           {String(active + 1).padStart(2, "0")}/
           {String(PROJECTS.length).padStart(2, "0")}
         </p>
+        <div className="mt-2 flex items-center justify-center gap-1.5 text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider text-black/75">
+          <span className="border border-black/60 px-1 py-0.5 bg-white/70 shadow-xs">← / →</span>
+          <span className="border border-black/60 px-1 py-0.5 bg-white/70 shadow-xs">A / D</span>
+          <span className="opacity-40">•</span>
+          <span className="border border-black/60 px-1 py-0.5 bg-white/70 shadow-xs">ENTER</span>
+          <span className="opacity-40">•</span>
+          <span className="border border-black/60 px-1 py-0.5 bg-white/70 shadow-xs">ESC</span>
+        </div>
       </div>
 
       <div

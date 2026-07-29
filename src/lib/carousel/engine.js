@@ -1039,9 +1039,19 @@ export function createCarousel(mount, callbacks = {}) {
     snapArmed = true;
   }
 
+  function toggleFocus() {
+    if (entryActive || entrySettled) return;
+    if (focusState.active) {
+      closeFocus();
+    } else {
+      openFocus();
+    }
+  }
+
   return {
     nextPanel,
     prevPanel,
+    openFocus: toggleFocus,
     closeFocus,
     replayEntry: playEntry,
     refreshLayout: recomputeTotal, // call after changing PANEL_H / GAP
