@@ -9,6 +9,7 @@ import AudioPlayer from "@/components/AudioPlayer";
 import DecryptText from "@/components/DecryptText";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 import Footer from "@/components/Footer";
+import CarouselSection from "@/components/ui/CarouselSection";
 import { AnimatedTimeline } from "@/components/animata/progress/animatedtimeline";
 import { MorphingText } from "@/components/ui/morphing-text";
 import RippleButton from "@/components/lightswind/ripple-button";
@@ -849,6 +850,7 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
           {section4}
         </div>
       </div>
+      <CarouselSection />
       <Footer dict={footerDict} />
       {toastOverlay}
     </main>
