@@ -30,28 +30,6 @@ function StealthGliderIcon({ className }: { className?: string }) {
 function BongoCat({ pawState }: { pawState: 'idle' | 'left' | 'right' }) {
   const isNeumorphic = useNeumorphicTheme();
 
-  // Silhouette Backdrop:
-  // Neumorphic Mode -> group-white.svg (white silhouette)
-  // Brutalist / Dark Mode -> group.svg (black silhouette)
-  const silhouette = isNeumorphic
-    ? "/bongo/parts/group-white.svg"
-    : "/bongo/parts/group.svg";
-
-  // Line Art Variant:
-  // Neumorphic Mode -> black line art (-black.png)
-  // Brutalist / Dark Mode -> white line art (-white.png)
-  const variant = isNeumorphic ? "black" : "white";
-
-  const catHead = `/bongo/parts/cat-${variant}.png`;
-  const mouth = `/bongo/parts/mouth-open-${variant}.png`;
-
-  // Pre-rendered paw layer URLs:
-  const pawLeftUp = `/bongo/parts/paw-left-down-${variant}.png`; // Raised UP (default)
-  const pawLeftDown = `/bongo/parts/paw-left-up-${variant}.png`; // Struck DOWN on left keypress
-
-  const pawRightUp = `/bongo/parts/paw-right-up-${variant}.png`; // Raised UP (default)
-  const pawRightDown = `/bongo/parts/paw-right-down-${variant}.png`; // Struck DOWN on right keypress
-
   const isLeftTapped = pawState === 'left';
   const isRightTapped = pawState === 'right';
 
@@ -61,76 +39,29 @@ function BongoCat({ pawState }: { pawState: 'idle' | 'left' | 'right' }) {
       aria-hidden="true"
     >
       <div className="relative w-full h-full">
-        {/* Silhouette Backdrop Asset */}
-        <Image
-          fill
-          unoptimized
-          src={silhouette}
-          alt=""
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-        />
 
-        {/* Line Art Base Head Layer */}
-        <Image
-          fill
-          unoptimized
-          src={catHead}
-          alt=""
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-        />
+        {/* --- NEUMORPHIC THEME VARIANT (Black Line Art + White Silhouette) --- */}
+        <div className={`absolute inset-0 transition-opacity duration-200 ${isNeumorphic ? "opacity-100" : "opacity-0"}`}>
+          <Image fill unoptimized src="/bongo/parts/group-white.svg" alt="" className="absolute inset-0 w-full h-full object-contain pointer-events-none" />
+          <Image fill unoptimized src="/bongo/parts/cat-black.png" alt="" className="absolute inset-0 w-full h-full object-contain pointer-events-none" />
+          <Image fill unoptimized src="/bongo/parts/mouth-open-black.png" alt="" className="absolute inset-0 w-full h-full object-contain pointer-events-none" />
+          <Image fill unoptimized src="/bongo/parts/paw-left-down-black.png" alt="" className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${isLeftTapped ? "opacity-0" : "opacity-100"}`} />
+          <Image fill unoptimized src="/bongo/parts/paw-left-up-black.png" alt="" className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${isLeftTapped ? "opacity-100" : "opacity-0"}`} />
+          <Image fill unoptimized src="/bongo/parts/paw-right-up-black.png" alt="" className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${isRightTapped ? "opacity-0" : "opacity-100"}`} />
+          <Image fill unoptimized src="/bongo/parts/paw-right-down-black.png" alt="" className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${isRightTapped ? "opacity-100" : "opacity-0"}`} />
+        </div>
 
-        {/* Line Art Mouth Layer (Always Mouth Open :D) */}
-        <Image
-          fill
-          unoptimized
-          src={mouth}
-          alt=""
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-        />
+        {/* --- BRUTALIST / DARK THEME VARIANT (White Line Art + Black Silhouette) --- */}
+        <div className={`absolute inset-0 transition-opacity duration-200 ${!isNeumorphic ? "opacity-100" : "opacity-0"}`}>
+          <Image fill unoptimized src="/bongo/parts/group.svg" alt="" className="absolute inset-0 w-full h-full object-contain pointer-events-none" />
+          <Image fill unoptimized src="/bongo/parts/cat-white.png" alt="" className="absolute inset-0 w-full h-full object-contain pointer-events-none" />
+          <Image fill unoptimized src="/bongo/parts/mouth-open-white.png" alt="" className="absolute inset-0 w-full h-full object-contain pointer-events-none" />
+          <Image fill unoptimized src="/bongo/parts/paw-left-down-white.png" alt="" className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${isLeftTapped ? "opacity-0" : "opacity-100"}`} />
+          <Image fill unoptimized src="/bongo/parts/paw-left-up-white.png" alt="" className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${isLeftTapped ? "opacity-100" : "opacity-0"}`} />
+          <Image fill unoptimized src="/bongo/parts/paw-right-up-white.png" alt="" className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${isRightTapped ? "opacity-0" : "opacity-100"}`} />
+          <Image fill unoptimized src="/bongo/parts/paw-right-down-white.png" alt="" className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${isRightTapped ? "opacity-100" : "opacity-0"}`} />
+        </div>
 
-        {/* Left Paw - Raised UP (Default) */}
-        <Image
-          fill
-          unoptimized
-          src={pawLeftUp}
-          alt=""
-          className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${
-            isLeftTapped ? "opacity-0" : "opacity-100"
-          }`}
-        />
-
-        {/* Left Paw - Struck DOWN (Active) */}
-        <Image
-          fill
-          unoptimized
-          src={pawLeftDown}
-          alt=""
-          className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${
-            isLeftTapped ? "opacity-100" : "opacity-0"
-          }`}
-        />
-
-        {/* Right Paw - Raised UP (Default) */}
-        <Image
-          fill
-          unoptimized
-          src={pawRightUp}
-          alt=""
-          className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${
-            isRightTapped ? "opacity-0" : "opacity-100"
-          }`}
-        />
-
-        {/* Right Paw - Struck DOWN (Active) */}
-        <Image
-          fill
-          unoptimized
-          src={pawRightDown}
-          alt=""
-          className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${
-            isRightTapped ? "opacity-100" : "opacity-0"
-          }`}
-        />
       </div>
     </div>
   );
