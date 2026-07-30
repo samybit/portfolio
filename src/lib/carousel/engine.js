@@ -630,6 +630,55 @@ export function createCarousel(mount, callbacks = {}) {
   }
 
   // ---- input ----
+  let isPointerDown = false;
+  let lastPointerX = 0;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let totalDragDist = 0;
+
+  function onPointerDown(e) {
+    if (focusState.active || entryActive || entrySettled) return;
+    isPointerDown = true;
+    lastPointerX = e.clientX;
+    totalDragDist = 0;
+  }
+
+  function onTouchStart(e) {
+    if (focusState.active || entryActive || entrySettled) return;
+    if (!e.touches || e.touches.length !== 1) return;
+    isPointerDown = true;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    lastPointerX = e.touches[0].clientX;
+    totalDragDist = 0;
+  }
+
+  function onTouchMove(e) {
+    if (!isPointerDown || !e.touches || e.touches.length !== 1) return;
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    const dx = currentX - lastPointerX;
+    const totalDx = currentX - touchStartX;
+    const totalDy = currentY - touchStartY;
+
+    if (Math.abs(totalDx) > Math.abs(totalDy) * 0.7) {
+      if (e.cancelable) e.preventDefault();
+      lastPointerX = currentX;
+      totalDragDist += Math.abs(dx);
+      if (Math.abs(dx) > 0.1) {
+        userInteracted = true;
+        pendingFocus = null;
+        target -= dx * 2.2;
+        snapArmed = true;
+        lastWheelAt = performance.now();
+      }
+    }
+  }
+
+  function onTouchEnd() {
+    isPointerDown = false;
+  }
+
   function onWheel(e) {
     e.preventDefault();
     if (focusState.active || entryActive || entrySettled) return;
@@ -648,13 +697,36 @@ export function createCarousel(mount, callbacks = {}) {
       setView(false);
       return;
     }
+    if (isPointerDown) {
+      const dx = e.clientX - lastPointerX;
+      lastPointerX = e.clientX;
+      totalDragDist += Math.abs(dx);
+      if (Math.abs(dx) > 0.1) {
+        userInteracted = true;
+        pendingFocus = null;
+        target -= dx * 1.8;
+        snapArmed = true;
+        lastWheelAt = performance.now();
+      }
+    }
     setView(panelAtPointer(e.clientX, e.clientY) !== null);
   }
+
+  function onPointerUp() {
+    isPointerDown = false;
+  }
+
   function onLeave() {
+    isPointerDown = false;
     setView(false);
   }
 
   function onClick(e) {
+    if (totalDragDist > 8) {
+      totalDragDist = 0;
+      return;
+    }
+    totalDragDist = 0;
     if (focusState.active) {
       closeFocus();
       return;
@@ -905,8 +977,15 @@ export function createCarousel(mount, callbacks = {}) {
   }
 
   el.addEventListener("wheel", onWheel, { passive: false });
+  el.addEventListener("pointerdown", onPointerDown);
   el.addEventListener("pointermove", onPointerMove);
+  el.addEventListener("pointerup", onPointerUp);
+  el.addEventListener("pointercancel", onPointerUp);
   el.addEventListener("pointerleave", onLeave);
+  el.addEventListener("touchstart", onTouchStart, { passive: true });
+  el.addEventListener("touchmove", onTouchMove, { passive: false });
+  el.addEventListener("touchend", onTouchEnd, { passive: true });
+  el.addEventListener("touchcancel", onTouchEnd, { passive: true });
   el.addEventListener("click", onClick);
 
   // ---- animation loop ----
@@ -959,7 +1038,15 @@ export function createCarousel(mount, callbacks = {}) {
 
     // lens uniforms + focus/entry fade of the distortion props
     lensUniforms.uCenter.value.set(LENS.posX, LENS.posY);
-    lensUniforms.uAspect.value = W / H;
+    const aspect = W / H;
+    lensUniforms.uAspect.value = aspect;
+    if (aspect < 1.0) {
+      lensUniforms.uSizeX.value = LENS.sizeX * 0.9;
+      lensUniforms.uSizeY.value = LENS.sizeY * (0.6 / aspect);
+    } else {
+      lensUniforms.uSizeX.value = LENS.sizeX;
+      lensUniforms.uSizeY.value = LENS.sizeY;
+    }
     lensUniforms.uTime.value = performance.now() * 0.001;
     const rad = (a) => (a * Math.PI) / 180;
     lensUniforms.uRotation.value =
@@ -1000,8 +1087,15 @@ export function createCarousel(mount, callbacks = {}) {
     cancelAnimationFrame(raf);
     window.removeEventListener("resize", onResize);
     el.removeEventListener("wheel", onWheel);
+    el.removeEventListener("pointerdown", onPointerDown);
     el.removeEventListener("pointermove", onPointerMove);
+    el.removeEventListener("pointerup", onPointerUp);
+    el.removeEventListener("pointercancel", onPointerUp);
     el.removeEventListener("pointerleave", onLeave);
+    el.removeEventListener("touchstart", onTouchStart);
+    el.removeEventListener("touchmove", onTouchMove);
+    el.removeEventListener("touchend", onTouchEnd);
+    el.removeEventListener("touchcancel", onTouchEnd);
     el.removeEventListener("click", onClick);
     if (focusState.anim) focusState.anim.kill();
     if (entryAnim) entryAnim.kill();

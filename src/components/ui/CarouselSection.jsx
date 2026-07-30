@@ -9,10 +9,6 @@ import { PROJECTS, ENTRY, UI_ANIM } from "@/lib/carousel/config";
 import { createCarousel } from "@/lib/carousel/engine";
 import { createCarouselGui } from "@/lib/carousel/gui";
 
-// The carousel is a desktop experience (wheel-driven, heavy shader work).
-// At this viewport width or below we show a plain black screen instead.
-const MIN_VIEWPORT_WIDTH = 1025; // px
-
 const CarouselSection = ({ footer }) => {
   const mountRef = useRef(null); // engine mounts its canvas here
   const cursorRef = useRef(null); // trailing "View" label, moved by the engine
@@ -25,17 +21,6 @@ const CarouselSection = ({ footer }) => {
   const [active, setActive] = useState(0); // index of the centered image
   const [focused, setFocused] = useState(false); // a focus session is open
   const [entryDone, setEntryDone] = useState(false); // entry fully settled
-  // "pending" until we know the viewport (SSR-safe), then "ok" | "small"
-  const [screen, setScreen] = useState("pending");
-
-  // ---- viewport gate ----
-  useEffect(() => {
-    const mq = window.matchMedia(`(max-width: ${MIN_VIEWPORT_WIDTH - 1}px)`);
-    const update = () => setScreen(mq.matches ? "small" : "ok");
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
 
   // ---- keyboard navigation listener ----
   useEffect(() => {
@@ -58,7 +43,7 @@ const CarouselSection = ({ footer }) => {
 
   // ---- engine lifecycle ----
   useEffect(() => {
-    if (screen !== "ok") return; // never boot WebGL on small screens
+    if (!mountRef.current) return;
     const engine = createCarousel(mountRef.current, {
       cursorElement: cursorRef.current,
       onActiveChange: setActive,
@@ -72,7 +57,7 @@ const CarouselSection = ({ footer }) => {
       engine.destroy();
       engineRef.current = null;
     };
-  }, [screen]);
+  }, []);
 
   // ---- overlay text transitions ----
   // GSAP-driven so they share the canvas animations' easing vocabulary.
@@ -88,9 +73,6 @@ const CarouselSection = ({ footer }) => {
     const y = focused ? (UI_ANIM.topShiftVh / 100) * window.innerHeight : 0;
 
     if (entryDone && !focused && !revealPlayedRef.current) {
-      // premium settle reveal: slow gentle fade only (no movement), counter
-      // trailing the top text slightly. Runs ONCE after entry — closing focus
-      // must not replay it (the heading would blink out and fade back in).
       revealPlayedRef.current = true;
       gsap.fromTo(
         topTextRef.current,
@@ -128,33 +110,16 @@ const CarouselSection = ({ footer }) => {
     });
   }, [focused, entryDone]);
 
-  // small screens: a plain black holding screen instead of the carousel.
-  // "pending" (first paint, viewport not measured yet) stays black too so
-  // mobile users never see a flash of the desktop experience booting.
-  if (screen !== "ok") {
-    return (
-      <div className="h-screen w-screen bg-black flex items-center justify-center">
-        {screen === "small" && (
-          <p className="px-8 text-center text-sm text-white/70">
-            This experience is designed for larger screens.
-            <br />
-            Please visit on a display wider than 1024px.
-          </p>
-        )}
-      </div>
-    );
-  }
-
   return (
-    <div ref={mountRef} className="h-screen relative w-screen bg-black">
+    <div ref={mountRef} className="h-screen relative w-screen bg-black touch-none select-none overflow-hidden">
       <div
         ref={topTextRef}
-        className="absolute px-4 left-1/2 top-[15%] mix-blend-exclusion text-white z-20"
+        className="absolute px-4 left-1/2 -translate-x-1/2 w-[92vw] max-w-2xl top-[12%] sm:top-[15%] text-white text-center z-20 pointer-events-none"
         style={ENTRY.enabled ? { opacity: 0, visibility: "hidden" } : undefined}
       >
-        <div className="flex flex-col items-center justify-center">
-          <p className="text-center text-base">{PROJECTS[active].brand}</p>
-          <p className="text-center mt-[3px]">{PROJECTS[active].desc}</p>
+        <div className="flex flex-col items-center justify-center text-center">
+          <p className="text-center text-base sm:text-lg font-bold tracking-wide break-words max-w-full">{PROJECTS[active].brand}</p>
+          <p className="text-center text-xs sm:text-sm text-white/80 mt-[3px] break-words max-w-lg mx-auto leading-normal">{PROJECTS[active].desc}</p>
         </div>
       </div>
 
