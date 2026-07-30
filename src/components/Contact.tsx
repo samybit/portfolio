@@ -2,7 +2,7 @@
 
 import { Check, Loader2, Linkedin } from "lucide-react";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { sendEmail } from "@/actions/send-email";
 import { playPowerUp, prewarmAudio } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";
@@ -45,16 +45,15 @@ function BongoCat({ pawState }: { pawState: 'idle' | 'left' | 'right' }) {
   const catHead = `/bongo/parts/cat-${variant}.png`;
   const mouth = `/bongo/parts/mouth-open-${variant}.png`;
 
-  // Paw Sprite Mapping:
-  // Left paw: paw-left-down is HIGHER (UP paw), paw-left-up is LOWER (DOWN paw)
-  // Right paw: paw-right-up is HIGHER (UP paw), paw-right-down is LOWER (DOWN paw)
-  const pawLeft = pawState === 'left'
-    ? `/bongo/parts/paw-left-up-${variant}.png`     // Struck DOWN on keypress
-    : `/bongo/parts/paw-left-down-${variant}.png`;  // Raised UP by default
+  // Pre-rendered paw layer URLs:
+  const pawLeftUp = `/bongo/parts/paw-left-down-${variant}.png`; // Raised UP (default)
+  const pawLeftDown = `/bongo/parts/paw-left-up-${variant}.png`; // Struck DOWN on left keypress
 
-  const pawRight = pawState === 'right'
-    ? `/bongo/parts/paw-right-down-${variant}.png` // Struck DOWN on keypress
-    : `/bongo/parts/paw-right-up-${variant}.png`;   // Raised UP by default
+  const pawRightUp = `/bongo/parts/paw-right-up-${variant}.png`; // Raised UP (default)
+  const pawRightDown = `/bongo/parts/paw-right-down-${variant}.png`; // Struck DOWN on right keypress
+
+  const isLeftTapped = pawState === 'left';
+  const isRightTapped = pawState === 'right';
 
   return (
     <div
@@ -89,22 +88,48 @@ function BongoCat({ pawState }: { pawState: 'idle' | 'left' | 'right' }) {
           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
         />
 
-        {/* Line Art Left Paw Layer */}
+        {/* Left Paw - Raised UP (Default) */}
         <Image
           fill
           unoptimized
-          src={pawLeft}
+          src={pawLeftUp}
           alt=""
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+          className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${
+            isLeftTapped ? "opacity-0" : "opacity-100"
+          }`}
         />
 
-        {/* Line Art Right Paw Layer */}
+        {/* Left Paw - Struck DOWN (Active) */}
         <Image
           fill
           unoptimized
-          src={pawRight}
+          src={pawLeftDown}
           alt=""
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+          className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${
+            isLeftTapped ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
+        {/* Right Paw - Raised UP (Default) */}
+        <Image
+          fill
+          unoptimized
+          src={pawRightUp}
+          alt=""
+          className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${
+            isRightTapped ? "opacity-0" : "opacity-100"
+          }`}
+        />
+
+        {/* Right Paw - Struck DOWN (Active) */}
+        <Image
+          fill
+          unoptimized
+          src={pawRightDown}
+          alt=""
+          className={`absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-75 ${
+            isRightTapped ? "opacity-100" : "opacity-0"
+          }`}
         />
       </div>
     </div>
@@ -124,27 +149,41 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
   const lastKeyRef = useRef<string | null>(null);
   const lastPawRef = useRef<'left' | 'right'>('left');
 
+  // Preload all Bongo Cat assets on initial mount so offline/slow connections never show empty placeholders
+  useEffect(() => {
+    const parts = [
+      "cat-black.png", "cat-white.png",
+      "mouth-open-black.png", "mouth-open-white.png",
+      "paw-left-down-black.png", "paw-left-down-white.png",
+      "paw-left-up-black.png", "paw-left-up-white.png",
+      "paw-right-down-black.png", "paw-right-down-white.png",
+      "paw-right-up-black.png", "paw-right-up-white.png",
+      "group.svg", "group-white.svg",
+    ];
+    parts.forEach((file) => {
+      const img = new window.Image();
+      img.src = `/bongo/parts/${file}`;
+    });
+  }, []);
+
   const handleFormKeyDown = (e: React.KeyboardEvent) => {
     // Ignore control / modifier keys
     if (['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Tab', 'Escape'].includes(e.key)) return;
 
     let nextPaw: 'left' | 'right';
     if (e.key === lastKeyRef.current) {
-      // Same key repeated: use the SAME hand!
+      // Same key repeated or held continuously: use the SAME paw!
       nextPaw = lastPawRef.current;
     } else {
-      // Different key: alternate hands!
+      // Different key: alternate paws!
       nextPaw = lastPawRef.current === 'left' ? 'right' : 'left';
     }
 
     lastKeyRef.current = e.key;
     lastPawRef.current = nextPaw;
 
-    // Briefly reset to idle then trigger nextPaw so repeated keypress visibly re-taps
-    setPawState('idle');
-    requestAnimationFrame(() => {
-      setPawState(nextPaw);
-    });
+    // Single atomic state update — zero requestAnimationFrame double-render thrashing
+    setPawState(nextPaw);
 
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
@@ -153,7 +192,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
     typingTimeoutRef.current = setTimeout(() => {
       setPawState('idle');
       lastKeyRef.current = null;
-    }, 280);
+    }, 220);
   };
 
   const handleCopyEmail = (e?: React.MouseEvent) => {
