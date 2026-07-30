@@ -1142,6 +1142,22 @@ export function createCarousel(mount, callbacks = {}) {
     }
   }
 
+  function setTheme({ isNeumorphic }) {
+    if (isNeumorphic) {
+      renderer.setClearColor(0xe0e5ec, 1);
+      pool.forEach((p) => {
+        if (!p.bound) p.mat.color.set(0xd1d9e6);
+      });
+      lensUniforms.uBlueColor.value.set("#3b82f6");
+    } else {
+      renderer.setClearColor(0x000000, 1);
+      pool.forEach((p) => {
+        if (!p.bound) p.mat.color.set(0x18181b);
+      });
+      lensUniforms.uBlueColor.value.set(LENS.blueColor);
+    }
+  }
+
   return {
     nextPanel,
     prevPanel,
@@ -1149,6 +1165,7 @@ export function createCarousel(mount, callbacks = {}) {
     closeFocus,
     replayEntry: playEntry,
     refreshLayout: recomputeTotal, // call after changing PANEL_H / GAP
+    setTheme,
     lensUniforms, // exposed for the dev GUI
     destroy,
   };

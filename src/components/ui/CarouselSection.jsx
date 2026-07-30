@@ -8,6 +8,7 @@ import { gsap } from "gsap";
 import { PROJECTS, ENTRY, UI_ANIM } from "@/lib/carousel/config";
 import { createCarousel } from "@/lib/carousel/engine";
 import { createCarouselGui } from "@/lib/carousel/gui";
+import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 
 const CarouselSection = ({ footer }) => {
   const mountRef = useRef(null); // engine mounts its canvas here
@@ -18,6 +19,7 @@ const CarouselSection = ({ footer }) => {
   const engineRef = useRef(null); // createCarousel() handle
   const revealPlayedRef = useRef(false); // entry reveal fade runs exactly once
 
+  const isNeumorphic = useNeumorphicTheme();
   const [active, setActive] = useState(0); // index of the centered image
   const [focused, setFocused] = useState(false); // a focus session is open
   const [entryDone, setEntryDone] = useState(false); // entry fully settled
@@ -51,13 +53,21 @@ const CarouselSection = ({ footer }) => {
       onEntryDone: setEntryDone,
     });
     engineRef.current = engine;
+    engine.setTheme({ isNeumorphic });
     const gui = createCarouselGui(engine); // dev panel (hidden by default)
     return () => {
       gui.destroy();
       engine.destroy();
       engineRef.current = null;
     };
-  }, []);
+  }, [isNeumorphic]);
+
+  // ---- theme change listener ----
+  useEffect(() => {
+    if (engineRef.current) {
+      engineRef.current.setTheme({ isNeumorphic });
+    }
+  }, [isNeumorphic]);
 
   // ---- overlay text transitions ----
   // GSAP-driven so they share the canvas animations' easing vocabulary.
@@ -110,44 +120,71 @@ const CarouselSection = ({ footer }) => {
     });
   }, [focused, entryDone]);
 
+  const controlBadgeStyle = isNeumorphic
+    ? "border border-[#a3b1c6] bg-[#e0e5ec] text-[#374151] shadow-[2px_2px_4px_rgba(163,177,198,0.6),_-2px_-2px_4px_rgba(255,255,255,0.5)]"
+    : "border border-white/40 bg-zinc-900/90 text-white";
+
   return (
-    <div ref={mountRef} className="h-screen relative w-screen bg-black touch-pan-y select-none overflow-hidden">
+    <div
+      ref={mountRef}
+      className={`h-screen relative w-screen touch-pan-y select-none overflow-hidden transition-colors duration-300 ${
+        isNeumorphic ? "bg-[#e0e5ec]" : "bg-black"
+      }`}
+    >
       <div
         ref={topTextRef}
-        className="absolute px-4 left-1/2 -translate-x-1/2 w-[92vw] max-w-2xl top-[12%] sm:top-[15%] text-white text-center z-20 pointer-events-none"
+        className={`absolute px-4 left-1/2 -translate-x-1/2 w-[92vw] max-w-2xl top-[12%] sm:top-[15%] text-center z-20 pointer-events-none ${
+          isNeumorphic ? "text-[#1f2937]" : "text-white"
+        }`}
         style={ENTRY.enabled ? { opacity: 0, visibility: "hidden" } : undefined}
       >
         <div className="flex flex-col items-center justify-center text-center">
-          <p className="text-center text-base sm:text-lg font-bold tracking-wide break-words max-w-full">{PROJECTS[active].brand}</p>
-          <p className="text-center text-xs sm:text-sm text-white/80 mt-[3px] break-words max-w-lg mx-auto leading-normal">{PROJECTS[active].desc}</p>
+          <p className={`text-center text-base sm:text-lg font-bold tracking-wide break-words max-w-full ${
+            isNeumorphic ? "text-[#111827]" : "text-white"
+          }`}>
+            {PROJECTS[active].brand}
+          </p>
+          <p className={`text-center text-xs sm:text-sm mt-[3px] break-words max-w-lg mx-auto leading-normal ${
+            isNeumorphic ? "text-[#4b5563]" : "text-white/80"
+          }`}>
+            {PROJECTS[active].desc}
+          </p>
         </div>
       </div>
 
       <div
         ref={counterRef}
-        className="absolute px-4 left-1/2 bottom-[16%] text-white text-center whitespace-nowrap z-20"
+        className={`absolute px-4 left-1/2 bottom-[16%] text-center whitespace-nowrap z-20 ${
+          isNeumorphic ? "text-[#1f2937]" : "text-white"
+        }`}
         style={ENTRY.enabled ? { opacity: 0, visibility: "hidden" } : undefined}
       >
-        <p className="text-center text-base font-bold tracking-widest text-white drop-shadow-md">
+        <p className={`text-center text-base font-bold tracking-widest drop-shadow-md ${
+          isNeumorphic ? "text-[#111827]" : "text-white"
+        }`}>
           {String(active + 1).padStart(2, "0")}/
           {String(PROJECTS.length).padStart(2, "0")}
         </p>
 
         {/* Desktop Controls Guide */}
-        <div className="mt-2 hidden sm:flex items-center justify-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-white/90">
-          <span className="border border-white/40 px-1.5 py-0.5 bg-zinc-900/90 text-white shadow-xs">← / →</span>
-          <span className="border border-white/40 px-1.5 py-0.5 bg-zinc-900/90 text-white shadow-xs">A / D</span>
+        <div className={`mt-2 hidden sm:flex items-center justify-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider ${
+          isNeumorphic ? "text-[#4b5563]" : "text-white/90"
+        }`}>
+          <span className={`px-1.5 py-0.5 shadow-xs ${controlBadgeStyle}`}>← / →</span>
+          <span className={`px-1.5 py-0.5 shadow-xs ${controlBadgeStyle}`}>A / D</span>
           <span className="opacity-40">•</span>
-          <span className="border border-white/40 px-1.5 py-0.5 bg-zinc-900/90 text-white shadow-xs">ENTER</span>
+          <span className={`px-1.5 py-0.5 shadow-xs ${controlBadgeStyle}`}>ENTER</span>
           <span className="opacity-40">•</span>
-          <span className="border border-white/40 px-1.5 py-0.5 bg-zinc-900/90 text-white shadow-xs">ESC</span>
+          <span className={`px-1.5 py-0.5 shadow-xs ${controlBadgeStyle}`}>ESC</span>
         </div>
 
         {/* Mobile Controls Guide */}
-        <div className="mt-2 sm:hidden flex items-center justify-center gap-2 text-[10px] font-mono font-bold uppercase tracking-wider text-white/90">
-          <span className="border border-white/40 px-2 py-0.5 bg-zinc-900/90 text-white shadow-xs">SWIPE ← / →</span>
+        <div className={`mt-2 sm:hidden flex items-center justify-center gap-2 text-[10px] font-mono font-bold uppercase tracking-wider ${
+          isNeumorphic ? "text-[#4b5563]" : "text-white/90"
+        }`}>
+          <span className={`px-2 py-0.5 shadow-xs ${controlBadgeStyle}`}>SWIPE ← / →</span>
           <span className="opacity-40">•</span>
-          <span className="border border-white/40 px-2 py-0.5 bg-zinc-900/90 text-white shadow-xs">TAP TO VIEW</span>
+          <span className={`px-2 py-0.5 shadow-xs ${controlBadgeStyle}`}>TAP TO VIEW</span>
         </div>
       </div>
 
@@ -163,7 +200,11 @@ const CarouselSection = ({ footer }) => {
         type="button"
         onClick={() => engineRef.current?.closeFocus()}
         aria-label="Close image view (press Esc)"
-        className={`absolute bottom-20 left-1/2 -translate-x-1/2 sm:bottom-auto sm:left-auto sm:translate-x-0 sm:top-8 sm:right-8 z-40 px-5 py-2.5 sm:px-4 sm:py-2 bg-white text-black font-black text-xs sm:text-sm uppercase tracking-wider border-3 sm:border-4 border-black shadow-[4px_4px_0px_0px_#ffffff] hover:bg-black hover:text-white hover:border-white hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_#ffffff] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+        className={`absolute bottom-20 left-1/2 -translate-x-1/2 sm:bottom-auto sm:left-auto sm:translate-x-0 sm:top-8 sm:right-8 z-40 px-5 py-2.5 sm:px-4 sm:py-2 font-black text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+          isNeumorphic
+            ? "bg-[#e0e5ec] text-[#111827] border-2 border-[#a3b1c6] shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
+            : "bg-white text-black border-3 sm:border-4 border-black shadow-[4px_4px_0px_0px_#ffffff] hover:bg-black hover:text-white hover:border-white hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_#ffffff] active:translate-x-1 active:translate-y-1 active:shadow-none"
+        } ${
           focused ? "opacity-100 pointer-events-auto scale-100" : "opacity-0 pointer-events-none scale-95"
         }`}
       >
