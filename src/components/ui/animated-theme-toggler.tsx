@@ -143,6 +143,7 @@ export const AnimatedThemeToggler = React.forwardRef<HTMLButtonElement, Animated
   const shape = variant ?? "circle"
   // Use a local ref for logic, but also sync with forwarded ref if needed
   const localRef = useRef<HTMLButtonElement>(null)
+  const isTransitioningRef = useRef(false)
   
   // Expose the ref to parent (e.g. Tooltip Trigger)
   const setRefs = useCallback(
@@ -165,6 +166,9 @@ export const AnimatedThemeToggler = React.forwardRef<HTMLButtonElement, Animated
 
     const button = localRef.current
     if (!button) return
+
+    // Prevent rapid concurrent clicks while a view transition is active to avoid browser STATUS_BREAKPOINT crash
+    if (isTransitioningRef.current) return
 
     const viewportWidth = window.visualViewport?.width ?? window.innerWidth
     const viewportHeight = window.visualViewport?.height ?? window.innerHeight
@@ -199,6 +203,8 @@ export const AnimatedThemeToggler = React.forwardRef<HTMLButtonElement, Animated
       return
     }
 
+    isTransitioningRef.current = true
+
     const clipPath = getThemeTransitionClipPaths(
       shape,
       x,
@@ -221,6 +227,7 @@ export const AnimatedThemeToggler = React.forwardRef<HTMLButtonElement, Animated
       delete root.dataset.magicuiThemeVt
       root.style.removeProperty("--magicui-theme-toggle-vt-duration")
       root.style.removeProperty("--magicui-theme-vt-clip-from")
+      isTransitioningRef.current = false
     }
 
     const transition = document.startViewTransition(() => {
@@ -234,20 +241,25 @@ export const AnimatedThemeToggler = React.forwardRef<HTMLButtonElement, Animated
 
     const ready = transition?.ready
     if (ready && typeof ready.then === "function") {
-      ready.then(() => {
-        document.documentElement.animate(
-          {
-            clipPath,
-          },
-          {
-            duration,
-            // Star: linear avoids easing overshoot that fights polygon interpolation at t→1; VT group duration is synced above.
-            easing: shape === "star" ? "linear" : "ease-in-out",
-            fill: "forwards",
-            pseudoElement: "::view-transition-new(root)",
-          }
-        )
-      })
+      ready
+        .then(() => {
+          document.documentElement.animate(
+            {
+              clipPath,
+            },
+            {
+              duration,
+              // Star: linear avoids easing overshoot that fights polygon interpolation at t→1; VT group duration is synced above.
+              easing: shape === "star" ? "linear" : "ease-in-out",
+              fill: "forwards",
+              pseudoElement: "::view-transition-new(root)",
+            }
+          )
+        })
+        .catch(() => {
+          // Gracefully ignore if the browser aborted the view transition
+          cleanup()
+        })
     }
   }, [shape, fromCenter, duration, onToggle, onClick])
 
