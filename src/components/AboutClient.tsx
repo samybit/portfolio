@@ -394,7 +394,22 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
           </Link>
           <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none flex flex-wrap items-baseline gap-4 text-white">
             <DecryptText text={dict?.about || "About"} />
-            <span className="bg-white text-black px-4 inline-block transform -skew-x-2"><DecryptText text={dict?.me || "me"} /></span>
+            <span className="relative inline-block align-baseline transform -skew-x-2">
+              {/* Bottom Layer: Solid white text, unclipped, overflows naturally as white text against dark page bg */}
+              <span className="absolute inset-0 text-white px-4 z-0 pointer-events-none flex items-center" aria-hidden="true">
+                <DecryptText text={dict?.me || "me"} />
+              </span>
+
+              {/* Top Layer: White bg, black text, clipped to padding box */}
+              <span className="absolute inset-0 bg-white text-black px-4 z-10 overflow-hidden flex items-center">
+                <DecryptText text={dict?.me || "me"} />
+              </span>
+
+              {/* Structural Layer: Invisible, sets wrapper dimensions */}
+              <span className="relative invisible px-4 z-[-1] pointer-events-none flex items-center" aria-hidden="true">
+                <DecryptText text={dict?.me || "me"} />
+              </span>
+            </span>
           </h1>
         </div>
 

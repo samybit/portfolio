@@ -10,6 +10,17 @@
   font-weight: normal;
 }
 
+[dir="rtl"] .drop-cap-first {
+  font-family: var(--font-reem-kufi), sans-serif;
+  float: right;
+  font-size: 4em;
+  line-height: 0.85;
+  margin-inline-start: 0;
+  margin-inline-end: 0.25em;
+  margin-top: 0.1em;
+  font-weight: 700;
+}
+
 
 
 @layer utilities {

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Noto_Kufi_Arabic } from "next/font/google";
+import { Space_Grotesk, Noto_Kufi_Arabic, Reem_Kufi } from "next/font/google";
 import { mallory, goudyIni } from "@/app/fonts";
 import { cookies } from "next/headers";
 import "../globals.css";
@@ -16,6 +16,7 @@ import { getDictionary, Locale } from "@/dictionaries/getDictionary";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 const notoKufiArabic = Noto_Kufi_Arabic({ subsets: ["arabic"] });
+const reemKufi = Reem_Kufi({ subsets: ["arabic"], variable: "--font-reem-kufi" });
 
 export const viewport: Viewport = {
   themeColor: "#000000",
@@ -127,6 +128,7 @@ export default async function RootLayout({
     "scroll-smooth",
     mallory.variable,
     goudyIni.variable,
+    reemKufi.variable,
     animationsDisabled ? "no-animations" : "",
   ]
     .filter(Boolean)
