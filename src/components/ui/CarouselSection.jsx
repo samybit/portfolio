@@ -53,14 +53,13 @@ const CarouselSection = ({ footer }) => {
       onEntryDone: setEntryDone,
     });
     engineRef.current = engine;
-    engine.setTheme({ isNeumorphic });
     const gui = createCarouselGui(engine); // dev panel (hidden by default)
     return () => {
       gui.destroy();
       engine.destroy();
       engineRef.current = null;
     };
-  }, [isNeumorphic]);
+  }, []);
 
   // ---- theme change listener ----
   useEffect(() => {
@@ -68,6 +67,23 @@ const CarouselSection = ({ footer }) => {
       engineRef.current.setTheme({ isNeumorphic });
     }
   }, [isNeumorphic]);
+
+  // ---- scroll trigger for entry reveal animation ----
+  useEffect(() => {
+    if (!mountRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          engineRef.current?.startEntry();
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(mountRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   // ---- overlay text transitions ----
   // GSAP-driven so they share the canvas animations' easing vocabulary.

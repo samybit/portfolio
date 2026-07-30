@@ -977,6 +977,14 @@ export function createCarousel(mount, callbacks = {}) {
     entryAnim = tl;
   }
 
+  let entryHasPlayed = false;
+
+  function startEntry() {
+    if (entryHasPlayed || !ENTRY.enabled) return;
+    entryHasPlayed = true;
+    playEntry();
+  }
+
   el.addEventListener("wheel", onWheel, { passive: false });
   el.addEventListener("pointerdown", onPointerDown);
   el.addEventListener("pointermove", onPointerMove);
@@ -1067,7 +1075,7 @@ export function createCarousel(mount, callbacks = {}) {
   }
   tick();
 
-  if (ENTRY.enabled) playEntry();
+  // Entry animation is deferred until startEntry() is triggered via IntersectionObserver when scrolled into view
 
   // ---- resize / teardown ----
   function onResize() {
@@ -1164,6 +1172,7 @@ export function createCarousel(mount, callbacks = {}) {
     openFocus: toggleFocus,
     closeFocus,
     replayEntry: playEntry,
+    startEntry,
     refreshLayout: recomputeTotal, // call after changing PANEL_H / GAP
     setTheme,
     lensUniforms, // exposed for the dev GUI
