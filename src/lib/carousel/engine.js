@@ -661,7 +661,8 @@ export function createCarousel(mount, callbacks = {}) {
     const totalDx = currentX - touchStartX;
     const totalDy = currentY - touchStartY;
 
-    if (Math.abs(totalDx) > Math.abs(totalDy) * 0.7) {
+    // Only intercept horizontal swipes; vertical swipes pass through to page scroll
+    if (Math.abs(totalDx) > Math.abs(totalDy) * 1.25) {
       if (e.cancelable) e.preventDefault();
       lastPointerX = currentX;
       totalDragDist += Math.abs(dx);
