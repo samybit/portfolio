@@ -72,7 +72,8 @@ export default function Footer({
     <div className="fixed z-50 pointer-events-auto transition-all duration-300 bottom-8 right-8 md:bottom-10 md:right-10">
       <SpeedDial
         direction="up"
-        triggerLabel="Open Actions"
+        triggerLabel={dict?.openActions || "Open Actions"}
+        closeLabel={dict?.closeActions || "Close Actions"}
         className={
           isNeumorphic 
             ? "[&>button]:bg-[#e0e5ec] [&>button]:text-[#4b5563] [&>button]:border-transparent [&>button]:shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] [&>ul>li>button]:bg-[#e0e5ec] [&>ul>li>button]:text-[#4b5563] [&>ul>li>button]:border-transparent [&>ul>li>button]:shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)]"

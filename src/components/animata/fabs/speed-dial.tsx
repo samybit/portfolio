@@ -22,6 +22,8 @@ interface SpeedDialProps extends React.HTMLAttributes<HTMLDivElement> {
   actionButtons: SpeedDialAction[];
   /** Accessible name for the main toggle when closed. */
   triggerLabel?: string;
+  /** Accessible name for the main toggle when open. */
+  closeLabel?: string;
 }
 
 const shellClass =
@@ -52,6 +54,7 @@ export default function SpeedDial({
   direction = "right",
   actionButtons,
   triggerLabel = "Open actions menu",
+  closeLabel = "Close actions menu",
   className,
   ...props
 }: SpeedDialProps) {
@@ -132,7 +135,7 @@ export default function SpeedDial({
       data-direction={direction}
       {...props}
     >
-      <CustomTooltip content={open ? "Close Menu" : triggerLabel} side="left">
+      <CustomTooltip content={open ? closeLabel : triggerLabel} side="left">
         <button
           ref={triggerRef}
           type="button"
@@ -140,7 +143,7 @@ export default function SpeedDial({
           aria-expanded={open}
           aria-haspopup="menu"
           aria-controls={menuId}
-          aria-label={open ? "Close actions menu" : triggerLabel}
+          aria-label={open ? closeLabel : triggerLabel}
           onClick={toggle}
         >
           <span

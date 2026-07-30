@@ -17,14 +17,14 @@ export default function DecryptText({
   const [scrambledText, setScrambledText] = useState(text);
   const ref = useRef<HTMLSpanElement>(null);
   const { isAnimationsDisabled } = useAnimationConfig();
+  const isArabic = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(text);
 
   // Triggers once when the element comes into the viewport
   const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
 
   useEffect(() => {
-    // When animations are off or the element is not yet in view, do nothing.
-    // The render output below derives the correct text without needing setState here.
-    if (isAnimationsDisabled || !isInView) return;
+    // Skip animation for Arabic text (to prevent breaking cursive letter connection) or when animations are disabled
+    if (isArabic || isAnimationsDisabled || !isInView) return;
 
     let iteration = 0;
     let interval: NodeJS.Timeout;
@@ -65,7 +65,15 @@ export default function DecryptText({
     startDecrypt();
 
     return () => clearInterval(interval);
-  }, [text, isInView, isAnimationsDisabled]);
+  }, [text, isInView, isAnimationsDisabled, isArabic]);
+
+  if (isArabic) {
+    return (
+      <span ref={ref} className={`inline-block ${className}`}>
+        {text}
+      </span>
+    );
+  }
 
   // Derived: when animations are disabled (or not yet in view), always show the real text.
   const displayText = isAnimationsDisabled ? text : scrambledText;

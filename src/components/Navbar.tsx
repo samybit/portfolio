@@ -286,7 +286,7 @@ export default function Navbar({ dict, currentLocale }: { dict: Record<string, s
           {/* --- Desktop Nav Links Block (Locked to exactly 64px / h-16 height) --- */}
           <div className="pointer-events-auto hidden md:flex items-stretch gap-1.5 bg-white border-4 border-black p-1.5 brutalist-shadow-static h-16">
 
-            <MouseFollowTooltip content={dict?.readMoreAboutMe || "Read more about me"} className="flex items-stretch">
+            <MouseFollowTooltip content={dict?.readMoreAboutMe || (currentLocale === 'ar' ? "اقرأ المزيد عني" : "Read more about me")} className="flex items-stretch">
               <Link
                 href={`/${currentLocale}/about`}
                 onClick={handleAboutClick}

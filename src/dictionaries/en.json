@@ -7,6 +7,7 @@
     "toggleLang": "AR",
     "cycleTheme": "Cycle Theme",
     "toggleLanguage": "Toggle Language",
+    "readMoreAboutMe": "Read more about me",
     "newTab": " (opens in a new tab)"
   },
   "hero": {
@@ -250,7 +251,9 @@
     "disableMotion": "Disable Motion",
     "cycleTheme": "Cycle Theme",
     "textOnlyMode": "Text-Only Mode",
-    "exitTextMode": "Exit Text Mode"
+    "exitTextMode": "Exit Text Mode",
+    "openActions": "Open Actions",
+    "closeActions": "Close Actions"
   },
   "menu": {
     "systemMenu": "System_Menu",

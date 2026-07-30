@@ -617,7 +617,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
         <div className={`flex flex-col border-4 h-full w-full transition-all duration-200 ease-in-out ${
           isNeumorphic
             ? "border-black bg-white brutalist-shadow-static"
-            : "border-white bg-black shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] active:translate-x-2 active:translate-y-2 active:shadow-none rtl:shadow-[-8px_8px_0px_rgba(255,255,255,0.3)] rtl:hover:-translate-x-1 rtl:hover:shadow-[-4px_4px_0px_rgba(255,255,255,0.3)] rtl:active:-translate-x-2"
+            : "border-white bg-black shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] active:translate-x-2 active:translate-y-2 active:shadow-none"
         }`}>
           <button onClick={prevSlide} className={`flex-1 flex flex-col items-center justify-center gap-2 border-b-4 transition-colors group ${
             isNeumorphic ? "border-black hover:bg-black hover:text-white" : "border-white hover:bg-white hover:text-black"

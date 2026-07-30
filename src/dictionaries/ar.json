@@ -7,6 +7,7 @@
     "toggleLang": "EN",
     "cycleTheme": "تغيير المظهر",
     "toggleLanguage": "تغيير اللغة",
+    "readMoreAboutMe": "اقرأ المزيد عني",
     "newTab": " (يفتح في علامة تبويب جديدة)"
   },
   "hero": {
@@ -250,7 +251,9 @@
     "disableMotion": "إيقاف الحركات",
     "cycleTheme": "تغيير الثيم",
     "textOnlyMode": "وضع النص فقط",
-    "exitTextMode": "خروج وضع النص"
+    "exitTextMode": "خروج وضع النص",
+    "openActions": "فتح الإجراءات",
+    "closeActions": "إغلاق الإجراءات"
   },
   "menu": {
     "systemMenu": "قائمة_النظام",
