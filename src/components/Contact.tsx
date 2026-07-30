@@ -191,8 +191,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
 
     typingTimeoutRef.current = setTimeout(() => {
       setPawState('idle');
-      lastKeyRef.current = null;
-    }, 220);
+    }, 200);
   };
 
   const handleCopyEmail = (e?: React.MouseEvent) => {
