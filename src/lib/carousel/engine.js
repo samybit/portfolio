@@ -1150,13 +1150,19 @@ export function createCarousel(mount, callbacks = {}) {
     }
   }
 
-  function setTheme({ isNeumorphic }) {
+  function setTheme({ isNeumorphic, isEmber }) {
     if (isNeumorphic) {
       renderer.setClearColor(0xe0e5ec, 1);
       pool.forEach((p) => {
         if (!p.bound) p.mat.color.set(0xd1d9e6);
       });
       lensUniforms.uBlueColor.value.set("#3b82f6");
+    } else if (isEmber) {
+      renderer.setClearColor(0x1a1716, 1);
+      pool.forEach((p) => {
+        if (!p.bound) p.mat.color.set(0x2d1a18);
+      });
+      lensUniforms.uBlueColor.value.set("#ff4f00");
     } else {
       renderer.setClearColor(0x000000, 1);
       pool.forEach((p) => {

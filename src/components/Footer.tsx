@@ -160,10 +160,14 @@ export default function Footer({
             overlay
               ? isNeumorphic
                 ? "border-black text-black hover:bg-black hover:text-white px-2 text-sm sm:text-base"
+                : isEmber
+                ? "border-[#FF4F00] text-[#FF4F00] hover:bg-[#FF4F00] hover:text-[#1A1716] px-2 text-sm sm:text-base"
                 : "border-white text-white hover:bg-white hover:text-black px-2 text-sm sm:text-base"
               : `text-lg border-b-4 ${
                   isNeumorphic
                     ? "border-black text-black hover:bg-black hover:text-white"
+                    : isEmber
+                    ? "border-[#FF4F00] text-[#FF4F00] hover:bg-[#FF4F00] hover:text-[#1A1716]"
                     : "border-white text-white hover:bg-white hover:text-black"
                 }`
           }`}

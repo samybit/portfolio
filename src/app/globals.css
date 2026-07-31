@@ -565,11 +565,142 @@ html.theme-color .hover\:shadow-none:hover {
 }
 
 /* Fix CTA Quote and Hero Subtitle Backdrop Glass Effect in Ember Theme */
+html.theme-color .quote-backdrop {
+  background-color: #1A1716 !important;
+  border: 4px solid #FF4F00 !important;
+  box-shadow: 8px 8px 0px 0px #FF4F00 !important;
+  color: #FF4F00 !important;
+}
+
 html.theme-color .quote-backdrop,
+html.theme-color .quote-backdrop blockquote,
+html.theme-color .quote-backdrop span {
+  color: #FF4F00 !important;
+}
+
 html.theme-color .hero-subtitle-backdrop {
   background-color: rgba(255, 79, 0, 0.1) !important;
   border-color: rgba(255, 79, 0, 0.4) !important;
   box-shadow: none !important;
+}
+
+/* --- EMBER THEME HIGH CONTRAST & CARD OVERRIDES --- */
+/* 1. Project Cards Action Links (Repo & Live Demo) */
+html.theme-color .project-card a,
+html.theme-color [class*="project-card"] a {
+  border-color: #FF4F00 !important;
+  color: #FF4F00 !important;
+  background-color: #1A1716 !important;
+  transition: all 0.3s ease !important;
+}
+
+html.theme-color .project-card a:hover,
+html.theme-color [class*="project-card"] a:hover {
+  background-color: #FF4F00 !important;
+  color: #1A1716 !important;
+  border-color: #FF4F00 !important;
+}
+
+/* 2. Legacy Systems Card & Version Buttons in Ember Theme */
+html.theme-color .legacy-systems-card,
+html.theme-color section.brutalist-container-dark {
+  background-color: #1A1716 !important;
+  border-color: #FF4F00 !important;
+  box-shadow: 8px 8px 0px 0px #FF4F00 !important;
+  color: #FF4F00 !important;
+}
+
+html.theme-color .legacy-systems-card h2,
+html.theme-color section.brutalist-container-dark h2 {
+  color: #FFFFFF !important;
+}
+
+html.theme-color .legacy-systems-card p,
+html.theme-color section.brutalist-container-dark p {
+  color: #FF4F00 !important;
+}
+
+html.theme-color .legacy-systems-card a,
+html.theme-color section.brutalist-container-dark a {
+  background-color: #1A1716 !important;
+  border-color: #FF4F00 !important;
+  color: #FF4F00 !important;
+  box-shadow: 6px 6px 0px 0px #FF4F00 !important;
+}
+
+html.theme-color .legacy-systems-card a:hover,
+html.theme-color section.brutalist-container-dark a:hover {
+  background-color: #FF4F00 !important;
+  color: #1A1716 !important;
+  border-color: #FF4F00 !important;
+  box-shadow: 4px 4px 0px 0px #FF4F00 !important;
+}
+
+/* 3. Ready to Build CTA Card in Ember Theme */
+html.theme-color .static-card-container.brutalist-container-dark {
+  background-color: #1A1716 !important;
+  border: 6px solid #FF4F00 !important;
+  box-shadow: 8px 8px 0px 0px #FF4F00 !important;
+  color: #FF4F00 !important;
+}
+
+html.theme-color .static-card-container.brutalist-container-dark h2 {
+  color: #FFFFFF !important;
+}
+
+html.theme-color .static-card-container.brutalist-container-dark p {
+  color: #FF4F00 !important;
+}
+
+/* 4. Skills Section Keycaps & Category Icons in Ember Theme */
+html.theme-color [class*="group"] div.border-white.bg-white\/10,
+html.theme-color div.border-white.bg-white\/10 {
+  border-color: #FF4F00 !important;
+  color: #FF4F00 !important;
+  background-color: rgba(255, 79, 0, 0.15) !important;
+}
+
+html.theme-color [class*="group"] div.border-white.bg-white\/10 svg,
+html.theme-color div.border-white.bg-white\/10 svg {
+  color: #FF4F00 !important;
+  stroke: #FF4F00 !important;
+}
+
+html.theme-color .group\/keycap,
+html.theme-color a.group\/keycap {
+  border-color: #FF4F00 !important;
+  background-color: #1A1716 !important;
+  color: #FF4F00 !important;
+}
+
+html.theme-color .group\/keycap span,
+html.theme-color a.group\/keycap span {
+  color: #FF4F00 !important;
+}
+
+html.theme-color .group\/keycap:hover,
+html.theme-color a.group\/keycap:hover {
+  background-color: #FF4F00 !important;
+  border-color: #FF4F00 !important;
+  color: #1A1716 !important;
+}
+
+html.theme-color .group\/keycap:hover span,
+html.theme-color a.group\/keycap:hover span {
+  color: #1A1716 !important;
+}
+
+/* 5. Footer Overlay & Carousel Footer Back-To-Top in Ember Theme */
+html.theme-color footer a[href="#"],
+html.theme-color footer button {
+  color: #FF4F00 !important;
+  border-color: #FF4F00 !important;
+}
+
+html.theme-color footer a[href="#"]:hover,
+html.theme-color footer button:hover {
+  background-color: #FF4F00 !important;
+  color: #1A1716 !important;
 }
 
 html.theme-neumorphic .hero-subtitle-backdrop {
