@@ -136,7 +136,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
               onMouseLeave={() => setIsCvHovered(false)}
               onTouchStart={() => setIsCvHovered(true)}
               onTouchEnd={() => setIsCvHovered(false)}
-              className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
+              className={`relative flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
                   ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                   : "bg-white text-black border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:bg-black hover:text-white hover:border-white hover:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
                 }`}
@@ -163,12 +163,12 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
               document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
               window.history.pushState(null, '', '#projects');
             }}
-            className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
+            className={`relative flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                 : "bg-transparent text-white border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.2)] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_rgba(255,255,255,0.2)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
               }`}
           >
-            <Highlighter show={isWorkHovered} action="highlight" color={getHighlightColor(false)}>
+            <Highlighter show={isWorkHovered} action="box" color={getHighlightColor(false)}>
               {dict?.work || "Projects"}
             </Highlighter>
             <ArrowDownRight className={`w-6 h-6 md:w-10 md:h-10 transition-transform rtl:-scale-x-100 ${isWorkHovered ? "[animation:arrow-snap-sequence_0.8s_ease-in-out_forwards]" : ""}`} />
@@ -186,12 +186,12 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
               document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
               window.history.pushState(null, '', '#contact');
             }}
-            className={`flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
+            className={`relative flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                 : "bg-transparent text-white border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.2)] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_rgba(255,255,255,0.2)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
               }`}
           >
-            <Highlighter show={isContactHovered} action="highlight" color={getHighlightColor(false)}>
+            <Highlighter show={isContactHovered} action="circle" color={getHighlightColor(false)}>
               {dict?.contact || "Contact"}
             </Highlighter>
             <ArrowDownRight className={`w-6 h-6 md:w-10 md:h-10 transition-transform rtl:-scale-x-100 ${isContactHovered ? "[animation:arrow-snap-sequence_0.8s_ease-in-out_forwards]" : ""}`} />

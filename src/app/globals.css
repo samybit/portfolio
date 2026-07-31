@@ -21,6 +21,16 @@
   font-weight: 700;
 }
 
+/* Prevent Rough Notation unpositioned (0,0) SVG flash on fast mouse hover */
+svg.rough-annotation-style {
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+svg.rough-annotation-style[style*="left"] {
+  opacity: 1;
+}
+
 
 
 @layer utilities {
