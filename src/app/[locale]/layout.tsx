@@ -97,6 +97,8 @@ export async function generateMetadata({
   };
 }
 
+// import MouseFollower from "@/components/MouseFollower";
+
 export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'ar' }];
 }
@@ -141,6 +143,7 @@ export default async function RootLayout({
         <SystemOverride />
         <CustomContextMenu dict={dict.menu} />
         <GhostInTheMachine />
+        {/* <MouseFollower /> */}
         <AnimationProvider initialDisabled={animationsDisabled}>
           <Navbar dict={dict.nav} currentLocale={locale as Locale} />
           <LenisProvider>
