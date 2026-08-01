@@ -1572,6 +1572,13 @@ html.theme-neumorphic .tooltip-popup {
     mix-blend-mode: normal;
 }
 
+html[data-magicui-theme-vt="active"]::view-transition-group(root),
+html[data-magicui-theme-vt="active"]::view-transition-image-pair(root),
+html[data-magicui-theme-vt="active"]::view-transition-old(root),
+html[data-magicui-theme-vt="active"]::view-transition-new(root) {
+  animation-duration: var(--magicui-theme-toggle-vt-duration, 400ms) !important;
+}
+
 html[data-magicui-theme-vt="active"]::view-transition-old(root) {
   animation: none;
 }
