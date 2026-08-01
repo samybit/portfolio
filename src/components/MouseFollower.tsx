@@ -41,7 +41,7 @@ export default function MouseFollower() {
       if (!target) return;
 
       const interactive = target.closest(
-        'a, button, input, select, textarea, label, [role="button"], [cursor-pointer], .cursor-pointer, [data-cursor="pointer"]'
+        'a, button, input, select, textarea, label, [role="button"], [data-cursor="pointer"]'
       );
       
       const computedCursor = window.getComputedStyle(target).cursor;

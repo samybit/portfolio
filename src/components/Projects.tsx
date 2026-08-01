@@ -226,7 +226,7 @@ const ProjectCard = ({
       </AnimatePresence>
 
       <div 
-        className="relative flex-1 flex flex-col min-h-0 pb-1 cursor-pointer lg:cursor-auto justify-between overflow-hidden"
+        className="relative flex-1 flex flex-col min-h-0 pb-1 max-lg:cursor-pointer justify-between overflow-hidden"
         onClick={() => {
           if (window.innerWidth < 1024 && disableObserver) {
             setIsToggled(!isToggled);
