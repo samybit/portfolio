@@ -3,6 +3,7 @@
 import { ExternalLink, ArrowUp, ArrowDown } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import { playTick } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
@@ -45,6 +46,87 @@ const GithubIcon = ({ size = 20 }: { size?: number }) => (
     </svg>
   </>
 );
+
+interface HoveredImageOverlayProps {
+  cardIndex: number;
+  hoveredIndex: number;
+  imageSrc: string;
+  isNeumorphic: boolean;
+}
+
+const HoveredImageOverlay = ({
+  cardIndex,
+  hoveredIndex,
+  imageSrc,
+  isNeumorphic,
+}: HoveredImageOverlayProps) => {
+  const colTarget = cardIndex % 2;
+  const rowTarget = Math.floor(cardIndex / 2);
+  const colSource = hoveredIndex % 2;
+  const rowSource = Math.floor(hoveredIndex / 2);
+
+  const deltaCol = colSource - colTarget;
+  const deltaRow = rowSource - rowTarget;
+
+  const startX = deltaCol === 0 ? "0%" : deltaCol > 0 ? "105%" : "-105%";
+  const startY = deltaRow === 0 ? "0%" : deltaRow > 0 ? "105%" : "-105%";
+
+  return (
+    <motion.div
+      initial={{
+        x: startX,
+        y: startY,
+        scale: 0.35,
+        opacity: 0,
+      }}
+      animate={{
+        x: "0%",
+        y: "0%",
+        scale: 1,
+        opacity: 1,
+      }}
+      exit={{
+        x: startX,
+        y: startY,
+        scale: 0.35,
+        opacity: 0,
+      }}
+      transition={{
+        duration: 0.28,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+      className={`absolute inset-0 z-30 overflow-hidden ${
+        isNeumorphic ? "bg-white" : "bg-black"
+      }`}
+    >
+      {imageSrc ? (
+        <Image
+          src={imageSrc}
+          alt="Hovered Project Preview"
+          fill
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          className={`w-full h-full object-cover border-4 ${
+            isNeumorphic ? "border-black" : "border-white"
+          }`}
+        />
+      ) : (
+        <div
+          className={`w-full h-full flex items-center justify-center border-4 ${
+            isNeumorphic ? "border-black bg-zinc-100" : "border-white bg-zinc-900"
+          }`}
+        >
+          <span
+            className={`font-black uppercase tracking-widest text-sm text-center px-4 ${
+              isNeumorphic ? "text-zinc-400" : "text-zinc-600"
+            }`}
+          >
+            Screenshot Missing
+          </span>
+        </div>
+      )}
+    </motion.div>
+  );
+};
 
 interface Project {
   title: string;
@@ -131,30 +213,17 @@ const ProjectCard = ({
         }
       }}
     >
-      {/* OTHER CARD HOVERED IMAGE OVERLAY (Desktop only - covers the WHOLE card) */}
-      {hoveredTitle && hoveredTitle !== project.title && (
-        <div className={`absolute inset-0 z-30 ${
-          isNeumorphic ? "bg-white" : "bg-black"
-        }`}>
-          {otherImage ? (
-            <Image
-              src={otherImage}
-              alt="Hovered Project Preview"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className={`w-full h-full flex items-center justify-center ${
-              isNeumorphic ? "bg-zinc-100" : "bg-zinc-900"
-            }`}>
-              <span className={`font-black uppercase tracking-widest text-sm text-center px-4 ${
-                isNeumorphic ? "text-zinc-400" : "text-zinc-600"
-              }`}>Screenshot Missing</span>
-            </div>
-          )}
-        </div>
-      )}
+      {/* OTHER CARD HOVERED IMAGE OVERLAY WITH ANIMATED FLY-OUT */}
+      <AnimatePresence>
+        {hoveredTitle && hoveredTitle !== project.title && hoveredIndex !== null && cardIndex !== undefined && (
+          <HoveredImageOverlay
+            cardIndex={cardIndex}
+            hoveredIndex={hoveredIndex}
+            imageSrc={otherImage}
+            isNeumorphic={isNeumorphic}
+          />
+        )}
+      </AnimatePresence>
 
       <div 
         className="relative flex-1 flex flex-col min-h-0 pb-1 cursor-pointer lg:cursor-auto justify-between overflow-hidden"
@@ -344,43 +413,26 @@ const PlaceholderCard = ({
     otherImage = hoveredImages[imageIndex] || "";
   }
 
-  if (!hoveredTitle) {
-    return (
-      <div 
-        className={`relative overflow-hidden w-full aspect-[16/9] border-4 border-dashed flex flex-col items-center justify-center p-6 transition-all opacity-40 select-none ${
-          isNeumorphic ? "bg-white/50 border-black text-black" : "bg-black/50 border-white/60 text-white"
-        }`}
-      >
-        <div className="font-mono text-xs font-bold uppercase tracking-widest text-center">
-          [ BLUEPRINT SLOT 0{index + 1} ]
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div 
       className={`relative overflow-hidden w-full aspect-[16/9] ${
         isNeumorphic ? "brutalist-container bg-white border-black" : "brutalist-container-dark"
       }`}
     >
-      {otherImage ? (
-        <Image
-          src={otherImage}
-          alt="Hovered Project Preview"
-          fill
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          className="w-full h-full object-cover"
-        />
-      ) : (
-        <div className={`w-full h-full flex items-center justify-center ${
-          isNeumorphic ? "bg-zinc-100" : "bg-zinc-900"
-        }`}>
-          <span className={`font-black uppercase tracking-widest text-sm text-center px-4 ${
-            isNeumorphic ? "text-zinc-400" : "text-zinc-600"
-          }`}>Screenshot Missing</span>
-        </div>
-      )}
+      <div className="font-mono text-xs font-bold uppercase tracking-widest text-center flex items-center justify-center h-full opacity-40 select-none">
+        [ BLUEPRINT SLOT 0{index + 1} ]
+      </div>
+
+      <AnimatePresence>
+        {hoveredTitle && hoveredIndex !== null && (
+          <HoveredImageOverlay
+            cardIndex={index}
+            hoveredIndex={hoveredIndex}
+            imageSrc={otherImage}
+            isNeumorphic={isNeumorphic}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
