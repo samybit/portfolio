@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { createPortal } from "react-dom";
 import { useInView } from "framer-motion";
-import dynamic from "next/dynamic";
 import { useAnimationConfig } from "@/context/AnimationContext";
 import { Palette, ArrowUp, Zap, ZapOff, BookOpen, BookText } from "lucide-react";
 import SpeedDial from "@/components/animata/fabs/speed-dial";
@@ -12,7 +11,7 @@ import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 import { useEmberTheme } from "@/hooks/useEmberTheme";
 import { useSyncExternalStore } from "react";
 
-const Footer3D = dynamic(() => import("@/components/Footer3D"), { ssr: false });
+import Footer3D from "@/components/Footer3D";
 
 export default function Footer({
   dict,
