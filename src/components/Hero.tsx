@@ -65,19 +65,19 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
 
   return (
     // Added 'relative' to contain the absolute background
-    <section id="hero" className="relative min-h-[100svh] flex flex-col justify-center items-start px-6 md:px-12 lg:px-24 border-b-8 border-black pt-30 md:pt-28 pb-11 overflow-hidden bg-black">
+    <section id="hero" className="relative min-h-[100svh] flex flex-col justify-center items-start px-6 md:px-12 lg:px-24 border-b-8 border-black pt-24 md:pt-28 pb-8 md:pb-11 overflow-hidden bg-black">
 
       {/* --- 3D TACTICAL CARABINER BACKGROUND --- */}
       <HeroCarabiner3D />
 
       {/* Added 'relative z-10' so the content sits above the 3D grid */}
-      <div className="relative z-10 w-full max-w-[75rem] mx-auto grid grid-cols-1 min-[1300px]:grid-cols-[1fr_28rem] min-[1300px]:items-center gap-12 min-[1300px]:gap-16">
+      <div className="relative z-10 w-full max-w-[75rem] mx-auto grid grid-cols-1 min-[1300px]:grid-cols-[1fr_28rem] min-[1300px]:items-center gap-5 sm:gap-8 min-[1300px]:gap-16">
 
         {/* --- LEFT COLUMN: TYPOGRAPHY --- */}
         <div className="animate-slide-up relative z-10">
 
-          <div className="flex items-center gap-4 mb-6">
-            <span className={`text-[clamp(0.75rem,4.5vw,1.25rem)] whitespace-nowrap font-bold uppercase tracking-widest border-b-4 pb-1 ${isNeumorphic ? "bg-[#e0e5ec] border-[#a3b1c6] text-[#4b5563]" : "text-white border-white bg-transparent"
+          <div className="flex items-center gap-4 mb-4 md:mb-6">
+            <span className={`text-[clamp(0.65rem,3.8vw,1.25rem)] whitespace-nowrap font-bold uppercase tracking-widest border-b-4 pb-1 ${isNeumorphic ? "bg-[#e0e5ec] border-[#a3b1c6] text-[#4b5563]" : "text-white border-white bg-transparent"
               }`}>
               {dict?.availability || "Available: Full-Time / Freelance"}
             </span>
@@ -91,7 +91,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
             }`}
           />
 
-          <h1 className="text-[18vw] sm:text-6xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem] font-black uppercase tracking-tighter leading-[0.85]">
+          <h1 className="text-[15vw] sm:text-6xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem] font-black uppercase tracking-tighter leading-[0.85]">
             <SplitText text={dict?.samy || "Samy"} className="text-white hero-samy-text z-10" />
 
             <br />
@@ -115,16 +115,19 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
           </h1>
 
           {/* --- MOBILE DESCRIPTION (Hidden on desktop) --- */}
-          <HeroDescription
-            html={dict?.description || "Full-Stack Developer. <br/> Next.js • Spring Boot • MongoDB • Docker <br/> Based in Egypt. <br/> Building web apps & APIs."}
-            className={`block md:hidden text-lg md:text-2xl font-bold max-w-2xl leading-snug -ms-2 ps-2 hero-subtitle-backdrop mt-6 ${
-              isNeumorphic ? "text-[#2d3748]" : "text-white/80"
-            }`}
-          />
+          <div className="block md:hidden mt-4">
+            <div className={`w-12 h-1 mb-3 ${isNeumorphic ? "bg-zinc-400" : "bg-white/40"}`} />
+            <HeroDescription
+              html={dict?.description || "Full-Stack Developer. <br/> Next.js • Spring Boot • MongoDB • Docker <br/> Based in Egypt. <br/> Building web apps & APIs."}
+              className={`text-sm font-semibold leading-relaxed tracking-wide hero-subtitle-backdrop ${
+                isNeumorphic ? "text-[#2d3748]" : "text-white/75"
+              }`}
+            />
+          </div>
         </div>
 
         {/* --- RIGHT COLUMN: ACTIONS --- */}
-        <div className={`flex flex-col w-full gap-4 md:gap-6 border-t-0 border-s-0 min-[1300px]:border-s-8 min-[1300px]:ps-12 min-[1300px]:py-8 animate-slide-up-delay-1 relative z-0 ${isNeumorphic ? "border-black" : "border-white"
+        <div className={`flex flex-col w-full gap-3 md:gap-6 border-t-0 border-s-0 min-[1300px]:border-s-8 min-[1300px]:ps-12 min-[1300px]:py-8 animate-slide-up-delay-1 relative z-0 ${isNeumorphic ? "border-black" : "border-white"
           }`}>
 
           {/* CV Button */}
@@ -136,7 +139,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
               onMouseLeave={() => setIsCvHovered(false)}
               onTouchStart={() => setIsCvHovered(true)}
               onTouchEnd={() => setIsCvHovered(false)}
-              className={`relative flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
+              className={`relative flex justify-between items-center w-full px-4 py-3 md:p-8 text-lg md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
                   ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                   : "bg-white text-black border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.3)] hover:bg-black hover:text-white hover:border-white hover:shadow-[4px_4px_0px_rgba(255,255,255,0.3)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
                 }`}
@@ -163,7 +166,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
               document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
               window.history.pushState(null, '', '#projects');
             }}
-            className={`relative flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
+            className={`relative flex justify-between items-center w-full px-4 py-3 md:p-8 text-lg md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                 : "bg-transparent text-white border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.2)] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_rgba(255,255,255,0.2)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
               }`}
@@ -186,7 +189,7 @@ export default function Hero({ dict }: { dict: Record<string, string> }) {
               document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
               window.history.pushState(null, '', '#contact');
             }}
-            className={`relative flex justify-between items-center w-full p-4 md:p-8 text-xl md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
+            className={`relative flex justify-between items-center w-full px-4 py-3 md:p-8 text-lg md:text-3xl font-black uppercase transition-all duration-300 ease-in-out group ${isNeumorphic
                 ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)]"
                 : "bg-transparent text-white border-4 border-white shadow-[8px_8px_0px_rgba(255,255,255,0.2)] hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_rgba(255,255,255,0.2)] hover:translate-x-1 hover:translate-y-1 active:shadow-none active:translate-x-2 active:translate-y-2"
               }`}
