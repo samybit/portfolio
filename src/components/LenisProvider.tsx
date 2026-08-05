@@ -86,17 +86,73 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       }
     };
 
+    // ── Lenis Proximity Snap Magnet ─────────────────────────────────────────
+    let isSnapping = false;
+    let lastSnapTarget: HTMLElement | null = null;
+    let snapTimeout: ReturnType<typeof setTimeout> | null = null;
+
     // Lenis fires the 'scroll' event on every RAF frame while scrolling.
-    lenis.on("scroll", ({ progress }: { progress: number }) => {
+    lenis.on("scroll", ({ scroll, velocity, progress }: { scroll: number; velocity: number; progress: number }) => {
       // Position the thumb proportionally.
-      // The thumb itself is 12% of viewport height; we map progress [0,1]
-      // to the range [0, 88%] of viewport height so it stays fully on-screen.
       const thumbHeightPercent = 12;
       const travelPercent = (100 - thumbHeightPercent) * progress;
       thumb.style.transform = `translateY(${travelPercent}vh)`;
 
       showThumb();
       resetIdleTimer();
+
+      // Skip magnet alignment if dragging scrollbar or currently snapping
+      if (isDraggingRef.current || isSnapping) return;
+
+      const absVelocity = Math.abs(velocity);
+      // Check proximity when scroll velocity slows down (arriving at target)
+      if (absVelocity > 0.05 && absVelocity < 1.4) {
+        const snapElements = document.querySelectorAll<HTMLElement>("#contact, .snap-center");
+        const viewportHeight = window.innerHeight;
+        const viewportCenter = scroll + viewportHeight / 2;
+
+        for (let i = 0; i < snapElements.length; i++) {
+          const el = snapElements[i];
+          const rect = el.getBoundingClientRect();
+          const elTop = scroll + rect.top;
+          const elCenter = elTop + rect.height / 2;
+          const distToCenter = Math.abs(viewportCenter - elCenter);
+
+          // Magnetize if center of element is within 220px proximity of viewport center
+          if (distToCenter < 220 && lastSnapTarget !== el) {
+            let targetY = elTop - (viewportHeight / 2 - rect.height / 2);
+            if (rect.height >= viewportHeight * 0.88) {
+              targetY = elTop;
+            }
+
+            isSnapping = true;
+            lastSnapTarget = el;
+
+            lenis.scrollTo(targetY, {
+              duration: 0.9,
+              easing: (t: number) => 1 - Math.pow(1 - t, 3),
+              onComplete: () => {
+                isSnapping = false;
+              },
+            });
+
+            if (snapTimeout) clearTimeout(snapTimeout);
+            snapTimeout = setTimeout(() => {
+              isSnapping = false;
+            }, 1000);
+
+            break;
+          }
+        }
+      }
+
+      // Reset snap lock when user scrolls briskly away
+      if (lastSnapTarget && absVelocity > 1.8) {
+        const rect = lastSnapTarget.getBoundingClientRect();
+        if (Math.abs(rect.top) > window.innerHeight * 0.75) {
+          lastSnapTarget = null;
+        }
+      }
     });
 
     // ── 4. Drag & Track Click Handling ─────────────────────────────────────

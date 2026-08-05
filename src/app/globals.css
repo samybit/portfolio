@@ -85,6 +85,8 @@ svg.rough-annotation-style[style*="left"] {
 
   html {
     background-color: black;
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
   }
 
   html.cl-loaded #cl-wrapper,

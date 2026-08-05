@@ -524,7 +524,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
   const titleRest = titleWords.slice(1).join(" ");
 
   return (
-    <section id="projects" className={`snap-start relative w-full min-h-[100svh] flex flex-col justify-between pt-12 lg:pt-16 pb-8 md:pb-12 px-6 md:px-12 lg:px-24 border-b-8 border-black ${
+    <section id="projects" className={`relative w-full min-h-[100svh] flex flex-col justify-between pt-12 lg:pt-16 pb-8 md:pb-12 px-6 md:px-12 lg:px-24 border-b-8 border-black ${
       isNeumorphic ? "bg-white text-black" : "bg-black text-white"
     }`}>
       {/* --- CREATIVE ENGINEERING BLUEPRINT & DOT MATRIX BACKGROUND --- */}
@@ -620,7 +620,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
       </div>
 
       {/* --- DESKTOP VIEW: Paginated Grid & Controls --- */}
-      <div className="relative z-10 hidden lg:grid grid-cols-[1fr_5rem] gap-5 xl:gap-6 flex-1 min-h-0 w-full items-center mb-2">
+      <div className="relative z-10 hidden lg:grid grid-cols-[1fr_5rem] gap-5 xl:gap-6 flex-1 min-h-0 w-full items-center mb-2 snap-bottom">
 
         {/* The 2x2 Grid container */}
         <div className="grid grid-cols-2 gap-4 xl:gap-5 w-full">
@@ -696,7 +696,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
           ))}
         </div>
       ) : (
-        <div className="relative z-10 flex flex-col lg:hidden flex-1 w-full">
+        <div className="relative z-10 flex flex-col lg:hidden flex-1 w-full snap-bottom">
           <div
             ref={mobileSwipeRef}
             onScroll={handleMobileScroll}
