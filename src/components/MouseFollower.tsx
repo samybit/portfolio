@@ -23,8 +23,20 @@ export default function MouseFollower() {
     let animationFrameId: number;
 
     const onMouseMove = (e: MouseEvent) => {
-      // Offset position +16px right and +16px down so it floats to the bottom-right of the cursor
-      targetPos.current = { x: e.clientX + 16, y: e.clientY + 16 };
+      const target = e.target as HTMLElement | null;
+
+      // Detect if cursor is over a tooltip trigger, active tooltip, or popup
+      const isTooltipTarget = Boolean(
+        target && (
+          target.closest('[data-has-tooltip="true"], [data-tooltip], .tooltip-trigger, .has-tooltip, [role="tooltip"]') ||
+          document.querySelector('[role="tooltip"], .tooltip-popup, [data-tooltip-active="true"]')
+        )
+      );
+
+      // If hovering an element with a tooltip below it, position follower ABOVE the cursor (-48px) so tooltip is 100% readable!
+      const offsetY = isTooltipTarget ? -32 : 8;
+      targetPos.current = { x: e.clientX + 8, y: e.clientY + offsetY };
+
       if (!isVisible) setIsVisible(true);
     };
 
@@ -94,7 +106,7 @@ export default function MouseFollower() {
         left: 0,
       }}
     >
-      <div className="relative w-10 h-10 md:w-11 md:h-11">
+      <div className="relative w-12 h-12 md:w-14 md:h-14">
         {/* Default Cursor Follower PNG */}
         <Image
           src="/cursor/cursor-default.png"

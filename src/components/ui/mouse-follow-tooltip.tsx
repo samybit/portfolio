@@ -36,6 +36,8 @@ export function MouseFollowTooltip({ children, content, className }: MouseFollow
 
   return (
     <div
+      data-has-tooltip="true"
+      data-tooltip-active={isHovered ? "true" : undefined}
       className={className || "inline-flex items-stretch relative"}
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
