@@ -620,7 +620,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
       </div>
 
       {/* --- DESKTOP VIEW: Paginated Grid & Controls --- */}
-      <div className="relative z-10 hidden lg:grid grid-cols-[1fr_5rem] gap-5 xl:gap-6 flex-1 min-h-0 w-full items-center mb-2 snap-bottom">
+      <div className="relative z-10 hidden lg:grid grid-cols-[1fr_5rem] gap-5 xl:gap-6 flex-1 min-h-0 w-full items-center mb-2 projects-grid-magnet">
 
         {/* The 2x2 Grid container */}
         <div className="grid grid-cols-2 gap-4 xl:gap-5 w-full">
@@ -696,7 +696,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
           ))}
         </div>
       ) : (
-        <div className="relative z-10 flex flex-col lg:hidden flex-1 w-full snap-bottom">
+        <div className="relative z-10 flex flex-col lg:hidden flex-1 w-full projects-grid-magnet">
           <div
             ref={mobileSwipeRef}
             onScroll={handleMobileScroll}

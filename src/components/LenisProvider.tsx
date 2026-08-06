@@ -86,13 +86,17 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       }
     };
 
-    // ── Lenis Proximity Snap Magnet ─────────────────────────────────────────
-    let isSnapping = false;
-    let lastSnapTarget: HTMLElement | null = null;
-    let snapTimeout: ReturnType<typeof setTimeout> | null = null;
+    // Expose lenis instance globally for smooth scrolling APIs
+    if (typeof window !== "undefined") {
+      (window as unknown as { lenis: Lenis }).lenis = lenis;
+    }
+
+    let velocityRef = 0;
 
     // Lenis fires the 'scroll' event on every RAF frame while scrolling.
-    lenis.on("scroll", ({ scroll, velocity, progress }: { scroll: number; velocity: number; progress: number }) => {
+    lenis.on("scroll", ({ velocity, progress }: { velocity: number; progress: number }) => {
+      velocityRef = Math.abs(velocity);
+
       // Position the thumb proportionally.
       const thumbHeightPercent = 12;
       const travelPercent = (100 - thumbHeightPercent) * progress;
@@ -100,60 +104,43 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
 
       showThumb();
       resetIdleTimer();
+    });
 
-      // Skip magnet alignment if dragging scrollbar or currently snapping
-      if (isDraggingRef.current || isSnapping) return;
+    // ── Gentle JS Intersection Magnet (IntersectionObserver + lenis.scrollTo) ───────
+    const hasMagnetizedSet = new WeakSet<Element>();
 
-      const absVelocity = Math.abs(velocity);
-      // Check proximity when scroll velocity slows down (arriving at target)
-      if (absVelocity > 0.05 && absVelocity < 1.4) {
-        const snapElements = document.querySelectorAll<HTMLElement>("#contact, .snap-center");
-        const viewportHeight = window.innerHeight;
-        const viewportCenter = scroll + viewportHeight / 2;
+    const magnetObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Trigger gentle magnet alignment when 60% of element is in view and scrolling at relaxed speed
+          if (entry.isIntersecting && velocityRef < 1.5 && !hasMagnetizedSet.has(entry.target)) {
+            hasMagnetizedSet.add(entry.target);
 
-        for (let i = 0; i < snapElements.length; i++) {
-          const el = snapElements[i];
-          const rect = el.getBoundingClientRect();
-          const elTop = scroll + rect.top;
-          const elCenter = elTop + rect.height / 2;
-          const distToCenter = Math.abs(viewportCenter - elCenter);
+            const rect = entry.target.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            const currentScroll = lenis.scroll;
+            const elTop = currentScroll + rect.top;
 
-          // Magnetize if center of element is within 220px proximity of viewport center
-          if (distToCenter < 220 && lastSnapTarget !== el) {
             let targetY = elTop - (viewportHeight / 2 - rect.height / 2);
-            if (rect.height >= viewportHeight * 0.88) {
+            if (rect.height >= viewportHeight * 0.85) {
               targetY = elTop;
             }
 
-            isSnapping = true;
-            lastSnapTarget = el;
-
             lenis.scrollTo(targetY, {
-              duration: 0.9,
-              easing: (t: number) => 1 - Math.pow(1 - t, 3),
-              onComplete: () => {
-                isSnapping = false;
-              },
+              duration: 1.2,
+              easing: (t: number) => 1 - Math.pow(1 - t, 3), // Gentle cubic ease-out
             });
-
-            if (snapTimeout) clearTimeout(snapTimeout);
-            snapTimeout = setTimeout(() => {
-              isSnapping = false;
-            }, 1000);
-
-            break;
           }
-        }
+        });
+      },
+      {
+        threshold: 0.6, // Triggers gently when 60% of section enters viewport
       }
+    );
 
-      // Reset snap lock when user scrolls briskly away
-      if (lastSnapTarget && absVelocity > 1.8) {
-        const rect = lastSnapTarget.getBoundingClientRect();
-        if (Math.abs(rect.top) > window.innerHeight * 0.75) {
-          lastSnapTarget = null;
-        }
-      }
-    });
+    // Observe Contact section & Projects cards area
+    const magnetTargets = document.querySelectorAll("#contact, .projects-grid-magnet");
+    magnetTargets.forEach((target) => magnetObserver.observe(target));
 
     // ── 4. Drag & Track Click Handling ─────────────────────────────────────
     const updateScrollFromPointer = (clientY: number) => {

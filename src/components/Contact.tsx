@@ -228,7 +228,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
   };
 
   return (
-    <section id="contact" className="snap-center min-h-[100svh] flex flex-col justify-center pt-16 pb-12 px-6 md:px-12 lg:px-24 bg-black text-white overflow-hidden">
+    <section id="contact" className="min-h-[80vh] flex flex-col justify-center pt-24 pb-16 px-6 md:px-12 lg:px-24 bg-black text-white overflow-hidden">
       <div className="w-full max-w-[75rem] mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-stretch">
 
         {/* --- LEFT COLUMN: TEXT & SOCIALS --- */}
