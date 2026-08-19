@@ -1,7 +1,7 @@
 "use client";
 
 import { ExternalLink, ArrowUp, ArrowDown } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { playTick } from "@/utils/audio";
@@ -199,7 +199,7 @@ const ProjectCard = ({
 
   const cardContent = (
     <div 
-      className={`relative overflow-hidden group/card flex flex-col justify-between aspect-auto min-h-[360px] sm:min-h-[380px] lg:aspect-[16/9] lg:min-h-0 w-full ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
+      className={`relative overflow-hidden group/card flex flex-col justify-between lg:aspect-[16/9] w-full ${!disableObserver ? 'project-card' : ''} ${isToggled ? 'mobile-force-hover' : ''} ${
         isNeumorphic ? "brutalist-container bg-white border-black p-3" : "brutalist-container-dark p-3"
       }`}
       onMouseEnter={() => {
@@ -439,10 +439,8 @@ const PlaceholderCard = ({
 
 export default function Projects({ dict }: { dict: ProjectsDictionary }) {
   const [page, setPage] = useState(0);
-  const [showAllMobile, setShowAllMobile] = useState(false);
   const isNeumorphic = useNeumorphicTheme();
-  const [mobileScrollProgress, setMobileScrollProgress] = useState(0);
-  const isDraggingSlider = useRef(false);
+  const [expandedMobileIndex, setExpandedMobileIndex] = useState<number | null>(null);
   const mobileSwipeRef = useRef<HTMLDivElement>(null);
   const [hoveredImages, setHoveredImages] = useState<string[] | null>(null);
   const [hoveredTitle, setHoveredTitle] = useState<string | null>(null);
@@ -471,52 +469,6 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
 
   const currentProjects = projects.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
 
-  const handleMobileScroll = () => {
-    if (!mobileSwipeRef.current || isDraggingSlider.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = mobileSwipeRef.current;
-    if (scrollWidth <= clientWidth) return;
-    const progress = (scrollLeft / (scrollWidth - clientWidth)) * 100;
-    setMobileScrollProgress(progress);
-  };
-
-  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const progress = parseFloat(e.target.value);
-    setMobileScrollProgress(progress);
-    if (!mobileSwipeRef.current) return;
-    const { scrollWidth, clientWidth } = mobileSwipeRef.current;
-    const maxScroll = scrollWidth - clientWidth;
-    mobileSwipeRef.current.scrollLeft = (progress / 100) * maxScroll;
-  };
-
-  // --- MOBILE SCROLL HOVER EFFECTS ---
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: "-60% 0px -20% 0px", // Zone shifted lower: starts at 60% depth, ends at 80% depth
-      threshold: 0
-    };
-
-    const scrollObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const card = entry.target;
-
-        if (window.innerWidth < 1024) {
-          if (entry.isIntersecting) {
-            card.classList.add('mobile-active');
-          } else {
-            card.classList.remove('mobile-active');
-          }
-        } else {
-          card.classList.remove('mobile-active');
-        }
-      });
-    }, observerOptions);
-
-    const cards = document.querySelectorAll('.project-card');
-    cards.forEach(card => scrollObserver.observe(card));
-
-    return () => scrollObserver.disconnect();
-  }, [page, showAllMobile]);
 
   // Handle title splitting dynamically for languages (first word on top, rest on bottom)
   const titleWords = (dict?.title || "Selected Works").split(" ");
@@ -566,15 +518,15 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
       <div className="w-full max-w-[75rem] mx-auto flex flex-col flex-1 min-h-0">
 
       {/* --- HEADER --- */}
-      <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between mb-4 lg:mb-6 gap-4 flex-none">
+      <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between mb-4 lg:mb-6 gap-2 md:gap-4 flex-none">
         <div className="w-full md:w-auto">
           <div className="flex items-center gap-4 sm:gap-6">
-            <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">
+            <h2 className="text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">
               <DecryptText text={titleFirst} />
               <br />
               {titleRest && <DecryptText text={titleRest} />}
             </h2>
-            <div className="h-1.5 md:h-2 bg-current w-12 sm:w-20 md:w-28 shrink-0 self-center" />
+            <div className="h-1.5 md:h-2 bg-current w-10 sm:w-20 md:w-28 shrink-0 self-center" />
           </div>
 
           <p className={`hidden lg:block text-lg font-bold uppercase mt-4 tracking-widest ${
@@ -582,28 +534,6 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
           }`}>
             {dict?.pageFormat ? dict.pageFormat.replace('{current}', `0${page + 1}`).replace('{total}', `0${totalPages}`) : `[ PAGE 0${page + 1} / 0${totalPages} ]`}
           </p>
-
-          <div className={`flex lg:hidden items-center justify-between mt-6 p-2 transition-all duration-300 ${
-            isNeumorphic
-              ? "bg-[#e0e5ec] rounded-2xl shadow-[inset_3px_3px_6px_rgba(163,177,198,0.5),_inset_-3px_-3px_6px_rgba(255,255,255,0.7)]"
-              : "border-2 border-white bg-black"
-          }`}>
-            <span className={`text-xs sm:text-sm font-bold uppercase tracking-widest ps-2 ${
-              isNeumorphic ? "text-zinc-500" : "text-zinc-400"
-            }`}>
-              {showAllMobile ? "[ Scroll ↓ ]" : `[ ${dict?.swipeHint || "Swipe to explore"} ]`}
-            </span>
-            <button
-              onClick={() => setShowAllMobile(!showAllMobile)}
-              className={`px-3 py-2 text-xs sm:text-sm font-black uppercase transition-all duration-300 ${
-                isNeumorphic
-                  ? "bg-[#e0e5ec] text-[#4b5563] rounded-xl shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.7),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)] active:translate-y-[2px]"
-                  : "bg-white text-black border-2 border-transparent hover:border-white"
-              }`}
-            >
-              {showAllMobile ? (dict?.hide || "Hide Projects") : (dict?.viewAll || "View All Projects")}
-            </button>
-          </div>
         </div>
 
         <a
@@ -686,69 +616,241 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
         </div>
       </div>
 
-      {/* --- MOBILE VIEW --- */}
-      {showAllMobile ? (
-        <div className="relative z-10 flex lg:hidden flex-col gap-6 pb-8 flex-1">
-          {projects.map((project: Project, index: number) => (
-            <div key={`mobile-list-${index}`} className="w-full">
-              <ProjectCard project={project} dict={dict} animate={true} isNeumorphic={isNeumorphic} asHeading={false} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="relative z-10 flex flex-col lg:hidden flex-1 w-full projects-grid-magnet">
-          <div
-            ref={mobileSwipeRef}
-            onScroll={handleMobileScroll}
-            className="flex overflow-x-auto gap-4 pt-4 pb-6 snap-x snap-mandatory -mx-6 px-6 w-[calc(100%+3rem)] min-h-[380px] sm:min-h-[400px] hide-scrollbar"
-            style={{ WebkitOverflowScrolling: 'touch' }}
-          >
-            {projects.map((project: Project, index: number) => (
-              <div key={`mobile-swipe-${index}`} className="w-[88vw] sm:w-[65vw] shrink-0 snap-center h-auto">
-                <ProjectCard project={project} dict={dict} animate={false} disableObserver={true} isNeumorphic={isNeumorphic} asHeading={false} />
-              </div>
-            ))}
-            <div className="w-[1px] shrink-0"></div>
-          </div>
-          
-          {/* Brutalist Mobile Slider */}
-          <div className="mt-2 w-full flex items-center justify-center px-4 max-w-[85vw] mx-auto">
-            <input 
-              aria-label={dict?.swipeHint || "Scroll projects"}
-              type="range" 
-              min="0" 
-              max="100" 
-              step="any"
-              value={mobileScrollProgress}
-              onChange={handleSliderChange}
-              onPointerDown={() => isDraggingSlider.current = true}
-              onPointerUp={() => isDraggingSlider.current = false}
-              onTouchStart={() => isDraggingSlider.current = true}
-              onTouchEnd={() => isDraggingSlider.current = false}
-              className={`w-full appearance-none h-3 border-2 outline-none transition-all duration-300
-                [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-8 [&::-webkit-slider-thumb]:h-8 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:transition-transform
-                ${isNeumorphic 
-                  ? "bg-[#e0e5ec] border-black shadow-[inset_2px_2px_4px_rgba(163,177,198,0.5),_inset_-2px_-2px_4px_rgba(255,255,255,0.7)] [&::-webkit-slider-thumb]:bg-[#e0e5ec] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[4px_4px_8px_rgba(163,177,198,0.6),_-4px_-4px_8px_rgba(255,255,255,0.5)] [&::-webkit-slider-thumb]:border-none" 
-                  : "bg-black border-white [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-black [&::-webkit-slider-thumb]:rounded-none [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-black [&::-moz-range-thumb]:rounded-none"
-                }
-              `}
-            />
-          </div>
-        </div>
-      )}
+      {/* --- MOBILE VIEW: Vertical stacked list --- */}
+      <div className="relative z-10 flex lg:hidden flex-col gap-2 flex-1 pt-2 pb-4 projects-grid-magnet" ref={mobileSwipeRef}>
 
-      {/* --- MOBILE GITHUB LINK (Bottom CTA) --- */}
-      <div className="relative z-10 flex md:hidden mt-4 w-full flex-none">
+        {/* Mobile project count indicator */}
+        <p className={`text-[10px] font-bold uppercase tracking-[0.2em] mb-1 ${
+          isNeumorphic ? "text-zinc-400" : "text-zinc-500"
+        }`}>
+          {projects.length} Projects
+        </p>
+
+        {projects.map((project: Project, index: number) => {
+          const isExpanded = expandedMobileIndex === index;
+          const hasGithub = project.github && project.github !== "" && project.github !== "#";
+          const hasDemo = project.demo && project.demo !== "" && project.demo !== "#";
+          const thumb = project.images?.[0] || "";
+          const allImages = project.images?.filter(Boolean) || [];
+
+          return (
+            <div
+              key={`mobile-card-${index}`}
+              className={`relative w-full overflow-hidden transition-shadow duration-300 ${
+                isNeumorphic
+                  ? `bg-white border-4 border-black ${isExpanded ? "shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]" : ""}`
+                  : `bg-black border-4 border-white ${isExpanded ? "shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]" : ""}`
+              }`}
+            >
+              {/* ── Collapsed Row: tap to expand ── */}
+              <button
+                type="button"
+                aria-expanded={isExpanded}
+                onClick={() => setExpandedMobileIndex(isExpanded ? null : index)}
+                className={`w-full flex items-stretch gap-0 text-left ${
+                  isNeumorphic
+                    ? `transition-colors ${isExpanded ? "bg-black text-white" : "bg-white text-black"}`
+                    : `transition-colors ${isExpanded ? "bg-white text-black" : "bg-black text-white"}`
+                }`}
+              >
+                {/* Thumbnail */}
+                <div className="relative shrink-0 w-[80px] h-[80px]">
+                  {thumb ? (
+                    <Image
+                      src={thumb}
+                      alt={project.title}
+                      fill
+                      sizes="80px"
+                      className={`object-cover border-e-4 ${
+                        isNeumorphic
+                          ? isExpanded ? "border-white" : "border-black"
+                          : isExpanded ? "border-black" : "border-white"
+                      }`}
+                    />
+                  ) : (
+                    <div className={`w-full h-full flex items-center justify-center border-e-4 ${
+                      isNeumorphic ? "border-black bg-zinc-100" : "border-white bg-zinc-900"
+                    }`}>
+                      <span className="text-[8px] font-black uppercase tracking-wider text-center leading-tight px-1 opacity-40">
+                        No&nbsp;Img
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Index badge */}
+                  <span className={`absolute top-0.5 start-0.5 text-[9px] font-black tabular-nums px-1 leading-none py-0.5 ${
+                    isExpanded
+                      ? isNeumorphic ? "bg-white text-black" : "bg-black text-white"
+                      : isNeumorphic ? "bg-black text-white" : "bg-white text-black"
+                  }`}>
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                {/* Title + Tags */}
+                <div className="flex-1 flex flex-col justify-center px-3 py-2.5 min-w-0">
+                  <span className="text-sm font-black uppercase tracking-tight leading-tight truncate">
+                    {project.title}
+                  </span>
+                  {project.subtitle && (
+                    <span className={`text-[10px] font-bold mt-0.5 tracking-wide truncate ${
+                      isExpanded
+                        ? isNeumorphic ? "text-zinc-300" : "text-zinc-500"
+                        : isNeumorphic ? "text-zinc-500" : "text-zinc-400"
+                    }`}>
+                      {project.subtitle}
+                    </span>
+                  )}
+                  <div className="flex flex-wrap gap-1 mt-1.5">
+                    {project.tech.slice(0, 3).map((t: string, i: number) => (
+                      <span key={i} className={`px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider leading-none ${
+                        isExpanded
+                          ? isNeumorphic ? "bg-white text-black" : "bg-black text-white border border-white/30"
+                          : isNeumorphic ? "bg-[#d1d9e6]/70 text-[#4b5563]" : "bg-white text-black"
+                      }`}>{t}</span>
+                    ))}
+                    {project.tech.length > 3 && (
+                      <span className={`text-[9px] font-bold ${
+                        isExpanded
+                          ? isNeumorphic ? "text-zinc-300" : "text-zinc-400"
+                          : isNeumorphic ? "text-zinc-400" : "text-zinc-500"
+                      }`}>+{project.tech.length - 3}</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Expand indicator */}
+                <div className={`flex items-center px-3 shrink-0 border-s-4 ${
+                  isExpanded
+                    ? isNeumorphic ? "border-white" : "border-black"
+                    : isNeumorphic ? "border-black" : "border-white"
+                }`}>
+                  <motion.div
+                    animate={{ rotate: isExpanded ? 180 : 0 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M3 6l5 5 5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" strokeLinejoin="miter"/>
+                    </svg>
+                  </motion.div>
+                </div>
+              </button>
+
+              {/* ── Expanded Detail Panel ── */}
+              <AnimatePresence initial={false}>
+                {isExpanded && (
+                  <motion.div
+                    key="expanded"
+                    initial={{ height: 0 }}
+                    animate={{ height: "auto" }}
+                    exit={{ height: 0 }}
+                    transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className={`border-t-4 ${isNeumorphic ? "border-black" : "border-white"}`}>
+                      {/* Screenshot — constrained height so it doesn't overwhelm */}
+                      {thumb && (
+                        <div className="relative w-full" style={{ maxHeight: "42vw", minHeight: "120px" }}>
+                          <Image
+                            src={thumb}
+                            alt={project.title}
+                            fill
+                            sizes="100vw"
+                            className="object-cover object-top"
+                          />
+                          {/* Multi-image dots */}
+                          {allImages.length > 1 && (
+                            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+                              {allImages.map((_: string, di: number) => (
+                                <span key={di} className={`inline-block w-1.5 h-1.5 rounded-full ${
+                                  di === 0
+                                    ? isNeumorphic ? "bg-black" : "bg-white"
+                                    : "bg-white/40"
+                                }`} />
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Description + All Tags + Buttons */}
+                      <div className="px-3 pt-3 pb-3">
+                        <p className={`text-xs leading-relaxed ${
+                          isNeumorphic ? "text-zinc-700" : "text-zinc-300"
+                        }`}>
+                          {project.description}
+                        </p>
+
+                        {/* All tech tags — full list */}
+                        <div className="flex flex-wrap gap-1 mt-2.5">
+                          {project.tech.map((t: string, i: number) => (
+                            <span key={i} className={`px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider leading-none ${
+                              isNeumorphic ? "bg-[#d1d9e6]/70 text-[#4b5563]" : "bg-white text-black"
+                            }`}>{t}</span>
+                          ))}
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className={`flex gap-2 mt-3 pt-3 border-t-4 ${
+                          isNeumorphic ? "border-black" : "border-white"
+                        }`}>
+                          {hasGithub && (
+                            <a
+                              href={project.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`group flex items-center justify-center gap-1.5 text-xs font-black uppercase px-3 py-2.5 flex-1 transition-all duration-200 ${
+                                isNeumorphic
+                                  ? "border-2 border-black text-black hover:bg-black hover:text-white active:bg-black active:text-white"
+                                  : "border-2 border-white text-white hover:bg-white hover:text-black active:bg-white active:text-black"
+                              }`}
+                            >
+                              <GithubIcon size={14} /> {dict?.repo || "Repo"}
+                            </a>
+                          )}
+                          {hasDemo && (
+                            <a
+                              href={project.demo}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`group flex items-center justify-center gap-1.5 text-xs font-black uppercase px-3 py-2.5 flex-1 transition-all duration-200 ${
+                                isNeumorphic
+                                  ? "bg-black text-white border-2 border-black hover:bg-zinc-800"
+                                  : "bg-white text-black border-2 border-white hover:bg-zinc-100"
+                              }`}
+                            >
+                              <svg className="w-3 h-3 shrink-0 overflow-visible" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                <circle cx="8" cy="8" r="7" className="animate-ping opacity-60 fill-current" style={{ transformOrigin: "8px 8px" }} />
+                                <circle cx="8" cy="8" r="3.5" className="fill-current" />
+                              </svg>
+                              {dict?.demo || "Live Demo"} <ExternalLink size={12} />
+                            </a>
+                          )}
+                          {!hasGithub && !hasDemo && (
+                            <span className="text-xs font-bold uppercase text-zinc-500 px-2">{dict?.offline || "[ Offline ]"}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+
+        {/* Mobile GitHub CTA */}
         <a
           href="https://github.com/samybit"
           target="_blank"
           rel="noopener noreferrer"
-          className={`w-full p-4 text-lg font-black uppercase text-center transition-all duration-300 ${
+          className={`flex items-center justify-center gap-2 w-full mt-2 p-4 text-base font-black uppercase text-center transition-all duration-200 ${
             isNeumorphic
-              ? "bg-[#e0e5ec] text-[#4b5563] rounded-2xl border border-transparent shadow-[6px_6px_12px_rgba(163,177,198,0.6),_-6px_-6px_12px_rgba(255,255,255,0.5)] hover:bg-[#d1d9e6] hover:text-[#1e293b] hover:shadow-[8px_8px_16px_rgba(163,177,198,0.7),_-8px_-8px_16px_rgba(255,255,255,0.6)] active:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.6),_inset_-4px_-4px_8px_rgba(255,255,255,0.5)] active:translate-y-[2px]"
-              : "bg-white text-black border-4 border-white hover:bg-black hover:text-white"
+              ? "bg-black text-white border-4 border-black active:bg-zinc-800"
+              : "bg-white text-black border-4 border-white active:bg-zinc-100"
           }`}
         >
+          <GithubIcon size={18} />
           {dict?.viewGithub || "View Full GitHub →"}
           <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
         </a>
@@ -756,7 +858,6 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
 
       </div>{/* end 1200px wrapper */}
 
-
-    </section >
+    </section>
   );
 }
