@@ -1,7 +1,7 @@
 "use client";
 
-import { ExternalLink, ArrowUp, ArrowDown } from "lucide-react";
-import { useRef, useState } from "react";
+import { ExternalLink, ArrowUp, ArrowDown, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { playTick } from "@/utils/audio";
@@ -129,6 +129,7 @@ const HoveredImageOverlay = ({
 };
 
 interface Project {
+  id?: string;
   title: string;
   subtitle?: string;
   description: string;
@@ -437,6 +438,358 @@ const PlaceholderCard = ({
   );
 };
 
+interface MobileProjectCardProps {
+  project: Project;
+  dict: ProjectsDictionary;
+  index: number;
+  isExpanded: boolean;
+  onToggle: () => void;
+  isNeumorphic: boolean;
+}
+
+const MobileProjectCard = ({
+  project,
+  dict,
+  index,
+  isExpanded,
+  onToggle,
+  isNeumorphic,
+}: MobileProjectCardProps) => {
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const images = project.images && project.images.length > 0 ? project.images.filter(Boolean) : [];
+  const totalImages = images.length;
+  const currentImage = images[activeImageIndex] || "";
+  const thumb = images[0] || "";
+
+  const hasGithub = project.github && project.github !== "" && project.github !== "#";
+  const hasDemo = project.demo && project.demo !== "" && project.demo !== "#";
+
+  const nextImage = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (totalImages <= 1) return;
+    playTick();
+    setActiveImageIndex((prev: number) => (prev + 1) % totalImages);
+  };
+
+  const prevImage = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (totalImages <= 1) return;
+    playTick();
+    setActiveImageIndex((prev: number) => (prev - 1 + totalImages) % totalImages);
+  };
+
+  return (
+    <div
+      className={`relative w-full overflow-hidden transition-shadow duration-300 ${
+        isNeumorphic
+          ? `bg-white border-4 border-black ${isExpanded ? "shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]" : ""}`
+          : `bg-black border-4 border-white ${isExpanded ? "shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]" : ""}`
+      }`}
+    >
+      {/* ── Collapsed Header Row: tap to expand ── */}
+      <button
+        type="button"
+        aria-expanded={isExpanded}
+        onClick={onToggle}
+        className={`w-full flex items-stretch gap-0 text-left cursor-pointer select-none ${
+          isNeumorphic
+            ? `transition-colors duration-200 ${isExpanded ? "bg-black text-white" : "bg-white text-black active:bg-zinc-100"}`
+            : `transition-colors duration-200 ${isExpanded ? "bg-white text-black" : "bg-black text-white active:bg-zinc-900"}`
+        }`}
+      >
+        {/* Thumbnail on left */}
+        <div className="relative shrink-0 w-[84px] h-[84px]">
+          {thumb ? (
+            <Image
+              src={thumb}
+              alt={project.title}
+              fill
+              sizes="84px"
+              className={`object-cover border-e-4 ${
+                isNeumorphic
+                  ? isExpanded ? "border-white" : "border-black"
+                  : isExpanded ? "border-black" : "border-white"
+              }`}
+            />
+          ) : (
+            <div className={`w-full h-full flex items-center justify-center border-e-4 ${
+              isNeumorphic ? "border-black bg-zinc-100" : "border-white bg-zinc-900"
+            }`}>
+              <span className="text-[8px] font-black uppercase tracking-wider text-center leading-tight px-1 opacity-40">
+                No Img
+              </span>
+            </div>
+          )}
+
+          {/* Index badge */}
+          <span className={`absolute top-0.5 start-0.5 text-[9px] font-black tabular-nums px-1 leading-none py-0.5 ${
+            isExpanded
+              ? isNeumorphic ? "bg-white text-black" : "bg-black text-white"
+              : isNeumorphic ? "bg-black text-white" : "bg-white text-black"
+          }`}>
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </div>
+
+        {/* Title + Subtitle + Primary Tags */}
+        <div className="flex-1 flex flex-col justify-center px-3 py-2 min-w-0">
+          <span className="text-sm sm:text-base font-black uppercase tracking-tight leading-tight truncate">
+            {project.title}
+          </span>
+          {project.subtitle && (
+            <span className={`text-[10px] font-bold mt-0.5 tracking-wide truncate ${
+              isExpanded
+                ? isNeumorphic ? "text-zinc-300" : "text-zinc-500"
+                : isNeumorphic ? "text-zinc-500" : "text-zinc-400"
+            }`}>
+              {project.subtitle}
+            </span>
+          )}
+          {/* Quick Tags in Collapsed State */}
+          <div className="flex flex-wrap gap-1 mt-1.5 overflow-hidden">
+            {project.tech.map((t: string, i: number) => (
+              <span
+                key={i}
+                className={`px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider leading-none ${
+                  isExpanded
+                    ? isNeumorphic
+                      ? "bg-white text-black"
+                      : "bg-black text-white border border-white/40"
+                    : isNeumorphic
+                      ? "bg-[#d1d9e6]/70 text-[#4b5563]"
+                      : "bg-white text-black"
+                }`}
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Expand / Collapse Chevron indicator */}
+        <div className={`flex items-center px-3 shrink-0 border-s-4 ${
+          isExpanded
+            ? isNeumorphic ? "border-white" : "border-black"
+            : isNeumorphic ? "border-black" : "border-white"
+        }`}>
+          <motion.div
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            transition={{ duration: 0.22, ease: "easeInOut" }}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 6l5 5 5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" strokeLinejoin="miter"/>
+            </svg>
+          </motion.div>
+        </div>
+      </button>
+
+      {/* ── Expanded Detail Panel ── */}
+      <AnimatePresence initial={false}>
+        {isExpanded && (
+          <motion.div
+            key="expanded"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <div className={`border-t-4 ${isNeumorphic ? "border-black" : "border-white"}`}>
+              {/* Swipable Image Gallery */}
+              {totalImages > 0 && (
+                <div className="relative w-full aspect-video sm:aspect-[16/9] bg-zinc-950 overflow-hidden select-none touch-pan-y">
+                  {/* Framer motion draggable image with key to trigger slide/fade transition on swipe */}
+                  <motion.div
+                    key={activeImageIndex}
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.25}
+                    onDragEnd={(_e: unknown, { offset, velocity }: { offset: { x: number; y: number }; velocity: { x: number; y: number } }) => {
+                      if (offset.x < -30 || velocity.x < -200) {
+                        nextImage();
+                      } else if (offset.x > 30 || velocity.x > 200) {
+                        prevImage();
+                      }
+                    }}
+                    initial={{ opacity: 0, scale: 0.97 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.97 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
+                  >
+                    <Image
+                      src={currentImage}
+                      alt={`${project.title} screenshot ${activeImageIndex + 1}`}
+                      fill
+                      sizes="100vw"
+                      className="object-cover object-top pointer-events-none"
+                    />
+                  </motion.div>
+
+                  {/* Left / Right Tap Arrows (shown if multiple images) */}
+                  {totalImages > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        aria-label="Previous screenshot"
+                        onClick={prevImage}
+                        className={`absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 flex items-center justify-center border-2 transition-transform active:scale-90 ${
+                          isNeumorphic
+                            ? "bg-white text-black border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                            : "bg-black text-white border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
+                        }`}
+                      >
+                        <ChevronLeft size={18} strokeWidth={3} />
+                      </button>
+
+                      <button
+                        type="button"
+                        aria-label="Next screenshot"
+                        onClick={nextImage}
+                        className={`absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 flex items-center justify-center border-2 transition-transform active:scale-90 ${
+                          isNeumorphic
+                            ? "bg-white text-black border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                            : "bg-black text-white border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
+                        }`}
+                      >
+                        <ChevronRight size={18} strokeWidth={3} />
+                      </button>
+                    </>
+                  )}
+
+                  {/* Top-Right Image Counter Badge */}
+                  {totalImages > 1 && (
+                    <div className={`absolute top-2 right-2 z-20 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider border-2 ${
+                      isNeumorphic
+                        ? "bg-white text-black border-black"
+                        : "bg-black text-white border-white"
+                    }`}>
+                      {activeImageIndex + 1} / {totalImages}
+                    </div>
+                  )}
+
+                  {/* Multi-image interactive Dots Indicator */}
+                  {totalImages > 1 && (
+                    <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-2.5 py-1 bg-black/70 backdrop-blur-sm border border-white/20 rounded-full">
+                      {images.map((_: string, di: number) => {
+                        const isActive = di === activeImageIndex;
+                        return (
+                          <button
+                            key={di}
+                            type="button"
+                            aria-label={`Jump to image ${di + 1}`}
+                            onClick={(e: React.MouseEvent) => {
+                              e.stopPropagation();
+                              playTick();
+                              setActiveImageIndex(di);
+                            }}
+                            className={`transition-all duration-200 rounded-full ${
+                              isActive
+                                ? "w-5 h-2 bg-white"
+                                : "w-2 h-2 bg-white/40 hover:bg-white/70"
+                            }`}
+                          />
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Description + Complete Tech Stack + Action Buttons */}
+              <div className="p-3.5 flex flex-col gap-3">
+                {/* Description */}
+                <div>
+                  <h4 className={`text-[10px] font-black uppercase tracking-widest mb-1 ${
+                    isNeumorphic ? "text-zinc-500" : "text-zinc-400"
+                  }`}>
+                    Overview
+                  </h4>
+                  <p className={`text-xs sm:text-sm leading-relaxed font-medium whitespace-pre-line ${
+                    isNeumorphic ? "text-zinc-800" : "text-zinc-200"
+                  }`}>
+                    {project.description}
+                  </p>
+                </div>
+
+                {/* All Tech Stack Tags */}
+                <div className={`pt-2.5 border-t-2 ${
+                  isNeumorphic ? "border-zinc-200" : "border-zinc-800"
+                }`}>
+                  <h4 className={`text-[10px] font-black uppercase tracking-widest mb-1.5 ${
+                    isNeumorphic ? "text-zinc-500" : "text-zinc-400"
+                  }`}>
+                    Tech Stack & Tools
+                  </h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.tech.map((t: string, i: number) => (
+                      <span
+                        key={i}
+                        className={`px-2 py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider border ${
+                          isNeumorphic
+                            ? "bg-[#e0e5ec] text-[#1e293b] border-zinc-400/80"
+                            : "bg-zinc-900 text-white border-zinc-700"
+                        }`}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Action Buttons: Repo & Live Demo */}
+                <div className={`flex gap-2 pt-3 border-t-4 ${
+                  isNeumorphic ? "border-black" : "border-white"
+                }`}>
+                  {hasGithub && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`group flex items-center justify-center gap-2 text-xs sm:text-sm font-black uppercase px-3 py-2.5 flex-1 transition-all duration-200 ${
+                        isNeumorphic
+                          ? "border-2 border-black text-black hover:bg-black hover:text-white active:bg-black active:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                          : "border-2 border-white text-white hover:bg-white hover:text-black active:bg-white active:text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
+                      }`}
+                    >
+                      <GithubIcon size={16} /> {dict?.repo || "Repo"}
+                      <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
+                    </a>
+                  )}
+                  {hasDemo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`group flex items-center justify-center gap-2 text-xs sm:text-sm font-black uppercase px-3 py-2.5 flex-1 transition-all duration-200 ${
+                        isNeumorphic
+                          ? "bg-black text-white border-2 border-black hover:bg-zinc-800 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                          : "bg-white text-black border-2 border-white hover:bg-zinc-100 shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
+                      }`}
+                    >
+                      <svg className="w-3 h-3 shrink-0 overflow-visible" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="8" cy="8" r="7" className="animate-ping opacity-60 fill-current" style={{ transformOrigin: "8px 8px" }} />
+                        <circle cx="8" cy="8" r="3.5" className="fill-current" />
+                      </svg>
+                      {dict?.demo || "Live Demo"} <ExternalLink size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      <span className="sr-only">{dict?.newTab || " (opens in a new tab)"}</span>
+                    </a>
+                  )}
+                  {!hasGithub && !hasDemo && (
+                    <span className="text-xs font-bold uppercase text-zinc-500 py-2.5 px-3 border-2 border-zinc-700 w-full text-center">
+                      {dict?.offline || "[ Offline / Local Build ]"}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 export default function Projects({ dict }: { dict: ProjectsDictionary }) {
   const [page, setPage] = useState(0);
   const isNeumorphic = useNeumorphicTheme();
@@ -456,7 +809,7 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
     setHoveredImages(null);
     setHoveredTitle(null);
     setHoveredIndex(null);
-    setPage((p) => (p + 1) % totalPages);
+    setPage((p: number) => (p + 1) % totalPages);
   };
 
   const prevSlide = () => {
@@ -464,11 +817,10 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
     setHoveredImages(null);
     setHoveredTitle(null);
     setHoveredIndex(null);
-    setPage((p) => (p - 1 + totalPages) % totalPages);
+    setPage((p: number) => (p - 1 + totalPages) % totalPages);
   };
 
   const currentProjects = projects.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
-
 
   // Handle title splitting dynamically for languages (first word on top, rest on bottom)
   const titleWords = (dict?.title || "Selected Works").split(" ");
@@ -626,218 +978,17 @@ export default function Projects({ dict }: { dict: ProjectsDictionary }) {
           {projects.length} Projects
         </p>
 
-        {projects.map((project: Project, index: number) => {
-          const isExpanded = expandedMobileIndex === index;
-          const hasGithub = project.github && project.github !== "" && project.github !== "#";
-          const hasDemo = project.demo && project.demo !== "" && project.demo !== "#";
-          const thumb = project.images?.[0] || "";
-          const allImages = project.images?.filter(Boolean) || [];
-
-          return (
-            <div
-              key={`mobile-card-${index}`}
-              className={`relative w-full overflow-hidden transition-shadow duration-300 ${
-                isNeumorphic
-                  ? `bg-white border-4 border-black ${isExpanded ? "shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]" : ""}`
-                  : `bg-black border-4 border-white ${isExpanded ? "shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]" : ""}`
-              }`}
-            >
-              {/* ── Collapsed Row: tap to expand ── */}
-              <button
-                type="button"
-                aria-expanded={isExpanded}
-                onClick={() => setExpandedMobileIndex(isExpanded ? null : index)}
-                className={`w-full flex items-stretch gap-0 text-left ${
-                  isNeumorphic
-                    ? `transition-colors ${isExpanded ? "bg-black text-white" : "bg-white text-black"}`
-                    : `transition-colors ${isExpanded ? "bg-white text-black" : "bg-black text-white"}`
-                }`}
-              >
-                {/* Thumbnail */}
-                <div className="relative shrink-0 w-[80px] h-[80px]">
-                  {thumb ? (
-                    <Image
-                      src={thumb}
-                      alt={project.title}
-                      fill
-                      sizes="80px"
-                      className={`object-cover border-e-4 ${
-                        isNeumorphic
-                          ? isExpanded ? "border-white" : "border-black"
-                          : isExpanded ? "border-black" : "border-white"
-                      }`}
-                    />
-                  ) : (
-                    <div className={`w-full h-full flex items-center justify-center border-e-4 ${
-                      isNeumorphic ? "border-black bg-zinc-100" : "border-white bg-zinc-900"
-                    }`}>
-                      <span className="text-[8px] font-black uppercase tracking-wider text-center leading-tight px-1 opacity-40">
-                        No&nbsp;Img
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Index badge */}
-                  <span className={`absolute top-0.5 start-0.5 text-[9px] font-black tabular-nums px-1 leading-none py-0.5 ${
-                    isExpanded
-                      ? isNeumorphic ? "bg-white text-black" : "bg-black text-white"
-                      : isNeumorphic ? "bg-black text-white" : "bg-white text-black"
-                  }`}>
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
-
-                {/* Title + Tags */}
-                <div className="flex-1 flex flex-col justify-center px-3 py-2.5 min-w-0">
-                  <span className="text-sm font-black uppercase tracking-tight leading-tight truncate">
-                    {project.title}
-                  </span>
-                  {project.subtitle && (
-                    <span className={`text-[10px] font-bold mt-0.5 tracking-wide truncate ${
-                      isExpanded
-                        ? isNeumorphic ? "text-zinc-300" : "text-zinc-500"
-                        : isNeumorphic ? "text-zinc-500" : "text-zinc-400"
-                    }`}>
-                      {project.subtitle}
-                    </span>
-                  )}
-                  <div className="flex flex-wrap gap-1 mt-1.5">
-                    {project.tech.slice(0, 3).map((t: string, i: number) => (
-                      <span key={i} className={`px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider leading-none ${
-                        isExpanded
-                          ? isNeumorphic ? "bg-white text-black" : "bg-black text-white border border-white/30"
-                          : isNeumorphic ? "bg-[#d1d9e6]/70 text-[#4b5563]" : "bg-white text-black"
-                      }`}>{t}</span>
-                    ))}
-                    {project.tech.length > 3 && (
-                      <span className={`text-[9px] font-bold ${
-                        isExpanded
-                          ? isNeumorphic ? "text-zinc-300" : "text-zinc-400"
-                          : isNeumorphic ? "text-zinc-400" : "text-zinc-500"
-                      }`}>+{project.tech.length - 3}</span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Expand indicator */}
-                <div className={`flex items-center px-3 shrink-0 border-s-4 ${
-                  isExpanded
-                    ? isNeumorphic ? "border-white" : "border-black"
-                    : isNeumorphic ? "border-black" : "border-white"
-                }`}>
-                  <motion.div
-                    animate={{ rotate: isExpanded ? 180 : 0 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                      <path d="M3 6l5 5 5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" strokeLinejoin="miter"/>
-                    </svg>
-                  </motion.div>
-                </div>
-              </button>
-
-              {/* ── Expanded Detail Panel ── */}
-              <AnimatePresence initial={false}>
-                {isExpanded && (
-                  <motion.div
-                    key="expanded"
-                    initial={{ height: 0 }}
-                    animate={{ height: "auto" }}
-                    exit={{ height: 0 }}
-                    transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <div className={`border-t-4 ${isNeumorphic ? "border-black" : "border-white"}`}>
-                      {/* Screenshot — constrained height so it doesn't overwhelm */}
-                      {thumb && (
-                        <div className="relative w-full" style={{ maxHeight: "42vw", minHeight: "120px" }}>
-                          <Image
-                            src={thumb}
-                            alt={project.title}
-                            fill
-                            sizes="100vw"
-                            className="object-cover object-top"
-                          />
-                          {/* Multi-image dots */}
-                          {allImages.length > 1 && (
-                            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
-                              {allImages.map((_: string, di: number) => (
-                                <span key={di} className={`inline-block w-1.5 h-1.5 rounded-full ${
-                                  di === 0
-                                    ? isNeumorphic ? "bg-black" : "bg-white"
-                                    : "bg-white/40"
-                                }`} />
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      {/* Description + All Tags + Buttons */}
-                      <div className="px-3 pt-3 pb-3">
-                        <p className={`text-xs leading-relaxed ${
-                          isNeumorphic ? "text-zinc-700" : "text-zinc-300"
-                        }`}>
-                          {project.description}
-                        </p>
-
-                        {/* All tech tags — full list */}
-                        <div className="flex flex-wrap gap-1 mt-2.5">
-                          {project.tech.map((t: string, i: number) => (
-                            <span key={i} className={`px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider leading-none ${
-                              isNeumorphic ? "bg-[#d1d9e6]/70 text-[#4b5563]" : "bg-white text-black"
-                            }`}>{t}</span>
-                          ))}
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className={`flex gap-2 mt-3 pt-3 border-t-4 ${
-                          isNeumorphic ? "border-black" : "border-white"
-                        }`}>
-                          {hasGithub && (
-                            <a
-                              href={project.github}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={`group flex items-center justify-center gap-1.5 text-xs font-black uppercase px-3 py-2.5 flex-1 transition-all duration-200 ${
-                                isNeumorphic
-                                  ? "border-2 border-black text-black hover:bg-black hover:text-white active:bg-black active:text-white"
-                                  : "border-2 border-white text-white hover:bg-white hover:text-black active:bg-white active:text-black"
-                              }`}
-                            >
-                              <GithubIcon size={14} /> {dict?.repo || "Repo"}
-                            </a>
-                          )}
-                          {hasDemo && (
-                            <a
-                              href={project.demo}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={`group flex items-center justify-center gap-1.5 text-xs font-black uppercase px-3 py-2.5 flex-1 transition-all duration-200 ${
-                                isNeumorphic
-                                  ? "bg-black text-white border-2 border-black hover:bg-zinc-800"
-                                  : "bg-white text-black border-2 border-white hover:bg-zinc-100"
-                              }`}
-                            >
-                              <svg className="w-3 h-3 shrink-0 overflow-visible" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                <circle cx="8" cy="8" r="7" className="animate-ping opacity-60 fill-current" style={{ transformOrigin: "8px 8px" }} />
-                                <circle cx="8" cy="8" r="3.5" className="fill-current" />
-                              </svg>
-                              {dict?.demo || "Live Demo"} <ExternalLink size={12} />
-                            </a>
-                          )}
-                          {!hasGithub && !hasDemo && (
-                            <span className="text-xs font-bold uppercase text-zinc-500 px-2">{dict?.offline || "[ Offline ]"}</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
+        {projects.map((project: Project, index: number) => (
+          <MobileProjectCard
+            key={`mobile-card-${project.id || index}`}
+            project={project}
+            dict={dict}
+            index={index}
+            isExpanded={expandedMobileIndex === index}
+            onToggle={() => setExpandedMobileIndex(expandedMobileIndex === index ? null : index)}
+            isNeumorphic={isNeumorphic}
+          />
+        ))}
 
         {/* Mobile GitHub CTA */}
         <a

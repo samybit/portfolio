@@ -73,21 +73,21 @@
         ]
       },
       {
-        "id": "knowledge-archive",
-        "title": "Knowledge Archive",
-        "description": "A Renaissance-inspired interactive learning archive exploring the Spring Boot ecosystem hierarchy, directory blueprints, and Web MVC request lifecycles through clean visual reference guides.",
+        "id": "minerva-store",
+        "title": "Minerva Store",
+        "subtitle": "(Personal Project)",
+        "description": "Luxurious botanical e-commerce storefront and admin console built with Next.js and Spring Boot",
         "tech": [
           "Next.js",
-          "Lenis Scroll",
-          "GSAP",
-          "Base UI"
+          "Tailwind CSS",
+          "GSAP"
         ],
-        "github": "https://github.com/samybit/primavera",
-        "demo": "https://primavera-4yi.pages.dev/",
+        "github": "https://github.com/samybit/minerva",
+        "demo": "https://minerva-store.vercel.app/",
         "images": [
-          "/projects/knowledge-archive/minerva-store-1.png",
-          "/projects/knowledge-archive/minerva-store-2.png",
-          "/projects/knowledge-archive/minerva-store-3.png"
+          "/projects/minerva-store/minerva-store-1.png",
+          "/projects/minerva-store/minerva-store-2.png",
+          "/projects/minerva-store/minerva-store-3.png"
         ]
       },
       {

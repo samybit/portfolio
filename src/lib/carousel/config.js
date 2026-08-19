@@ -7,7 +7,7 @@
 export const PROJECTS = [
   { src: "/projects/arch-studio/arch-studio-1.png", aspect: null, brand: "Arch Studio", desc: "Architectural Portfolio & CMS Showcase" },
   { src: "/projects/movie-intelligence-app/movie-intelligence-app-1.png", aspect: null, brand: "Movie Intelligence App", desc: "Firebase & Redux Rating Platform" },
-  { src: "/projects/knowledge-archive/minerva-store-1.png", aspect: null, brand: "Knowledge Archive", desc: "Interactive Spring Boot Architecture Guide" },
+  { src: "/projects/minerva-store/minerva-store-1.png", aspect: null, brand: "Minerva Store", desc: "Luxurious Botanical E-Commerce Storefront" },
   { src: "/projects/vanilla-js-e-commerce/vanilla-js-e-commerce-1.png", aspect: null, brand: "Vanilla JS E-Commerce", desc: "Full-Stack Storefront & Admin Dashboard" },
   { src: "/projects/nexus-board/bento-games-tracker-1.png", aspect: null, brand: "Bento Games Tracker", desc: "Next.js & Gemini AI Achievement Board" },
   { src: "/projects/3d-web/3d-web-1.png", aspect: null, brand: "3D Web", desc: "WebGL, Spline & Globe.gl Reference Guide" },
