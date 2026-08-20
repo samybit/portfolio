@@ -55,7 +55,7 @@
       },
       {
         "id": "movie",
-        "title": "Movie Intelligence App",
+        "title": "Movie Discovery App",
         "subtitle": "(4-Person Team Project • ITI Internship)",
         "description": "Cinematic platform featuring Firebase authentication, global state management, and an advanced IMDB-style rating algorithm.",
         "tech": [
@@ -67,9 +67,9 @@
         "github": "https://github.com/samybit/iti-movie-app",
         "demo": "https://iti-movie-app.pages.dev/",
         "images": [
-          "/projects/movie-intelligence-app/movie-intelligence-app-1.png",
-          "/projects/movie-intelligence-app/movie-intelligence-app-2.png",
-          "/projects/movie-intelligence-app/movie-intelligence-app-3.png"
+          "/projects/movie-discovery-app/movie-discovery-app-1.png",
+          "/projects/movie-discovery-app/movie-discovery-app-2.png",
+          "/projects/movie-discovery-app/movie-discovery-app-3.png"
         ]
       },
       {
