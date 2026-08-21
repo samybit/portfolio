@@ -437,7 +437,17 @@ export default function AboutClient({ dict, footerDict, locale }: { dict: Record
                 <EducationIcon size={40} />
                 <h2 className="text-4xl font-black uppercase">{dict?.education || "Education"}</h2>
               </div>
-              <h3 className="text-3xl font-bold uppercase leading-tight mb-2">{dict?.eduSchool || "Ain Shams University"}</h3>
+              <div className="flex items-center gap-3 mb-2">
+                <Image
+                  src="/about/ainshams.png"
+                  alt={dict?.eduSchool || "Ain Shams University"}
+                  width={36}
+                  height={36}
+                  className="w-8 h-8 sm:w-9 sm:h-9 object-contain shrink-0"
+                  priority
+                />
+                <h3 className="text-3xl font-bold uppercase leading-tight">{dict?.eduSchool || "Ain Shams University"}</h3>
+              </div>
               <p className={`text-xl font-bold mb-6 uppercase transition-all duration-300 ${
                 isNeumorphic ? "text-zinc-500" : "text-zinc-400"
               }`}>{dict?.eduDegree || "Bachelor of Commerce (B.B.A.) // 2019 - 2023"}</p>
