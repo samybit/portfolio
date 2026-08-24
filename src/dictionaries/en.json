@@ -269,7 +269,8 @@
     "hero": "Samy | Full-Stack Developer",
     "projects": "Work | Samy Barsoum",
     "contact": "Contact | Samy Barsoum",
-    "about": "About | Samy Barsoum"
+    "about": "About | Samy Barsoum",
+    "cv": "CV | Samy Barsoum"
   },
   "about": {
     "returnGrid": "Return to Grid",
@@ -296,6 +297,18 @@
     "bioP1": "My journey began with Python automation and scripting, building tools to scrape data and automate tasks. I then expanded into full-stack development, mastering the MERN stack to engineer dynamic applications.",
     "bioP2": "Today, I focus on building complete, containerized applications using Docker, ensuring that what runs on my machine runs everywhere.",
     "bioP3": "When I'm not coding, you can find me exploring retro tech, playing classic games, or experimenting with 3D web graphics.",
+    "newTab": " (opens in a new tab)"
+  },
+  "cv": {
+    "title": "Curriculum Vitae",
+    "subtitle": "Software Engineer & Full-Stack Developer",
+    "returnHome": "Return to Portfolio",
+    "downloadPdf": "Download PDF",
+    "openPdf": "Open Raw PDF",
+    "contactMe": "Get in Touch",
+    "lastUpdated": "Updated 2026",
+    "previewTitle": "CV Document Preview",
+    "fallbackMsg": "Your browser does not support inline PDF viewing. Please download the file below to view it.",
     "newTab": " (opens in a new tab)"
   }
 }
