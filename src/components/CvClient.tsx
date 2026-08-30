@@ -22,7 +22,7 @@ interface CvDictionary {
 
 interface CvClientProps {
   dict: CvDictionary;
-  footerDict: any;
+  footerDict: Record<string, string>;
   locale: string;
 }
 
