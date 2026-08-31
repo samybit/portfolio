@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useRef, useState, useEffect, useMemo, useSyncExternalStore } from "react";
 import * as THREE from "three";
 import { useAnimationConfig } from "@/context/AnimationContext";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
@@ -617,18 +617,50 @@ function WebGLCleanup() {
 
 // --- MAIN WRAPPER COMPONENT ---
 export default function HeroCarabiner3D() {
-  const [mounted, setMounted] = useState(false);
+  // useSyncExternalStore is the idiomatic way to detect client mount without
+  // triggering the react-hooks/set-state-in-effect lint rule.
+  const mounted = useSyncExternalStore(
+    () => () => {},            // no-op subscribe (value never changes)
+    () => true,                // client snapshot: always mounted
+    () => false,               // server snapshot: never mounted
+  );
   const [shouldRenderWebGL, setShouldRenderWebGL] = useState(false);
   const { isAnimationsDisabled } = useAnimationConfig();
   const isNeumorphic = useNeumorphicTheme();
 
   useEffect(() => {
-    setTimeout(() => setMounted(true), 0);
-    // Delay WebGL initialization so CSS animations get absolute priority and run at 60FPS
-    const timer = setTimeout(() => {
+    // WebGL fires when the loader signals it's exiting (or if no loader is present).
+    // We watch for 'loader-exiting' or 'loader-complete' on <html> via MutationObserver.
+    const html = document.documentElement;
+
+    // If the loader already finished (e.g. animations disabled), render on the next tick.
+    if (html.classList.contains("loader-complete") || html.classList.contains("no-animations")) {
+      const immediate = setTimeout(() => setShouldRenderWebGL(true), 0);
+      return () => clearTimeout(immediate);
+    }
+
+    const observer = new MutationObserver(() => {
+      if (
+        html.classList.contains("loader-exiting") ||
+        html.classList.contains("loader-complete")
+      ) {
+        setShouldRenderWebGL(true);
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(html, { attributes: true, attributeFilter: ["class"] });
+
+    // Hard fallback after 4s in case loader never fires
+    const fallback = setTimeout(() => {
       setShouldRenderWebGL(true);
-    }, 800);
-    return () => clearTimeout(timer);
+      observer.disconnect();
+    }, 4000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallback);
+    };
   }, []);
 
   if (!mounted) return null;

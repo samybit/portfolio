@@ -1,325 +1,501 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import type { CSSProperties } from "react";
+import { gsap } from "gsap";
 
+// ---------------------------------------------------------------------------
+// Option C: Both panels contain the same full-viewport-width content block.
+// Each panel has overflow:hidden and clips to its respective half.
+// When GSAP slides the panels apart, the content is physically split and
+// each half travels with its panel — no fake fade or floating overlay.
+// ---------------------------------------------------------------------------
+
+const LOADER_CSS = `
+  /* ---- BASE LAYOUT ---- */
+  #cl-panel-left,
+  #cl-panel-right {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 50%;
+    background: #000;
+    overflow: hidden;
+    will-change: transform;
+    /* Create a new stacking context so z-index children behave */
+    isolation: isolate;
+  }
+  #cl-panel-left  { left: 0; }
+  #cl-panel-right { right: 0; }
+
+  /* ---- PANEL DECORATIONS (stay inside their panel) ---- */
+  /* Subtle grid texture */
+  #cl-panel-left::before,
+  #cl-panel-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,255,255,0.028) 59px, rgba(255,255,255,0.028) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,0.028) 59px, rgba(255,255,255,0.028) 60px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Corner bracket marks — outer corners only */
+  #cl-panel-left::after {
+    content: '';
+    position: absolute;
+    top: 28px; left: 28px;
+    width: 28px; height: 28px;
+    border-top: 1.5px solid rgba(255,255,255,0.22);
+    border-left: 1.5px solid rgba(255,255,255,0.22);
+    z-index: 1;
+  }
+  #cl-panel-right::after {
+    content: '';
+    position: absolute;
+    top: 28px; right: 28px;
+    width: 28px; height: 28px;
+    border-top: 1.5px solid rgba(255,255,255,0.22);
+    border-right: 1.5px solid rgba(255,255,255,0.22);
+    z-index: 1;
+  }
+
+  /* Technical panel labels (stay anchored to outer edges) */
+  .cl-panel-label {
+    position: absolute;
+    bottom: 28px;
+    font-family: monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    color: rgba(255,255,255,0.18);
+    text-transform: uppercase;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .cl-panel-label--left  { left: 28px; }
+  .cl-panel-label--right { right: 28px; }
+
+  /* ---- SHARED CONTENT LAYER ---- */
+  /*
+   * Key trick: width = 200% (= 100vw since each panel is 50vw).
+   * Left panel:  left:0  → content spans 0 to 100vw, panel clips left half.
+   * Right panel: right:0 → content spans 0 to 100vw, panel clips right half.
+   * Both show the same centered content — split exactly at the seam.
+   */
+  .cl-panel-content {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 200%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .cl-panel-content--left  { left: 0; }
+  .cl-panel-content--right { right: 0; }
+
+  /* Inner flex stack */
+  .cl-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 0 1rem;
+    text-align: center;
+    user-select: none;
+  }
+
+  /* ---- 3D CSS CUBE ---- */
+  .cl-3d-scene {
+    perspective: 800px;
+    perspective-origin: 50% 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0;
+  }
+  .cl-3d-cube {
+    width: 60px; height: 60px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: cl-cube-spin 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    will-change: transform;
+  }
+  .cl-face {
+    position: absolute;
+    width: 60px; height: 60px;
+    border: 1.5px solid rgba(255,255,255,0.38);
+    background: rgba(255,255,255,0.04);
+    box-shadow: inset 0 0 10px rgba(255,255,255,0.07);
+    display: flex; align-items: center; justify-content: center;
+    font-family: monospace;
+    font-size: 10px; font-weight: bold;
+    color: rgba(255,255,255,0.65);
+  }
+  .cl-face-front  { transform: translateZ(30px); }
+  .cl-face-back   { transform: rotateY(180deg) translateZ(30px); }
+  .cl-face-right  { transform: rotateY(90deg) translateZ(30px); }
+  .cl-face-left   { transform: rotateY(-90deg) translateZ(30px); }
+  .cl-face-top    { transform: rotateX(90deg) translateZ(30px); }
+  .cl-face-bottom { transform: rotateX(-90deg) translateZ(30px); }
+
+  .cl-3d-ring {
+    position: absolute;
+    width: 118px; height: 118px;
+    border: 1.5px dashed rgba(255,255,255,0.18);
+    border-radius: 50%;
+    transform-style: preserve-3d;
+    animation: cl-ring-spin 4s linear infinite;
+    will-change: transform;
+  }
+
+  @keyframes cl-cube-spin {
+    0%   { transform: rotateX(-20deg) rotateY(0deg)   rotateZ(0deg); }
+    50%  { transform: rotateX(20deg)  rotateY(180deg) rotateZ(15deg); }
+    100% { transform: rotateX(-20deg) rotateY(360deg) rotateZ(0deg); }
+  }
+  @keyframes cl-ring-spin {
+    0%   { transform: rotateX(70deg) rotateZ(0deg); }
+    100% { transform: rotateX(70deg) rotateZ(360deg); }
+  }
+
+  /* ---- NAME TAG ---- */
+  .cl-name-tag {
+    font-family: monospace;
+    font-size: clamp(0.52rem, 1.6vw, 0.72rem);
+    letter-spacing: 0.22em;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .cl-dot    { color: rgba(255,255,255,0.18); }
+  .cl-status { font-weight: 700; color: rgba(255,255,255,0.75); }
+
+  /* ---- WELCOME TEXT ---- */
+  .cl-welcome-text {
+    display: flex;
+    justify-content: center;
+    overflow: visible;
+    margin: 0; padding: 0;
+    font-size: clamp(2.5rem, 11vw, 6.5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #fff;
+    line-height: 1;
+  }
+  .cl-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(-44px) scaleY(1.55);
+    animation: cl-char-slam 0.42s cubic-bezier(0.22, 1, 0.36, 1)
+               calc(0.08s + var(--ci, 0) * 0.055s) forwards;
+    will-change: transform, opacity;
+    transform-origin: top center;
+  }
+  @keyframes cl-char-slam {
+    0%   { opacity: 0; transform: translateY(-44px) scaleY(1.55); }
+    55%  { opacity: 1; transform: translateY(4px)   scaleY(0.88); }
+    75%  { transform: translateY(-2px) scaleY(1.04); }
+    100% { opacity: 1; transform: translateY(0)     scaleY(1); }
+  }
+
+  /* ---- COUNTER ---- */
+  .cl-counter {
+    font-family: monospace;
+    color: #fff;
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+  }
+  .cl-count {
+    font-weight: 900;
+    font-size: clamp(1.8rem, 7vw, 3.8rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .cl-percent {
+    font-size: 1.1rem;
+    opacity: 0.45;
+    font-weight: 700;
+  }
+
+  /* ---- PROGRESS BAR ---- */
+  .cl-progress-bar {
+    width: 110px; height: 1.5px;
+    background: rgba(255,255,255,0.1);
+    overflow: hidden;
+  }
+  .cl-progress-fill {
+    height: 100%;
+    background: rgba(255,255,255,0.6);
+    width: 0%;
+    animation: cl-progress-grow 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    will-change: width;
+  }
+  @keyframes cl-progress-grow {
+    0%   { width: 0%; }
+    100% { width: 100%; }
+  }
+
+  /* ---- HERO ENTRANCE GATING ---- */
+  /* Pause slide-up animations until the loader signals its exit */
+  .animate-slide-up,
+  .animate-slide-up-delay-1,
+  .animate-slide-up-delay-2 {
+    animation-play-state: paused;
+  }
+  html.loader-exiting .animate-slide-up,
+  html.loader-exiting .animate-slide-up-delay-1,
+  html.loader-exiting .animate-slide-up-delay-2,
+  html.loader-complete .animate-slide-up,
+  html.loader-complete .animate-slide-up-delay-1,
+  html.loader-complete .animate-slide-up-delay-2 {
+    animation-play-state: running;
+  }
+  html.no-animations .animate-slide-up,
+  html.no-animations .animate-slide-up-delay-1,
+  html.no-animations .animate-slide-up-delay-2 {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ---- REDUCED MOTION ---- */
+  @media (prefers-reduced-motion: reduce) {
+    .cl-char, .cl-3d-cube, .cl-3d-ring, .cl-progress-fill {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      width: 100% !important;
+    }
+  }
+`;
+
+// ---------------------------------------------------------------------------
+// Shared content block — rendered identically inside each panel.
+// Each panel's overflow:hidden clips its respective half of the content.
+// ---------------------------------------------------------------------------
+function PanelContent({
+  side,
+  nameText,
+  welcomeText,
+  isAr,
+}: {
+  side: "left" | "right";
+  nameText: string;
+  welcomeText: string;
+  isAr: boolean;
+}) {
+  return (
+    <div className={`cl-panel-content cl-panel-content--${side}`}>
+      <div className="cl-inner">
+
+        {/* 3D CSS Cube */}
+        <div className="cl-3d-scene">
+          <div className="cl-3d-ring" />
+          <div className="cl-3d-cube">
+            <div className="cl-face cl-face-front">+</div>
+            <div className="cl-face cl-face-back">+</div>
+            <div className="cl-face cl-face-right">+</div>
+            <div className="cl-face cl-face-left">+</div>
+            <div className="cl-face cl-face-top">+</div>
+            <div className="cl-face cl-face-bottom">+</div>
+          </div>
+        </div>
+
+        {/* Name + status */}
+        <div className="cl-name-tag">
+          <span>{nameText}</span>
+          <span className="cl-dot">•</span>
+          <span className="cl-status">{isAr ? "جاري التحميل" : "LOADING"}</span>
+        </div>
+
+        {/* Welcome heading */}
+        <div className="cl-welcome-text" role="presentation">
+          {welcomeText.split("").map((char, i) => (
+            <span
+              key={i}
+              className="cl-char"
+              style={{ "--ci": i } as CSSProperties}
+            >
+              {char === " " ? "\u00A0" : char}
+            </span>
+          ))}
+        </div>
+
+        {/* Counter */}
+        <div className="cl-counter">
+          <span className="cl-count">0</span>
+          <span className="cl-percent">%</span>
+        </div>
+
+        {/* Progress bar */}
+        <div className="cl-progress-bar">
+          <div className="cl-progress-fill" />
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Main loader component
+// ---------------------------------------------------------------------------
 export default function CurveLoader({
-  onComplete,
-  locale = 'en',
-  initialLoaded = false,
+  locale = "en",
 }: {
   onComplete?: () => void;
   locale?: string;
   initialLoaded?: boolean;
 }) {
-  const [isExiting, setIsExiting] = useState(false);
-  const [isFinished, setIsFinished] = useState(() => {
-    if (initialLoaded) return true;
-    if (typeof window !== "undefined") {
-      try {
-        return document.cookie.includes("cl_loaded=true") || sessionStorage.getItem("cl_initial_loaded") === "true";
-      } catch {}
-    }
-    return false;
-  });
+  const wrapperRef   = useRef<HTMLDivElement>(null);
+  const panelLeftRef = useRef<HTMLDivElement>(null);
+  const panelRightRef= useRef<HTMLDivElement>(null);
+  const rafRef       = useRef<number>(0);
+  const hasExited    = useRef(false);
 
-  const countRef = useRef(0);
-  const countElRef = useRef<HTMLSpanElement>(null);
-  const rafRef = useRef<number>(0);
+  const isAr       = locale === "ar";
+  const nameText   = isAr ? "سامي برسوم" : "SAMY BARSOUM";
+  const welcomeText= isAr ? "أهلاً بك"   : "WELCOME";
 
-  const handleExitComplete = useCallback(() => {
-    if (typeof window !== "undefined") {
-      try {
-        document.cookie = "cl_loaded=true; path=/; SameSite=Lax";
-        sessionStorage.setItem("cl_initial_loaded", "true");
-      } catch {}
-    }
-    setIsFinished(true);
-  }, []);
-
-  // Single source of truth: handles scroll unlock, CSS class, and onComplete callback once
   useEffect(() => {
-    if (isFinished) {
-      document.documentElement.style.overflow = "";
-      document.documentElement.classList.add("cl-loaded");
-      if (onComplete) onComplete();
-    }
-  }, [isFinished, onComplete]);
+    if (typeof window === "undefined") return;
 
-  // Step 2: run counter animation if active
-  useEffect(() => {
-    if (isFinished) return;
+    // Capture panel refs at effect start — satisfies react-hooks/exhaustive-deps
+    // in the cleanup closure below.
+    const panelL = panelLeftRef.current;
+    const panelR = panelRightRef.current;
 
-    // Lock body scroll while loader is active
+    // Cache counter elements once (both panels have one each)
+    const countEls = Array.from(
+      document.querySelectorAll<HTMLSpanElement>(".cl-count")
+    );
+    const setCount = (val: string) => {
+      countEls.forEach((el) => { el.textContent = val; });
+    };
+
     document.documentElement.style.overflow = "hidden";
 
-    const duration = 1500;
-    const start = performance.now();
-    let exitTimeoutId: ReturnType<typeof setTimeout> | null = null;
+    const COUNTER_DURATION = 1400; // ms
+    const start    = performance.now();
+    let countVal   = 0;
+    let assetsReady= false;
+    let counterDone= false;
 
-    const fallbackTimeoutId = setTimeout(() => {
-      setIsExiting(true);
-    }, 1600);
+    const maybeExit = () => {
+      if (!assetsReady || !counterDone || hasExited.current) return;
+      triggerExit();
+    };
 
+    // Gate 1: custom fonts
+    document.fonts.ready.then(() => {
+      assetsReady = true;
+      maybeExit();
+    });
+    const fontFallback = setTimeout(() => {
+      assetsReady = true;
+      maybeExit();
+    }, 2000);
+
+    // rAF counter — exponential ease-out to 100
     const tick = (now: number) => {
-      const t = Math.min((now - start) / duration, 1);
+      const t     = Math.min((now - start) / COUNTER_DURATION, 1);
       const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-      const val = Math.floor(eased * 100);
+      const val   = Math.floor(eased * 100);
 
-      const el = countElRef.current || document.getElementById("cl-count");
-      if (el && val !== countRef.current) {
-        countRef.current = val;
-        el.textContent = String(val);
+      if (val !== countVal) {
+        countVal = val;
+        setCount(String(val));
       }
 
       if (t < 1) {
         rafRef.current = requestAnimationFrame(tick);
       } else {
-        if (el) el.textContent = "100";
-        exitTimeoutId = setTimeout(() => {
-          setIsExiting(true);
-        }, 100);
+        setCount("100");
+        setTimeout(() => {
+          counterDone = true;
+          maybeExit();
+        }, 220);
       }
     };
-
     rafRef.current = requestAnimationFrame(tick);
 
+    // Hard fallback — always exit by 3.5 s
+    const hardFallback = setTimeout(() => {
+      if (!hasExited.current) triggerExit();
+    }, 3500);
+
+    // ---------------------------------------------------------------------------
+    // Exit: pure panel split — content is carried by each panel as it slides
+    // ---------------------------------------------------------------------------
+    function triggerExit() {
+      if (hasExited.current) return;
+      hasExited.current = true;
+
+      if (!panelL || !panelR) { finalize(); return; }
+
+      // Signal Hero CSS animations to start running
+      document.documentElement.classList.add("loader-exiting");
+
+      gsap.timeline({ onComplete: finalize })
+        .to(panelL, { xPercent: -100, duration: 0.85, ease: "power3.inOut" }, 0)
+        .to(panelR, { xPercent:  100, duration: 0.85, ease: "power3.inOut" }, 0);
+    }
+
+    function finalize() {
+      document.documentElement.style.overflow = "";
+      document.documentElement.classList.remove("loader-exiting");
+      document.documentElement.classList.add("loader-complete");
+      // Hide instead of unmount to avoid React re-render tearing
+      if (wrapperRef.current) wrapperRef.current.style.display = "none";
+    }
+
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      clearTimeout(fallbackTimeoutId);
-      if (exitTimeoutId) clearTimeout(exitTimeoutId);
+      cancelAnimationFrame(rafRef.current);
+      clearTimeout(fontFallback);
+      clearTimeout(hardFallback);
+      if (panelL) gsap.killTweensOf(panelL);
+      if (panelR) gsap.killTweensOf(panelR);
     };
-  }, [isFinished]);
-
-  // Safety fallback timer for Framer Motion exit animation completion
-  useEffect(() => {
-    if (!isExiting || isFinished) return;
-
-    const exitSafetyTimer = setTimeout(() => {
-      handleExitComplete();
-    }, 900);
-
-    return () => clearTimeout(exitSafetyTimer);
-  }, [isExiting, isFinished, handleExitComplete]);
-
-  // Don't render if completed
-  if (isFinished) {
-    return null;
-  }
-
-  const isAr = locale === 'ar';
-  const nameText = isAr ? "سامي برسوم" : "SAMY BARSOUM";
-  const welcomeText = isAr ? "أهلاً بك" : "WELCOME";
+  }, []);
 
   return (
-    <div id="cl-wrapper">
-      <style>{`
-        /* Brutalist Per-Letter Slam Drop — GPU-only (transform + opacity) */
-        .cl-welcome-text {
-          display: flex;
-          justify-content: center;
-          overflow: visible;
-        }
+    <div
+      ref={wrapperRef}
+      id="cl-wrapper"
+      aria-hidden="true"
+      style={{ position: "fixed", inset: 0, zIndex: 9999, pointerEvents: "all" }}
+    >
+      <style>{LOADER_CSS}</style>
 
-        .cl-char {
-          display: inline-block;
-          opacity: 0;
-          transform: translateY(-48px) scaleY(1.6);
-          animation: cl-char-slam 0.45s cubic-bezier(0.22, 1, 0.36, 1) calc(0.1s + var(--ci, 0) * 0.055s) forwards;
-          will-change: transform, opacity;
-          transform-origin: top center;
-        }
+      {/* LEFT PANEL — clips content to its half (left 50vw) */}
+      <div id="cl-panel-left" ref={panelLeftRef}>
+        <span className="cl-panel-label cl-panel-label--left">01 // INIT</span>
+        <PanelContent
+          side="left"
+          nameText={nameText}
+          welcomeText={welcomeText}
+          isAr={isAr}
+        />
+      </div>
 
-        @keyframes cl-char-slam {
-          0%   { opacity: 0; transform: translateY(-48px) scaleY(1.6); }
-          55%  { opacity: 1; transform: translateY(5px)  scaleY(0.88); }
-          75%  { transform: translateY(-3px) scaleY(1.04); }
-          100% { opacity: 1; transform: translateY(0)    scaleY(1); }
-        }
-
-        /* Pure CSS 3D Hardware-Accelerated Scene */
-        .cl-3d-scene {
-          perspective: 800px;
-          perspective-origin: 50% 50%;
-        }
-        
-        .cl-3d-cube {
-          width: 64px;
-          height: 64px;
-          position: relative;
-          transform-style: preserve-3d;
-          animation: cl-cube-spin 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-          will-change: transform;
-        }
-
-        .cl-3d-scene.exiting {
-          animation: cl-scene-exit 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .cl-3d-scene.exiting .cl-face {
-          animation: cl-face-exit 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .cl-3d-scene.exiting .cl-3d-ring {
-          border-color: rgba(255, 255, 255, 0.85);
-          box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        }
-
-        .cl-face {
-          position: absolute;
-          width: 64px;
-          height: 64px;
-          border: 1.5px solid rgba(255, 255, 255, 0.4);
-          background: rgba(255, 255, 255, 0.04);
-          box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.08);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-family: monospace;
-          font-size: 11px;
-          font-weight: bold;
-          color: rgba(255, 255, 255, 0.7);
-          user-select: none;
-        }
-
-        .cl-face-front  { transform: translateZ(32px); }
-        .cl-face-back   { transform: rotateY(180deg) translateZ(32px); }
-        .cl-face-right  { transform: rotateY(90deg) translateZ(32px); }
-        .cl-face-left   { transform: rotateY(-90deg) translateZ(32px); }
-        .cl-face-top    { transform: rotateX(90deg) translateZ(32px); }
-        .cl-face-bottom { transform: rotateX(-90deg) translateZ(32px); }
-
-        /* Outer 3D Dashed Orbit Ring */
-        .cl-3d-ring {
-          position: absolute;
-          width: 130px;
-          height: 130px;
-          border: 1.5px dashed rgba(255, 255, 255, 0.25);
-          border-radius: 50%;
-          transform-style: preserve-3d;
-          animation: cl-ring-spin 4s linear infinite;
-          will-change: transform, border-color, box-shadow;
-          transition: border-color 0.4s ease, box-shadow 0.4s ease;
-        }
-
-        @keyframes cl-cube-spin {
-          0% {
-            transform: rotateX(-20deg) rotateY(0deg) rotateZ(0deg);
-          }
-          50% {
-            transform: rotateX(20deg) rotateY(180deg) rotateZ(15deg);
-          }
-          100% {
-            transform: rotateX(-20deg) rotateY(360deg) rotateZ(0deg);
-          }
-        }
-
-        @keyframes cl-ring-spin {
-          0% {
-            transform: rotateX(70deg) rotateZ(0deg);
-          }
-          100% {
-            transform: rotateX(70deg) rotateZ(360deg);
-          }
-        }
-
-        @keyframes cl-scene-exit {
-          0% {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-          }
-          40% {
-            /* Lifts upward smoothly into top space, subtle expansion pulse */
-            transform: translateY(-16px) scale(1.08);
-            opacity: 1;
-          }
-          100% {
-            /* Implodes smoothly into quantum point away from text */
-            transform: translateY(-26px) scale(0);
-            opacity: 0;
-          }
-        }
-
-        @keyframes cl-face-exit {
-          0% {
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.04);
-            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.08);
-          }
-          40% {
-            border-color: rgba(255, 255, 255, 0.95);
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.4);
-          }
-          100% {
-            border-color: rgba(255, 255, 255, 0);
-            background: rgba(255, 255, 255, 0);
-            box-shadow: inset 0 0 0px rgba(255, 255, 255, 0);
-          }
-        }
-      `}</style>
-
-      <motion.div
-        className={`fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center overflow-hidden px-4 text-center select-none ${
-          isExiting ? "pointer-events-none" : ""
-        }`}
-        animate={isExiting ? { y: "-100%" } : { y: "0%" }}
-        transition={isExiting ? { duration: 0.8, ease: [0.76, 0, 0.24, 1] } : { duration: 0 }}
-        onAnimationComplete={isExiting ? handleExitComplete : undefined}
-      >
-        <div className="flex flex-col items-center justify-center space-y-4 md:space-y-5">
-          {/* Pure CSS 3D Wireframe Monolith Scene */}
-          <div className={`cl-3d-scene relative flex items-center justify-center py-2${isExiting ? " exiting" : ""}`}>
-            <div className="cl-3d-ring pointer-events-none" />
-            <div className="cl-3d-cube">
-              <div className="cl-face cl-face-front">+</div>
-              <div className="cl-face cl-face-back">+</div>
-              <div className="cl-face cl-face-right">+</div>
-              <div className="cl-face cl-face-left">+</div>
-              <div className="cl-face cl-face-top">+</div>
-              <div className="cl-face cl-face-bottom">+</div>
-            </div>
-          </div>
-
-          {/* Name & Status Tag in Middle */}
-          <div className="font-mono text-xs sm:text-sm tracking-[0.25em] text-white/60 uppercase flex items-center justify-center gap-2">
-            <span>{nameText}</span>
-            <span className="text-white/30">•</span>
-            <span className="relative inline-grid grid-cols-1 grid-rows-1 text-start font-bold text-white/80">
-              <span className={`col-start-1 row-start-1 transition-opacity duration-300 ${isExiting ? "opacity-0" : "opacity-100"}`}>
-                {isAr ? "جاري التحميل" : "LOADING"}
-              </span>
-              <span className={`col-start-1 row-start-1 transition-opacity duration-300 ${isExiting ? "opacity-100" : "opacity-0"}`}>
-                {isAr ? "جاهز" : "READY"}
-              </span>
-            </span>
-          </div>
-
-          {/* Central Welcome Text — Brutalist Per-Letter Slam Drop */}
-          <h1 className="cl-welcome-text text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-[0.15em] text-white">
-            {welcomeText.split('').map((char, i) => (
-              <span
-                key={i}
-                className="cl-char"
-                style={{ '--ci': i } as React.CSSProperties}
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}
-          </h1>
-
-          {/* Counter in Middle */}
-          <div className="font-mono text-white leading-none pt-1 flex items-baseline justify-center">
-            <span
-              ref={countElRef}
-              id="cl-count"
-              className="font-black tabular-nums tracking-tighter text-4xl sm:text-5xl md:text-6xl"
-            >
-              0
-            </span>
-            <span className="text-lg sm:text-xl opacity-50 font-bold ml-1">%</span>
-          </div>
-        </div>
-      </motion.div>
+      {/* RIGHT PANEL — clips content to its half (right 50vw) */}
+      <div id="cl-panel-right" ref={panelRightRef}>
+        <span className="cl-panel-label cl-panel-label--right">02 // LOAD</span>
+        <PanelContent
+          side="right"
+          nameText={nameText}
+          welcomeText={welcomeText}
+          isAr={isAr}
+        />
+      </div>
     </div>
   );
 }

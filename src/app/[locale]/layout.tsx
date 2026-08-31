@@ -121,7 +121,6 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const animationsDisabledCookie = cookieStore.get("disable-animations")?.value;
   const animationsDisabled = animationsDisabledCookie === "true";
-  const isPreloaded = cookieStore.get("cl_loaded")?.value === "true";
 
   const fontClassName = locale === 'ar' ? notoKufiArabic.className : spaceGrotesk.className;
 
@@ -139,7 +138,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={htmlClassName} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${fontClassName} text-black antialiased selection:bg-black selection:text-white`}>
-        <CurveLoader locale={locale} initialLoaded={isPreloaded} />
+        <CurveLoader locale={locale} />
         <SystemOverride />
         <CustomContextMenu dict={dict.menu} />
         <GhostInTheMachine />

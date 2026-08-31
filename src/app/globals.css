@@ -239,6 +239,34 @@ svg.rough-annotation-style[style*="left"] {
   will-change: transform, opacity;
 }
 
+/* ---- LOADER ENTRANCE GATING ----
+   Hero slide-up animations are paused while the preloader is active.
+   The preloader adds 'loader-exiting' at exit start and 'loader-complete' at exit end.
+   The 'no-animations' class bypasses gating entirely for accessibility.
+*/
+.animate-slide-up,
+.animate-slide-up-delay-1,
+.animate-slide-up-delay-2 {
+  animation-play-state: paused;
+}
+
+html.loader-exiting .animate-slide-up,
+html.loader-exiting .animate-slide-up-delay-1,
+html.loader-exiting .animate-slide-up-delay-2,
+html.loader-complete .animate-slide-up,
+html.loader-complete .animate-slide-up-delay-1,
+html.loader-complete .animate-slide-up-delay-2 {
+  animation-play-state: running;
+}
+
+html.no-animations .animate-slide-up,
+html.no-animations .animate-slide-up-delay-1,
+html.no-animations .animate-slide-up-delay-2 {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
 /* Navbar drop-in */
 .animate-slide-down {
   animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
