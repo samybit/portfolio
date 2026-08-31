@@ -26,55 +26,6 @@ const LOADER_CSS = `
   #cl-panel-left  { left: 0; }
   #cl-panel-right { right: 0; }
 
-  /* ---- PANEL DECORATIONS (stay inside their panel) ---- */
-  /* Subtle grid texture */
-  #cl-panel-left::before,
-  #cl-panel-right::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,255,255,0.028) 59px, rgba(255,255,255,0.028) 60px),
-      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,0.028) 59px, rgba(255,255,255,0.028) 60px);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Corner bracket marks — outer corners only */
-  #cl-panel-left::after {
-    content: '';
-    position: absolute;
-    top: 28px; left: 28px;
-    width: 28px; height: 28px;
-    border-top: 1.5px solid rgba(255,255,255,0.22);
-    border-left: 1.5px solid rgba(255,255,255,0.22);
-    z-index: 1;
-  }
-  #cl-panel-right::after {
-    content: '';
-    position: absolute;
-    top: 28px; right: 28px;
-    width: 28px; height: 28px;
-    border-top: 1.5px solid rgba(255,255,255,0.22);
-    border-right: 1.5px solid rgba(255,255,255,0.22);
-    z-index: 1;
-  }
-
-  /* Technical panel labels (stay anchored to outer edges) */
-  .cl-panel-label {
-    position: absolute;
-    bottom: 28px;
-    font-family: monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.22em;
-    color: rgba(255,255,255,0.18);
-    text-transform: uppercase;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .cl-panel-label--left  { left: 28px; }
-  .cl-panel-label--right { right: 28px; }
-
   /* ---- SHARED CONTENT LAYER ---- */
   /*
    * Key trick: width = 200% (= 100vw since each panel is 50vw).
@@ -542,7 +493,6 @@ export default function CurveLoader({
 
       {/* LEFT PANEL — clips content to its half (left 50vw) */}
       <div id="cl-panel-left" ref={panelLeftRef}>
-        <span className="cl-panel-label cl-panel-label--left">01 // INIT</span>
         <PanelContent
           side="left"
           nameText={nameText}
@@ -553,7 +503,6 @@ export default function CurveLoader({
 
       {/* RIGHT PANEL — clips content to its half (right 50vw) */}
       <div id="cl-panel-right" ref={panelRightRef}>
-        <span className="cl-panel-label cl-panel-label--right">02 // LOAD</span>
         <PanelContent
           side="right"
           nameText={nameText}
