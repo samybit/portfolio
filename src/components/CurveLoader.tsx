@@ -148,7 +148,41 @@ const LOADER_CSS = `
     border-radius: 50%;
     transform-style: preserve-3d;
     animation: cl-ring-spin 4s linear infinite;
-    will-change: transform;
+    will-change: transform, border-color, box-shadow;
+    /* Smooth glow-up when exiting class is applied */
+    transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  /* Cube & ring shine when counter hits 100 — peaks right as panels split */
+  .cl-3d-scene.exiting .cl-3d-ring {
+    border-color: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 0 22px rgba(255, 255, 255, 0.55);
+  }
+
+  .cl-3d-scene.exiting .cl-face {
+    animation: cl-face-shine 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes cl-face-shine {
+    0% {
+      border-color: rgba(255, 255, 255, 0.38);
+      background:   rgba(255, 255, 255, 0.04);
+      box-shadow:   inset 0 0 10px rgba(255, 255, 255, 0.07);
+    }
+    /* Peak: full glow at 45% — this is the moment the panels start opening */
+    45% {
+      border-color: rgba(255, 255, 255, 0.95);
+      background:   rgba(255, 255, 255, 0.20);
+      box-shadow:   inset 0 0 20px rgba(255, 255, 255, 0.50),
+                    0 0 16px rgba(255, 255, 255, 0.40);
+    }
+    /* Hold the glow — panels are now splitting open with a bright cube */
+    100% {
+      border-color: rgba(255, 255, 255, 0.90);
+      background:   rgba(255, 255, 255, 0.18);
+      box-shadow:   inset 0 0 18px rgba(255, 255, 255, 0.45),
+                    0 0 14px rgba(255, 255, 255, 0.35);
+    }
   }
 
   @keyframes cl-cube-spin {
@@ -173,7 +207,26 @@ const LOADER_CSS = `
     gap: 0.45rem;
   }
   .cl-dot    { color: rgba(255,255,255,0.18); }
-  .cl-status { font-weight: 700; color: rgba(255,255,255,0.75); }
+
+  /* Stacked LOADING / READY words — same grid cell, cross-fade on exiting */
+  .cl-status-wrap {
+    display: inline-grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    font-weight: 700;
+    color: rgba(255,255,255,0.78);
+  }
+  .cl-status-word {
+    grid-column: 1;
+    grid-row: 1;
+    transition: opacity 0.3s ease;
+  }
+  .cl-status-word--ready   { opacity: 0; }
+  .cl-status-word--loading { opacity: 1; }
+
+  /* When .cl-3d-scene sibling gets .exiting, swap the words */
+  .cl-3d-scene.exiting ~ .cl-name-tag .cl-status-word--loading { opacity: 0; }
+  .cl-3d-scene.exiting ~ .cl-name-tag .cl-status-word--ready   { opacity: 1; }
 
   /* ---- WELCOME TEXT ---- */
   .cl-welcome-text {
@@ -313,7 +366,14 @@ function PanelContent({
         <div className="cl-name-tag">
           <span>{nameText}</span>
           <span className="cl-dot">•</span>
-          <span className="cl-status">{isAr ? "جاري التحميل" : "LOADING"}</span>
+          <span className="cl-status-wrap">
+            <span className="cl-status-word cl-status-word--loading">
+              {isAr ? "جاري التحميل" : "LOADING"}
+            </span>
+            <span className="cl-status-word cl-status-word--ready">
+              {isAr ? "جاهز" : "READY"}
+            </span>
+          </span>
         </div>
 
         {/* Welcome heading */}
@@ -419,6 +479,11 @@ export default function CurveLoader({
         rafRef.current = requestAnimationFrame(tick);
       } else {
         setCount("100");
+        // Trigger cube shine on both panels immediately when counter hits 100
+        document.querySelectorAll<HTMLElement>(".cl-3d-scene").forEach((el) => {
+          el.classList.add("exiting");
+        });
+        // 220ms pause: shine builds to peak, then maybeExit fires the split
         setTimeout(() => {
           counterDone = true;
           maybeExit();
