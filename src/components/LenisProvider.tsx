@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 
 // ─── Constants ──────────────────────────────────────────────────────────────
@@ -15,6 +16,17 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
   const lenisRef = useRef<Lenis | null>(null);
   const isDraggingRef = useRef(false);
   const dragOffsetRef = useRef(0);
+
+  // ── Reset scroll position on every route change ──────────────────────────
+  const pathname = usePathname();
+  useEffect(() => {
+    // Reset native scroll first (before Lenis reads window.scrollY)
+    window.scrollTo(0, 0);
+    // Also drive Lenis to 0 if it's already running
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    }
+  }, [pathname]);
 
   useEffect(() => {
     // ── Suppress Three.js internal engine logs and preloader warnings ────────
