@@ -331,3 +331,81 @@ export const playPaperCrumble = () => {
     // Silently fail
   }
 };
+
+// --- 8. MECHANICAL KEY CLICK (For Contact Form Typing) ---
+// Soft, tingly, satisfying — three synthesised layers per keystroke:
+//   Layer 1 · Click transient  : bandpass-filtered white noise (0–16 ms)
+//   Layer 2 · Keycap ring      : sine at ½ base freq — the "tingly" overtone (0–70 ms)
+//   Layer 3 · Bottom-out thud  : low triangle at +18 ms (18–63 ms)
+//
+// Natural variation:
+//   • ±8% pitch variance   → no two keystrokes sound identical
+//   • Left hand ≈ 6% lower, right hand ≈ 6% higher → mirrors keyboard topology
+//   • ±15% volume jitter on the transient → organic dynamics
+export const playKeyClick = (hand: "left" | "right" = "left") => {
+  try {
+    const ctx = initAudio();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    // Pitch and volume variation per keystroke
+    const pitchVar  = 0.92 + Math.random() * 0.16;          // ±8%
+    const handPitch = hand === "left" ? 0.94 : 1.06;         // left slightly lower
+    const baseFreq  = 3600 * pitchVar * handPitch;
+
+    // ── Layer 1: Click transient (14 ms bandpass noise) ───────────────────
+    const bufSize = Math.floor(ctx.sampleRate * 0.014);
+    const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+    const bufData = buf.getChannelData(0);
+    for (let i = 0; i < bufSize; i++) bufData[i] = Math.random() * 2 - 1;
+
+    const noise = ctx.createBufferSource();
+    noise.buffer = buf;
+
+    const clickBand = ctx.createBiquadFilter();
+    clickBand.type = "bandpass";
+    clickBand.frequency.value = baseFreq;
+    clickBand.Q.value = 4.0;
+
+    const clickGain = ctx.createGain();
+    const clickPeak = 0.048 + Math.random() * 0.014; // slight volume jitter
+    clickGain.gain.setValueAtTime(0.0001, now);
+    clickGain.gain.exponentialRampToValueAtTime(clickPeak, now + 0.002);
+    clickGain.gain.exponentialRampToValueAtTime(0.0001,    now + 0.016);
+
+    noise.connect(clickBand);
+    clickBand.connect(clickGain);
+    clickGain.connect(ctx.destination);
+    noise.start(now);
+    noise.stop(now + 0.016);
+
+    // ── Layer 2: Keycap ring — sine at ½ baseFreq (~1 800 Hz) ─────────────
+    const ringOsc  = ctx.createOscillator();
+    const ringGain = ctx.createGain();
+    ringOsc.type = "sine";
+    ringOsc.frequency.value = baseFreq * 0.5;
+    ringGain.gain.setValueAtTime(0.0001, now);
+    ringGain.gain.exponentialRampToValueAtTime(0.020, now + 0.003);
+    ringGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+    ringOsc.connect(ringGain);
+    ringGain.connect(ctx.destination);
+    ringOsc.start(now);
+    ringOsc.stop(now + 0.07);
+
+    // ── Layer 3: Bottom-out thud — low triangle at +18 ms ─────────────────
+    const thudStart = now + 0.018;
+    const thudOsc   = ctx.createOscillator();
+    const thudGain  = ctx.createGain();
+    thudOsc.type = "triangle";
+    thudOsc.frequency.value = 175 * pitchVar;
+    thudGain.gain.setValueAtTime(0.0001,  thudStart);
+    thudGain.gain.exponentialRampToValueAtTime(0.014, thudStart + 0.005);
+    thudGain.gain.exponentialRampToValueAtTime(0.0001, thudStart + 0.045);
+    thudOsc.connect(thudGain);
+    thudGain.connect(ctx.destination);
+    thudOsc.start(thudStart);
+    thudOsc.stop(thudStart + 0.045);
+  } catch {
+    // Silently fail
+  }
+};

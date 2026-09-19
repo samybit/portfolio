@@ -4,7 +4,7 @@ import { Check, Loader2, Linkedin } from "lucide-react";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { sendEmail } from "@/actions/send-email";
-import { playPowerUp, prewarmAudio } from "@/utils/audio";
+import { playPowerUp, playKeyClick, prewarmAudio } from "@/utils/audio";
 import DecryptText from "@/components/DecryptText";
 import { useNeumorphicTheme } from "@/hooks/useNeumorphicTheme";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
@@ -112,6 +112,9 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
 
     lastKeyRef.current = e.key;
     lastPawRef.current = nextPaw;
+
+    // Play a soft mechanical click on every keystroke
+    playKeyClick(nextPaw);
 
     // Single atomic state update — zero requestAnimationFrame double-render thrashing
     setPawState(nextPaw);
@@ -544,6 +547,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                     name="name"
                     value={values.name}
                     onChange={handleChange}
+                    onFocus={prewarmAudio}
                     className={getInputStyle(isNameFilled, false)}
                     placeholder=""
                     aria-invalid="false"
@@ -562,6 +566,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                     value={values.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    onFocus={prewarmAudio}
                     className={`${getInputStyle(isEmailValid, showEmailError)} text-left`}
                     placeholder={dict?.emailPlaceholder || "...@example.com"}
                     aria-invalid={showEmailError ? "true" : "false"}
@@ -589,6 +594,7 @@ export default function Contact({ dict }: { dict: Record<string, string> }) {
                     value={values.message}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    onFocus={prewarmAudio}
                     className={getInputStyle(isMessageValid, showMessageError)}
                     placeholder={dict?.messagePlaceholder || "Describe your project, an open role, or how we can collaborate..."}
                     aria-invalid={showMessageError ? "true" : "false"}
