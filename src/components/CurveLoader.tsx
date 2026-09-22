@@ -1,73 +1,75 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import type { CSSProperties } from "react";
 
 // ---------------------------------------------------------------------------
-// Option C: Both panels contain the same full-viewport-width content block.
-// Each panel has overflow:hidden and clips to its respective half.
-// Hardware-accelerated CSS transition slides the panels apart on the GPU
-// compositor thread — zero JS main-thread jank.
+// Pixel Dissolve Grid Preloader
+// The screen is covered by a 16×9 grid of black tiles.
+// On exit, tiles dissolve away in a radial wave from the centre outward,
+// revealing the 3D hero that has already been warming up underneath.
+// All tile animations run on the GPU compositor via CSS @keyframes — zero
+// JS main-thread involvement during the reveal.
 // ---------------------------------------------------------------------------
 
+const COLS = 16;
+const ROWS = 9;
+
 const LOADER_CSS = `
-  /* ---- BASE LAYOUT ---- */
-  #cl-panel-left,
-  #cl-panel-right {
+  /* ---- WRAPPER ---- */
+  #cl-wrapper {
+    background: transparent;
+  }
+
+  /* ---- PIXEL TILE GRID ---- */
+  #cl-tiles {
     position: absolute;
-    top: 0; bottom: 0;
-    width: 50%;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(${COLS}, 1fr);
+    grid-template-rows: repeat(${ROWS}, 1fr);
+    z-index: 1;
+  }
+  .cl-tile {
     background: #000;
-    overflow: hidden;
-    will-change: transform;
-    /* Hardware acceleration & layer promotion at rest */
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    /* Industrial brutalist vault ease: decisive start, authoritative glide, zero wobble */
-    transition: transform 0.95s cubic-bezier(0.85, 0, 0.15, 1);
-    /* Create a new stacking context so z-index children behave */
-    isolation: isolate;
-  }
-  #cl-panel-left  { left: 0; }
-  #cl-panel-right { right: 0; }
-
-  /* Hardware-composited exit split */
-  #cl-wrapper.cl-split #cl-panel-left {
-    transform: translate3d(-100%, 0, 0);
-  }
-  #cl-wrapper.cl-split #cl-panel-right {
-    transform: translate3d(100%, 0, 0);
+    will-change: transform, opacity;
+    transform-origin: center center;
+    /* default: fully solid */
+    opacity: 1;
+    transform: scale(1);
   }
 
-  html.no-animations #cl-panel-left,
-  html.no-animations #cl-panel-right,
-  @media (prefers-reduced-motion: reduce) {
-    #cl-panel-left,
-    #cl-panel-right {
-      transition-duration: 0.01s !important;
-    }
+  /* Tile dissolve — fired by adding .cl-dissolving to #cl-wrapper */
+  #cl-wrapper.cl-dissolving .cl-tile {
+    animation: cl-tile-out 420ms cubic-bezier(0.4, 0, 1, 1) both;
+    /* animation-delay injected via inline style per tile */
   }
 
-  /* ---- SHARED CONTENT LAYER ---- */
-  /*
-   * Key trick: width = 200% (= 100vw since each panel is 50vw).
-   * Left panel:  left:0  → content spans 0 to 100vw, panel clips left half.
-   * Right panel: right:0 → content spans 0 to 100vw, panel clips right half.
-   * Both show the same centered content — split exactly at the seam.
-   */
-  .cl-panel-content {
+  @keyframes cl-tile-out {
+    0%   { opacity: 1;    transform: scale(1);    filter: brightness(1); }
+    /* Brief pixel-burn flash before collapsing */
+    35%  { opacity: 1;    transform: scale(1.04); filter: brightness(2.8); }
+    70%  { opacity: 0.25; transform: scale(0.82); filter: brightness(1); }
+    100% { opacity: 0;    transform: scale(0.6);  filter: brightness(0); }
+  }
+
+  /* ---- LOADER CONTENT: single centred layer above tiles ---- */
+  #cl-content {
     position: absolute;
-    top: 0; bottom: 0;
-    width: 200%;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2;
     pointer-events: none;
+    /* Fade content out slightly before/during tile dissolve */
+    transition: opacity 0.28s ease;
   }
-  .cl-panel-content--left  { left: 0; }
-  .cl-panel-content--right { right: 0; }
+  #cl-wrapper.cl-dissolving #cl-content {
+    opacity: 0;
+    transition-delay: 0.04s;
+  }
 
-  /* Inner flex stack */
+  /* ---- INNER STACK ---- */
   .cl-inner {
     display: flex;
     flex-direction: column;
@@ -121,40 +123,22 @@ const LOADER_CSS = `
     transform-style: preserve-3d;
     animation: cl-ring-spin 4s linear infinite;
     will-change: transform, border-color, box-shadow;
-    /* Smooth glow-up when exiting class is applied */
     transition: border-color 0.35s ease, box-shadow 0.35s ease;
   }
 
-  /* Cube & ring shine when counter hits 100 — peaks right as panels split */
+  /* Cube & ring shine when counter hits 100 */
   .cl-3d-scene.exiting .cl-3d-ring {
     border-color: rgba(255, 255, 255, 0.88);
     box-shadow: 0 0 22px rgba(255, 255, 255, 0.55);
   }
-
   .cl-3d-scene.exiting .cl-face {
     animation: cl-face-shine 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   @keyframes cl-face-shine {
-    0% {
-      border-color: rgba(255, 255, 255, 0.38);
-      background:   rgba(255, 255, 255, 0.04);
-      box-shadow:   inset 0 0 10px rgba(255, 255, 255, 0.07);
-    }
-    /* Peak: full glow at 45% — this is the moment the panels start opening */
-    45% {
-      border-color: rgba(255, 255, 255, 0.95);
-      background:   rgba(255, 255, 255, 0.20);
-      box-shadow:   inset 0 0 20px rgba(255, 255, 255, 0.50),
-                    0 0 16px rgba(255, 255, 255, 0.40);
-    }
-    /* Hold the glow — panels are now splitting open with a bright cube */
-    100% {
-      border-color: rgba(255, 255, 255, 0.90);
-      background:   rgba(255, 255, 255, 0.18);
-      box-shadow:   inset 0 0 18px rgba(255, 255, 255, 0.45),
-                    0 0 14px rgba(255, 255, 255, 0.35);
-    }
+    0%   { border-color: rgba(255,255,255,0.38); background: rgba(255,255,255,0.04); box-shadow: inset 0 0 10px rgba(255,255,255,0.07); }
+    45%  { border-color: rgba(255,255,255,0.95); background: rgba(255,255,255,0.20); box-shadow: inset 0 0 20px rgba(255,255,255,0.50), 0 0 16px rgba(255,255,255,0.40); }
+    100% { border-color: rgba(255,255,255,0.90); background: rgba(255,255,255,0.18); box-shadow: inset 0 0 18px rgba(255,255,255,0.45), 0 0 14px rgba(255,255,255,0.35); }
   }
 
   @keyframes cl-cube-spin {
@@ -178,9 +162,9 @@ const LOADER_CSS = `
     align-items: center;
     gap: 0.45rem;
   }
-  .cl-dot    { color: rgba(255,255,255,0.18); }
+  .cl-dot { color: rgba(255,255,255,0.18); }
 
-  /* Stacked LOADING / READY words — same grid cell, cross-fade on exiting */
+  /* Stacked LOADING / READY words */
   .cl-status-wrap {
     display: inline-grid;
     grid-template-columns: 1fr;
@@ -188,15 +172,9 @@ const LOADER_CSS = `
     font-weight: 700;
     color: rgba(255,255,255,0.78);
   }
-  .cl-status-word {
-    grid-column: 1;
-    grid-row: 1;
-    transition: opacity 0.3s ease;
-  }
+  .cl-status-word { grid-column: 1; grid-row: 1; transition: opacity 0.3s ease; }
   .cl-status-word--ready   { opacity: 0; }
   .cl-status-word--loading { opacity: 1; }
-
-  /* When .cl-3d-scene sibling gets .exiting, swap the words */
   .cl-3d-scene.exiting ~ .cl-name-tag .cl-status-word--loading { opacity: 0; }
   .cl-3d-scene.exiting ~ .cl-name-tag .cl-status-word--ready   { opacity: 1; }
 
@@ -269,7 +247,6 @@ const LOADER_CSS = `
   }
 
   /* ---- HERO ENTRANCE GATING ---- */
-  /* Pause slide-up animations until the loader signals its exit */
   .animate-slide-up,
   .animate-slide-up-delay-1,
   .animate-slide-up-delay-2 {
@@ -293,6 +270,10 @@ const LOADER_CSS = `
 
   /* ---- REDUCED MOTION ---- */
   @media (prefers-reduced-motion: reduce) {
+    .cl-tile {
+      animation: none !important;
+      opacity: 0 !important;
+    }
     .cl-char, .cl-3d-cube, .cl-3d-ring, .cl-progress-fill {
       animation: none !important;
       opacity: 1 !important;
@@ -301,81 +282,6 @@ const LOADER_CSS = `
     }
   }
 `;
-
-// ---------------------------------------------------------------------------
-// Shared content block — rendered identically inside each panel.
-// Each panel's overflow:hidden clips its respective half of the content.
-// ---------------------------------------------------------------------------
-function PanelContent({
-  side,
-  nameText,
-  welcomeText,
-  isAr,
-}: {
-  side: "left" | "right";
-  nameText: string;
-  welcomeText: string;
-  isAr: boolean;
-}) {
-  return (
-    <div className={`cl-panel-content cl-panel-content--${side}`}>
-      <div className="cl-inner">
-
-        {/* 3D CSS Cube */}
-        <div className="cl-3d-scene">
-          <div className="cl-3d-ring" />
-          <div className="cl-3d-cube">
-            <div className="cl-face cl-face-front">+</div>
-            <div className="cl-face cl-face-back">+</div>
-            <div className="cl-face cl-face-right">+</div>
-            <div className="cl-face cl-face-left">+</div>
-            <div className="cl-face cl-face-top">+</div>
-            <div className="cl-face cl-face-bottom">+</div>
-          </div>
-        </div>
-
-        {/* Name + status */}
-        <div className="cl-name-tag">
-          <span>{nameText}</span>
-          <span className="cl-dot">•</span>
-          <span className="cl-status-wrap">
-            <span className="cl-status-word cl-status-word--loading">
-              {isAr ? "جاري التحميل" : "LOADING"}
-            </span>
-            <span className="cl-status-word cl-status-word--ready">
-              {isAr ? "جاهز" : "READY"}
-            </span>
-          </span>
-        </div>
-
-        {/* Welcome heading */}
-        <div className="cl-welcome-text" role="presentation">
-          {welcomeText.split("").map((char, i) => (
-            <span
-              key={i}
-              className="cl-char"
-              style={{ "--ci": i } as CSSProperties}
-            >
-              {char === " " ? "\u00A0" : char}
-            </span>
-          ))}
-        </div>
-
-        {/* Counter */}
-        <div className="cl-counter">
-          <span className="cl-count">0</span>
-          <span className="cl-percent">%</span>
-        </div>
-
-        {/* Progress bar */}
-        <div className="cl-progress-bar">
-          <div className="cl-progress-fill" />
-        </div>
-
-      </div>
-    </div>
-  );
-}
 
 // ---------------------------------------------------------------------------
 // Main loader component
@@ -387,46 +293,56 @@ export default function CurveLoader({
   locale?: string;
   initialLoaded?: boolean;
 }) {
-  const wrapperRef   = useRef<HTMLDivElement>(null);
-  const panelLeftRef = useRef<HTMLDivElement>(null);
-  const panelRightRef= useRef<HTMLDivElement>(null);
-  const rafRef       = useRef<number>(0);
-  const hasExited    = useRef(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const rafRef     = useRef<number>(0);
+  const hasExited  = useRef(false);
 
-  const isAr       = locale === "ar";
-  const nameText   = isAr ? "سامي برسوم" : "SAMY BARSOUM";
-  const welcomeText= isAr ? "أهلاً بك"   : "WELCOME";
+  const isAr        = locale === "ar";
+  const nameText    = isAr ? "سامي برسوم" : "SAMY BARSOUM";
+  const welcomeText = isAr ? "أهلاً بك"   : "WELCOME";
+
+  // Pre-compute per-tile dissolve delays (radial from centre, with organic jitter).
+  // useMemo with [] runs once on mount — stable for the component's lifetime.
+  const tileDelays = useMemo<number[]>(() => {
+    const cx = (COLS - 1) / 2;
+    const cy = (ROWS - 1) / 2;
+    const maxDist = Math.sqrt(cx * cx + cy * cy);
+    return Array.from({ length: COLS * ROWS }, (_, i) => {
+      const col = i % COLS;
+      const row = Math.floor(i / COLS);
+      const dx = col - cx;
+      const dy = row - cy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const normalized = dist / maxDist;
+      // ±15% organic jitter so tiles don't dissolve in perfect arcs
+      const jitter = (Math.random() - 0.5) * 0.18;
+      return Math.max(0, (normalized + jitter) * 580);
+    });
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Capture panel refs at effect start — satisfies react-hooks/exhaustive-deps
-    // in the cleanup closure below.
-    const panelL = panelLeftRef.current;
-    const panelR = panelRightRef.current;
-
-    // Cache counter elements once (both panels have one each)
-    const countEls = Array.from(
-      document.querySelectorAll<HTMLSpanElement>(".cl-count")
-    );
+    // Cache the single counter span
+    const countEl = document.querySelector<HTMLSpanElement>(".cl-count");
     const setCount = (val: string) => {
-      countEls.forEach((el) => { el.textContent = val; });
+      if (countEl) countEl.textContent = val;
     };
 
     document.documentElement.style.overflow = "hidden";
 
     const COUNTER_DURATION = 1400; // ms
-    const start    = performance.now();
-    let countVal   = 0;
-    let assetsReady= false;
-    let counterDone= false;
+    const start      = performance.now();
+    let countVal     = 0;
+    let assetsReady  = false;
+    let counterDone  = false;
 
     const maybeExit = () => {
       if (!assetsReady || !counterDone || hasExited.current) return;
       triggerExit();
     };
 
-    // Gate 1: custom fonts
+    // Gate: custom fonts
     document.fonts.ready.then(() => {
       assetsReady = true;
       maybeExit();
@@ -451,11 +367,11 @@ export default function CurveLoader({
         rafRef.current = requestAnimationFrame(tick);
       } else {
         setCount("100");
-        // Trigger cube shine on both panels immediately when counter hits 100
+        // Trigger cube shine
         document.querySelectorAll<HTMLElement>(".cl-3d-scene").forEach((el) => {
           el.classList.add("exiting");
         });
-        // 220ms pause: shine builds to peak, then maybeExit fires the split
+        // 220ms pause: shine peaks, then dissolve fires
         setTimeout(() => {
           counterDone = true;
           maybeExit();
@@ -470,53 +386,31 @@ export default function CurveLoader({
     }, 3500);
 
     // ---------------------------------------------------------------------------
-    // Exit: pure panel split — hardware-accelerated CSS transition on GPU compositor
+    // Exit: radial pixel-dissolve grid — all tile animations are GPU-composited
     // ---------------------------------------------------------------------------
     function triggerExit() {
       if (hasExited.current) return;
       hasExited.current = true;
 
       const wrapper = wrapperRef.current;
-      if (!panelL || !panelR || !wrapper) {
-        finalize();
-        return;
-      }
+      if (!wrapper) { finalize(); return; }
 
       // Signal Hero CSS animations to start running
       document.documentElement.classList.add("loader-exiting");
 
-      // Trigger GPU compositor CSS split
+      // Fire dissolve on next paint frame
       requestAnimationFrame(() => {
-        wrapper.classList.add("cl-split");
+        wrapper.classList.add("cl-dissolving");
       });
 
-      // Handle completion when CSS transition ends
-      let finalized = false;
-      const onEnd = (e: TransitionEvent) => {
-        if (e.target !== panelL || e.propertyName !== "transform") return;
-        if (finalized) return;
-        finalized = true;
-        panelL.removeEventListener("transitionend", onEnd);
-        finalize();
-      };
-
-      panelL.addEventListener("transitionend", onEnd);
-
-      // Safety timeout fallback (1100ms > 950ms transition duration)
-      setTimeout(() => {
-        if (!finalized) {
-          finalized = true;
-          panelL.removeEventListener("transitionend", onEnd);
-          finalize();
-        }
-      }, 1100);
+      // Max tile delay (580ms) + tile animation (420ms) + small buffer = 1050ms
+      setTimeout(finalize, 1060);
     }
 
     function finalize() {
       document.documentElement.style.overflow = "";
       document.documentElement.classList.remove("loader-exiting");
       document.documentElement.classList.add("loader-complete");
-      // Hide instead of unmount to avoid React re-render tearing
       if (wrapperRef.current) wrapperRef.current.style.display = "none";
     }
 
@@ -536,24 +430,73 @@ export default function CurveLoader({
     >
       <style>{LOADER_CSS}</style>
 
-      {/* LEFT PANEL — clips content to its half (left 50vw) */}
-      <div id="cl-panel-left" ref={panelLeftRef}>
-        <PanelContent
-          side="left"
-          nameText={nameText}
-          welcomeText={welcomeText}
-          isAr={isAr}
-        />
+      {/* PIXEL TILE GRID — covers hero underneath */}
+      <div id="cl-tiles">
+        {tileDelays.map((delay, i) => (
+          <div
+            key={i}
+            className="cl-tile"
+            style={{ animationDelay: `${delay}ms` } as CSSProperties}
+          />
+        ))}
       </div>
 
-      {/* RIGHT PANEL — clips content to its half (right 50vw) */}
-      <div id="cl-panel-right" ref={panelRightRef}>
-        <PanelContent
-          side="right"
-          nameText={nameText}
-          welcomeText={welcomeText}
-          isAr={isAr}
-        />
+      {/* CENTRED CONTENT — sits above tiles at z-index 2 */}
+      <div id="cl-content">
+        <div className="cl-inner">
+
+          {/* 3D CSS Cube */}
+          <div className="cl-3d-scene">
+            <div className="cl-3d-ring" />
+            <div className="cl-3d-cube">
+              <div className="cl-face cl-face-front">+</div>
+              <div className="cl-face cl-face-back">+</div>
+              <div className="cl-face cl-face-right">+</div>
+              <div className="cl-face cl-face-left">+</div>
+              <div className="cl-face cl-face-top">+</div>
+              <div className="cl-face cl-face-bottom">+</div>
+            </div>
+          </div>
+
+          {/* Name + status */}
+          <div className="cl-name-tag">
+            <span>{nameText}</span>
+            <span className="cl-dot">•</span>
+            <span className="cl-status-wrap">
+              <span className="cl-status-word cl-status-word--loading">
+                {isAr ? "جاري التحميل" : "LOADING"}
+              </span>
+              <span className="cl-status-word cl-status-word--ready">
+                {isAr ? "جاهز" : "READY"}
+              </span>
+            </span>
+          </div>
+
+          {/* Welcome heading */}
+          <div className="cl-welcome-text" role="presentation">
+            {welcomeText.split("").map((char, i) => (
+              <span
+                key={i}
+                className="cl-char"
+                style={{ "--ci": i } as CSSProperties}
+              >
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
+          </div>
+
+          {/* Counter */}
+          <div className="cl-counter">
+            <span className="cl-count">0</span>
+            <span className="cl-percent">%</span>
+          </div>
+
+          {/* Progress bar */}
+          <div className="cl-progress-bar">
+            <div className="cl-progress-fill" />
+          </div>
+
+        </div>
       </div>
     </div>
   );
