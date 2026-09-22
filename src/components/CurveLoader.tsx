@@ -17,6 +17,12 @@ const ROWS = 9;
 const LOADER_CSS = `
   /* ---- WRAPPER ---- */
   #cl-wrapper {
+    /* #000 during loading fills any sub-pixel rounding gaps between tiles
+       so the hero never bleeds through before dissolve fires. */
+    background: #000;
+  }
+  /* Once dissolving: go transparent so the hero is revealed as tiles vanish */
+  #cl-wrapper.cl-dissolving {
     background: transparent;
   }
 
@@ -33,7 +39,6 @@ const LOADER_CSS = `
     background: #000;
     will-change: transform, opacity;
     transform-origin: center center;
-    /* default: fully solid */
     opacity: 1;
     transform: scale(1);
   }
