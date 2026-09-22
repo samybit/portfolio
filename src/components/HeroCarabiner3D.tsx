@@ -646,45 +646,31 @@ export default function HeroCarabiner3D() {
 
   useEffect(() => {
     // Prewarm procedural canvas textures during background idle time
-    // so texture generation doesn't block the main thread when the split occurs.
+    // so texture generation doesn't block the main thread.
     if (typeof window !== "undefined") {
       const scheduleIdle =
         (window as unknown as { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void }).requestIdleCallback ||
-        ((cb: () => void) => setTimeout(cb, 120));
-      scheduleIdle(prewarmProceduralTextures, { timeout: 1500 });
+        ((cb: () => void) => setTimeout(cb, 100));
+      scheduleIdle(prewarmProceduralTextures, { timeout: 1000 });
     }
 
-    // WebGL fires when the loader signals it's exiting (or if no loader is present).
-    // We watch for 'loader-exiting' or 'loader-complete' on <html> via MutationObserver.
     const html = document.documentElement;
 
-    // If the loader already finished (e.g. animations disabled), render on the next tick.
+    // If loader already completed (e.g. subpage navigation or animations disabled), render immediately
     if (html.classList.contains("loader-complete") || html.classList.contains("no-animations")) {
       const immediate = setTimeout(() => setShouldRenderWebGL(true), 0);
       return () => clearTimeout(immediate);
     }
 
-    const observer = new MutationObserver(() => {
-      if (
-        html.classList.contains("loader-exiting") ||
-        html.classList.contains("loader-complete")
-      ) {
-        setShouldRenderWebGL(true);
-        observer.disconnect();
-      }
-    });
-
-    observer.observe(html, { attributes: true, attributeFilter: ["class"] });
-
-    // Hard fallback after 4s in case loader never fires
-    const fallback = setTimeout(() => {
+    // Warm up WebGL in the background ~350ms into preloader countdown.
+    // By the time the counter hits 100% (~1400ms) and doors crack open,
+    // WebGL shaders and textures are 100% rendered and ready behind the seam.
+    const warmupTimer = setTimeout(() => {
       setShouldRenderWebGL(true);
-      observer.disconnect();
-    }, 4000);
+    }, 350);
 
     return () => {
-      observer.disconnect();
-      clearTimeout(fallback);
+      clearTimeout(warmupTimer);
     };
   }, []);
 
