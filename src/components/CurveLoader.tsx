@@ -321,7 +321,7 @@ export default function CurveLoader({
       const normalized = dist / maxDist;
       // ±15% organic jitter so tiles don't dissolve in perfect arcs
       const jitter = (Math.random() - 0.5) * 0.18;
-      return Math.max(0, (normalized + jitter) * 580);
+      return Math.max(0, (normalized + jitter) * 820);
     });
   }, []);
 
@@ -336,7 +336,7 @@ export default function CurveLoader({
 
     document.documentElement.style.overflow = "hidden";
 
-    const COUNTER_DURATION = 1400; // ms
+    const COUNTER_DURATION = 1200; // ms
     const start      = performance.now();
     let countVal     = 0;
     let assetsReady  = false;
@@ -376,11 +376,11 @@ export default function CurveLoader({
         document.querySelectorAll<HTMLElement>(".cl-3d-scene").forEach((el) => {
           el.classList.add("exiting");
         });
-        // 220ms pause: shine peaks, then dissolve fires
+        // 180ms pause: shine peaks, then dissolve fires
         setTimeout(() => {
           counterDone = true;
           maybeExit();
-        }, 220);
+        }, 180);
       }
     };
     rafRef.current = requestAnimationFrame(tick);
@@ -408,8 +408,8 @@ export default function CurveLoader({
         wrapper.classList.add("cl-dissolving");
       });
 
-      // Max tile delay (580ms) + tile animation (420ms) + small buffer = 1050ms
-      setTimeout(finalize, 1060);
+      // Max tile delay (820ms) + tile animation (420ms) + small buffer = 1300ms
+      setTimeout(finalize, 1300);
     }
 
     function finalize() {
