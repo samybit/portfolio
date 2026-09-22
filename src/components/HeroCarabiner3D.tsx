@@ -234,6 +234,22 @@ const getRopeEndTexture = () => {
   return tex;
 };
 
+// Prewarm heavy procedural canvas textures in background idle slice
+// so synchronous 2D canvas drawing never blocks the main thread during loader split.
+const prewarmProceduralTextures = () => {
+  if (typeof window === "undefined") return;
+  try {
+    getScratchedTexture();
+    getRopeColorTexture();
+    getKnotColorTexture();
+    generateRubberTexture("#eab308", "yellowRubber");
+    generateRubberTexture("#4b5563", "grayRubber");
+    getRopeEndTexture();
+  } catch {
+    // Non-fatal prewarm
+  }
+};
+
 const ROPE_THICKNESS = 0.3;
 
 const Rope = ({ 
@@ -629,6 +645,15 @@ export default function HeroCarabiner3D() {
   const isNeumorphic = useNeumorphicTheme();
 
   useEffect(() => {
+    // Prewarm procedural canvas textures during background idle time
+    // so texture generation doesn't block the main thread when the split occurs.
+    if (typeof window !== "undefined") {
+      const scheduleIdle =
+        (window as unknown as { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void }).requestIdleCallback ||
+        ((cb: () => void) => setTimeout(cb, 120));
+      scheduleIdle(prewarmProceduralTextures, { timeout: 1500 });
+    }
+
     // WebGL fires when the loader signals it's exiting (or if no loader is present).
     // We watch for 'loader-exiting' or 'loader-complete' on <html> via MutationObserver.
     const html = document.documentElement;

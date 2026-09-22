@@ -1,13 +1,12 @@
 "use client";
 import { useEffect, useRef } from "react";
 import type { CSSProperties } from "react";
-import { gsap } from "gsap";
 
 // ---------------------------------------------------------------------------
 // Option C: Both panels contain the same full-viewport-width content block.
 // Each panel has overflow:hidden and clips to its respective half.
-// When GSAP slides the panels apart, the content is physically split and
-// each half travels with its panel — no fake fade or floating overlay.
+// Hardware-accelerated CSS transition slides the panels apart on the GPU
+// compositor thread — zero JS main-thread jank.
 // ---------------------------------------------------------------------------
 
 const LOADER_CSS = `
@@ -20,11 +19,33 @@ const LOADER_CSS = `
     background: #000;
     overflow: hidden;
     will-change: transform;
+    /* Hardware acceleration & layer promotion at rest */
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    /* Industrial brutalist vault ease: decisive start, authoritative glide, zero wobble */
+    transition: transform 0.95s cubic-bezier(0.85, 0, 0.15, 1);
     /* Create a new stacking context so z-index children behave */
     isolation: isolate;
   }
   #cl-panel-left  { left: 0; }
   #cl-panel-right { right: 0; }
+
+  /* Hardware-composited exit split */
+  #cl-wrapper.cl-split #cl-panel-left {
+    transform: translate3d(-100%, 0, 0);
+  }
+  #cl-wrapper.cl-split #cl-panel-right {
+    transform: translate3d(100%, 0, 0);
+  }
+
+  html.no-animations #cl-panel-left,
+  html.no-animations #cl-panel-right,
+  @media (prefers-reduced-motion: reduce) {
+    #cl-panel-left,
+    #cl-panel-right {
+      transition-duration: 0.01s !important;
+    }
+  }
 
   /* ---- SHARED CONTENT LAYER ---- */
   /*
@@ -449,20 +470,46 @@ export default function CurveLoader({
     }, 3500);
 
     // ---------------------------------------------------------------------------
-    // Exit: pure panel split — content is carried by each panel as it slides
+    // Exit: pure panel split — hardware-accelerated CSS transition on GPU compositor
     // ---------------------------------------------------------------------------
     function triggerExit() {
       if (hasExited.current) return;
       hasExited.current = true;
 
-      if (!panelL || !panelR) { finalize(); return; }
+      const wrapper = wrapperRef.current;
+      if (!panelL || !panelR || !wrapper) {
+        finalize();
+        return;
+      }
 
       // Signal Hero CSS animations to start running
       document.documentElement.classList.add("loader-exiting");
 
-      gsap.timeline({ onComplete: finalize })
-        .to(panelL, { xPercent: -100, duration: 0.85, ease: "power3.inOut" }, 0)
-        .to(panelR, { xPercent:  100, duration: 0.85, ease: "power3.inOut" }, 0);
+      // Trigger GPU compositor CSS split
+      requestAnimationFrame(() => {
+        wrapper.classList.add("cl-split");
+      });
+
+      // Handle completion when CSS transition ends
+      let finalized = false;
+      const onEnd = (e: TransitionEvent) => {
+        if (e.target !== panelL || e.propertyName !== "transform") return;
+        if (finalized) return;
+        finalized = true;
+        panelL.removeEventListener("transitionend", onEnd);
+        finalize();
+      };
+
+      panelL.addEventListener("transitionend", onEnd);
+
+      // Safety timeout fallback (1100ms > 950ms transition duration)
+      setTimeout(() => {
+        if (!finalized) {
+          finalized = true;
+          panelL.removeEventListener("transitionend", onEnd);
+          finalize();
+        }
+      }, 1100);
     }
 
     function finalize() {
@@ -477,8 +524,6 @@ export default function CurveLoader({
       cancelAnimationFrame(rafRef.current);
       clearTimeout(fontFallback);
       clearTimeout(hardFallback);
-      if (panelL) gsap.killTweensOf(panelL);
-      if (panelR) gsap.killTweensOf(panelR);
     };
   }, []);
 
